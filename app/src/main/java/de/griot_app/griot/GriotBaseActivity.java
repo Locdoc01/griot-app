@@ -3,6 +3,8 @@ package de.griot_app.griot;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 /**
  *  Abstract base activity for usual griot-app-activities.
@@ -31,4 +33,9 @@ public abstract class GriotBaseActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        return super.onCreateOptionsMenu(menu);
+    }
 }

@@ -7,14 +7,13 @@
     <!--Griot colors-->
     <color name="colorGriotBlue">#79ADDC</color>
     <color name="colorGriotDarkgrey">#505155</color>
-    <color name="colorGriotYellow">#FFF8F2</color>
-    <color name="colorCriotLightgrey">#8B949B</color>
+    <color name="colorGriotWhite">#FFF8F2</color>
+    <color name="colorGriotLightgrey">#8B949B</color>
 
     <!--colors for Login and Registration-->
     <color name="colorTabSelectedLogin">#5080B0</color>
 
     <!--colors for elements on usual Activities-->
-    <color name="colorLines">#D0CFCF</color>
     <color name="colorTextBackgroundMediaCover">#CD505155</color>
     <color name="colorOverlayOptionsMenu">#DA505155</color>
     <color name="colorBackgroundSelected">#E7E3DF</color>
