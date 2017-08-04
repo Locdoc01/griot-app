@@ -15,7 +15,7 @@
 
     <!--colors for elements on usual Activities-->
     <color name="colorTextBackgroundMediaCover">#CD505155</color>
-    <color name="colorOverlayOptionsMenu">#DA505155</color>
+    <color name="colorOverlayOptionsMenu">#DC505155</color>
     <color name="colorBackgroundSelected">#E7E3DF</color>
 
     <!--colors for QuestionCarousel-->
