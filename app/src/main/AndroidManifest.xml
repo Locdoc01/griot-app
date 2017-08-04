@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ProfileOverviewActivity"></activity>
+        <activity android:name=".ChooseFriendInputActivity"></activity>
+        <activity android:name=".QuestionMailActivity"></activity>
+        <activity android:name=".NotificationsActivity"></activity>
+        <activity android:name=".TopicCatalogActivity"></activity>
     </application>
 
 </manifest>
