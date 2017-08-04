@@ -40,6 +40,7 @@
     <string name="title_record_interview">Interview aufzeichnen</string>
     <string name="title_review_interview">Überprüfe deine Aufzeichnung</string>
     <string name="title_save_interview">Interview speichern</string>
+    <string name="title_search">Suche</string>
     <string name="title_filter">Filter</string>
     <string name="title_topics">Themen</string>
     <string name="title_questions">Fragen</string>
