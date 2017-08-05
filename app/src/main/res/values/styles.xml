@@ -8,4 +8,31 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Titles">
+        <item name="android:text">""</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorGriotDarkgrey</item>
+        <item name="android:textSize">@dimen/dimen_textSize_titles</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="AppTheme.TextButtons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorGriotDarkgrey</item>
+        <item name="android:textSize">@dimen/dimen_textSize_titles</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">16dp</item>
+    </style>
+
+    <style name="AppTheme.Lines">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dimen_height_lines</item>
+        <item name="android:background">@color/colorGriotLightgrey</item>
+    </style>
+
 </resources>
