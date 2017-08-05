@@ -18,9 +18,9 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
         mTitle.setText(R.string.title_record_interview);
 
-        mButtonLeft.setText("Abbrechen");
-        mButtonCenter.setText("Zurück");
-        mButtonRight.setText("Weiter");
+        mButtonLeft.setText(R.string.button_cancel);
+        mButtonCenter.setText(R.string.button_back);
+        mButtonRight.setText(R.string.button_next);
     }
 
     @Override
