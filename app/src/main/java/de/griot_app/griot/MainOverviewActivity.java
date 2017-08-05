@@ -1,6 +1,8 @@
 package de.griot_app.griot;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -13,12 +15,16 @@ public class MainOverviewActivity extends GriotBaseActivity {
         super.onCreate(savedInstanceState);
 
         mTitle.setText(R.string.title_overview);
+        mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
     }
 
     @Override
     protected int getSubClassLayoutId() {
         return R.layout.activity_main_overview;
     }
+
+    @Override
+    protected String getSubClassTAG() { return TAG; }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

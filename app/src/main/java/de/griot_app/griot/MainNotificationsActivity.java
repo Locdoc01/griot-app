@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 
 public class MainNotificationsActivity extends GriotBaseActivity {
 
@@ -11,10 +12,14 @@ public class MainNotificationsActivity extends GriotBaseActivity {
         super.onCreate(savedInstanceState);
 
         mTitle.setText(R.string.title_notifications);
+        mButtonNotifications.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
     }
 
     @Override
     protected int getSubClassLayoutId() {
         return R.layout.activity_main_notifications;
     }
+
+    @Override
+    protected String getSubClassTAG() { return TAG; }
 }

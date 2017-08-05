@@ -15,7 +15,7 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity {
 
     protected TextView mTitle;
 
-    private Toolbar mToolbar;
+    protected Toolbar mAppbar;
 
     /**
      * Abstract method, that returns the appropriate layout id for extending subclass.
@@ -24,13 +24,15 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity {
      */
     protected abstract int getSubClassLayoutId();
 
+    protected abstract String getSubClassTAG();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_input_griot);
+        setContentView(getSubClassLayoutId());
 
-        mToolbar = (Toolbar) findViewById(R.id.app_bar_griot_base_input);
-        setSupportActionBar(mToolbar);
+        mAppbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mAppbar);
         getSupportActionBar().setTitle("");
 
         mTitle = (TextView) findViewById(R.id.title);

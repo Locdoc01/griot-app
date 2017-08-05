@@ -18,14 +18,14 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
 
     protected TextView mTitle;
 
-    private Toolbar mAppBar;
+    protected Toolbar mAppBar;
 
-    private ImageView mButtonHome;
-    private ImageView mButtonProfile;
-    private ImageView mButtonRecord;
-    private ImageView mButtonQuestionmail;
-    private ImageView mButtonNotifications;
-    private ImageView mButtonTopicCatalog;
+    protected ImageView mButtonHome;
+    protected ImageView mButtonProfile;
+    protected ImageView mButtonRecord;
+    protected ImageView mButtonQuestionmail;
+    protected ImageView mButtonNotifications;
+    protected ImageView mButtonTopicCatalog;
 
     /**
      * Abstract method, that returns the appropriate layout id for extending subclass.
@@ -34,13 +34,15 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
      */
     protected abstract int getSubClassLayoutId();
 
+    protected abstract String getSubClassTAG();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getSubClassLayoutId());
 
-        mAppBar = (Toolbar) findViewById(R.id.app_bar_griot_base);
+        mAppBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mAppBar);
         getSupportActionBar().setTitle("");
 
@@ -62,29 +64,77 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
+    }
+
+    /**
+     * TODO: Beschreibung ändern:
+     * Funktionsweise der Button in Diagramm beschreiben
+     * Bei App-Start wird MainOverview geöffnet
+     * In MainOverView:
+     *      Druck auf Home: Keine Änderung
+     *      Druck auf andere Taste: öffnet neue Activity
+     *      Druck auf Zurück: Beendet Programm
+     * In RecordActivity:
+     *      Druck auf Zurück: Beendet aktuelle Activity
+     * In anderer Activity:
+     *      Druck auf eigenen Button: Keine Änderung
+     *      Druck auf andere Taste: öffnet andere Activity und schließt aktuelle
+     *      Druck auf Home: Beendet aktuelle Activity
+     *      Druck auf Zurück: Beendet aktuelle Activity
+     */
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_home:
-                startActivity(new Intent(this, MainOverviewActivity.class));
+                if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                    finish();
+                }
                 break;
             case R.id.button_profile:
-                startActivity(new Intent(this, MainProfileOverviewActivity.class));
+                if (!getSubClassTAG().equals(MainProfileOverviewActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainProfileOverviewActivity.class));
+                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        finish();
+                    }
+                }
                 break;
             case R.id.button_record:
                 startActivity(new Intent(this, MainChooseFriendInputActivity.class));
+                if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                    finish();
+                }
                 break;
             case R.id.button_questionmail:
-                startActivity(new Intent(this, MainQuestionmailActivity.class));
+                if (!getSubClassTAG().equals(MainQuestionmailActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainQuestionmailActivity.class));
+                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        finish();
+                    }
+                }
                 break;
             case R.id.button_notifications:
-                startActivity(new Intent(this, MainNotificationsActivity.class));
+                if (!getSubClassTAG().equals(MainNotificationsActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainNotificationsActivity.class));
+                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        finish();
+                    }
+                }
                 break;
             case R.id.button_topic_catalog:
-                startActivity(new Intent(this, MainTopicCatalogActivity.class));
+                if (!getSubClassTAG().equals(MainTopicCatalogActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainTopicCatalogActivity.class));
+                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        finish();
+                    }
+                }
                 break;
             default:
-                startActivity(new Intent(this, MainOverviewActivity.class));
-
         }
     }
+
 }
+
+

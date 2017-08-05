@@ -17,4 +17,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected int getSubClassLayoutId() {
         return R.layout.activity_main_input_choose_friend;
     }
+
+    @Override
+    protected String getSubClassTAG() { return TAG; }
 }
