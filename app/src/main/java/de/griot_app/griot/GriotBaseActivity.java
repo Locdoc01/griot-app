@@ -14,7 +14,8 @@ import android.widget.TextView;
  */
 public abstract class GriotBaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = GriotBaseActivity.class.getSimpleName();
+    //TODO: löschen
+    //private static final String TAG = GriotBaseActivity.class.getSimpleName();
 
     protected TextView mTitle;
 
@@ -28,12 +29,18 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     protected ImageView mButtonTopicCatalog;
 
     /**
-     * Abstract method, that returns the appropriate layout id for extending subclass.
+     * Abstract method, which returns the appropriate layout id for extending subclass.
      * This method can be used in onCreate() to inflate the appropriate layout for the extending subclass
      * @return  layout id for extending subclass
      */
     protected abstract int getSubClassLayoutId();
 
+    /**
+     * Abstract method, which returns the TAG of the extending subclass.
+     * This method can be used, when the TAG of the concrete subclass is needed.
+     * Note, that GriotBaseActivity itself doesn't provide a TAG field.
+     * @return  TAG of the extending subclass
+     */
     protected abstract String getSubClassTAG();
 
 
@@ -42,8 +49,11 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(getSubClassLayoutId());
 
+        //set up the Toolbar as app bar
         mAppBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mAppBar);
+
+        //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
 
         mTitle = (TextView) findViewById(R.id.title);
@@ -66,6 +76,7 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     @Override
     protected void onPause() {
         super.onPause();
+        // stops default animation, in case of changing the Activity
         overridePendingTransition(0, 0);
     }
 
@@ -89,11 +100,14 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_home:
+                // if button_home is pressed, current Activity will be closed, except it's the MainOverview itself
                 if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
                     finish();
                 }
                 break;
             case R.id.button_profile:
+                // if button is pressed, apropriate Activity will be started, except it isn't already the current one
+                // if current Activity wasn't MainOverview, it will be closed, otherwise it will be hold on the backstack
                 if (!getSubClassTAG().equals(MainProfileOverviewActivity.class.getSimpleName())) {
                     startActivity(new Intent(this, MainProfileOverviewActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
@@ -102,12 +116,15 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                 }
                 break;
             case R.id.button_record:
+                // if button_record is pressed, apropriate Activity will be started
+                // if current Activity wasn't MainOverview, it will be closed, otherwise it will be hold on the backstack
                 startActivity(new Intent(this, MainChooseFriendInputActivity.class));
                 if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
                     finish();
                 }
                 break;
             case R.id.button_questionmail:
+                // same behavior as button_profile
                 if (!getSubClassTAG().equals(MainQuestionmailActivity.class.getSimpleName())) {
                     startActivity(new Intent(this, MainQuestionmailActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
@@ -116,6 +133,7 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                 }
                 break;
             case R.id.button_notifications:
+                // same behavior as button_profile
                 if (!getSubClassTAG().equals(MainNotificationsActivity.class.getSimpleName())) {
                     startActivity(new Intent(this, MainNotificationsActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
@@ -124,6 +142,7 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                 }
                 break;
             case R.id.button_topic_catalog:
+                // same behavior as button_profile
                 if (!getSubClassTAG().equals(MainTopicCatalogActivity.class.getSimpleName())) {
                     startActivity(new Intent(this, MainTopicCatalogActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
@@ -131,7 +150,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                     }
                 }
                 break;
-            default:
         }
     }
 
