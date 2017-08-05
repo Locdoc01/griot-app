@@ -2,9 +2,9 @@ package de.griot_app.griot;
 
 import android.os.Bundle;
 
-public class ProfileOverviewActivity extends GriotBaseActivity {
+public class MainProfileOverviewActivity extends GriotBaseActivity {
 
-    private static final String TAG = ProfileOverviewActivity.class.getSimpleName();
+    private static final String TAG = MainProfileOverviewActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class ProfileOverviewActivity extends GriotBaseActivity {
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_profile_overview;
+        return R.layout.activity_main_profile_overview;
     }
 }

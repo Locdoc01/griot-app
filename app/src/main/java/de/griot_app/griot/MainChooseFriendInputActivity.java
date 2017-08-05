@@ -2,7 +2,7 @@ package de.griot_app.griot;
 
 import android.os.Bundle;
 
-public class ChooseFriendInputActivity extends GriotBaseInputActivity {
+public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
 
@@ -15,6 +15,6 @@ public class ChooseFriendInputActivity extends GriotBaseInputActivity {
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_input_choose_friend;
+        return R.layout.activity_main_input_choose_friend;
     }
 }

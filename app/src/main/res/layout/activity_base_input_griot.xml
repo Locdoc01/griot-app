@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.griot_app.griot.GriotBaseActivity"
     android:background="@color/colorGriotWhite"
-    tools:showIn="@layout/activity_input_choose_friend"><!--zeile später löschen-->
+    tools:showIn="@layout/activity_main_input_choose_friend"><!--zeile später löschen-->
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/app_bar_griot_base_input"

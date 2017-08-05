@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-public class MainActivity extends GriotBaseActivity {
+public class MainOverviewActivity extends GriotBaseActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainOverviewActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +17,13 @@ public class MainActivity extends GriotBaseActivity {
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_main_overview;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_app_bar_main, menu);
+        inflater.inflate(R.menu.menu_app_bar_main_overview, menu);
         return super.onCreateOptionsMenu(menu);
     }
 }

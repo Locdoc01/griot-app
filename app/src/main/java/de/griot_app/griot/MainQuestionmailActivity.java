@@ -2,9 +2,9 @@ package de.griot_app.griot;
 
 import android.os.Bundle;
 
-public class QuestionMailActivity extends GriotBaseActivity {
+public class MainQuestionmailActivity extends GriotBaseActivity {
 
-    private static final String TAG = QuestionMailActivity.class.getSimpleName();
+    private static final String TAG = MainQuestionmailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class QuestionMailActivity extends GriotBaseActivity {
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_questionmail;
+        return R.layout.activity_main_questionmail;
     }
 }

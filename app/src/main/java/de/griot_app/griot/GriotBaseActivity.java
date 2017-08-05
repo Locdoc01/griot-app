@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -61,25 +59,25 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_home:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MainOverviewActivity.class));
                 break;
             case R.id.button_profile:
-                startActivity(new Intent(this, ProfileOverviewActivity.class));
+                startActivity(new Intent(this, MainProfileOverviewActivity.class));
                 break;
             case R.id.button_record:
-                startActivity(new Intent(this, ChooseFriendInputActivity.class));
+                startActivity(new Intent(this, MainChooseFriendInputActivity.class));
                 break;
             case R.id.button_questionmail:
-                startActivity(new Intent(this, QuestionMailActivity.class));
+                startActivity(new Intent(this, MainQuestionmailActivity.class));
                 break;
             case R.id.button_notifications:
-                startActivity(new Intent(this, NotificationsActivity.class));
+                startActivity(new Intent(this, MainNotificationsActivity.class));
                 break;
             case R.id.button_topic_catalog:
-                startActivity(new Intent(this, TopicCatalogActivity.class));
+                startActivity(new Intent(this, MainTopicCatalogActivity.class));
                 break;
             default:
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MainOverviewActivity.class));
 
         }
     }

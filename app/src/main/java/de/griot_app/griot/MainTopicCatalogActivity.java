@@ -2,9 +2,9 @@ package de.griot_app.griot;
 
 import android.os.Bundle;
 
-public class TopicCatalogActivity extends GriotBaseActivity {
+public class MainTopicCatalogActivity extends GriotBaseActivity {
 
-    private static final String TAG = TopicCatalogActivity.class.getSimpleName();
+    private static final String TAG = MainTopicCatalogActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,6 @@ public class TopicCatalogActivity extends GriotBaseActivity {
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_topic_catalog;
+        return R.layout.activity_main_topic_catalog;
     }
 }

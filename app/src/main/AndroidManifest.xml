@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainOverviewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileOverviewActivity"></activity>
-        <activity android:name=".ChooseFriendInputActivity"></activity>
-        <activity android:name=".QuestionMailActivity"></activity>
-        <activity android:name=".NotificationsActivity"></activity>
-        <activity android:name=".TopicCatalogActivity"></activity>
+        <activity android:name=".MainProfileOverviewActivity"></activity>
+        <activity android:name=".MainChooseFriendInputActivity"></activity>
+        <activity android:name=".MainQuestionmailActivity"></activity>
+        <activity android:name=".MainNotificationsActivity"></activity>
+        <activity android:name=".MainTopicCatalogActivity"></activity>
     </application>
 
 </manifest>

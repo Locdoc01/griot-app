@@ -24,7 +24,7 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_griot_input_base);
+        setContentView(R.layout.activity_base_input_griot);
 
         mToolbar = (Toolbar) findViewById(R.id.app_bar_griot_base_input);
         setSupportActionBar(mToolbar);
