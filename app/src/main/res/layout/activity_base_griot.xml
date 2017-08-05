@@ -16,9 +16,7 @@
 
     <ImageView
         android:id="@+id/line_top"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_height_lines"
-        android:background="@color/colorGriotLightgrey"
+        style="@style/AppTheme.Lines"
         app:layout_constraintTop_toTopOf="@id/guideline_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -43,12 +41,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:text=""
-        android:textColor="@color/colorGriotDarkgrey"
-        android:textSize="@dimen/dimen_textSize_titles"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.Titles"
         app:layout_constraintTop_toTopOf="@id/app_bar"
         app:layout_constraintBottom_toBottomOf="@id/app_bar"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +56,7 @@
 
     <ImageView
         android:id="@+id/line_bottom"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_height_lines"
-        android:background="@color/colorGriotLightgrey"
+        style="@style/AppTheme.Lines"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -35,12 +35,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:text=""
-        android:textColor="@color/colorGriotDarkgrey"
-        android:textSize="@dimen/dimen_textSize_titles"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.Titles"
         app:layout_constraintTop_toTopOf="@id/app_bar"
         app:layout_constraintBottom_toBottomOf="@id/app_bar"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,5 +67,30 @@
         app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_left"
+        style="@style/AppTheme.TextButtons"
+        android:text="Links"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/button_center"
+        style="@style/AppTheme.TextButtons"
+        android:text="Mitte"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/button_right"
+        style="@style/AppTheme.TextButtons"
+        android:text="Rechts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </merge>
