@@ -10,7 +10,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_topics);
+        mTitle.setText(R.string.title_topics);
     }
 
     @Override

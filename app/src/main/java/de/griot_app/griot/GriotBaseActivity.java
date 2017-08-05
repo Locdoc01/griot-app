@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  *  Abstract base activity for usual griot-app-activities.
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 public abstract class GriotBaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = GriotBaseActivity.class.getSimpleName();
+
+    protected TextView mTitle;
 
     private Toolbar mAppBar;
 
@@ -39,6 +42,9 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
 
         mAppBar = (Toolbar) findViewById(R.id.app_bar_griot_base);
         setSupportActionBar(mAppBar);
+        getSupportActionBar().setTitle("");
+
+        mTitle = (TextView) findViewById(R.id.title);
 
         mButtonHome = (ImageView) findViewById(R.id.button_home);
         mButtonProfile = (ImageView) findViewById(R.id.button_profile);

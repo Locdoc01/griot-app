@@ -3,6 +3,7 @@ package de.griot_app.griot;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 /**
  * BaseActivity for griot-app-activities which are involved in input dialogs.
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 public abstract class GriotBaseInputActivity extends AppCompatActivity {
 
     private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
+
+    protected TextView mTitle;
 
     private Toolbar mToolbar;
 
@@ -28,5 +31,8 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.app_bar_griot_base_input);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+
+        mTitle = (TextView) findViewById(R.id.title);
     }
 }

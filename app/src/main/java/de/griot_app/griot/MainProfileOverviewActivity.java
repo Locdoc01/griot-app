@@ -10,7 +10,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_your_profile);
+        mTitle.setText(R.string.title_profile_overview);
     }
 
     @Override

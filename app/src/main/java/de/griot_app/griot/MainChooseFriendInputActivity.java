@@ -10,7 +10,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_record_interview);
+        mTitle.setText(R.string.title_record_interview);
     }
 
     @Override

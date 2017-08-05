@@ -7,17 +7,46 @@
     android:background="@color/colorGriotWhite"
     tools:showIn="@layout/activity_main_overview"><!--zeile später löschen-->
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.074"
+        android:orientation="horizontal" />
+
+    <!--Prozentuale Höhe mittels Guidelines:
+        - zwei Guidelines setzen (Alternativ kann eine davon der Rand von Parent sein)
+        - erste Guideline an gewünschte Stelle setzen
+        - zweite Guideline in gewünschtem prozentualem Abstand zur ersten setzen (layout_constrantGuide_percent)
+        - Höhe der View auf 0dp setzen
+        - constraint_Top an erste Guideline hängen
+        - constraint_Bottom an zweite Guideline hängen-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/app_bar_griot_base"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:titleTextColor="@color/colorGriotDarkgrey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_top">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/title"
+        android:text=""
+        android:textColor="@color/colorGriotDarkgrey"
+        android:textSize="@dimen/dimen_textSize_titles"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/app_bar_griot_base"
+        app:layout_constraintBottom_toBottomOf="@id/app_bar_griot_base"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/dimen_height_lines"
         android:background="@color/colorGriotLightgrey"
         app:layout_constraintTop_toBottomOf="@id/app_bar_griot_base"
@@ -25,17 +54,17 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline"
         app:layout_constraintGuide_percent="0.91"
         android:orientation="horizontal" />
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/dimen_height_lines"
         android:background="@color/colorGriotLightgrey"
-        app:layout_constraintBottom_toBottomOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -44,7 +73,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/home"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_profile"/>
@@ -54,7 +83,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/avatar_single"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_home"
         app:layout_constraintEnd_toStartOf="@+id/button_record"/>
@@ -64,7 +93,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/record"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_profile"
         app:layout_constraintEnd_toStartOf="@+id/button_questionmail"/>
@@ -74,7 +103,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/questionmail_question"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_record"
         app:layout_constraintEnd_toStartOf="@+id/button_notifications"/>
@@ -84,7 +113,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/notifications"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_questionmail"
         app:layout_constraintEnd_toStartOf="@+id/button_topic_catalog" />
@@ -94,7 +123,7 @@
         android:layout_width="@dimen/dimen_bottom_buttons"
         android:layout_height="@dimen/dimen_bottom_buttons"
         app:srcCompat="@drawable/topic_catalog"
-        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_notifications"
         app:layout_constraintEnd_toEndOf="parent"/>

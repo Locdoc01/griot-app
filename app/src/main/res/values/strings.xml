@@ -44,7 +44,7 @@
     <string name="title_filter">Filter</string>
     <string name="title_topics">Themen</string>
     <string name="title_questions">Fragen</string>
-    <string name="title_your_profile">Dein Profil</string>
+    <string name="title_profile_overview">Dein Profil</string>
     <string name="title_add_guest">Gast hinzufügen</string>
     <string name="title_edit_your_profile">Dein Profil</string>
     <string name="title_guest_profile">Gastprofil</string>

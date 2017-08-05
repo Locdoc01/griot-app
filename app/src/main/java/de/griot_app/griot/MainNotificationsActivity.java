@@ -10,7 +10,7 @@ public class MainNotificationsActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_notifications);
+        mTitle.setText(R.string.title_notifications);
     }
 
     @Override

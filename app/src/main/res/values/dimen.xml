@@ -2,4 +2,5 @@
 <resources>
     <dimen name="dimen_height_lines">0.25dp</dimen>
     <dimen name="dimen_bottom_buttons">40dp</dimen>
+    <dimen name="dimen_textSize_titles">20sp</dimen>
 </resources>

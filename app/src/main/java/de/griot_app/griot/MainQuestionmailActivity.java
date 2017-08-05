@@ -10,7 +10,7 @@ public class MainQuestionmailActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_questionmail);
+        mTitle.setText(R.string.title_questionmail);
     }
 
     @Override
