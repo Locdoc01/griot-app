@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,9 +26,10 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     protected ImageView mButtonHome;
     protected ImageView mButtonProfile;
     protected ImageView mButtonRecord;
-    protected ImageView mButtonQuestionmail;
     protected ImageView mButtonNotifications;
     protected ImageView mButtonTopicCatalog;
+
+    protected FloatingActionButton mButtonQuestionmail;
 
     /**
      * Abstract method, which returns the appropriate layout id for extending subclass.
@@ -64,16 +66,18 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         mButtonHome = (ImageView) findViewById(R.id.button_home);
         mButtonProfile = (ImageView) findViewById(R.id.button_profile);
         mButtonRecord = (ImageView) findViewById(R.id.button_record);
-        mButtonQuestionmail = (ImageView) findViewById(R.id.button_questionmail);
         mButtonNotifications = (ImageView) findViewById(R.id.button_notifications);
         mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
+
+        mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
 
         mButtonHome.setOnClickListener(this);
         mButtonProfile.setOnClickListener(this);
         mButtonRecord.setOnClickListener(this);
-        mButtonQuestionmail.setOnClickListener(this);
         mButtonNotifications.setOnClickListener(this);
         mButtonTopicCatalog.setOnClickListener(this);
+
+        mButtonQuestionmail.setOnClickListener(this);
     }
 
     @Override
@@ -126,15 +130,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                     finish();
                 }
                 break;
-            case R.id.button_questionmail:
-                // same behavior as button_profile
-                if (!getSubClassTAG().equals(MainQuestionmailActivity.class.getSimpleName())) {
-                    startActivity(new Intent(this, MainQuestionmailActivity.class));
-                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
-                        finish();
-                    }
-                }
-                break;
             case R.id.button_notifications:
                 // same behavior as button_profile
                 if (!getSubClassTAG().equals(MainNotificationsActivity.class.getSimpleName())) {
@@ -148,6 +143,15 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                 // same behavior as button_profile
                 if (!getSubClassTAG().equals(MainTopicCatalogActivity.class.getSimpleName())) {
                     startActivity(new Intent(this, MainTopicCatalogActivity.class));
+                    if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        finish();
+                    }
+                }
+                break;
+            case R.id.fab_questionmail:
+                // same behavior as button_profile
+                if (!getSubClassTAG().equals(MainQuestionmailActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainQuestionmailActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
                         finish();
                     }
