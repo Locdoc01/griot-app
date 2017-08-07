@@ -21,9 +21,9 @@ import android.util.AttributeSet;
 public class ProfileImageView extends AppCompatImageView {
 
     private Context mContext;
-    private String mPath;
-    private Bitmap mSource;
-    private Bitmap mBitmap;
+    private String mImagePath;
+    private Bitmap mBitmapSource;
+    private Bitmap mBitmapOutput;
     private BitmapShader mShader;
     private Paint mPaint;
 
@@ -53,10 +53,10 @@ public class ProfileImageView extends AppCompatImageView {
 
     /**
      * Set the path from the image to be shown. If the path is invalid, there will be a plus-sign on backgroundcolor visible instead an image
-     * @param path  A String, that holds a path to an image file.
+     * @param imagePath  A String, that holds a path to an image file.
      */
-    public void setImagePath(String path) {
-        mPath = path;
+    public void setImagePath(String imagePath) {
+        mImagePath = imagePath;
     }
 
 
@@ -65,23 +65,23 @@ public class ProfileImageView extends AppCompatImageView {
      */
     private void set() {
 
-        // if mPath is invalid, a bitmap with a plus-sign is created and scaled to proportions based on the screen-designs
-        if (BitmapFactory.decodeFile(mPath)==null) {
+        // if mImagePath is invalid, a bitmap with a plus-sign is created and scaled to proportions based on the screen-designs
+        if (BitmapFactory.decodeFile(mImagePath)==null) {
             Bitmap plus = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.plus);
-            mBitmap = Bitmap.createScaledBitmap(plus, getHeight() / 236 * 72, getHeight() / 236 * 72, false);
+            mBitmapOutput = Bitmap.createScaledBitmap(plus, getHeight() / 236 * 72, getHeight() / 236 * 72, false);
         } else {
             // else a source bitmap is created from the image file. This bitmap is scaled depending on the orientation of the source image.
-            mSource = BitmapFactory.decodeFile(mPath);
-            if (mSource.getWidth() > mSource.getHeight()) {
-                mBitmap = Bitmap.createScaledBitmap(mSource, getHeight() * mSource.getWidth() / mSource.getHeight(), getHeight(), false);
-            } else if (mSource.getWidth() < mSource.getHeight()) {
-                mBitmap = Bitmap.createScaledBitmap(mSource, getHeight(), getHeight() * mSource.getHeight() / mSource.getWidth(), false);
+            mBitmapSource = BitmapFactory.decodeFile(mImagePath);
+            if (mBitmapSource.getWidth() > mBitmapSource.getHeight()) {
+                mBitmapOutput = Bitmap.createScaledBitmap(mBitmapSource, getHeight() * mBitmapSource.getWidth() / mBitmapSource.getHeight(), getHeight(), false);
+            } else if (mBitmapSource.getWidth() < mBitmapSource.getHeight()) {
+                mBitmapOutput = Bitmap.createScaledBitmap(mBitmapSource, getHeight(), getHeight() * mBitmapSource.getHeight() / mBitmapSource.getWidth(), false);
             } else {
-                mBitmap = Bitmap.createScaledBitmap(mSource, getHeight(), getHeight(), false);
+                mBitmapOutput = Bitmap.createScaledBitmap(mBitmapSource, getHeight(), getHeight(), false);
             }
         }
         //TODO: erläutern
-        mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mShader = new BitmapShader(mBitmapOutput, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
     }
 
 
@@ -102,11 +102,11 @@ public class ProfileImageView extends AppCompatImageView {
 
         //TODO: finde alternative Position für set(). getWidth() und getHeight() müssen Werte > 0 zurückliefern
         set();
-        // if mPath is not valid, draw a circle in backgroundcolor
-        if (BitmapFactory.decodeFile(mPath)==null) {
+        // if mImagePath is not valid, draw a circle in backgroundcolor
+        if (BitmapFactory.decodeFile(mImagePath)==null) {
             mPaint.setColor(ContextCompat.getColor(mContext, R.color.colorGriotWhite));
             canvas.drawCircle(getHeight()/2, getHeight()/2, getHeight()/2-getHeight()/230*2, mPaint);
-            canvas.drawBitmap(mBitmap, getWidth()/2-mBitmap.getWidth()/2, getHeight()/2-mBitmap.getHeight()/2, mPaint);
+            canvas.drawBitmap(mBitmapOutput, getWidth()/2- mBitmapOutput.getWidth()/2, getHeight()/2- mBitmapOutput.getHeight()/2, mPaint);
         } else {
             //else draw the round image
             mPaint.setShader(mShader);
