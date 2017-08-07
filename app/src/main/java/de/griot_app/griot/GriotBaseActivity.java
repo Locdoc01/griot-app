@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +18,9 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     //TODO: löschen
     //private static final String TAG = GriotBaseActivity.class.getSimpleName();
 
-    protected TextView mTitle;
-
     protected Toolbar mAppBar;
+
+    protected TextView mTitle;
 
     protected ImageView mButtonHome;
     protected ImageView mButtonProfile;
@@ -48,6 +49,8 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getSubClassLayoutId());
+
+        getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
 
         //set up the Toolbar as app bar
         mAppBar = (Toolbar) findViewById(R.id.app_bar);

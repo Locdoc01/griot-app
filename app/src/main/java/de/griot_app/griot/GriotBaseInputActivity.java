@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +21,9 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity implement
     //TODO: löschen
     //private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
 
-    protected TextView mTitle;
-
     protected Toolbar mAppbar;
+
+    protected TextView mTitle;
 
     protected Button mButtonLeft;
     protected Button mButtonCenter;
@@ -58,6 +59,8 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getSubClassLayoutId());
+
+        getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
 
         //set up the Toolbar as app bar
         mAppbar = (Toolbar) findViewById(R.id.app_bar);
