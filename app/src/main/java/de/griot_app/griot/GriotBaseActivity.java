@@ -1,19 +1,35 @@
 package de.griot_app.griot;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 /**
  *  Abstract base activity for usual griot-app-activities.
- *  Provides base functionality like main menu, title bar and main button bar.
+ *  Provides the following base functionality: title bar, bottom button bar, floating action button,
+ *  Firebase-Authentification, Firebase-DatabaseReferences and Firebase-StorageReferences.
+ *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed
+ *  TODO MainMenu
  */
 public abstract class GriotBaseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,7 +37,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     //private static final String TAG = GriotBaseActivity.class.getSimpleName();
 
     protected Toolbar mAppBar;
-
     protected TextView mTitle;
 
     protected ImageView mButtonHome;
@@ -29,9 +44,20 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     protected ImageView mButtonRecord;
     protected ImageView mButtonNotifications;
     protected ImageView mButtonTopicCatalog;
-
     protected FloatingActionButton mButtonQuestionmail;
 
+    protected FirebaseAuth mAuth;
+    protected FirebaseAuth.AuthStateListener mAuthListener;
+    protected FirebaseUser mUser;
+    protected String mUid;
+    protected FirebaseDatabase mDatabase;
+    protected DatabaseReference mDatabaseRootReference;
+    protected DatabaseReference mDatabaseRef;
+    protected FirebaseStorage mStorage;
+    protected StorageReference mStorageRootReference;
+    protected StorageReference mStorageRef;
+    protected ValueEventListener mValueEventListener;
+    protected ChildEventListener mChildEventListener;
     /**
      * Abstract method, which returns the appropriate layout id for extending subclass.
      * This method can be used in onCreate() to inflate the appropriate layout for the extending subclass
@@ -61,7 +87,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
 
         //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
-
         mTitle = (TextView) findViewById(R.id.title);
 
         mButtonHome = (ImageView) findViewById(R.id.button_home);
@@ -69,7 +94,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         mButtonRecord = (ImageView) findViewById(R.id.button_record);
         mButtonNotifications = (ImageView) findViewById(R.id.button_notifications);
         mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
-
         mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
         mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
 
@@ -78,8 +102,44 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         mButtonRecord.setOnClickListener(this);
         mButtonNotifications.setOnClickListener(this);
         mButtonTopicCatalog.setOnClickListener(this);
-
         mButtonQuestionmail.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + user.getUid());
+                } else {
+                    Log.d(getSubClassTAG(), "onAuthStateChanged: signed out: ");
+                }
+            }
+        };
+
+        //TODO: verschieben an sichere Position (Zuweisung nur gültig bei angemeldetem User
+        mUser = mAuth.getCurrentUser();
+        mUid = mUser.getUid();
+        //TODO
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRootReference = mDatabase.getReference();
+
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRootReference = mStorage.getReference();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -161,7 +221,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
                 break;
         }
     }
-
 }
 
 
