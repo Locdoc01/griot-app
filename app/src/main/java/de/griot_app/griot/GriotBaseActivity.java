@@ -3,6 +3,7 @@ package de.griot_app.griot;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -70,6 +71,7 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
 
         mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
+        mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
 
         mButtonHome.setOnClickListener(this);
         mButtonProfile.setOnClickListener(this);
