@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "991942087482",
+    "firebase_url": "https://griot-app.firebaseio.com",
+    "project_id": "griot-app",
+    "storage_bucket": "griot-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991942087482:android:30ac30857ebecea3",
+        "android_client_info": {
+          "package_name": "de.griot_app.griot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991942087482-2k4ha4fqluvg5u6fde345hqqokvu21kj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.griot_app.griot",
+            "certificate_hash": "8a840cd1c05ea347142eef748fa837c0b2109e9d"
+          }
+        },
+        {
+          "client_id": "991942087482-c58g4cf4fpoavjtfm9gsm5m5pl56h3b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5KukRPkx7C9KNNqSl5777MTSnOKTIKmA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991942087482-c58g4cf4fpoavjtfm9gsm5m5pl56h3b7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
