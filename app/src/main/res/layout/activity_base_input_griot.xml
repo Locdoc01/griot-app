@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/AppTheme.Titles"
+        style="@style/AppTheme.Text_Titles"
         app:layout_constraintTop_toTopOf="@id/app_bar"
         app:layout_constraintBottom_toBottomOf="@id/app_bar"
         app:layout_constraintStart_toStartOf="parent"

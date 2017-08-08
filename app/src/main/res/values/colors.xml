@@ -7,7 +7,7 @@
     <!--Griot colors-->
     <color name="colorGriotBlue">#79ADDC</color>
     <color name="colorGriotDarkgrey">#505155</color>
-    <color name="colorGriotWhite">#FFF8F2</color>
+    <color name="colorGriotWhite">#fff8f2</color>
     <color name="colorGriotLightgrey">#8B949B</color>
 
     <!--colors for Login and Registration-->
