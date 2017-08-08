@@ -8,14 +8,40 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.Titles">
+    <style name="AppTheme.Text_Titles">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">""</item>
         <item name="android:textColor">@color/colorGriotDarkgrey</item>
         <item name="android:textSize">@dimen/dimen_textSize_normal</item>
         <item name="android:textStyle">bold</item>
+    </style>
 
+    <style name="AppTheme.Text_Normal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">""</item>
+        <item name="android:textColor">@color/colorGriotDarkgrey</item>
+        <item name="android:textSize">@dimen/dimen_textSize_normal</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AppTheme.Text_Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">""</item>
+        <item name="android:textColor">@color/colorGriotDarkgrey</item>
+        <item name="android:textSize">@dimen/dimen_textSize_medium</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AppTheme.Text_Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">""</item>
+        <item name="android:textColor">@color/colorGriotDarkgrey</item>
+        <item name="android:textSize">@dimen/dimen_textSize_small</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="AppTheme.TextButtons">
