@@ -5,10 +5,20 @@ import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import de.griot_app.griot.DataClasses.InterviewData;
+import de.griot_app.griot.DataListViewAdapter.InterviewDataAdapter;
 
 public class MainOverviewActivity extends GriotBaseActivity {
 
     private static final String TAG = MainOverviewActivity.class.getSimpleName();
+
+    private ListView mListViewInterviews;
+    private ArrayList<InterviewData> mListInterviewData;
+    private InterviewDataAdapter mInterviewDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +26,11 @@ public class MainOverviewActivity extends GriotBaseActivity {
 
         mTitle.setText(R.string.title_overview);
         mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
+
+        mListInterviewData = new ArrayList<>();
+        mListViewInterviews = (ListView) findViewById(R.id.listView_main_overview);
+
+        //TODO: mValueEventListener bzw. mChildEventListener (Firebase)
     }
 
     @Override
@@ -32,4 +47,5 @@ public class MainOverviewActivity extends GriotBaseActivity {
         inflater.inflate(R.menu.menu_app_bar_main_overview, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 }
