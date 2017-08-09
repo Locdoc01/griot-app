@@ -1,6 +1,5 @@
 package de.griot_app.griot;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
@@ -9,8 +8,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.griot_app.griot.DataClasses.InterviewData;
-import de.griot_app.griot.DataListViewAdapter.InterviewDataAdapter;
+import de.griot_app.griot.dataclasses.InterviewData;
+import de.griot_app.griot.adapter.InterviewDataAdapter;
 
 public class MainOverviewActivity extends GriotBaseActivity {
 

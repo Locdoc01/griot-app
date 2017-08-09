@@ -1,4 +1,4 @@
-package de.griot_app.griot.DataClasses;
+package de.griot_app.griot.dataclasses;
 
 
 /**

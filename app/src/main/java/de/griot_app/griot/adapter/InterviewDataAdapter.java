@@ -1,4 +1,4 @@
-package de.griot_app.griot.DataListViewAdapter;
+package de.griot_app.griot.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.griot_app.griot.DataClasses.InterviewData;
+import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.ProfileImageView;
 import de.griot_app.griot.R;
 
