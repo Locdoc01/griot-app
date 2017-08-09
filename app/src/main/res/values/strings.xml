@@ -24,11 +24,13 @@
     <string name="hint_firstname">Name</string>
     <string name="hint_lastname">Nachname</string>
     <string name="text_birthday">Geburtstag</string>
+    <string name="date_empty">--.--.----</string>
     <string name="hint_email">E-Mail-Adresse</string>
     <string name="hint_password">Passwort</string>
-    <string name="hint_repeat_password">Passwort wiederholen</string>
+    <string name="hint_password_repeat">Passwort wiederholen</string>
     <string name="button_create_account">Account erstellen</string>
-    <string name="button_login">Anmelden</string>
+    <string name="button_signin">Anmelden</string>
+    <string name="text_password_forgotton">Passwort vergessen?</string>
     <string name="error_required_field">Pflichtfeld</string>
     <string name="error_invalid_email">Ungültige E-Mail-Adresse</string>
     <string name="error_passwords_dont_match">Passwörter stimmen nicht überein</string>

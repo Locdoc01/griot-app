@@ -8,7 +8,7 @@
     tools:showIn="@layout/activity_main_input_choose_friend"><!--zeile später löschen-->
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_top"
+        android:id="@+id/guideline_create_account_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.074"
@@ -17,7 +17,7 @@
     <ImageView
         android:id="@+id/line_top"
         style="@style/AppTheme.Lines"
-        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintTop_toBottomOf="@id/guideline_create_account_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_top"/>
+        app:layout_constraintBottom_toBottomOf="@id/guideline_create_account_top"/>
 
     <TextView
         android:id="@+id/title"
@@ -67,6 +67,7 @@
     <Button
         android:id="@+id/button_left"
         style="@style/AppTheme.TextButtons"
+        android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
@@ -74,6 +75,7 @@
     <Button
         android:id="@+id/button_center"
         style="@style/AppTheme.TextButtons"
+        android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline_bottom"
@@ -82,6 +84,7 @@
     <Button
         android:id="@+id/button_right"
         style="@style/AppTheme.TextButtons"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />

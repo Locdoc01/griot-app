@@ -2,10 +2,27 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="NoTitleBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.EditTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">@dimen/dimen_textSize_normal</item>
+        <item name="android:background">@drawable/shape_rect_rounded</item>
+        <item name="android:ems">10</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:elevation">5dp</item>
     </style>
 
     <style name="AppTheme.Text_Titles">
@@ -53,7 +70,6 @@
         <item name="android:textColor">@color/colorGriotDarkgrey</item>
         <item name="android:textSize">@dimen/dimen_textSize_normal </item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_margin">16dp</item>
     </style>
 
     <style name="AppTheme.Lines">
