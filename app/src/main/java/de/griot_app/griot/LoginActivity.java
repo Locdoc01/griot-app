@@ -11,10 +11,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -116,6 +118,20 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mEditCreateAccountPassword2.setOnClickListener(this);
         mEditSignInEmail.setOnClickListener(this);
         mEditSignInPassword.setOnClickListener(this);
+
+        /*
+        // In case, that DatePicker should be opened automatically per Click on Next in EditLastName
+        mEditLastname.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mDatePickerDialog.show();
+                    return true;
+                }
+                return false;
+            }
+        });
+        */
 
         mProfileImage.setOnTouchListener(this);
         mButtonCreateAccount.setOnTouchListener(this);
