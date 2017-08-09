@@ -31,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
  *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed
  *  TODO MainMenu
  */
-public abstract class GriotBaseActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class GriotBaseActivity extends FirebaseActivity implements View.OnClickListener {
 
     //TODO: löschen
     //private static final String TAG = GriotBaseActivity.class.getSimpleName();
@@ -46,32 +46,12 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
     protected ImageView mButtonTopicCatalog;
     protected FloatingActionButton mButtonQuestionmail;
 
-    protected FirebaseAuth mAuth;
-    protected FirebaseAuth.AuthStateListener mAuthListener;
-    protected FirebaseUser mUser;
-    protected String mUid;
-    protected FirebaseDatabase mDatabase;
-    protected DatabaseReference mDatabaseRootReference;
-    protected DatabaseReference mDatabaseRef;
-    protected FirebaseStorage mStorage;
-    protected StorageReference mStorageRootReference;
-    protected StorageReference mStorageRef;
-    protected ValueEventListener mValueEventListener;
-    protected ChildEventListener mChildEventListener;
     /**
      * Abstract method, which returns the appropriate layout id for extending subclass.
      * This method can be used in onCreate() to inflate the appropriate layout for the extending subclass
      * @return  layout id for extending subclass
      */
     protected abstract int getSubClassLayoutId();
-
-    /**
-     * Abstract method, which returns the TAG of the extending subclass.
-     * This method can be used, when the TAG of the concrete subclass is needed.
-     * Note, that GriotBaseActivity itself doesn't provide a TAG field.
-     * @return  TAG of the extending subclass
-     */
-    protected abstract String getSubClassTAG();
 
 
     @Override
@@ -104,42 +84,6 @@ public abstract class GriotBaseActivity extends AppCompatActivity implements Vie
         mButtonTopicCatalog.setOnClickListener(this);
         mButtonQuestionmail.setOnClickListener(this);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + user.getUid());
-                } else {
-                    Log.d(getSubClassTAG(), "onAuthStateChanged: signed out: ");
-                }
-            }
-        };
-
-        //TODO: verschieben an sichere Position (Zuweisung nur gültig bei angemeldetem User
-        mUser = mAuth.getCurrentUser();
-        mUid = mUser.getUid();
-        //TODO
-
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRootReference = mDatabase.getReference();
-
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRootReference = mStorage.getReference();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override

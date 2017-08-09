@@ -16,7 +16,7 @@ import android.widget.Toast;
  * BaseActivity for griot-app-activities which are involved in input dialogs.
  * Provides base functionality for those activities like title bar and navigation bar.
  */
-public abstract class GriotBaseInputActivity extends AppCompatActivity implements View.OnTouchListener {
+public abstract class GriotBaseInputActivity extends FirebaseActivity implements View.OnTouchListener {
 
     //TODO: löschen
     //private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
@@ -35,14 +35,6 @@ public abstract class GriotBaseInputActivity extends AppCompatActivity implement
      * @return  layout id for extending subclass
      */
     protected abstract int getSubClassLayoutId();
-
-    /**
-     * Abstract method, which returns the TAG of the extending subclass.
-     * This method can be used, when the TAG of the concrete subclass is needed.
-     * Note, that GriotBaseActivity itself doesn't provide a TAG field.
-     * @return  TAG of the extending subclass
-     */
-    protected abstract String getSubClassTAG();
 
     /**
      * methods, which provide the functionality for subclass-specific bottom buttons.
