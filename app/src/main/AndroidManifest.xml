@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.griot_app.griot">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,28 +13,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainOverviewActivity">
+
+        <activity
+            android:name=".StartActivity"
+            android:theme="@style/NoTitleBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainProfileOverviewActivity"
+
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoTitleBarTheme" >
+        </activity>
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat">
+        </activity>
+
+        <activity
+            android:name=".MainOverviewActivity">
+        </activity>
+
+        <activity
+            android:name=".MainProfileOverviewActivity"
             android:parentActivityName=".MainOverviewActivity">
         </activity>
-        <activity android:name=".MainChooseFriendInputActivity"
+
+        <activity
+            android:name=".MainChooseFriendInputActivity"
             android:parentActivityName=".MainOverviewActivity">
         </activity>
-        <activity android:name=".MainQuestionmailActivity"
+
+        <activity
+            android:name=".MainQuestionmailActivity"
             android:parentActivityName=".MainOverviewActivity">
         </activity>
-        <activity android:name=".MainNotificationsActivity"
+
+        <activity
+            android:name=".MainNotificationsActivity"
             android:parentActivityName=".MainOverviewActivity">
         </activity>
-        <activity android:name=".MainTopicCatalogActivity"
+
+        <activity
+            android:name=".MainTopicCatalogActivity"
             android:parentActivityName=".MainOverviewActivity">
         </activity>
+
     </application>
 
 </manifest>
