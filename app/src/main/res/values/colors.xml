@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ff0000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#79ADDC</color>
+
+    <!--Griot colors-->
+    <color name="colorGriotBlue">#79ADDC</color>
+    <color name="colorGriotDarkgrey">#505155</color>
+    <color name="colorGriotWhite">#fff8f2</color>
+    <color name="colorGriotLightgrey">#8B949B</color>
+
+    <!--colors for Login and Registration-->
+    <color name="colorTabSelectedLogin">#5080B0</color>
+
+    <!--colors for elements on usual Activities-->
+    <color name="colorTextBackgroundMediaCover">#CD505155</color>
+    <color name="colorOverlayOptionsMenu">#DC505155</color>
+    <color name="colorBackgroundSelected">#E7E3DF</color>
+
+    <!--colors for QuestionCarousel-->
+    <color name="colorLastNextQuestion">#C0B8B9</color>
+    <color name="colorQuestionCarouselShadow">#807D7D7D</color>
+    <color name="colorQuestionCarouselShadowLine">#FF7D7D7D</color>
+
+    <!--colors for RecordActivities-->
+    <color name="colorInactiveElementRecord">#959595</color>
 </resources>

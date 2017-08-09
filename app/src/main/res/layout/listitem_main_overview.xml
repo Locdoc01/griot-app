@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.griot_app.griot.MainOverviewActivity">
+
+    <include layout="@layout/group_media_cover"/>
+
+    <de.griot_app.griot.ProfileImageView
+        android:id="@+id/piv_interviewer"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_mediaCover"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_interviewer"
+        style="@style/AppTheme.Text_Normal"
+        android:text="Ole Wunder"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/piv_interviewer"
+        app:layout_constraintTop_toTopOf="@+id/piv_interviewer"
+        app:layout_constraintBottom_toBottomOf="@+id/piv_interviewer" />
+    
+    <ImageView
+        android:id="@+id/iv_circle"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:src="@drawable/shape_circle_darkgrey"
+        app:layout_constraintLeft_toRightOf="@+id/tv_interviewer"
+        app:layout_constraintRight_toLeftOf="@+id/tv_narrator"
+        app:layout_constraintTop_toTopOf="@+id/piv_narrator"
+        app:layout_constraintBottom_toBottomOf="@+id/piv_narrator" />
+
+    <TextView
+        android:id="@+id/tv_narrator"
+        style="@style/AppTheme.Text_Normal"
+        android:text="Harry Vogt"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/piv_narrator"
+        app:layout_constraintTop_toTopOf="@+id/piv_narrator"
+        app:layout_constraintBottom_toBottomOf="@+id/piv_narrator" />
+
+    <de.griot_app.griot.ProfileImageView
+        android:id="@+id/piv_narrator"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_mediaCover"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_comments"
+        style="@style/AppTheme.Text_Small"
+        android:textStyle="bold"
+        android:text="2 Kommentare"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/piv_interviewer" />
+
+    <ImageView
+        android:id="@+id/iv_options"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/options"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comments"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

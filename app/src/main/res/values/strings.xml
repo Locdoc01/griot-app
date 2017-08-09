@@ -1,3 +1,200 @@
 <resources>
     <string name="app_name">Griot</string>
+
+    <!--Navigation & Buttons-->
+    <string name="button_back">Zurück</string>
+    <string name="button_next">Weiter</string>
+    <string name="button_cancel">Abbrechen</string>
+    <string name="button_finish">Fertig</string>
+    <string name="button_assume">Übernehmen</string>
+    <string name="button_cut">Schneiden</string>
+    <string name="button_dont_share">Nicht teilen</string>
+    <string name="button_share">Teilen</string>
+    <string name="button_reset_filters">Filter zurücksetzen</string>
+    <string name="button_save">Speichern</string>
+    <string name="button_answer">Antworten</string>
+
+    <!--Dialogs-->
+    <string name="dialog_finish_record">Möchtest du deine Aufzeichnung wirklich beenden?</string>
+    <string name="dialog_cancel_interview">Möchtest du wirklich abbrechen und das Interview löschen?</string>
+    <string name="button_yes">Ja</string>
+    <string name="button_no">Nein</string>
+
+    <!--Login & registration-->
+    <string name="hint_firstname">Name</string>
+    <string name="hint_lastname">Nachname</string>
+    <string name="text_birthday">Geburtstag</string>
+    <string name="date_empty">--.--.----</string>
+    <string name="hint_email">E-Mail-Adresse</string>
+    <string name="hint_password">Passwort</string>
+    <string name="hint_password_repeat">Passwort wiederholen</string>
+    <string name="button_create_account">Account erstellen</string>
+    <string name="button_signin">Anmelden</string>
+    <string name="text_password_forgotton">Passwort vergessen?</string>
+    <string name="error_required_field">Pflichtfeld</string>
+    <string name="error_invalid_email">Ungültige E-Mail-Adresse</string>
+    <string name="error_passwords_dont_match">Passwörter stimmen nicht überein</string>
+    <string name="error_password_must_6_chars">Passwort muss mindestens 6 Zeichen lang sein</string>
+    <string name="error_password_must_numbers_digits">Passwort muss Buchstaben und Zahlen enthalten</string>
+
+    <!--Titles-->
+    <string name="title_overview">Übersicht</string>
+    <string name="title_record_interview">Interview aufzeichnen</string>
+    <string name="title_review_interview">Überprüfe deine Aufzeichnung</string>
+    <string name="title_save_interview">Interview speichern</string>
+    <string name="title_search">Suche</string>
+    <string name="title_filter">Filter</string>
+    <string name="title_topics">Themen</string>
+    <string name="title_questions">Fragen</string>
+    <string name="title_profile_overview">Dein Profil</string>
+    <string name="title_add_guest">Gast hinzufügen</string>
+    <string name="title_edit_your_profile">Dein Profil</string>
+    <string name="title_guest_profile">Gastprofil</string>
+    <string name="title_contact_managment">Kontaktverwaltung</string>
+    <string name="title_questionmail">Fragenpost</string>
+    <string name="title_notifications">Benachrichtigungen</string>
+
+    <!--Option menu interview-->
+    <string name="option_edit_interview">Bearbeiten</string>
+    <string name="option_delete_interview">Löschen</string>
+    <string name="option_share_interview">Teilen</string>
+
+    <!--Option menu interview question-->
+    <string name="option_edit_question">Frage bearbeiten</string>
+    <string name="option_delete_question">Frage löschen</string>
+    <string name="option_share_question">Frage teilen</string>
+    <string name="option_repeat_question">Frage wiederholen</string>
+    <string name="option_cut_recording">Aufzeichnung schneiden</string>
+
+    <!--Option menu profile-->
+    <string name="option_edit_profile">Profil bearbeiten</string>
+    <string name="option_delete_account">Account löschen</string>
+    <string name="option_logout">Log out</string>
+
+    <!--Options menu friend-->
+    <string name="option_end_friendship">Freundschaft beenden</string>
+    <string name="option_send_questionmail">Fragenpost senden</string>
+
+    <!--Options menu quest-->
+    <string name="option_edit_guest_profile">Profil bearbeiten</string>
+    <string name="option_delete_guest_profile">Profil löschen</string>
+
+    <!--Options menu group as member-->
+    <string name="option_send_questionmail_to_all">Fragenpost an alle senden</string>
+    <string name="option_leave_group">Gruppe verlassen</string>
+
+    <!--Options menu groupmember as member-->
+    <string name="option_add_as_friend">Als Freund hinzufügen</string>
+
+    <!--Options menu group as admin-->
+    <string name="option_edit_group">Gruppe bearbeiten</string>
+    <string name="option_delete_group">Gruppe löschen</string>
+
+    <!--Options menu groupmenber as admin-->
+    <string name="option_appoint_member_as_admin">Mitglied zum Administrator ernennen</string>
+    <string name="option_remove_member">Mitglied aus Gruppe entfernen</string>
+
+    <!--Overview & details-->
+    <string name="text_comments">Kommentare</string>
+    <string name="text_comment">Kommentar</string>
+    <string name="text_topic">Thema</string>
+    <string name="text_visibility">Sichtbarkeit</string>
+    <string name="hint_post_comment">Kommentar posten</string>
+
+    <!--Prepare interview-->
+    <string name="order_choose_person">Wähle eine Person, die du aufzeichnen möchtest</string>
+    <string name="text_person">Person</string>
+    <string name="question_which_topic">Worüber möchtest du sprechen?</string>
+    <string name="question_which_medium">Wie möchtest du dein Gespräch aufzeichnen?</string>
+    <string name="text_video">Video</string>
+    <string name="text_audio">Audio</string>
+
+    <!--Review, save & share interview-->
+    <string name="question_want_add_questions">Möchtest du Fragen hinzufügen?</string>
+    <string name="text_tags">Schlagwörter</string>
+    <string name="text_tag">Schlagwort</string>
+    <string name="order_choose_title">Gib deiner Aufzeichnung einen Titel</string>
+    <string name="hint_enter_title">Titel eingeben</string>
+    <string name="text_recorded_person">Diese Person wurde aufgezeichnet</string>
+    <string name="question_which_person_recorded">Welche Person wurde aufgezeichnet?</string>
+    <string name="question_want_share_interview">Möchtest du deine Aufzeichnung teilen?</string>
+    <string name="text_person_must_agree_sharing">Die beteiligte Person muss dem Teilen zuerst zustimmen</string>
+    <string name="order_choose_content_for_share">Wähle aus, was du teilen möchtest</string>
+
+    <!--Profile & Contact managment-->
+    <string name="text_friends_groups">Freunde und Gruppen</string>
+    <string name="text_videos">Videos</string>
+    <string name="text_audios">Audios</string>
+    <string name="text_relationship">Beziehung</string>
+    <string name="hint_enter_relationship">Beziehung eingeben</string>
+    <string name="text_friends">Freunde</string>
+    <string name="text_parents">Eltern</string>
+    <string name="text_father">Vater</string>
+    <string name="text_mother">Mutter</string>
+    <string name="text_children">Kinder</string>
+    <string name="text_son">Sohn</string>
+    <string name="text_daughter">Tochter</string>
+    <string name="text_grandparents">Großeltern</string>
+    <string name="text_grandfather">Großvater</string>
+    <string name="text_grandmother">Großmutter</string>
+    <string name="text_brothers_sisters">Geschwister</string>
+    <string name="text_brother">Bruder</string>
+    <string name="text_sister">Schwester</string>
+    <string name="text_grandchildren">Enkelkinder</string>
+    <string name="text_grandson">Enkel</string>
+    <string name="text_granddaughter">Enkelin</string>
+    <string name="text_other">Weitere</string>
+    <string name="text_nephew">Neffe</string>
+    <string name="text_niece">Nichte</string>
+    <string name="text_great_grandfather">Urgroßvater</string>
+    <string name="text_great_grandmother">Urgroßmutter</string>
+    <string name="text_great_grandson">Urenkel</string>
+    <string name="text_great_granddaughter">Urenkelin</string>
+    <string name="text_uncle">Onkel</string>
+    <string name="text_aunt">Tante</string>
+    <string name="text_male_cousin">Cousin</string>
+    <string name="text_female_cousin">Cousine</string>
+    <string name="hint_search_person">Person suchen</string>
+    <string name="hint_search_group">Gruppe suchen</string>
+    <string name="text_yourself">du selbst</string>
+    <string name="text_your_guests">deine Gäste</string>
+    <string name="text_your_friends">deine Freunde</string>
+    <string name="text_your_groups">deine Gruppen</string>
+    <string name="text_social_media">Social Media</string>
+    <string name="text_suggestions">weitere Vorschläge</string>
+    <string name="text_add">hinzufügen</string>
+    <string name="text_administrator">Administrator</string>
+    <string name="text_group_members">Mitglieder der Gruppe</string>
+    <string name="text_invite">einladen</string>
+    <string name="hint_enter_groupname">Gruppenname eingeben</string>
+    <string name="text_group_is_visible">Gruppe ist in der Gruppensuche für alle sichtbar</string>
+    <string name="text_group_is_invisible">Gruppe ist nur für Mitglieder sichtbar</string>
+
+    <!--Questionmail-->
+    <string name="text_questions_to_you">Fragen an dich</string>
+    <string name="text_questions_to_friends">Fragen an deine Freunde</string>
+    <string name="text_question_unanswered">Frage offen</string>
+    <string name="text_questions_unanswered">Fragen offen</string>
+    <string name="text_question_answered">Frage beantwortet</string>
+    <string name="text_questions_answered">Fragen beantwortet</string>
+    <string name="text_today">Heute</string>
+    <string name="text_yesterday">Gestern</string>
+    <string name="text_monday">Montag</string>
+    <string name="text_tuesday">Dienstag</string>
+    <string name="text_wednesday">Mittwoch</string>
+    <string name="text_thursday">Donnerstag</string>
+    <string name="text_friday">Freitag</string>
+    <string name="text_saturday">Samstag</string>
+    <string name="text_sunday">Sonntag</string>
+    <string name="text_time">Uhr</string>
+    <string name="text_my_male">Mein</string>
+    <string name="text_my_female">Meine</string>
+    <string name="text_has_questions">hat folgende Fragen an dich</string>
+    <string name="text_hasnt_answered">hat deine Fragen noch nicht beantwortet</string>
+    <string name="text_has_ansered_some">hat deine Fragen zum Teil beantwortet</string>
+    <string name="text_has_answered">hat deine Fragen beantwortet</string>
+    <!--Ergänzen-->
+
+    <!--Notifications-->
+    <!--Ergänzen-->
 </resources>
