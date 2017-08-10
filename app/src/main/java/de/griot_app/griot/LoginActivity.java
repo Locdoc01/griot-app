@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,16 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
 
+import de.griot_app.griot.dataclasses.UserData;
 
+/**
+ * Activity for creating app accounts and signing in. It holds both functionalities under two different Tabs.
+ * On create-account-tab the user can choose an image from phone gallery and crop it.
+ * Date of birth can be chosen through a DatePickerDialog, which will be shown by clicking on the calendar icon.
+ * EditText fields validate input data. If on or more of them are invalid, the date will not be send and error messages will be shown.
+ * If creating account or signing in was successfull, the user will get to main overview activity.
+ * Otherwise he will stay on login activity to try again.
+ */
 public class LoginActivity extends FirebaseActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, View.OnTouchListener {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -45,14 +55,11 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
     private ProgressBar mProgressBar;
     private TextView mTextViewProgress;
-    private ProgressDialog mProgressDialog;
     private TabHost mTabHost;
 
     //Views from create account tab
     private ProfileImageView mProfileImage;
     private Uri mUriLocalProfileImage;
-
-    private String mPictureURL; //TODO mit Datenmodel und Firebase abstimmen
 
     private EditText mEditFirstname;
     private EditText mEditLastname;
@@ -74,18 +81,21 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
     private Button mButtonSignIn;
 
+    //Data class object
+    private UserData mUserData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Initialization of generell views
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mTextViewProgress = (TextView) findViewById(R.id.textView_progress);
-        mProgressDialog = new ProgressDialog(LoginActivity.this);
         mTabHost = (TabHost) findViewById(R.id.tabHost);
         setupTabHost();
 
-        //Initialization of views from create account tab
+        //Initialization of views for create account tab
         mProfileImage = (ProfileImageView) findViewById(R.id.profile_image);
         mUriLocalProfileImage = null;
 
@@ -105,7 +115,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
         mButtonCreateAccount = (Button) findViewById(R.id.button_create_account);
 
-        //Initialization of views from signin tab
+        //Initialization of views for signin tab
         mEditSignInEmail = (EditText) findViewById(R.id.editText_signin_email);
         mEditSignInPassword = (EditText) findViewById(R.id.editText_signin_password);
         mButtonForgotten = (TextView) findViewById(R.id.button_forgotten);
@@ -140,13 +150,16 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mButtonForgotten.setOnTouchListener(this);
         mButtonSignIn.setOnTouchListener(this);
 
+        mUserData = new UserData();
     }
 
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    //called, when a date was set through mDatePickerDialog
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
+        //set the chosen date to mDatePickerDialog, so that it will be set to this date on next call
         mDatePickerDialog.getDatePicker().updateDate(year, month, day);
         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
         mEditCreateAccountEmail.requestFocus();
@@ -193,13 +206,13 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     case R.id.profile_image:
                         //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotBlue));
 
-                        //Image-Auswahl ohne Crop
+                        //choosing an image without cropping
                         /*
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.setType("image/*");
                         startActivityForResult(intent, REQUEST_GALLERY);
                         */
-                        //Image-Auswahl mit Aufruf von CropImageActivity
+                        //choosing an image from CropImageActivity, where it can be cropped
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setAspectRatio(1,1)
@@ -229,10 +242,11 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         return false;
     }
 
+    //called after an image was chosen on an external Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //Image-Auswahl ohne Crop
+        //after choosing an image without cropping
         /*
         if (requestCode == REQUEST_GALLERY) {
             if (resultCode == RESULT_OK) {
@@ -243,7 +257,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             }
         }
         */
-        //Image-Auswahl mit Aufruf von CropImageActivity
+        //after choosing an image from CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
@@ -279,6 +293,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mTabHost.setVisibility(View.VISIBLE);
     }
 
+    //nessecary to setup the TabHost with custom look and functionality
     private void setupTabHost() {
         Log.d(TAG, "setupTabHost: ");
 
@@ -309,6 +324,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             TextView tabtext = (TextView) tabWidget.getChildAt(i).findViewById(android.R.id.title);
             tabtext.setAllCaps(false);
             tabtext.setTextColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotDarkgrey));
+            tabtext.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.dimen_textSize_normal));
             tabtext.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
         }
 
@@ -338,6 +354,16 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     }
 
     //TODO: Funktionalität bei Gelegenheit prüfen
+    /**
+     * validates the input data for creating an account. Checks for the following:
+     * - are all fields filled? (except profile image, which can be empty)
+     * - has email-Adress a typical valid form?
+     * - do both passwords match?
+     * - is password at least 6 chars long?
+     * - has password at least numbers and letters?
+     * If one or more fields have invalid data, error messages are shown at the appropriate fields.
+     * In case of an error the invalid fields as well as both password fields will be cleared.
+     */
     private boolean validateFormCreateAccount() {
         Log.d(TAG, "validateFormCreateAccount: ");
 
@@ -455,6 +481,13 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     }
 
     //TODO: Funktionalität bei Gelegenheit prüfen
+    /**
+     * validates the input data for signing in. Checks for the following:
+     * - are both fields filled?
+     * - has email-Adress a typical valid form?
+     * If one or more fields have invalid data, error messages are shown at the appropriate fields.
+     * In case of an error the password field will be cleared.
+     */
     private boolean validateFormSignIn() {
         Log.d(TAG, "validateFormSignIn: ");
 
@@ -489,7 +522,10 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         return valid;
     }
 
-    //TODO: Funktionalität genau prüfen, insbesonder den Frirebase und Datenbank kram
+
+    /**
+     * checks, if input data is valid and then tries to create a new app account at Firebase based on the data.
+     */
     private void attemptCreateAccount() {
         Log.d(TAG, "attemptCreateAccount: " + mEditCreateAccountEmail.getText().toString().trim());
 
@@ -498,9 +534,8 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         }
 
         showProgressBar(getString(R.string.dialog_creating_account));
-//        mProgressDialog.setTitle(R.string.dialog_creating_account);
-//        mProgressDialog.show();
 
+        // actual call for creating the account. An OnCompleteListener //TODO
         mAuth.createUserWithEmailAndPassword(mEditCreateAccountEmail.getText().toString().trim(), mEditCreateAccountPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -508,7 +543,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
                 if (!task.isSuccessful()) {
                     hideProgressBar();
-                    //mProgressDialog.dismiss();
                     //TODO: Progressbar-Steuerung in AsynkTask verlagern
                     Log.w(TAG, "createUserWithEmailAndPassword: failed ", task.getException());
                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -517,39 +551,47 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     // TODO: mögliche Fehlerfälle ermitteln und System-Meldungen in deutsche Meldungen umwandeln
                 } else {
                     // TODO: Kommentar löschen: task.getResult().getUser() == mAuth.getCurrentUser()
+                    // obtain userId
                     mUser = task.getResult().getUser();
-                    mUid = mUser.getUid();
-                    mDatabaseRef = mDatabaseRootReference.child("users").child(mUid);
-                    // wenn ein Profilbild ausgewählt wurde:
+                    mUserID = mUser.getUid();
+                    //set database reference to /users/mUserID
+                    mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID);
+
+                    // User details from input form are stored in mUserData
+                    mUserData.setFirstname(mEditFirstname.getText().toString().trim());
+                    mUserData.setLastname(mEditLastname.getText().toString().trim());
+                    mUserData.setBirthday(mCalendar.getTime().toString());
+                    mUserData.setEmail(mEditCreateAccountEmail.getText().toString().trim());
+
+                    // if a profile image was chosen, it will be uploaded to cloud-Storage
                     if (mUriLocalProfileImage != null) {
-                        mStorageRef = mStorageRootReference.child("users").child(mUid).child("profilePicture");
-                        //Hochladen des Profilbildes mit der lokalen URI mUriLocalProfileImage
+                        //set storage reference to /users/mUserID/profilePicture
+                        mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture");
+                        //upload file with local URI stored in mUriLocalProfileImage
                         mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // Bei Erfolg wird die DownloadURL mittels mPictureURL in der Datenbank in den UserDetails gespeichert
-                                mPictureURL = taskSnapshot.getDownloadUrl().toString();
-                                mDatabaseRef.child("pictureURL").setValue(mPictureURL);
+                                // on success the remote downloadURL will be stored to mUserData.pictureURL
+                                //TODO: Alternative finden
+                                mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
+                                // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
+                                mDatabaseRef.setValue(mUserData);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                mDatabaseRef.child("pictureURL").setValue("");
+                                // on failure mUserData.pictureURL will remain empty
                                 Toast.makeText(LoginActivity.this, "Image Error", Toast.LENGTH_SHORT).show();
-
+                                //send data to database (see above)
+                                mDatabaseRef.setValue(mUserData);
                             }
                         });
-                        // wenn kein Profilbild ausgewählt wurde
                     } else {
-                        mDatabaseRef.child("pictureURL").setValue("");
+                        // if no profile image was chosen, mUserData.pictureURL will remain empty
+                        mDatabaseRef.setValue(mUserData);
                     }
-                    // restliche UserDetails
-                    mDatabaseRef.child("firstname").setValue(mEditFirstname.getText().toString().trim());
-                    mDatabaseRef.child("lastname").setValue(mEditLastname.getText().toString().trim());
-                    mDatabaseRef.child("birthday").setValue(mCalendar.getTime().toString());
-                    mDatabaseRef.child("email").setValue(mEditCreateAccountEmail.getText().toString().trim());
 
-
+                    // start MainOverview
                     Intent intent = new Intent(LoginActivity.this, MainOverviewActivity.class);
                     startActivity(intent);
                     finish();
@@ -559,16 +601,17 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     }
 
 
+
+    /**
+     * checks, if input data is valid and then tries to sign in at Firebase based on the data
+     */
     private void attemptSignIn() {
         Log.d(TAG, "attemptSignIn: " + mEditSignInEmail.getText().toString().trim());
 
         if (!validateFormSignIn()) {
             return;
         }
-        //TODO klären, ob ProgressBar oder ProgressDialog
-        mProgressDialog.setTitle(R.string.dialog_signing_in);
-        mProgressDialog.show();
-        //showProgressBar(getString(R.string.dialog_signing_in);
+        showProgressBar(getString(R.string.dialog_signing_in));
 
         mAuth.signInWithEmailAndPassword(mEditSignInEmail.getText().toString().trim(), mEditSignInPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -576,8 +619,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                 Log.d(TAG, "signInWithEmailAndPasswort: onComplete: " + task.isSuccessful());
 
                 if (!task.isSuccessful()) {
-                    //hideProgressBar();
-                    mProgressDialog.dismiss();
+                    hideProgressBar();
                     mEditSignInEmail.setText("");
                     mEditSignInPassword.setText("");
                     mEditSignInEmail.requestFocus();
