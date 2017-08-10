@@ -12,7 +12,7 @@ public class MainQuestionmailActivity extends GriotBaseActivity {
         super.onCreate(savedInstanceState);
 
         mTitle.setText(R.string.title_questionmail);
-        mButtonQuestionmail.setImageResource(R.drawable.edit);
+        mButtonQuestionmail.setImageResource(R.drawable.plus);
 
     }
 
