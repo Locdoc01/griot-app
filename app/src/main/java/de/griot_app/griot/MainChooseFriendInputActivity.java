@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
-    private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
+    private static final String TAG = MainChooseFriendInputActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
