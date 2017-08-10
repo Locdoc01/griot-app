@@ -16,8 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <!--TODO: ACHTUNG: Das Layout muss HINTER der ListView eingebunden werden, da seine Elemente (FAB) sonst von ihr überdeckt werden
-        TODO: Andere Layouts entsprechend ändern-->
+    <!--base layout has to be included at the end, otherwise its views (FAB) would be covered-->
     <include layout="@layout/activity_base_griot" />
 
 

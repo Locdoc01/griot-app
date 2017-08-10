@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context="de.griot_app.griot.MainTopicCatalogActivity">
 
-    <include layout="@layout/activity_base_griot"/>
-
     <Button
         android:id="@+id/signout"
         android:layout_width="wrap_content"
@@ -18,5 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/activity_base_griot"/>
 
 </android.support.constraint.ConstraintLayout>
