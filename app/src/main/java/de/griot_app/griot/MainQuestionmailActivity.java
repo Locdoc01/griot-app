@@ -12,7 +12,8 @@ public class MainQuestionmailActivity extends GriotBaseActivity {
         super.onCreate(savedInstanceState);
 
         mTitle.setText(R.string.title_questionmail);
-        mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
+        mButtonQuestionmail.setImageResource(R.drawable.edit);
+
     }
 
     @Override

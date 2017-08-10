@@ -155,12 +155,21 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
                 }
                 break;
             case R.id.fab_questionmail:
-                // same behavior as button_profile
+                // if FAB is pressed, Questionmail will be started, if it isn't already the current one
+                // if current Activity wasn't MainOverview, it will be closed, otherwise it will be hold on the backstack
+                // if FAB is pressed from QuestionMail, it will be closed and ComposeQuestionRequest will be started
+                Log.w(getSubClassTAG(), "pressed1");
                 if (!getSubClassTAG().equals(MainQuestionmailActivity.class.getSimpleName())) {
+                    Log.w(getSubClassTAG(), "pressed2");
                     startActivity(new Intent(this, MainQuestionmailActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
+                        Log.w(getSubClassTAG(), "pressed3");
                         finish();
                     }
+                } else {
+                    Log.w(getSubClassTAG(), "pressed4");
+                    startActivity(new Intent(this, ComposeQuestionRequestInputActivity.class));
+                    finish();
                 }
                 break;
         }
