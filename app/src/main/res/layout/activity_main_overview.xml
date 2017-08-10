@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context="de.griot_app.griot.MainOverviewActivity">
 
-    <include layout="@layout/activity_base_griot" />
-
     <ListView
         android:id="@+id/listView_main_overview"
         android:layout_width="0dp"
@@ -17,5 +15,10 @@
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <!--TODO: ACHTUNG: Das Layout muss HINTER der ListView eingebunden werden, da seine Elemente (FAB) sonst von ihr überdeckt werden
+        TODO: Andere Layouts entsprechend ändern-->
+    <include layout="@layout/activity_base_griot" />
+
 
 </android.support.constraint.ConstraintLayout>
