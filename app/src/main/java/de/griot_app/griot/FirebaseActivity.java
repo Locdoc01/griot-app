@@ -34,7 +34,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseAuth mAuth;
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected FirebaseUser mUser;
-    protected String mUid;
+    protected String mUserID;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
@@ -72,7 +72,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
         //TODO: verschieben an sichere Position (Zuweisung nur gültig bei angemeldetem User
         mUser = mAuth.getCurrentUser();
-        //mUid = mUser.getUid();
+        //mUserID = mUser.getUid();
         //TODO
 
         mDatabase = FirebaseDatabase.getInstance();
