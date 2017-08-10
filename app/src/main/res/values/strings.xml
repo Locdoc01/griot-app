@@ -54,6 +54,7 @@
     <string name="title_guest_profile">Gastprofil</string>
     <string name="title_contact_managment">Kontaktverwaltung</string>
     <string name="title_questionmail">Fragenpost</string>
+    <string name="title_compose_question_request">Anfrage erstellen</string>
     <string name="title_notifications">Benachrichtigungen</string>
 
     <!--Option menu interview-->
