@@ -81,7 +81,7 @@ public class InterviewDataAdapter extends ArrayAdapter<InterviewData> {
         holder.tvNarrator.setText("TODO"); //TODO
         holder.tvComments.setText("TODO"); //TODO
         try {
-            holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI())); //TODO
+            holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
         } catch(Exception e) {}
         holder.pivInterviewer.setImagePath("TODO"); //TODO
         holder.pivNarrator.setImagePath("TODO"); //TODO
