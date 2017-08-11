@@ -3,24 +3,24 @@ package de.griot_app.griot.dataclasses;
 /**
  * Bases local data class for local person data classes
  */
-public class PersonData extends ContactData {
+public class LocalPersonData extends ContactData {
 
     protected String lastname;
     protected String birthday;
     protected String email;
 
     //default-constructor
-    public PersonData() {
+    public LocalPersonData() {
         super();
     }
 
     //TODO: evt nicht benötigt
-    public PersonData(String category) {
+    public LocalPersonData(String category) {
         super(category);
     }
 
     //constructor
-    public PersonData(
+    public LocalPersonData(
             String firstname,
             String lastname,
             String birthday,

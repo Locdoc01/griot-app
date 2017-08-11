@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 
 /**
- * Bases data class for content data classes
+ * Bases local data class for local content data classes
  */
-public class ContentData {
+public class LocalContentData {
 
     protected String length;
     protected String pictureURL;
@@ -16,14 +16,14 @@ public class ContentData {
     protected HashMap<String, Boolean> tags;
 
     //default-constructor
-    public ContentData() {
+    public LocalContentData() {
         associatedUsers = new HashMap<>();
         associatedGuests = new HashMap<>();
         tags = new HashMap<>();
     }
 
     //constructor
-    public ContentData(
+    public LocalContentData(
             String length,
             String pictureURL,
             String pictureLocalURI,

@@ -4,27 +4,27 @@ import java.util.HashMap;
 
 
 /**
- * Data holding class for guest data
+ * Data holding class for locally holded guest data
  */
-public class GuestData extends PersonData {
+public class LocalGuestData extends PersonData {
 
     private HashMap<String, Boolean> hostID;
     private String relationshop;
 
     //default-constructor
-    public GuestData() {
+    public LocalGuestData() {
         super();
         hostID = new HashMap<>();
     }
 
     //TODO: evt nicht benötigt
-    public GuestData(String category) {
+    public LocalGuestData(String category) {
         super(category);
         hostID = new HashMap<>();
     }
 
     //constructor
-    public GuestData(
+    public LocalGuestData(
             String firstname,
             String lastname,
             String birthday,

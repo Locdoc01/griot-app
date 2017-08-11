@@ -4,27 +4,27 @@ import java.util.HashMap;
 
 
 /**
- * Data holding class for guest data
+ * Data holding class for locally holded group data
  */
-public class GroupData extends ContactData {
+public class LocalGroupData extends ContactData {
 
     private String visibility;
     private HashMap<String, String> members;
 
     //default-constructor
-    public GroupData() {
+    public LocalGroupData() {
         super();
         members = new HashMap<>();
     }
 
     //TODO: evt nicht benötigt
-    public GroupData(String category) {
+    public LocalGroupData(String category) {
         super(category);
         members = new HashMap<>();
     }
 
     //constructor
-    public GroupData(
+    public LocalGroupData(
             String firstname,
             String pictureURL,
             String pictureLocalURI,

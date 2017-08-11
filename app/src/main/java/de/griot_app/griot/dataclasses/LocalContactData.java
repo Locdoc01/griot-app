@@ -2,9 +2,9 @@ package de.griot_app.griot.dataclasses;
 
 
 /**
- * Bases data class for all contact data classes
+ * Bases local data class for all local contact data classes
  */
-public class ContactData {
+public class LocalContactData {
 
     protected String firstname;
     protected String pictureURL;
@@ -12,16 +12,16 @@ public class ContactData {
     protected String category;
 
     //default-constructor
-    public ContactData() {
+    public LocalContactData() {
     }
 
     //TODO: evt nicht benötigt
-    public ContactData(String category) {
+    public LocalContactData(String category) {
         this.category = category;
     }
 
     //constructor
-    public ContactData(
+    public LocalContactData(
             String firstname,
             String pictureURL,
             String pictureLocalURI,

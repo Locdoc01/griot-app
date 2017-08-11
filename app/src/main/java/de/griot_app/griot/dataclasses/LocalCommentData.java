@@ -4,34 +4,37 @@ import java.util.HashMap;
 
 
 /**
- * Data holding class for comment data
+ * Data holding class for locally holded comment data
  */
-public class CommentData {
+public class LocalCommentData {
 
     private String comment;
     private String time;
     private HashMap<String, Boolean> commentatorID;
     private String commentatorName;
     private String commentatorPictureURL;
+    private String commentatorPictureLocalURI;
 
     //default-constructor
-    public CommentData() {
+    public LocalCommentData() {
         commentatorID = new HashMap<>();
     }
 
     //constructor
-    public CommentData(
+    public LocalCommentData(
             String comment,
             String time,
             HashMap<String, Boolean> commentatorID,
             String commentatorName,
-            String commentatorPictureURL
+            String commentatorPictureURL,
+            String commentatorPictureLocalURI
     ) {
         this.comment = comment;
         this.time = time;
         this.commentatorID = commentatorID;
         this.commentatorName = commentatorName;
         this.commentatorPictureURL = commentatorPictureURL;
+        this.commentatorPictureLocalURI = commentatorPictureLocalURI;
     }
 
     //get-methods
@@ -45,6 +48,8 @@ public class CommentData {
 
     public String getCommentatorPictureURL() { return commentatorPictureURL; }
 
+    public String getCommentatorPictureLocalURI() { return commentatorPictureLocalURI; }
+
     //set-methods
     public void setComment(String comment) { this.comment = comment; }
 
@@ -55,4 +60,6 @@ public class CommentData {
     public void setCommentatorName(String commentatorName) { this.commentatorName = commentatorName; }
 
     public void setCommentatorPictureURL(String commentatorPictureURL) { this.commentatorPictureURL = commentatorPictureURL; }
+
+    public void setCommentatorPictureLocalURI(String commentatorPictureLocalURI) { this.commentatorPictureLocalURI = commentatorPictureLocalURI; }
 }

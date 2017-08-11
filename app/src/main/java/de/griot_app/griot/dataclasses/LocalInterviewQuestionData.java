@@ -3,22 +3,22 @@ package de.griot_app.griot.dataclasses;
 import java.util.HashMap;
 
 /**
- * Data holding class for interview question data
+ * Data holding class for locally holded interview question data
  */
-public class InterviewQuestionData extends ContentData {
+public class LocalInterviewQuestionData extends ContentData {
 
     private HashMap<String, Boolean> interviewID;
     private String question;
     private String recordURL;
 
     //default-constructor
-    public InterviewQuestionData() {
+    public LocalInterviewQuestionData() {
         super();
         interviewID = new HashMap<>();
     }
 
     //constructor
-    public InterviewQuestionData(
+    public LocalInterviewQuestionData(
             HashMap<String, Boolean> interviewID,
             String question,
             String length,

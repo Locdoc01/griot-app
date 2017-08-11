@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded user data
  */
-public class UserData extends PersonData {
+public class LocalUserData extends PersonData {
 
     private HashMap<String, Boolean> interviewsOwn;
     private HashMap<String, Boolean> interviewsAssociated;
@@ -18,7 +18,7 @@ public class UserData extends PersonData {
     private HashMap<String, String> extraQuestions;
 
     //default-constructor
-    public UserData() {
+    public LocalUserData() {
         super();
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
@@ -32,7 +32,7 @@ public class UserData extends PersonData {
     }
 
     //TODO: evt nicht benötigt
-    public UserData(String category) {
+    public LocalUserData(String category) {
         super(category);
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
@@ -46,7 +46,7 @@ public class UserData extends PersonData {
     }
 
     //constructor
-    public UserData(
+    public LocalUserData(
             String firstname,
             String lastname,
             String birthday,

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Data holding class for interview data
+ * Data holding class for locally holded interview data
  */
-public class InterviewData extends ContentData {
+public class LocalInterviewData extends ContentData {
 
     private String title;
     private String date;
@@ -15,16 +15,18 @@ public class InterviewData extends ContentData {
     private HashMap<String, Boolean> interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
+    private String interviewerPictureLocalURI;
     private HashMap<String, Boolean> narratorID;
     private String narratorName;
     private String narratorPictureURL;
+    private String narratorPictureLocalURI;
     private Boolean narratorIsUser;
     private Integer numberComments;
     private HashMap<String, CommentData> comments;
     private ArrayList<HashMap<String, Boolean>> interviewQuestions;
 
     //default-constructor
-    public InterviewData() {
+    public LocalInterviewData() {
         super();
         interviewerID = new HashMap<>();
         narratorID = new HashMap<>();
@@ -35,7 +37,7 @@ public class InterviewData extends ContentData {
     }
 
     //constructor
-    public InterviewData(
+    public LocalInterviewData(
             String title,
             String date,
             String topic,
@@ -46,9 +48,11 @@ public class InterviewData extends ContentData {
             HashMap<String, Boolean> interviewerID,
             String interviewerName,
             String interviewerPictureURL,
+            String interviewerPictureLocalURI,
             HashMap<String, Boolean> narratorID,
             String narratorName,
             String narratorPictureURL,
+            String narratorPictureLocalURI,
             Boolean narratorIsUser,
             HashMap<String, Boolean> associatedUsers,
             HashMap<String, Boolean> associatedGuests,
@@ -65,9 +69,11 @@ public class InterviewData extends ContentData {
         this.interviewerID = interviewerID;
         this.interviewerName = interviewerName;
         this.interviewerPictureURL = interviewerPictureURL;
+        this.interviewerPictureLocalURI = interviewerPictureLocalURI;
         this.narratorID = narratorID;
         this.narratorName = narratorName;
         this.narratorPictureURL = narratorPictureURL;
+        this.narratorPictureLocalURI = narratorPictureLocalURI;
         this.narratorIsUser = narratorIsUser;
         this.numberComments = numberComments;
         this.comments = comments;
@@ -89,11 +95,15 @@ public class InterviewData extends ContentData {
 
     public String getInterviewerPictureURL() { return interviewerPictureURL; }
 
+    public String getInterviewerPictureLocalURI() { return interviewerPictureLocalURI; }
+
     public HashMap<String, Boolean> getNarratorID() { return narratorID; }
 
     public String getNarratorName() { return narratorName; }
 
     public String getNarratorPictureURL() { return narratorPictureURL; }
+
+    public String getNarratorPictureLocalURI() { return narratorPictureLocalURI; }
 
     public Boolean getNarratorIsUser() { return narratorIsUser; }
 
@@ -102,7 +112,6 @@ public class InterviewData extends ContentData {
     public HashMap<String, CommentData> getComments() { return comments; }
 
     public ArrayList<HashMap<String, Boolean>> getInterviewQuestions() { return interviewQuestions; }
-
 
     //set-methods
     public void setTitle(String title) { this.title = title; }
@@ -119,11 +128,15 @@ public class InterviewData extends ContentData {
 
     public void setInterviewerPictureURL(String interviewerPictureURL) { this.interviewerPictureURL = interviewerPictureURL; }
 
+    public void setInterviewerPictureLocalURI(String interviewerPictureLocalURI) { this.interviewerPictureLocalURI = interviewerPictureLocalURI; }
+
     public void setNarratorID(HashMap<String, Boolean> narratorID) { this.narratorID = narratorID; }
 
     public void setNarratorName(String narratorName) { this.narratorName = narratorName; }
 
     public void setNarratorPictureURL(String narratorPictureURL) { this.narratorPictureURL = narratorPictureURL; }
+
+    public void setNarratorPictureLocalURI(String narratorPictureLocalURI) { this.narratorPictureLocalURI = narratorPictureLocalURI; }
 
     public void setNarratorIsUser(Boolean narratorIsUser) { this.narratorIsUser = narratorIsUser; }
 
