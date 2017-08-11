@@ -32,11 +32,12 @@ public class GuestData extends PersonData {
             String birthday,
             String email,
             String pictureURL,
+            String pictureLocalURI,
             String category,
             String visibility,
             HashMap<String, String> members
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, category);
+        super(firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
         this.visibility = visibility;
         this.members = members;
     }

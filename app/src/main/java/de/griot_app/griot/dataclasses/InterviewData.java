@@ -1,5 +1,7 @@
 package de.griot_app.griot.dataclasses;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,6 +44,7 @@ public class InterviewData extends ContentData {
             String medium,
             String length,
             String pictureURL,
+            String pictureLocalURI,
             HashMap<String, Boolean> interviewerID,
             HashMap<String, Boolean> narratorID,
             Boolean narratorIsUser,
@@ -52,7 +55,7 @@ public class InterviewData extends ContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(length, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.date = date;
         this.topic = topic;

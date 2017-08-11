@@ -52,6 +52,7 @@ public class UserData extends PersonData {
             String birthday,
             String email,
             String pictureURL,
+            String pictureLocalURI,
             String category,
             HashMap<String, Boolean> interviewsOwn,
             HashMap<String, Boolean> interviewsAssociated,
@@ -63,7 +64,7 @@ public class UserData extends PersonData {
             HashMap<String, String> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, category);
+        super(firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
         this.interviewsOwn = interviewsOwn;
         this.interviewsAssociated = interviewsAssociated;
         this.guests = guests;

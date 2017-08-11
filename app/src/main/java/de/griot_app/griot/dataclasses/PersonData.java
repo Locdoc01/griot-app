@@ -32,9 +32,10 @@ public class PersonData extends ContactData {
             String birthday,
             String email,
             String pictureURL,
+            String pictureLocalURI,
             String category
     ) {
-        super(firstname, pictureURL, category);
+        super(firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
         this.email = email;

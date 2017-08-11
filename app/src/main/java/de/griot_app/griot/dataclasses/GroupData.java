@@ -29,11 +29,12 @@ public class GroupData extends ContactData {
     public GroupData(
             String firstname,
             String pictureURL,
+            String pictureLocalURI,
             String visibility,
             HashMap<String, String> members,
             String category
             ) {
-        super(firstname, pictureURL, category);
+        super(firstname, pictureURL, pictureLocalURI, category);
         this.visibility = visibility;
         this.members = members;
     }
