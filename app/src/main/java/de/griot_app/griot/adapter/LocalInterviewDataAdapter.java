@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +42,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         public ImageView ivMediaCoverPlaceholder;
         public ImageView ivMediaCover;
         public ProfileImageView pivInterviewer;
-        //public ImageView pivInterviewer;
         public ProfileImageView pivNarrator;
-        //public ImageView pivNarrator;
     }
 
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> data) {
@@ -71,9 +70,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
             holder.ivMediaCoverPlaceholder = (ImageView) convertView.findViewById(R.id.iv_mediaCover_placeholder);
             holder.ivMediaCover = (ImageView) convertView.findViewById(R.id.iv_mediaCover);
             holder.pivInterviewer = (ProfileImageView) convertView.findViewById(R.id.piv_interviewer);
-            //holder.pivInterviewer = (ImageView) convertView.findViewById(R.id.piv_interviewer);
             holder.pivNarrator = (ProfileImageView) convertView.findViewById(R.id.piv_narrator);
-            //holder.pivNarrator = (ImageView) convertView.findViewById(R.id.piv_narrator);
 
             convertView.setTag(holder);
         } else {
@@ -94,12 +91,10 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
             holder.ivMediaCover.setVisibility(View.VISIBLE);
         } catch(Exception e) {}
         try {
-            holder.pivInterviewer.setImagePath(mListData.get(position).getInterviewerPictureLocalURI());
-            //holder.pivInterviewer.setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI()));
+            holder.pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI()));
         } catch (Exception e) {}
         try {
-            holder.pivNarrator.setImagePath(mListData.get(position).getNarratorPictureLocalURI());
-            //holder.pivNarrator.setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI()));
+            holder.pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI()));
         } catch (Exception e) {}
 
         return convertView;
