@@ -17,8 +17,7 @@ public class ProfileImageView extends ConstraintLayout {
     private Context mContext;
 
     private ImageView mProfileImage;
-    private ImageView mProfileImageCircleWhite;
-    private ImageView mProfileImageCircleBlue;
+    private ImageView mProfileImageCircle;
     private ImageView mProfileImagePlus;
 
     public ProfileImageView(Context context) {
@@ -43,17 +42,18 @@ public class ProfileImageView extends ConstraintLayout {
         View v = LayoutInflater.from(mContext).inflate(R.layout.object_profile_image, this);
 
         mProfileImage = (ImageView) v.findViewById(R.id.profile_image);
-        mProfileImageCircleWhite = (ImageView) v.findViewById(R.id.profile_image_circle_white);
-        mProfileImageCircleBlue = (ImageView) v.findViewById(R.id.profile_image_circle_blue);
+        mProfileImageCircle = (ImageView) v.findViewById(R.id.profile_image_circle);
         mProfileImagePlus = (ImageView) v.findViewById(R.id.profile_image_plus);
     }
 
     public ImageView getProfileImage() { return mProfileImage; }
 
-    public ImageView getProfileImageCircleWhite() { return mProfileImageCircleWhite; }
-
-    public ImageView getProfileImageCircleBlue() { return mProfileImageCircleBlue; }
+    public ImageView getProfileImageCircleWhite() { return mProfileImageCircle; }
 
     public ImageView getProfileImagePlus() { return mProfileImagePlus; }
+
+    public void setWhite() { mProfileImageCircle.setImageResource(R.drawable.piv_circle_white); }
+
+    public void setBlue() { mProfileImageCircle.setImageResource(R.drawable.piv_circle_blue); }
 
 }

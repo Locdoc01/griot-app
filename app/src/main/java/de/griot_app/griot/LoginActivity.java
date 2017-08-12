@@ -97,8 +97,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
         //Initialization of views for create account tab
         mProfileImage = (ProfileImageView) findViewById(R.id.piv_profile_image);
-        mProfileImage.getProfileImageCircleWhite().setVisibility(View.GONE);
-        mProfileImage.getProfileImageCircleBlue().setVisibility(View.VISIBLE);
+        mProfileImage.setBlue();
         mUriLocalProfileImage = null;
 
         mEditFirstname = (EditText) findViewById(R.id.editText_firstname);
