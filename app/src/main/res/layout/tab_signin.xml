@@ -26,10 +26,12 @@
         app:layout_constraintGuide_percent="0.31"
         android:orientation="horizontal" />
 
+    <!--TODO: Email-Adresse und Passwort entfernen !!!!!!!!!!!!!-->
     <EditText
         android:id="@+id/editText_signin_email"
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_email"
+        android:text="aa@aa.aa"
         android:inputType="textEmailAddress"
         android:imeOptions="actionNext"
         app:layout_constraintTop_toTopOf="@id/guideline_signin_top"
@@ -42,6 +44,7 @@
         android:id="@+id/editText_signin_password"
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_password"
+        android:text="890iop"
         android:inputType="textPassword"
         android:imeOptions="actionDone"
         android:layout_marginBottom="10dp"
