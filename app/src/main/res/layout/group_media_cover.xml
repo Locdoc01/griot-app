@@ -5,16 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/listitem_main_overview"><!--zeile später löschen-->
 
-    <ImageView
-        android:id="@+id/iv_mediaCover"
+    <FrameLayout
+        android:id="@+id/frame_mediaCover"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
         android:layout_margin="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/mediacover1_jpg" />
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_mediaCover_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/empty_16_9"
+            android:background="@color/colorGriotLightgrey"
+            android:padding="@dimen/dimen_height_lines"
+            android:cropToPadding="true" />
+
+        <ImageView
+            android:id="@+id/iv_mediaCover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -26,8 +43,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toLeftOf="@id/iv_mediaCover"
-        app:layout_constraintTop_toTopOf="@id/iv_mediaCover"/>
+        app:layout_constraintLeft_toLeftOf="@id/frame_mediaCover"
+        app:layout_constraintTop_toTopOf="@id/frame_mediaCover"/>
 
     <TextView
         android:id="@+id/tv_date"
@@ -49,7 +66,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="@id/iv_mediaCover"
-        app:layout_constraintBottom_toBottomOf="@id/iv_mediaCover"/>
+        app:layout_constraintRight_toRightOf="@id/frame_mediaCover"
+        app:layout_constraintBottom_toBottomOf="@id/frame_mediaCover"/>
 
 </merge>
