@@ -2,6 +2,7 @@ package de.griot_app.griot;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -95,7 +96,9 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         setupTabHost();
 
         //Initialization of views for create account tab
-        mProfileImage = (ProfileImageView) findViewById(R.id.profile_image);
+        mProfileImage = (ProfileImageView) findViewById(R.id.piv_profile_image);
+        mProfileImage.getProfileImageCircleWhite().setVisibility(View.GONE);
+        mProfileImage.getProfileImageCircleBlue().setVisibility(View.VISIBLE);
         mUriLocalProfileImage = null;
 
         mEditFirstname = (EditText) findViewById(R.id.editText_firstname);
@@ -186,7 +189,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 switch (v.getId()) {
-                    case R.id.profile_image:
+                    case R.id.piv_profile_image:
                         //TODO: runden Farbwechsel realisieren (in ProfileImageView)
                         //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorTabSelectedLogin));
                         return true;
@@ -202,7 +205,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                 return false;
             case MotionEvent.ACTION_UP:
                 switch (v.getId()) {
-                    case R.id.profile_image:
+                    case R.id.piv_profile_image:
                         //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotBlue));
 
                         //choosing an image without cropping
@@ -261,8 +264,8 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mUriLocalProfileImage = result.getUri();
-                mProfileImage.setImagePath(mUriLocalProfileImage.getPath());
-                mProfileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mProfileImage.getProfileImage().setImageURI(Uri.parse(mUriLocalProfileImage.getPath()));
+                mProfileImage.getProfileImage().setScaleType(ImageView.ScaleType.CENTER_CROP);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
