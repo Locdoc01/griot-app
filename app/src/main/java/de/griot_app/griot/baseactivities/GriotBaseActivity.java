@@ -1,11 +1,9 @@
-package de.griot_app.griot;
+package de.griot_app.griot.baseactivities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,16 +11,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import de.griot_app.griot.ComposeQuestionRequestInputActivity;
+import de.griot_app.griot.R;
+import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
+import de.griot_app.griot.mainactivities.MainNotificationsActivity;
+import de.griot_app.griot.mainactivities.MainOverviewActivity;
+import de.griot_app.griot.mainactivities.MainProfileOverviewActivity;
+import de.griot_app.griot.mainactivities.MainQuestionmailActivity;
+import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
 
 /**
  *  Abstract base activity for usual griot-app-activities.

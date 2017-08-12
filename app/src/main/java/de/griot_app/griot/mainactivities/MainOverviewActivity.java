@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.mainactivities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +18,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.griot_app.griot.baseactivities.GriotBaseActivity;
+import de.griot_app.griot.R;
 import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 

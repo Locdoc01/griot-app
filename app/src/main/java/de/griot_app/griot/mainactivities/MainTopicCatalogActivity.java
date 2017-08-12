@@ -1,9 +1,13 @@
-package de.griot_app.griot;
+package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+
+import de.griot_app.griot.baseactivities.GriotBaseActivity;
+import de.griot_app.griot.startactivities.LoginActivity;
+import de.griot_app.griot.R;
 
 public class MainTopicCatalogActivity extends GriotBaseActivity {
 

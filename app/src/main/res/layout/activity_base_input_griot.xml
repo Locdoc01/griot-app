@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.griot_app.griot.GriotBaseInputActivity"
+    tools:context="de.griot_app.griot.baseactivities.GriotBaseInputActivity"
     android:background="@color/colorGriotWhite"
     tools:showIn="@layout/activity_main_input_choose_friend"><!--zeile später löschen-->
 

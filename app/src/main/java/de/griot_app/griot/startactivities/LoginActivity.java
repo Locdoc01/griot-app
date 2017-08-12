@@ -1,8 +1,7 @@
-package de.griot_app.griot;
+package de.griot_app.griot.startactivities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -37,7 +36,11 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
 
+import de.griot_app.griot.views.ProfileImageView;
+import de.griot_app.griot.R;
+import de.griot_app.griot.baseactivities.FirebaseActivity;
 import de.griot_app.griot.dataclasses.UserData;
+import de.griot_app.griot.mainactivities.MainOverviewActivity;
 
 /**
  * Activity for creating app accounts and signing in. It holds both functionalities under two different Tabs.

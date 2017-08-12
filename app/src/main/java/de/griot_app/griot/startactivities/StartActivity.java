@@ -1,9 +1,8 @@
-package de.griot_app.griot;
+package de.griot_app.griot.startactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -12,6 +11,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.griot_app.griot.R;
+import de.griot_app.griot.mainactivities.MainOverviewActivity;
 
 /**
  * Created by marcel on 09.08.17.
@@ -55,7 +57,7 @@ public class StartActivity extends AppCompatActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-               mAuth.addAuthStateListener(mAuthListener);
+                mAuth.addAuthStateListener(mAuthListener);
             }
         }, 20);
     }

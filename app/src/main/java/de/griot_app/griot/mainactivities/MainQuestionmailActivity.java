@@ -1,7 +1,9 @@
-package de.griot_app.griot;
+package de.griot_app.griot.mainactivities;
 
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
+
+import de.griot_app.griot.baseactivities.GriotBaseActivity;
+import de.griot_app.griot.R;
 
 public class MainQuestionmailActivity extends GriotBaseActivity {
 

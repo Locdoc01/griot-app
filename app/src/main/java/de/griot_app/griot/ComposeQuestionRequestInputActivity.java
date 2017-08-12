@@ -3,6 +3,8 @@ package de.griot_app.griot;
 import android.os.Bundle;
 import android.util.Log;
 
+import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
+
 public class ComposeQuestionRequestInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ComposeQuestionRequestInputActivity.class.getSimpleName();

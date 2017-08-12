@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.views;
 
 
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+
+import de.griot_app.griot.R;
 
 /**
  * ProfileImageView provides a round profile image with a thin lightgrey Border. If no image resource is set, it will show a plus-sign over background color.

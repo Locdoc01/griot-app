@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGriotBlue"
-    tools:context="de.griot_app.griot.LoginActivity">
+    tools:context="de.griot_app.griot.startactivities.LoginActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="de.griot_app.griot.MainOverviewActivity">
+    tools:context="de.griot_app.griot.mainactivities.MainOverviewActivity">
 
     <include layout="@layout/group_media_cover"/>
 
@@ -23,7 +23,7 @@
         app:layout_constraintGuide_percent="0.16"
         android:orientation="vertical" />
 
-    <de.griot_app.griot.ProfileImageView
+    <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_interviewer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -92,7 +92,7 @@
         app:layout_constraintGuide_percent="0.94"
         android:orientation="vertical" />
 
-    <de.griot_app.griot.ProfileImageView
+    <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_narrator"
         android:layout_width="0dp"
         android:layout_height="0dp"

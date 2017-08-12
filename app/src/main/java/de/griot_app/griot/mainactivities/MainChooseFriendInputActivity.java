@@ -1,12 +1,10 @@
-package de.griot_app.griot;
+package de.griot_app.griot.mainactivities;
 
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+
+import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
+import de.griot_app.griot.R;
 
 public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 

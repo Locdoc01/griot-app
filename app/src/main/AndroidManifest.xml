@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartActivity"
+            android:name=".startactivities.StartActivity"
             android:theme="@style/NoTitleBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".startactivities.LoginActivity"
             android:theme="@style/NoTitleBarTheme">
         </activity>
 
@@ -34,32 +34,32 @@
         </activity>
 
         <activity
-            android:name=".MainOverviewActivity">
+            android:name=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity
-            android:name=".MainProfileOverviewActivity"
-            android:parentActivityName=".MainOverviewActivity">
+            android:name=".mainactivities.MainProfileOverviewActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity
-            android:name=".MainChooseFriendInputActivity"
-            android:parentActivityName=".MainOverviewActivity">
+            android:name=".mainactivities.MainChooseFriendInputActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity
-            android:name=".MainQuestionmailActivity"
-            android:parentActivityName=".MainOverviewActivity">
+            android:name=".mainactivities.MainQuestionmailActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity
-            android:name=".MainNotificationsActivity"
-            android:parentActivityName=".MainOverviewActivity">
+            android:name=".mainactivities.MainNotificationsActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity
-            android:name=".MainTopicCatalogActivity"
-            android:parentActivityName=".MainOverviewActivity">
+            android:name=".mainactivities.MainTopicCatalogActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity">
         </activity>
 
         <activity

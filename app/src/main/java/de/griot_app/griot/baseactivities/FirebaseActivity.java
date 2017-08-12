@@ -1,28 +1,27 @@
-package de.griot_app.griot;
+package de.griot_app.griot.baseactivities;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+
+import de.griot_app.griot.dataclasses.LocalCommentData;
+import de.griot_app.griot.dataclasses.LocalGroupData;
+import de.griot_app.griot.dataclasses.LocalGuestData;
+import de.griot_app.griot.dataclasses.LocalInterviewData;
+import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
+import de.griot_app.griot.dataclasses.LocalUserData;
 
 /**
  *  Abstract base activity for all griot-app-activities.
@@ -43,6 +42,14 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected StorageReference mStorageRef;
     protected ValueEventListener mValueEventListener;
     protected ChildEventListener mChildEventListener;
+
+    //procected LocalData mLocalData;
+    protected HashMap<String, LocalUserData> mLocalUserData;
+    protected HashMap<String, LocalGuestData> mLocalGuestData;
+    protected HashMap<String, LocalGroupData> mLocalGroupData;
+    protected HashMap<String, LocalInterviewData> mLocalInterviewData;
+    protected HashMap<String, LocalInterviewQuestionData> mLocalInterviewQuestionData;
+    protected HashMap<String, LocalCommentData> mLocalCommentData;
 
     /**
      * Abstract method, which returns the TAG of the extending subclass.
@@ -80,7 +87,22 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance();
         mStorageRootReference = mStorage.getReference();
+
+        //mLocalData = new LocalData();
+        mLocalUserData = new HashMap<>();
+        mLocalGuestData = new HashMap<>();
+        mLocalGroupData = new HashMap<>();
+        mLocalInterviewData = new HashMap<>();
+        mLocalInterviewQuestionData = new HashMap<>();
+        mLocalCommentData = new HashMap<>();
     }
+
+    public HashMap<String, LocalUserData> getUserData() { return mLocalUserData; }
+    public HashMap<String, LocalGuestData> getGuestData() { return mLocalGuestData; }
+    public HashMap<String, LocalGroupData> getGroupData() { return mLocalGroupData; }
+    public HashMap<String, LocalInterviewData> getInterviewData() { return mLocalInterviewData; }
+    public HashMap<String, LocalInterviewQuestionData> getInterviewQuestionData() { return mLocalInterviewQuestionData; }
+    public HashMap<String, LocalCommentData> getCommentData() { return mLocalCommentData; }
 
     @Override
     protected void onStart() {

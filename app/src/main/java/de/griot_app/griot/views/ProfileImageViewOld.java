@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.views;
 
 
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+
+import de.griot_app.griot.R;
 
 
 //TODO: Funktioniert nicht und wird nicht verwendet. Evt. später eine Lösung finden.

@@ -13,7 +13,7 @@
         app:layout_constraintGuide_percent="0.105"
         android:orientation="horizontal" />
 
-    <de.griot_app.griot.ProfileImageView
+    <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,7 +35,7 @@
         -->
 
 <!--
-    <de.griot_app.griot.ProfileImageView
+    <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
