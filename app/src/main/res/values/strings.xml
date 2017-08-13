@@ -105,7 +105,7 @@
     <string name="hint_post_comment">Kommentar posten</string>
 
     <!--Prepare interview-->
-    <string name="order_choose_person">Wähle eine Person, die du aufzeichnen möchtest</string>
+    <string name="order_choose_person">Wähle eine Person, die du aufzeichnen möchtest:</string>
     <string name="text_person">Person</string>
     <string name="question_which_topic">Worüber möchtest du sprechen?</string>
     <string name="question_which_medium">Wie möchtest du dein Gespräch aufzeichnen?</string>
@@ -159,7 +159,7 @@
     <string name="text_female_cousin">Cousine</string>
     <string name="hint_search_person">Person suchen</string>
     <string name="hint_search_group">Gruppe suchen</string>
-    <string name="text_yourself">du selbst</string>
+    <string name="text_yourself">du</string>
     <string name="text_your_guests">deine Gäste</string>
     <string name="text_add_guest">Gast hinzufügen</string>
     <string name="text_your_friends">deine Freunde</string>
