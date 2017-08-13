@@ -5,23 +5,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalCommentData;
 import de.griot_app.griot.dataclasses.LocalGroupData;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
+import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.UserData;
 
 /**
  *  Abstract base activity for all griot-app-activities.
@@ -34,6 +45,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected FirebaseUser mUser;
     protected String mUserID;
+    protected LocalUserData mLocalUserData;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
@@ -120,6 +132,50 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    protected void loadUserInformation() {
+        mUser = mAuth.getCurrentUser();
+        mUserID = mUser.getUid();
+        Query query = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    mLocalUserData = ds.getValue(LocalUserData.class);
+                    mLocalUserData.setCategory(getString(R.string.text_yourself));
+                }
+
+                File file = null;
+                try {
+                    file = File.createTempFile("profile_image" + "_", ".jpg");
+                } catch (Exception e) {
+                }
+                final String path = file.getPath();
+
+                try {
+                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
+                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            mLocalUserData.setPictureLocalURI(path);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
+                            mLocalUserData.setPictureLocalURI("");
+                        }
+                    });
+                } catch (Exception e) {}
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 
