@@ -45,8 +45,12 @@
             android:name=".mainactivities.MainTopicCatalogActivity"
             android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity android:name=".ComposeQuestionRequestInputActivity" />
-        <activity android:name=".ChooseTopicInputActivity" />
-        <activity android:name=".ChooseMediumInputActivity" />
+        <activity
+            android:name=".ChooseTopicInputActivity"
+            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity"/>
+        <activity
+            android:name=".ChooseMediumInputActivity"
+            android:parentActivityName=".ChooseTopicInputActivity"/>
         <activity android:name=".ReviewInterviewInputActivity" />
         <activity android:name=".SaveInterviewInputActivity"></activity>
     </application>
