@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded interview data
  */
-public class LocalInterviewData extends ContentData {
+public class LocalInterviewData extends LocalContentData {
 
     private String title;
     private String date;

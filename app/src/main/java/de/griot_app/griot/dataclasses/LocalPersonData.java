@@ -3,7 +3,7 @@ package de.griot_app.griot.dataclasses;
 /**
  * Bases local data class for local person data classes
  */
-public class LocalPersonData extends ContactData {
+public class LocalPersonData extends LocalContactData {
 
     protected String lastname;
     protected String birthday;

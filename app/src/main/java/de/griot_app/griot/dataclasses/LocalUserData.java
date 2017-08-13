@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded user data
  */
-public class LocalUserData extends PersonData {
+public class LocalUserData extends LocalPersonData {
 
     private HashMap<String, Boolean> interviewsOwn;
     private HashMap<String, Boolean> interviewsAssociated;

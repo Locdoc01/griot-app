@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded interview question data
  */
-public class LocalInterviewQuestionData extends ContentData {
+public class LocalInterviewQuestionData extends LocalContentData {
 
     private HashMap<String, Boolean> interviewID;
     private String question;

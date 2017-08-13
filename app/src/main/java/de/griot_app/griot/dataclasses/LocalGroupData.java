@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded group data
  */
-public class LocalGroupData extends ContactData {
+public class LocalGroupData extends LocalContactData {
 
     private String visibility;
     private HashMap<String, String> members;

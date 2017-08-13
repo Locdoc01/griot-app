@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Data holding class for locally holded guest data
  */
-public class LocalGuestData extends PersonData {
+public class LocalGuestData extends LocalPersonData {
 
     private HashMap<String, Boolean> hostID;
     private String relationshop;
