@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +37,6 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
 
     private ArrayList<LocalPersonData> mListData;
 
-    private LocalPersonData mChecked = null;
-
     public LocalPersonDataAdapter(Context context, ArrayList<LocalPersonData> data) {
         super(context, R.layout.listitem_person, data);
         mContext = context;
@@ -68,26 +64,6 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
             tvListSeperator.setVisibility(View.GONE);
         }
 
-        ListView lv = (ListView) parent;
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mChecked==null) {
-                    mChecked = getItem(position);
-                    mChecked.setSelected(true);
-                } else {
-                    if (mChecked==getItem(position)) {
-                        mChecked.setSelected(false);
-                        mChecked = null;
-                    } else {
-                        mChecked.setSelected(false);
-                        mChecked = getItem(position);
-                        mChecked.setSelected(true);
-                    }
-                }
-                notifyDataSetChanged();
-            }
-        });
         if (mListData.get(position).getSelected()) {
             btnCheck.setVisibility(View.VISIBLE);
         } else {

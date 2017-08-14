@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.griot_app.griot.adapter.LocalPersonDataAdapter;
-import de.griot_app.griot.adapter.LocalPersonDataAdapterWithViewHolder;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
@@ -85,7 +84,7 @@ public class CombinedPersonListCreator {
     }
 
 
-    /**
+    /*
      * Adds a database query from where the data will be read and puts it in a list container.
      * A correspondent single data list is created and stored in a list container for data lists.
      * The methods returns a this-reference, so that several calls can be concaternated
@@ -102,6 +101,8 @@ public class CombinedPersonListCreator {
         return this;
     }
 */
+
+    public LocalPersonDataAdapter getAdapter() { return mAdapter; }
 
     /**
      * Adds a ValueEventListener for a single valueEvent (reads only once) to each database query in the query list container.
@@ -133,6 +134,7 @@ public class CombinedPersonListCreator {
                 list.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
+                    localPersonData.setContactID(ds.getKey());
                     list.add(localPersonData);
                 }
 
