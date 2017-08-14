@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -70,6 +71,14 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         mButtonLeft.setOnTouchListener(this);
         mButtonCenter.setOnTouchListener(this);
         mButtonRight.setOnTouchListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // hides the keyboard, even if EditText gets focus on startup
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
