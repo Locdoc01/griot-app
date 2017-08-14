@@ -25,6 +25,7 @@ public class LocalGuestData extends LocalPersonData {
 
     //constructor
     public LocalGuestData(
+            String contactID,
             String firstname,
             String lastname,
             String birthday,
@@ -35,7 +36,7 @@ public class LocalGuestData extends LocalPersonData {
             HashMap<String, Boolean> hostID,
             String relationship
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
+        super(contactID, firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
         this.hostID = hostID;
         this.relationshop = relationship;
     }

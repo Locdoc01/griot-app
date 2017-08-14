@@ -8,6 +8,7 @@ import java.util.HashMap;
  */
 public class LocalContentData {
 
+    protected String contentID;
     protected String length;
     protected String pictureURL;
     protected String pictureLocalURI;
@@ -24,6 +25,7 @@ public class LocalContentData {
 
     //constructor
     public LocalContentData(
+            String contentID,
             String length,
             String pictureURL,
             String pictureLocalURI,
@@ -31,6 +33,7 @@ public class LocalContentData {
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
+        this.contentID = contentID;
         this.length = length;
         this.pictureURL = pictureURL;
         this.pictureLocalURI = pictureLocalURI;
@@ -42,7 +45,8 @@ public class LocalContentData {
     @Override
     public String toString() {
         return "LocalContentData{" +
-                "length='" + length + '\'' +
+                "contentID='" + contentID + '\'' +
+                ", length='" + length + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
                 ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
@@ -52,6 +56,8 @@ public class LocalContentData {
     }
 
     //get-methods
+    public String getContentID() { return contentID; }
+
     public String getLength() { return length; }
 
     public String getPictureURL() { return pictureURL; }
@@ -65,6 +71,8 @@ public class LocalContentData {
     public HashMap<String, Boolean> getTags() { return tags; }
 
     //set-methods
+    public void setContentID(String contentID) { this.contentID = contentID; }
+
     public void setLength(String length) { this.length = length; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }

@@ -25,6 +25,7 @@ public class LocalGroupData extends LocalContactData {
 
     //constructor
     public LocalGroupData(
+            String contactID,
             String firstname,
             String pictureURL,
             String pictureLocalURI,
@@ -32,7 +33,7 @@ public class LocalGroupData extends LocalContactData {
             HashMap<String, String> members,
             String category
     ) {
-        super(firstname, pictureURL, pictureLocalURI, category);
+        super(contactID, firstname, pictureURL, pictureLocalURI, category);
         this.visibility = visibility;
         this.members = members;
     }

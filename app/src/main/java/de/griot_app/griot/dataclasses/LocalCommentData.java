@@ -8,6 +8,7 @@ import java.util.HashMap;
  */
 public class LocalCommentData {
 
+    private String commentID;
     private String comment;
     private String time;
     private HashMap<String, Boolean> commentatorID;
@@ -22,6 +23,7 @@ public class LocalCommentData {
 
     //constructor
     public LocalCommentData(
+            String commentID,
             String comment,
             String time,
             HashMap<String, Boolean> commentatorID,
@@ -29,6 +31,7 @@ public class LocalCommentData {
             String commentatorPictureURL,
             String commentatorPictureLocalURI
     ) {
+        this.commentID = commentID;
         this.comment = comment;
         this.time = time;
         this.commentatorID = commentatorID;
@@ -40,7 +43,8 @@ public class LocalCommentData {
     @Override
     public String toString() {
         return "LocalCommentData{" +
-                "comment='" + comment + '\'' +
+                "commentID='" + commentID + '\'' +
+                ", comment='" + comment + '\'' +
                 ", time='" + time + '\'' +
                 ", commentatorID=" + commentatorID +
                 ", commentatorName='" + commentatorName + '\'' +
@@ -50,6 +54,8 @@ public class LocalCommentData {
     }
 
     //get-methods
+    public String getCommentID() { return commentID; }
+
     public String getComment() { return comment; }
 
     public String getTime() { return time; }
@@ -63,6 +69,8 @@ public class LocalCommentData {
     public String getCommentatorPictureLocalURI() { return commentatorPictureLocalURI; }
 
     //set-methods
+    public void setCommentID(String commentID) { this.commentID = commentID; }
+
     public void setComment(String comment) { this.comment = comment; }
 
     public void setTime(String time) { this.time = time; }

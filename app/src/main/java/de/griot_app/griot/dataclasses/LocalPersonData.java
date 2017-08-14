@@ -21,6 +21,7 @@ public class LocalPersonData extends LocalContactData {
 
     //constructor
     public LocalPersonData(
+            String contactID,
             String firstname,
             String lastname,
             String birthday,
@@ -29,7 +30,7 @@ public class LocalPersonData extends LocalContactData {
             String pictureLocalURI,
             String category
     ) {
-        super(firstname, pictureURL, pictureLocalURI, category);
+        super(contactID, firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
         this.email = email;

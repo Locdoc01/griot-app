@@ -38,6 +38,7 @@ public class LocalInterviewData extends LocalContentData {
 
     //constructor
     public LocalInterviewData(
+            String contentID,
             String title,
             String date,
             String topic,
@@ -61,7 +62,7 @@ public class LocalInterviewData extends LocalContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(contentID, length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.date = date;
         this.topic = topic;

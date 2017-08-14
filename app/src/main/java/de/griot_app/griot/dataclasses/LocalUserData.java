@@ -65,6 +65,7 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
 
     //constructor
     public LocalUserData(
+            String contactID,
             String firstname,
             String lastname,
             String birthday,
@@ -82,7 +83,7 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
             HashMap<String, String> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
+        super(contactID, firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
         this.interviewsOwn = interviewsOwn;
         this.interviewsAssociated = interviewsAssociated;
         this.guests = guests;

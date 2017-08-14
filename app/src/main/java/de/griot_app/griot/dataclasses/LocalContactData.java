@@ -6,6 +6,7 @@ package de.griot_app.griot.dataclasses;
  */
 public class LocalContactData {
 
+    protected String contactID;
     protected String firstname;
     protected String pictureURL;
     protected String pictureLocalURI;
@@ -21,23 +22,28 @@ public class LocalContactData {
         this.category = category;
     }
 
+
     //constructor
     public LocalContactData(
+            String contactID,
             String firstname,
             String pictureURL,
             String pictureLocalURI,
             String category
     ) {
+        this.contactID = contactID;
         this.firstname = firstname;
         this.pictureURL = pictureURL;
         this.pictureLocalURI = pictureLocalURI;
         this.category = category;
     }
 
+
     @Override
     public String toString() {
         return "LocalContactData{" +
-                "firstname='" + firstname + '\'' +
+                "contactID='" + contactID + '\'' +
+                ", firstname='" + firstname + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
                 ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", category='" + category + '\'' +
@@ -45,6 +51,8 @@ public class LocalContactData {
     }
 
     //get-methods
+    public String getContactID() { return contactID; }
+
     public String getFirstname() { return firstname; }
 
     public String getPictureURL() { return pictureURL; }
@@ -56,6 +64,8 @@ public class LocalContactData {
     public Boolean getSelected() { return selected; }
 
     //set-methods
+    public void setContactID(String contactID) { this.contactID = contactID; }
+
     public void setFirstname(String firstname) { this.firstname = firstname; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
