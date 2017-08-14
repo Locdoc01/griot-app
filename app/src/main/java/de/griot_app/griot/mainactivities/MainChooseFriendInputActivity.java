@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,13 +31,17 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     private static final String TAG = MainChooseFriendInputActivity.class.getSimpleName();
 
     private ListView mListViewPersons;
-    private View mListViewHeader;
 
     private CombinedPersonListCreator mCombinedListCreator;
 
     private Query mQueryYou;
-    private Query mQueryGuests;
-    private Query mQueryFriends;
+    //private Query mQueryGuests;
+    //private Query mQueryFriends;
+
+    private String narratorID;
+    private String narratorName;
+    private String narratorPictureURL;
+    private Boolean narratorIsUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mButtonRight.setText(R.string.button_next);
 
         mListViewPersons = (ListView) findViewById(R.id.listView_main_input_choose_friend);
+        mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+
 
     }
 
@@ -61,8 +69,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mUserID = mUser.getUid();
 
         mQueryYou = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
-        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        //mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
+        //mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
 
         mQueryYou.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,7 +105,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
                 } catch (Exception e) {}
 
                 mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, mLocalUserData, mListViewPersons);
-                mCombinedListCreator.add(mQueryGuests).add(mQueryFriends);
+                //mCombinedListCreator.add(mQueryGuests).add(mQueryFriends);
                 mCombinedListCreator.loadData();
 
             }
@@ -136,7 +144,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        startActivity(new Intent(this, ChooseTopicInputActivity.class));
+        Log.d(TAG, "mListViewPersons.getCheckedItemPosition: " + mListViewPersons.getCheckedItemPosition());
+        //startActivity(new Intent(this, ChooseTopicInputActivity.class));
         //daten weiterreichen
     }
 

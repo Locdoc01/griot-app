@@ -10,6 +10,7 @@ public class LocalContactData {
     protected String pictureURL;
     protected String pictureLocalURI;
     protected String category;
+    protected Boolean selected = false;
 
     //default-constructor
     public LocalContactData() {
@@ -52,6 +53,8 @@ public class LocalContactData {
 
     public String getCategory() { return category; }
 
+    public Boolean getSelected() { return selected; }
+
     //set-methods
     public void setFirstname(String firstname) { this.firstname = firstname; }
 
@@ -60,4 +63,6 @@ public class LocalContactData {
     public void setPictureLocalURI(String pictureLocalURI) { this.pictureLocalURI = pictureLocalURI; }
 
     public void setCategory(String category) { this.category = category; }
+
+    public void setSelected(Boolean selected) { this.selected = selected; }
 }

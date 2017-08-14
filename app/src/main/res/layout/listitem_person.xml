@@ -48,15 +48,17 @@
         app:layout_constraintHorizontal_bias="0.005" />
 
     <ImageView
-        android:id="@+id/button_choose"
+        android:id="@+id/button_check"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        app:srcCompat="@drawable/check"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
         app:layout_constraintTop_toBottomOf="@id/textView_list_seperator"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"/>
+        app:layout_constraintHorizontal_bias="0.95"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

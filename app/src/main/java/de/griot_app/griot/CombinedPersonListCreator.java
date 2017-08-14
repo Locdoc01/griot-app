@@ -1,19 +1,27 @@
 package de.griot_app.griot;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import de.griot_app.griot.adapter.LocalPersonDataAdapter;
+import de.griot_app.griot.adapter.LocalPersonDataAdapterWithViewHolder;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
@@ -37,7 +45,13 @@ public class CombinedPersonListCreator {
     private ArrayList<LocalPersonData> mCombinedList;
 
     private ArrayList<ArrayList<LocalPersonData>> mSingleLists;
-    private ArrayList<Query> mQuerys;
+
+    private FirebaseDatabase mDatabase;
+    private FirebaseStorage mStorage;
+    private DatabaseReference mDatabaseRef;
+    private StorageReference mStorageRef;
+    private ArrayList<Query> mDatabaseQuerys;
+    private ArrayList<StorageReference> mStorageReferences;
 
     private LocalPersonDataAdapter mAdapter;
 
@@ -53,9 +67,23 @@ public class CombinedPersonListCreator {
         mCombinedListView = combinedlistView;
         mCombinedList = new ArrayList<>();
 
+        mDatabaseQuerys = new ArrayList<>();
         mSingleLists = new ArrayList<>();
-        mQuerys = new ArrayList<>();
+        mStorageReferences = new ArrayList<>();
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mStorage = FirebaseStorage.getInstance();
+
+        mDatabaseQuerys.add(mDatabase.getReference().child("guests"));      //TODO genauer spezifizieren
+        mSingleLists.add(new ArrayList<LocalPersonData>());
+        //mStorageReferences.add(mStorage.getReference().child("guests"));
+
+        mDatabaseQuerys.add(mDatabase.getReference().child("users"));     //TODO genauer spezifizieren
+        mSingleLists.add(new ArrayList<LocalPersonData>());
+        //mStorageReferences.add(mStorage.getReference().child("users"));
+
     }
+
 
     /**
      * Adds a database query from where the data will be read and puts it in a list container.
@@ -64,25 +92,26 @@ public class CombinedPersonListCreator {
      * @param query A database query, from which the data will be obtained.
      * @return A this-reference
      */
+    /*
     public CombinedPersonListCreator add(Query query) {
         Log.d(TAG, "add:");
 
-        mQuerys.add(query);
+        mDatabaseQuerys.add(query);
         mSingleLists.add(new ArrayList<LocalPersonData>());
 
         return this;
     }
-
+*/
 
     /**
      * Adds a ValueEventListener for a single valueEvent (reads only once) to each database query in the query list container.
-     * The listener will be returned from getValueEventListener()
+     * The listener will be returned from getDatabaseValueEventListener()
      */
     public void loadData() {
         Log.d(TAG, "loadData:");
 
-        for ( int i=0 ; i<mQuerys.size() ; i++ ) {
-            mQuerys.get(i).addListenerForSingleValueEvent(getValueEventListener(mSingleLists.get(i), mQuerys.get(i)));
+        for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
+            mDatabaseQuerys.get(i).addListenerForSingleValueEvent(getDatabaseValueEventListener(mSingleLists.get(i), mDatabaseQuerys.get(i)));
         }
     }
 
@@ -94,13 +123,13 @@ public class CombinedPersonListCreator {
      * @param query The database query, from which the data will be obtained.
      * @return The created ValueEventListener
      */
-    private ValueEventListener getValueEventListener(final ArrayList<LocalPersonData> list, final Query query) {
-        Log.d(TAG, "getValueEventListener:");
+    private ValueEventListener getDatabaseValueEventListener(final ArrayList<LocalPersonData> list, final Query query) {
+        Log.d(TAG, "getDatabaseValueEventListener:");
 
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "getValueEventListener: onDataChange:");
+                Log.d(TAG, "getDatabaseValueEventListener: onDataChange:");
                 list.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
@@ -117,7 +146,37 @@ public class CombinedPersonListCreator {
                             break;
                     }
                 }
+
+                for ( int i=0 ; i<list.size() ; i++ ) {
+                    final int index = i;
+                    File file = null;
+                    try {
+                        file = File.createTempFile("user" + i + "_", ".jpg");
+                    } catch (Exception e) {
+                    }
+                    final String path = file.getPath();
+
+                    try {
+                        mStorageRef = mStorage.getReferenceFromUrl(list.get(index).getPictureURL());
+                        mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                list.get(index).setPictureLocalURI(path);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error downloading user profile image file");
+                                list.get(index).setPictureLocalURI("");
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    } catch (Exception e) {}
+                }
+
                 combineList();
+
             }
 
             @Override
@@ -136,7 +195,7 @@ public class CombinedPersonListCreator {
 
         mCombinedList.clear();
         mCombinedList.add(mLocalUserData);
-        for ( int i=0 ; i<mQuerys.size() ; i++ ) {
+        for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
             // wenn es sich um die Liste der Gäste handelt, muss die headline vom ersten Item entfernt
             // werden und ein weiteres Item eingefügt werden, um einen Nutzer hinzuzufügen
             if (!mSingleLists.get(i).isEmpty()) {

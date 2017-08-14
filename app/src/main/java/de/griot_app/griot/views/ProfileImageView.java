@@ -70,6 +70,12 @@ public class ProfileImageView extends ConstraintLayout {
     public ImageView getProfileImagePlus() { return mProfileImagePlus; }
 
     /**
+     * Returns the ImageView, that holds the circular border. Thus it could be changed by ImageView-methods.
+     * @return ImageView, that holds the circular border.
+     */
+    public ImageView getProfileImageCircle() { return mProfileImageCircle; }
+
+    /**
      * Sets the background color around the circle to Griot-white. (default)
      */
     public void setWhite() { mProfileImageCircle.setImageResource(R.drawable.piv_circle_white); }

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,15 +31,15 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
 
     private final Context mContext;
 
+    private int position;
+    private TextView tvListSeperator;
+    private ProfileImageView pivPerson;
+    private TextView tvPerson;
+    private ImageView btnCheck;
+
     private ArrayList<LocalPersonData> mListData;
 
-    static class ViewHolder {
-        public int position;
-        public TextView tvListSeperator;
-        public ProfileImageView pivPerson;
-        public TextView tvPerson;
-        public ImageView btnChoose;
-    }
+    private LocalPersonData mChecked = null;
 
     public LocalPersonDataAdapter(Context context, ArrayList<LocalPersonData> data) {
         super(context, R.layout.listitem_person, data);
@@ -46,38 +50,62 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
 
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.listitem_person, null);
-            holder = new ViewHolder();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.listitem_person, null);
 
-            holder.tvListSeperator = (TextView) convertView.findViewById(R.id.textView_list_seperator);
-            holder.pivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
-            holder.tvPerson = (TextView) convertView.findViewById(R.id.textView_person);
-            holder.btnChoose = (ImageView) convertView.findViewById(R.id.button_choose);
+        tvListSeperator = (TextView) v.findViewById(R.id.textView_list_seperator);
+        pivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
+        tvPerson = (TextView) v.findViewById(R.id.textView_person);
+        btnCheck = (ImageView) v.findViewById(R.id.button_check);
 
-            convertView.setTag(holder);
+        this.position = position;
+
+        if (mListData.get(position).getCategory()!=null) {
+            tvListSeperator.setVisibility(View.VISIBLE);
+            tvListSeperator.setText(mListData.get(position).getCategory());
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            tvListSeperator.setVisibility(View.GONE);
         }
 
-        holder.position = position;
-        if (!mListData.get(position).getCategory().equals(null)) {  //TODO: Prüfung auf null ok?
-            holder.tvListSeperator.setVisibility(View.VISIBLE);
-            holder.tvListSeperator.setText(mListData.get(position).getCategory());
+        ListView lv = (ListView) parent;
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mChecked==null) {
+                    mChecked = getItem(position);
+                    mChecked.setSelected(true);
+                } else {
+                    if (mChecked==getItem(position)) {
+                        mChecked.setSelected(false);
+                        mChecked = null;
+                    } else {
+                        mChecked.setSelected(false);
+                        mChecked = getItem(position);
+                        mChecked.setSelected(true);
+                    }
+                }
+                notifyDataSetChanged();
+            }
+        });
+        if (mListData.get(position).getSelected()) {
+            btnCheck.setVisibility(View.VISIBLE);
         } else {
-            holder.tvListSeperator.setVisibility(View.GONE);
+            btnCheck.setVisibility(View.GONE);
         }
-        try {
-            holder.pivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-        } catch (Exception e) {}
-        holder.tvPerson.setText(mListData.get(position).getFirstname() + " " + mListData.get(position).getLastname());
-        if (true) {
-            holder.btnChoose.setVisibility(View.VISIBLE);
+        if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
+            pivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
+            pivPerson.getProfileImagePlus().setVisibility(View.GONE);
+            pivPerson.getProfileImageCircle().setVisibility(View.GONE);
+        } else {
+            try {
+                pivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+            } catch (Exception e) {
+            }
         }
 
-        return convertView;
+        tvPerson.setText(mListData.get(position).getFirstname() + " " + mListData.get(position).getLastname());
+
+        return v;
     }
 }
