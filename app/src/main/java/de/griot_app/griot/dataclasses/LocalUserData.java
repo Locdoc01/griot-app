@@ -76,6 +76,21 @@ public class LocalUserData extends LocalPersonData {
         this.extraQuestions = extraQuestions;
     }
 
+    @Override
+    public String toString() {
+        return "LocalUserData{" +
+                "interviewsOwn=" + interviewsOwn +
+                ", interviewsAssociated=" + interviewsAssociated +
+                ", guests=" + guests +
+                ", friends=" + friends +
+                ", groups=" + groups +
+                ", standardTopics=" + standardTopics +
+                ", extraTopics=" + extraTopics +
+                ", standardQuestions=" + standardQuestions +
+                ", extraQuestions=" + extraQuestions +
+                '}';
+    }
+
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }
 

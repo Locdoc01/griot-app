@@ -40,11 +40,18 @@ public class LocalGuestData extends LocalPersonData {
         this.relationshop = relationship;
     }
 
+    @Override
+    public String toString() {
+        return "LocalGuestData{" +
+                "hostID=" + hostID +
+                ", relationshop='" + relationshop + '\'' +
+                '}';
+    }
+
     //get-methods
     public HashMap<String, Boolean> getHostID() { return hostID; }
 
     public String getRelationshop() { return relationshop; }
-
 
     //set-methods
     public void setHostID(HashMap<String, Boolean> hostID) { this.hostID = hostID; }

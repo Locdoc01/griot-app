@@ -39,6 +39,18 @@ public class ContentData {
         this.tags = tags;
     }
 
+    @Override
+    public String toString() {
+        return "ContentData{" +
+                "length='" + length + '\'' +
+                ", pictureURL='" + pictureURL + '\'' +
+                ", pictureLocalURI='" + pictureLocalURI + '\'' +
+                ", associatedUsers=" + associatedUsers +
+                ", associatedGuests=" + associatedGuests +
+                ", tags=" + tags +
+                '}';
+    }
+
     //get-methods
     public String getLength() { return length; }
 

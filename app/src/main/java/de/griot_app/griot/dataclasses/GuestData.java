@@ -40,6 +40,14 @@ public class GuestData extends PersonData {
         this.relationshop = relationship;
     }
 
+    @Override
+    public String toString() {
+        return "GuestData{" +
+                "hostID=" + hostID +
+                ", relationshop='" + relationshop + '\'' +
+                '}';
+    }
+
     //get-methods
     public HashMap<String, Boolean> getHostID() { return hostID; }
 

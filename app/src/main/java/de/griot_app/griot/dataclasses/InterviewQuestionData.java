@@ -35,6 +35,15 @@ public class InterviewQuestionData extends ContentData {
         this.recordURL = recordURL;
     }
 
+    @Override
+    public String toString() {
+        return "InterviewQuestionData{" +
+                "interviewID=" + interviewID +
+                ", question='" + question + '\'' +
+                ", recordURL='" + recordURL + '\'' +
+                '}';
+    }
+
     //get-methods
     public HashMap<String, Boolean> getInterviewID() { return interviewID; }
 

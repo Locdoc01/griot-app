@@ -33,6 +33,16 @@ public class LocalContactData {
         this.category = category;
     }
 
+    @Override
+    public String toString() {
+        return "LocalContactData{" +
+                "firstname='" + firstname + '\'' +
+                ", pictureURL='" + pictureURL + '\'' +
+                ", pictureLocalURI='" + pictureLocalURI + '\'' +
+                ", category='" + category + '\'' +
+                '}';
+    }
+
     //get-methods
     public String getFirstname() { return firstname; }
 

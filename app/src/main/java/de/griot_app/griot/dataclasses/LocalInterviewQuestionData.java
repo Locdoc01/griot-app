@@ -35,6 +35,15 @@ public class LocalInterviewQuestionData extends LocalContentData {
         this.recordURL = recordURL;
     }
 
+    @Override
+    public String toString() {
+        return "LocalInterviewQuestionData{" +
+                "interviewID=" + interviewID +
+                ", question='" + question + '\'' +
+                ", recordURL='" + recordURL + '\'' +
+                '}';
+    }
+
     //get-methods
     public HashMap<String, Boolean> getInterviewID() { return interviewID; }
 

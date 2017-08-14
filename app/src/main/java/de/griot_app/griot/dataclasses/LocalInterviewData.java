@@ -80,6 +80,28 @@ public class LocalInterviewData extends LocalContentData {
         this.interviewQuestions = interviewQuestions;
     }
 
+    @Override
+    public String toString() {
+        return "LocalInterviewData{" +
+                "title='" + title + '\'' +
+                ", date='" + date + '\'' +
+                ", topic='" + topic + '\'' +
+                ", medium='" + medium + '\'' +
+                ", interviewerID=" + interviewerID +
+                ", interviewerName='" + interviewerName + '\'' +
+                ", interviewerPictureURL='" + interviewerPictureURL + '\'' +
+                ", interviewerPictureLocalURI='" + interviewerPictureLocalURI + '\'' +
+                ", narratorID=" + narratorID +
+                ", narratorName='" + narratorName + '\'' +
+                ", narratorPictureURL='" + narratorPictureURL + '\'' +
+                ", narratorPictureLocalURI='" + narratorPictureLocalURI + '\'' +
+                ", narratorIsUser=" + narratorIsUser +
+                ", numberComments=" + numberComments +
+                ", comments=" + comments +
+                ", interviewQuestions=" + interviewQuestions +
+                '}';
+    }
+
     //get-methods
     public String getTitle() { return title; }
 

@@ -37,6 +37,18 @@ public class LocalCommentData {
         this.commentatorPictureLocalURI = commentatorPictureLocalURI;
     }
 
+    @Override
+    public String toString() {
+        return "LocalCommentData{" +
+                "comment='" + comment + '\'' +
+                ", time='" + time + '\'' +
+                ", commentatorID=" + commentatorID +
+                ", commentatorName='" + commentatorName + '\'' +
+                ", commentatorPictureURL='" + commentatorPictureURL + '\'' +
+                ", commentatorPictureLocalURI='" + commentatorPictureLocalURI + '\'' +
+                '}';
+    }
+
     //get-methods
     public String getComment() { return comment; }
 

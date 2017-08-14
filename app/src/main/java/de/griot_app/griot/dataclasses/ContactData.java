@@ -33,6 +33,16 @@ public class ContactData {
         this.category = category;
     }
 
+    @Override
+    public String toString() {
+        return "ContactData{" +
+                "firstname='" + firstname + '\'' +
+                ", pictureURL='" + pictureURL + '\'' +
+                ", pictureLocalURI='" + pictureLocalURI + '\'' +
+                ", category='" + category + '\'' +
+                '}';
+    }
+
     //get-methods
     public String getFirstname() { return firstname; }
 

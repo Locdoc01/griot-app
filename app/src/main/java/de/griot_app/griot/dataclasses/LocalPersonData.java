@@ -35,6 +35,15 @@ public class LocalPersonData extends LocalContactData {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "LocalPersonData{" +
+                "lastname='" + lastname + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     //get-methods
     public String getLastname() { return lastname; }
 

@@ -34,6 +34,17 @@ public class CommentData {
         this.commentatorPictureURL = commentatorPictureURL;
     }
 
+    @Override
+    public String toString() {
+        return "CommentData{" +
+                "comment='" + comment + '\'' +
+                ", time='" + time + '\'' +
+                ", commentatorID=" + commentatorID +
+                ", commentatorName='" + commentatorName + '\'' +
+                ", commentatorPictureURL='" + commentatorPictureURL + '\'' +
+                '}';
+    }
+
     //get-methods
     public String getComment() { return comment; }
 
