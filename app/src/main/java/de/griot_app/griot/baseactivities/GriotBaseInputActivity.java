@@ -30,9 +30,9 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
     protected Button mButtonRight;
 
     /**
-     * Abstract method, which returns the appropriate layout id for extending subclass.
+     * Abstract method, which returns the appropriate layout contactID for extending subclass.
      * This method can be used in onCreate() to inflate the appropriate layout for the extending subclass
-     * @return  layout id for extending subclass
+     * @return  layout contactID for extending subclass
      */
     protected abstract int getSubClassLayoutId();
 

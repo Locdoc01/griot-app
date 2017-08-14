@@ -3,10 +3,11 @@ package de.griot_app.griot.mainactivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,6 +39,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     //private Query mQueryGuests;
     //private Query mQueryFriends;
 
+    private LocalPersonData mSelectedItem;
+
     private String narratorID;
     private String narratorName;
     private String narratorPictureURL;
@@ -52,10 +55,38 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
+        mButtonRight.setEnabled(false);
+        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
         mListViewPersons = (ListView) findViewById(R.id.listView_main_input_choose_friend);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
+        mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mSelectedItem==null) {
+                    mSelectedItem = mCombinedListCreator.getAdapter().getItem(position);
+                    mSelectedItem.setSelected(true);
+                    mButtonRight.setEnabled(true);
+                    mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                } else {
+                    if (mSelectedItem==mCombinedListCreator.getAdapter().getItem(position)) {
+                        mSelectedItem.setSelected(false);
+                        mSelectedItem = null;
+                        mButtonRight.setEnabled(false);
+                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+                    } else {
+                        mSelectedItem.setSelected(false);
+                        mSelectedItem = mCombinedListCreator.getAdapter().getItem(position);
+                        mSelectedItem.setSelected(true);
+                        mButtonRight.setEnabled(true);
+                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+
+                    }
+                }
+                mCombinedListCreator.getAdapter().notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -144,9 +175,14 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        Log.d(TAG, "mListViewPersons.getCheckedItemPosition: " + mListViewPersons.getCheckedItemPosition());
-        //startActivity(new Intent(this, ChooseTopicInputActivity.class));
-        //daten weiterreichen
+        Log.d(TAG, "mAgetSelectedItem: " + mSelectedItem);
+        Intent intent = new Intent(this, ChooseTopicInputActivity.class);
+        if (mSelectedItem != null) {
+            intent.putExtra("narratorId", mSelectedItem.getContactID());
+            intent.putExtra("narratorName", mSelectedItem.getFirstname() + " " + mSelectedItem.getLastname());
+            //intent.putExtra("narratorPictureLocalURI", mSelectedItem.getPictureLocalURI());
+        }
+        startActivity(intent);
     }
 
 }

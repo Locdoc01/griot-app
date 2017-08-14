@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
@@ -18,6 +19,9 @@ public class ComposeQuestionRequestInputActivity extends GriotBaseInputActivity 
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
+        mButtonRight.setEnabled(false);
+        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+
     }
 
     @Override

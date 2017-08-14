@@ -18,7 +18,7 @@ import de.griot_app.griot.R;
  * can be set by one of of its own ImageView-class-methods.
  *
  * Example:
- * ProfileImageView piv = findViewById(R.id.profile_image);
+ * ProfileImageView piv = findViewById(R.contactID.profile_image);
  * piv.getProfileImage.setImageURI(uri);
  */
 public class ProfileImageView extends ConstraintLayout {

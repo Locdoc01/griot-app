@@ -43,9 +43,9 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
     protected FloatingActionButton mButtonQuestionmail;
 
     /**
-     * Abstract method, which returns the appropriate layout id for extending subclass.
+     * Abstract method, which returns the appropriate layout contactID for extending subclass.
      * This method can be used in onCreate() to inflate the appropriate layout for the extending subclass
-     * @return  layout id for extending subclass
+     * @return  layout contactID for extending subclass
      */
     protected abstract int getSubClassLayoutId();
 
