@@ -41,6 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
+        android:listSelector="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@id/editText_search_person"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
         app:layout_constraintLeft_toLeftOf="parent"
