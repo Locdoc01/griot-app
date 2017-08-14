@@ -1,11 +1,14 @@
 package de.griot_app.griot.dataclasses;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 
 /**
  * Data holding class for locally holded user data
  */
-public class LocalUserData extends LocalPersonData {
+public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
 
     private HashMap<String, Boolean> interviewsOwn;
     private HashMap<String, Boolean> interviewsAssociated;
@@ -16,6 +19,21 @@ public class LocalUserData extends LocalPersonData {
     private HashMap<String, Boolean> extraTopics;
     private HashMap<String, String> standardQuestions;
     private HashMap<String, String> extraQuestions;
+
+    /*
+    //necessary for Parcelable-interface-implementation
+    public static final Parcelable.Creator<LocalUserData> CREATOR = new Parcelable.Creator<LocalUserData>() {
+        @Override
+        public LocalUserData createFromParcel(Parcel source) {
+            return new LocalUserData(source);
+        }
+
+        @Override
+        public LocalUserData[] newArray(int size) {
+            return new LocalUserData[size];
+        }
+    };
+    */
 
     //default-constructor
     public LocalUserData() {
@@ -75,6 +93,56 @@ public class LocalUserData extends LocalPersonData {
         this.standardQuestions = standardQuestions;
         this.extraQuestions = extraQuestions;
     }
+
+    /*
+    //following methods are necessary for Parcelable-interface-implementation
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(firstname);
+        dest.writeString(lastname);
+        dest.writeString(birthday);
+        dest.writeString(email);
+        dest.writeString(pictureURL);
+        dest.writeString(pictureLocalURI);
+        dest.writeString(category);
+        dest.writeMap(interviewsOwn);
+        dest.writeMap(interviewsAssociated);
+        dest.writeMap(guests);
+        dest.writeMap(friends);
+        dest.writeMap(groups);
+        dest.writeMap(standardTopics);
+        dest.writeMap(extraTopics);
+        dest.writeMap(standardQuestions);
+        dest.writeMap(extraQuestions);
+    }
+
+    private void readFromParcel(Parcel in) {
+        firstname = in.readString();
+        lastname = in.readString();
+        birthday = in.readString();
+        email = in.readString();
+        pictureURL = in.readString();
+        pictureLocalURI = in.readString();
+        category = in.readString();
+        interviewsOwn = in.readHashMap(HashMap.class.getClassLoader());         //TODO korrigieren
+        interviewsAssociated = in.readHashMap(HashMap.class.getClassLoader());  //...
+        guests = in.readHashMap(HashMap.class.getClassLoader());                //
+        friends = in.readHashMap(HashMap.class.getClassLoader());
+        groups = in.readHashMap(HashMap.class.getClassLoader());
+        standardTopics = in.readHashMap(HashMap.class.getClassLoader());
+        extraTopics = in.readHashMap(HashMap.class.getClassLoader());
+        standardQuestions = in.readHashMap(HashMap.class.getClassLoader());
+        extraQuestions = in.readHashMap(HashMap.class.getClassLoader());
+    }
+
+    private LocalUserData(Parcel in){
+        readFromParcel(in);
+    }
+    */
 
     @Override
     public String toString() {
