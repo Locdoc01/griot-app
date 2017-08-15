@@ -38,6 +38,7 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
     //default-constructor
     public LocalUserData() {
         super();
+        isUser = true;
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
@@ -52,6 +53,7 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
     //TODO: evt nicht benötigt
     public LocalUserData(String category) {
         super(category);
+        isUser = true;
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
@@ -84,6 +86,7 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
             HashMap<String, String> extraQuestions
     ) {
         super(contactID, firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
+        isUser = true;
         this.interviewsOwn = interviewsOwn;
         this.interviewsAssociated = interviewsAssociated;
         this.guests = guests;

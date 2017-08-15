@@ -29,14 +29,12 @@ public class LocalPersonData extends LocalContactData {
             String email,
             String pictureURL,
             String pictureLocalURI,
-            String category,
-            Boolean isUser
+            String category
     ) {
         super(contactID, firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
         this.email = email;
-        this.isUser = false;
     }
 
     @Override

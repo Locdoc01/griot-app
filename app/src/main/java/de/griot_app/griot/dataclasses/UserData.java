@@ -20,6 +20,7 @@ public class UserData extends PersonData {
     //default-constructor
     public UserData() {
         super();
+        isUser = true;
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
@@ -34,6 +35,7 @@ public class UserData extends PersonData {
     //TODO: evt nicht benötigt
     public UserData(String category) {
         super(category);
+        isUser = true;
         interviewsOwn = new HashMap<>();
         interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
@@ -65,6 +67,7 @@ public class UserData extends PersonData {
             HashMap<String, String> extraQuestions
     ) {
         super(firstname, lastname, birthday, email, pictureURL, pictureLocalURI, category);
+        isUser = true;
         this.interviewsOwn = interviewsOwn;
         this.interviewsAssociated = interviewsAssociated;
         this.guests = guests;

@@ -566,7 +566,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     mUserData.setLastname(mEditLastname.getText().toString().trim());
                     mUserData.setBirthday(mCalendar.getTime().toString());
                     mUserData.setEmail(mEditCreateAccountEmail.getText().toString().trim());
-                    mUserData.setIsUser(true);
+                    //mUserData.setIsUser(true);    //TODO: wahrscheinlich nicht nötig, aber testen
 
                     //set storage reference to /users/mUserID/profilePicture
                     mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
