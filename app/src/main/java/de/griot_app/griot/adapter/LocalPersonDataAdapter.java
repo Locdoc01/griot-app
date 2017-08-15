@@ -46,7 +46,6 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.listitem_person, null);
 
@@ -80,7 +79,7 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
             }
         }
 
-        tvPerson.setText(mListData.get(position).getFirstname() + " " + mListData.get(position).getLastname());
+        tvPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
 
         return v;
     }
