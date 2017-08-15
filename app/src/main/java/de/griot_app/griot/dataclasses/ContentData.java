@@ -10,7 +10,7 @@ public class ContentData {
 
     protected String length;
     protected String pictureURL;
-    protected String pictureLocalURI;
+//    protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
     protected HashMap<String, Boolean> associatedGuests;
     protected HashMap<String, Boolean> tags;
@@ -26,14 +26,14 @@ public class ContentData {
     public ContentData(
             String length,
             String pictureURL,
-            String pictureLocalURI,
+//            String pictureLocalURI,
             HashMap<String, Boolean> associatedUsers,
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
         this.length = length;
         this.pictureURL = pictureURL;
-        this.pictureLocalURI = pictureLocalURI;
+//        this.pictureLocalURI = pictureLocalURI;
         this.associatedUsers = associatedUsers;
         this.associatedGuests = associatedGuests;
         this.tags = tags;
@@ -44,7 +44,7 @@ public class ContentData {
         return "ContentData{" +
                 "length='" + length + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
-                ", pictureLocalURI='" + pictureLocalURI + '\'' +
+//                ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
                 ", associatedGuests=" + associatedGuests +
                 ", tags=" + tags +
@@ -56,7 +56,7 @@ public class ContentData {
 
     public String getPictureURL() { return pictureURL; }
 
-    public String getPictureLocalURI() { return pictureLocalURI; }
+//    public String getPictureLocalURI() { return pictureLocalURI; }
 
     public HashMap<String, Boolean> getAssociatedUsers() { return associatedUsers; }
 
@@ -69,7 +69,7 @@ public class ContentData {
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 
-    public void setPictureLocalURI(String pictureLocalURI) { this.pictureLocalURI = pictureLocalURI; }
+//    public void setPictureLocalURI(String pictureLocalURI) { this.pictureLocalURI = pictureLocalURI; }
 
     public void setAssociatedUsers(HashMap<String, Boolean> associatedUsers) { this.associatedUsers = associatedUsers; }
 

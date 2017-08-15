@@ -3,7 +3,7 @@ package de.griot_app.griot.dataclasses;
 import java.util.HashMap;
 
 /**
- * Data holding class for locally holded user data
+ * Data holding class for user data
  */
 public class UserData extends PersonData {
 

@@ -1,7 +1,7 @@
 package de.griot_app.griot.dataclasses;
 
 /**
- * Bases local data class for local person data classes
+ * Bases data class for person data classes
  */
 public class PersonData extends ContactData {
 

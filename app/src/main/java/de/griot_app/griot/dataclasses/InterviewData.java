@@ -57,7 +57,7 @@ public class InterviewData extends ContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(length, pictureURL, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.date = date;
         this.topic = topic;

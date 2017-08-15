@@ -29,7 +29,7 @@ public class InterviewQuestionData extends ContentData {
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
-        super(length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(length, pictureURL, associatedUsers, associatedGuests, tags);
         this.interviewID = interviewID;
         this.question = question;
         this.recordURL = recordURL;
