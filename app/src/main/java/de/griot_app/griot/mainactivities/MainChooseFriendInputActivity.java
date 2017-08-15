@@ -24,8 +24,10 @@ import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
+import de.griot_app.griot.dataclasses.GuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.UserData;
 
 public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
@@ -40,11 +42,6 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     //private Query mQueryFriends;
 
     private LocalPersonData mSelectedItem;
-
-    private String narratorID;
-    private String narratorName;
-    private String narratorPictureURL;
-    private Boolean narratorIsUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,8 +175,10 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         Log.d(TAG, "mAgetSelectedItem: " + mSelectedItem);
         Intent intent = new Intent(this, ChooseTopicInputActivity.class);
         if (mSelectedItem != null) {
-            intent.putExtra("narratorId", mSelectedItem.getContactID());
-            intent.putExtra("narratorName", mSelectedItem.getFirstname() + " " + mSelectedItem.getLastname());
+            intent.putExtra("narratorID", mSelectedItem.getContactID());
+            intent.putExtra("narratorName", mSelectedItem.getFirstname() + (mSelectedItem.getLastname() == null ? "" : " " + mSelectedItem.getLastname()));
+            intent.putExtra("narratorPictureURL", mSelectedItem.getPictureURL());
+            intent.putExtra("narratorIsUser", mSelectedItem.getIsUser());
             //intent.putExtra("narratorPictureLocalURI", mSelectedItem.getPictureLocalURI());
         }
         startActivity(intent);
