@@ -4,13 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 
+import de.griot_app.griot.adapter.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.R;
+import de.griot_app.griot.dataclasses.LocalPersonData;
+import de.griot_app.griot.dataclasses.QuestionGroup;
+import de.griot_app.griot.dataclasses.TopicCatalog;
 
 public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ChooseTopicInputActivity.class.getSimpleName();
+
+    private String narratorID;
+    private String narratorName;
+    private String narratorPictureURL;
+    private Boolean narratorIsUser;
+
+    TopicCatalog mTopicCatalog;
+    ExpandableListView mExpandListView;
+    TopicCatalogAdapter mAdapter;
+
+    private QuestionGroup mSelectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +41,48 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonRight.setEnabled(false);
         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
-        //TODO: Hole Daten vom Intent
+        narratorID = getIntent().getStringExtra("narratorID");
+        narratorName = getIntent().getStringExtra("narratorName");
+        narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
+        narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
+
+        mExpandListView = (ExpandableListView) findViewById(R.id.expandListView_input_choose_topic);
+
+        /*
+        mExpandListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mSelectedItem==null) {
+                    mSelectedItem = mAdapter.getGroup(position);
+                    mSelectedItem.setSelected(true);
+                    mButtonRight.setEnabled(true);
+                    mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                } else {
+                    if (mSelectedItem==mCombinedListCreator.getAdapter().getItem(position)) {
+                        mSelectedItem.setSelected(false);
+                        mSelectedItem = null;
+                        mButtonRight.setEnabled(false);
+                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+                    } else {
+                        mSelectedItem.setSelected(false);
+                        mSelectedItem = mCombinedListCreator.getAdapter().getItem(position);
+                        mSelectedItem.setSelected(true);
+                        mButtonRight.setEnabled(true);
+                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+
+                    }
+                }
+                mCombinedListCreator.getAdapter().notifyDataSetChanged();
+            }
+        });
+*/
+
+        mTopicCatalog = new TopicCatalog();
+
+        // TODO Daten einlesen
+
+        mAdapter = new TopicCatalogAdapter(this, mTopicCatalog);
+        mExpandListView.setAdapter(mAdapter);
 
     }
 

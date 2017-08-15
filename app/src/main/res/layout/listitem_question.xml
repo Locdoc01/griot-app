@@ -7,9 +7,9 @@
     android:layout_height="?android:attr/listPreferredItemHeight">
 
     <TextView
-        android:id="@+id/textView_topic"
+        android:id="@+id/textView_question"
         style="@style/AppTheme.Text_Normal"
-        android:text="Batman"
+        android:text="Question"
         android:layout_margin="5dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,17 +18,16 @@
         app:layout_constraintHorizontal_bias="0.05" />
 
     <ImageView
-        android:id="@+id/button_check"
+        android:id="@+id/button_toggle"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        app:srcCompat="@drawable/check"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/toggle_on"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        android:visibility="gone"/>
+        app:layout_constraintHorizontal_bias="0.95" />
 
 </android.support.constraint.ConstraintLayout>

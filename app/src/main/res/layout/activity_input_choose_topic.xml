@@ -74,8 +74,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ListView
-        android:id="@+id/listView_input_choose_topic"
+    <ExpandableListView
+        android:id="@+id/expandListView_input_choose_topic"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
