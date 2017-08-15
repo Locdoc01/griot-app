@@ -8,6 +8,7 @@ public class PersonData extends ContactData {
     protected String lastname;
     protected String birthday;
     protected String email;
+    protected Boolean isUser = false;
 
     //default-constructor
     public PersonData() {
@@ -27,12 +28,14 @@ public class PersonData extends ContactData {
             String email,
             String pictureURL,
             String pictureLocalURI,
-            String category
+            String category,
+            Boolean isUser
     ) {
         super(firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
         this.email = email;
+        this.isUser = false;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class PersonData extends ContactData {
                 "lastname='" + lastname + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", email='" + email + '\'' +
+                ", isUser='" + isUser + '\'' +
                 '}';
     }
 
@@ -51,10 +55,14 @@ public class PersonData extends ContactData {
 
     public String getEmail() { return email;}
 
+    public Boolean getIsUser() { return isUser; }
+
     //set-methods
     public void setLastname(String lastname) { this.lastname = lastname; }
 
     public void setBirthday(String birthday) { this.birthday = birthday; }
 
     public void setEmail(String email) { this.email = email; }
+
+    public void setIsUser(Boolean isUser) { this.isUser = isUser; }
 }
