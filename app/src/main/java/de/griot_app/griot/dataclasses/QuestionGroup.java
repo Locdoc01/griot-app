@@ -9,6 +9,7 @@ import java.util.List;
 
 public class QuestionGroup {
 
+    private int topicKey;
     private String topic;
     private List<String> questions;
     protected Boolean selected = false;
@@ -18,21 +19,18 @@ public class QuestionGroup {
         questions = new ArrayList<>();
     }
 
-    //constructor
-    public QuestionGroup(String topic) {
-        this.topic = topic;
-        this.questions = new ArrayList<>();
-    }
-
     @Override
     public String toString() {
         return "QuestionGroup{" +
+                ", topicKey=" + topicKey + '\'' +
                 ", topic=" + topic + '\'' +
                 ", questions=" + questions +
                 '}';
     }
 
     //get-methods
+    public int getTopicKey() { return topicKey; }
+
     public String getTopic() { return topic; }
 
     public List<String> getQuestions() { return questions; }
@@ -40,6 +38,8 @@ public class QuestionGroup {
     public Boolean getSelected() { return selected; }
 
     //set-methods
+    public void setTopicKey(int topicKey) { this.topicKey = topicKey; }
+
     public void setTopic(String topic) { this.topic = topic; }
 
     public void setQuestions(List<String> questions) { this.questions = questions; }

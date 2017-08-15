@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import de.griot_app.griot.adapter.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.dataclasses.LocalPersonData;
+import de.griot_app.griot.dataclasses.QuestionData;
+import de.griot_app.griot.dataclasses.TopicData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 
@@ -81,9 +84,51 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
         // TODO Daten einlesen
 
-        mAdapter = new TopicCatalogAdapter(this, mTopicCatalog);
-        mExpandListView.setAdapter(mAdapter);
+        mDatabaseRef = mDatabaseRootReference.child("standardTopics");
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mTopicCatalog.getQuestionGroups().clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    TopicData topicData = ds.getValue(TopicData.class);
+                    QuestionGroup group = new QuestionGroup();
 
+                    group.setTopicKey(topicData.getTopicKey());
+                    group.setTopic(topicData.getTopic());
+                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
+                }
+
+                mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
+                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            QuestionData questionData = ds.getValue(QuestionData.class);
+
+                            int topicKey = questionData.getTopicKey();
+                            String question = questionData.getQuestion();
+                            mTopicCatalog.getQuestionGroups().get(topicKey).getQuestions().add(question);
+                        }
+
+                        //TODO: ExtraTopics und ExtraQuestions laden
+
+                        mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
+                        mExpandListView.setAdapter(mAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "Error loading Questions");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "Error loading Topics");
+            }
+        });
     }
 
     @Override
