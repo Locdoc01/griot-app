@@ -24,13 +24,20 @@ import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 
 
-//TODO: Refactoring der Bezeichner
+/**
+ * Main activity that provides an overview over all interviews, the user got access to.
+ */
 public class MainOverviewActivity extends GriotBaseActivity {
 
     private static final String TAG = MainOverviewActivity.class.getSimpleName();
 
+    // ListView, that holds the interview items
     private ListView mListViewInterviews;
+
+    // data list
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
+
+    //Data-View-Adapter for the ListView
     private LocalInterviewDataAdapter mLocalInterviewDataAdapter;
 
     @Override
@@ -44,37 +51,21 @@ public class MainOverviewActivity extends GriotBaseActivity {
 
         mListViewInterviews = (ListView) findViewById(R.id.listView_main_overview);
 
+        // Obtains all necessary data from Firebase
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mListLocalInterviewData.clear();
+                //obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
-/*
-                    if (!mLocalInterviewData.containsKey(ds.getKey())) {
-                        mLocalInterviewData.put(ds.getKey(), ds.getValue(LocalInterviewData.class));
-                        if (!mLocalUserData.containsKey(localInterviewData.getInterviewerID().keySet().iterator().next())) {
-                            mDatabaseRef = mDatabaseRootReference.child("users").child(localInterviewData.getInterviewerID().keySet().iterator().next());
-                            mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    mLocalUserData.put(localInterviewData.getInterviewerID().keySet().iterator().next(), dataSnapshot.getValue(LocalUserData.class));
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
-
-                        }
-                        //TODO: lade weitere fehlende Datensätze von enthaltenen HashMaps in die LocalData-Datensätze
-                    }
-*/
                     mListLocalInterviewData.add(localInterviewData);
                 }
+                // set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainOverviewActivity.this, mListLocalInterviewData);
                 mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
 
+                //create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
@@ -91,6 +82,7 @@ public class MainOverviewActivity extends GriotBaseActivity {
                     final String pathNarrator = fileNarrator.getPath();
 
                     //TODO: try-catch wahrscheinlich nötig, wenn beim Upload der Bilder was schief gelaufen ist.
+                    //Obtain pictures for interview media covers from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getPictureURL());
                         mStorageRef.getFile(fileMediaCover).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -109,6 +101,7 @@ public class MainOverviewActivity extends GriotBaseActivity {
                         });
                     } catch (Exception e) {}
 
+                    //Obtain interviewer profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
                         mStorageRef.getFile(fileInterviewer).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -127,6 +120,7 @@ public class MainOverviewActivity extends GriotBaseActivity {
                         });
                     } catch (Exception e) {}
 
+                    //Obtain narrator profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getNarratorPictureURL());
                         mStorageRef.getFile(fileNarrator).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -144,10 +138,7 @@ public class MainOverviewActivity extends GriotBaseActivity {
                             }
                         });
                     } catch (Exception e) {}
-
                 }
-
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
