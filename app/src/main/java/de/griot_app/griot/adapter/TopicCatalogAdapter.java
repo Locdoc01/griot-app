@@ -41,11 +41,21 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private TextView tvQuestion;
     private ImageView btnToggle;
 
+    private boolean topicsCheckable;
+
     private SparseArray<QuestionGroup> mQuestionGroups;
 
     public TopicCatalogAdapter(Context context, TopicCatalog catalog) {
         mContext = context;
         mQuestionGroups = catalog.getQuestionGroups();
+        this.topicsCheckable = true;
+
+    }
+
+    public TopicCatalogAdapter(Context context, TopicCatalog catalog, boolean topicsCheckable) {
+        mContext = context;
+        mQuestionGroups = catalog.getQuestionGroups();
+        this.topicsCheckable = topicsCheckable;
 
     }
 
@@ -75,6 +85,10 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
                 notifyDataSetChanged();
             }
         });
+
+        if (!topicsCheckable) {
+            btnCheck.setVisibility(View.GONE);
+        }
 
         // if the button is clicked, the appropriate topic gets selected (or unselected)
         btnCheck.setOnClickListener(new View.OnClickListener() {
