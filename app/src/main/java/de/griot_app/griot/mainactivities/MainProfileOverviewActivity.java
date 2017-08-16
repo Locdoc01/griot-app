@@ -1,16 +1,20 @@
 package de.griot_app.griot.mainactivities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,9 +34,10 @@ import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
-public class MainProfileOverviewActivity extends GriotBaseActivity {
+public class MainProfileOverviewActivity extends GriotBaseActivity implements View.OnTouchListener {
 
     private static final String TAG = MainProfileOverviewActivity.class.getSimpleName();
 
@@ -75,6 +80,14 @@ public class MainProfileOverviewActivity extends GriotBaseActivity {
         mImageViewQuestionmail = (ImageView) findViewById(R.id.imageView_questionmail);
         mTextViewQuestionmail = (TextView) findViewById(R.id.textView_questionmail);
         mTextViewMedias = (TextView) findViewById(R.id.textView_medias);
+
+        mButtonAddGuest.setOnTouchListener(this);
+        mTextViewUser.setOnTouchListener(this);
+        mButtonOptions.setOnTouchListener(this);
+        mImageViewFriendsGroups.setOnTouchListener(this);
+        mTextViewFriendsGroups.setOnTouchListener(this);
+        mImageViewQuestionmail.setOnTouchListener(this);
+        mTextViewQuestionmail.setOnTouchListener(this);
 
         mListLocalInterviewData = new ArrayList<>();
 
@@ -183,6 +196,65 @@ public class MainProfileOverviewActivity extends GriotBaseActivity {
 
     @Override
     protected String getSubClassTAG() { return TAG; }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                switch (v.getId()) {
+                    case R.id.button_add_guest:
+                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.textView_user:
+                        mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Profil anzeigen", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.button_options:
+                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.imageView_friends_groups:
+                    case R.id.textView_friends_groups:
+                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Kontaktverwaltung anzeigen", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.imageView_questionmail:
+                    case R.id.textView_questionmail:
+                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        startActivity(new Intent(this, MainQuestionmailActivity.class));
+                        finish();
+                        return true;
+                }
+                return false;
+            case MotionEvent.ACTION_UP:
+                switch (v.getId()) {
+                    case R.id.button_add_guest:
+                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        return true;
+                    case R.id.textView_user:
+                        mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        return true;
+                    case R.id.button_options:
+                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        return true;
+                    case R.id.imageView_friends_groups:
+                    case R.id.textView_friends_groups:
+                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        return true;
+                    case R.id.imageView_questionmail:
+                    case R.id.textView_questionmail:
+                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        return true;
+                }
+                return false;
+        }
+        return false;
+    }
 
     @Override
     protected void onStart() {
