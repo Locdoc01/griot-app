@@ -15,7 +15,7 @@
         android:orientation="horizontal" />
 
     <ImageView
-        android:id="@+id/line_top"
+        android:id="@+id/line_top_"
         style="@style/AppTheme.Lines"
         app:layout_constraintTop_toTopOf="@id/guideline_top"
         app:layout_constraintEnd_toEndOf="parent"
