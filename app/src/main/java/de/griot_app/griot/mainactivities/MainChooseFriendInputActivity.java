@@ -2,13 +2,16 @@ package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +23,7 @@ import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 
+import de.griot_app.griot.ChooseMediumInputActivity;
 import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
@@ -31,32 +35,64 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = MainChooseFriendInputActivity.class.getSimpleName();
 
+    private int narratorSelectedItemID = -1;
+
+    private int topicSelectedItemID;
+    private int topicKey;
+    private String topic;
+
+    TextView mTextViewTopic;
+    ImageView mButtonCancelTopic;
+    ImageView mLineTopic;
+
     private ListView mListViewPersons;
 
     private CombinedPersonListCreator mCombinedListCreator;
 
     private Query mQueryYou;
-    //private Query mQueryGuests;
-    //private Query mQueryFriends;
-
-    private int selectedItemID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        selectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
+        narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
 
         mTitle.setText(R.string.title_record_interview);
 
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
-        if (selectedItemID<0) {
+        if (narratorSelectedItemID<0) {
             mButtonRight.setEnabled(false);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
         }
 
+        topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
+        topicKey = getIntent().getIntExtra("topicKey", -1);
+        topic = getIntent().getStringExtra("topic");
+
+        if (topicSelectedItemID>=0) {
+            mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
+            mButtonCancelTopic = (ImageView) findViewById(R.id.button_cancel_topic);
+            mLineTopic = (ImageView) findViewById(R.id.line_topic);
+
+            mTextViewTopic.setVisibility(View.VISIBLE);
+            mButtonCancelTopic.setVisibility(View.VISIBLE);
+            mLineTopic.setVisibility(View.VISIBLE);
+
+            mTextViewTopic.setText(getString(R.string.text_choosed_topic) + ":  " + topic);
+
+            mButtonCancelTopic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    topicSelectedItemID = -1;
+
+                    mTextViewTopic.setVisibility(View.GONE);
+                    mButtonCancelTopic.setVisibility(View.GONE);
+                    mLineTopic.setVisibility(View.GONE);
+                }
+            });
+        }
 
         mListViewPersons = (ListView) findViewById(R.id.listView_main_input_choose_friend);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -64,51 +100,27 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-/*
-                if (mSelectedItem==null) {
-                    mSelectedItem = mCombinedListCreator.getAdapter().getItem(position);
-                    mSelectedItem.setSelected(true);
+                if (narratorSelectedItemID <0) {
+                    narratorSelectedItemID = position;
+                    mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(true);
                     mButtonRight.setEnabled(true);
                     mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
                 } else {
-                    if (mSelectedItem==mCombinedListCreator.getAdapter().getItem(position)) {
-                        mSelectedItem.setSelected(false);
-                        mSelectedItem = null;
+                    if (narratorSelectedItemID ==position) {
+                        mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
+                        narratorSelectedItemID = -1;
                         mButtonRight.setEnabled(false);
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                     } else {
-                        mSelectedItem.setSelected(false);
-                        mSelectedItem = mCombinedListCreator.getAdapter().getItem(position);
-                        mSelectedItem.setSelected(true);
+                        mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
+                        narratorSelectedItemID = position;
+                        mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(true);
                         mButtonRight.setEnabled(true);
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
 
                     }
                 }
                 mCombinedListCreator.getAdapter().notifyDataSetChanged();
-*/
-                if (selectedItemID <0) {
-                    selectedItemID = position;
-                    mCombinedListCreator.getAdapter().getItem(selectedItemID).setSelected(true);
-                    mButtonRight.setEnabled(true);
-                    mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
-                } else {
-                    if (selectedItemID ==position) {
-                        mCombinedListCreator.getAdapter().getItem(selectedItemID).setSelected(false);
-                        selectedItemID = -1;
-                        mButtonRight.setEnabled(false);
-                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
-                    } else {
-                        mCombinedListCreator.getAdapter().getItem(selectedItemID).setSelected(false);
-                        selectedItemID = position;
-                        mCombinedListCreator.getAdapter().getItem(selectedItemID).setSelected(true);
-                        mButtonRight.setEnabled(true);
-                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
-
-                    }
-                }
-                mCombinedListCreator.getAdapter().notifyDataSetChanged();
-
             }
         });
 
@@ -159,8 +171,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
                     });
                 } catch (Exception e) {}
 
-                mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, selectedItemID, mLocalUserData, mListViewPersons);
-                //mCombinedListCreator.add(mQueryGuests).add(mQueryFriends);
+                mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mLocalUserData, mListViewPersons);
                 mCombinedListCreator.loadData();
 
             }
@@ -199,16 +210,22 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        Intent intent = new Intent(this, ChooseTopicInputActivity.class);
-      //  if (selectedItemID != -1) {
-            LocalPersonData item = mCombinedListCreator.getAdapter().getItem(selectedItemID);
-            intent.putExtra("selectedItemID", selectedItemID);
-            intent.putExtra("narratorID", item.getContactID());
-            intent.putExtra("narratorName", item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname()));
-            intent.putExtra("narratorPictureURL", item.getPictureURL());
-            intent.putExtra("narratorIsUser", item.getIsUser());
-            //intent.putExtra("narratorPictureLocalURI", mSelectedItem.getPictureLocalURI());
-     //   }
+        Intent intent = new Intent();
+        LocalPersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
+        intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+        intent.putExtra("narratorID", item.getContactID());
+        intent.putExtra("narratorName", item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname()));
+        intent.putExtra("narratorPictureURL", item.getPictureURL());
+        intent.putExtra("narratorIsUser", item.getIsUser());
+
+        if (topicSelectedItemID >= 0) {
+            intent.putExtra("topicSelectedItemID", topicSelectedItemID);
+            intent.putExtra("topicKey", topicKey);
+            intent.putExtra("topic", topic);
+            intent.setClass(MainChooseFriendInputActivity.this, ChooseMediumInputActivity.class);
+        } else {
+            intent.setClass(MainChooseFriendInputActivity.this, ChooseTopicInputActivity.class);
+        }
         startActivity(intent);
         finish();
     }

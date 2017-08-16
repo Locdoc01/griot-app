@@ -101,11 +101,11 @@
         android:src="@drawable/camera"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        app:layout_constraintTop_toTopOf="@id/button_audio"
+        app:layout_constraintTop_toTopOf="@+id/button_audio"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/button_audio"
-        app:layout_constraintHorizontal_bias="0.19" />
+        app:layout_constraintBottom_toBottomOf="@+id/button_audio"
+        app:layout_constraintHorizontal_bias="0.24" />
 
     <ImageView
         android:id="@+id/button_audio"
@@ -118,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.83" />
+        app:layout_constraintHorizontal_bias="0.78" />
 
     <TextView
         android:id="@+id/textView_video"

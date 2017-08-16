@@ -2,15 +2,45 @@ package de.griot_app.griot;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
+import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
 public class ChooseMediumInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ChooseMediumInputActivity.class.getSimpleName();
+
+    private static final int NONE = 0;
+    private static final int VIDEO = 1;
+    private static final int AUDIO = 2;
+
+    private int selectedMedium = NONE;
+
+    private int narratorSelectedItemID;
+    private String narratorID;
+    private String narratorName;
+    private String narratorPictureURL;
+    private Boolean narratorIsUser;
+
+    private int topicSelectedItemID;
+    private int topicKey;
+    private String topic;
+
+    private TextView mTextViewPerson;
+    private ImageView mButtonCancelPerson;
+    private TextView mTextViewTopic;
+    private ImageView mButtonCancelTopic;
+    private ImageView mButtonVideo;
+    private ImageView mButtonAudio;
+
+    private View.OnClickListener mClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +54,101 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         mButtonRight.setEnabled(false);
         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
+        narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
+        narratorID = getIntent().getStringExtra("narratorID");
+        narratorName = getIntent().getStringExtra("narratorName");
+        narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
+        narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
+
+        topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
+        topicKey = getIntent().getIntExtra("topicKey", -1); //TODO default-wert ok?
+        topic = getIntent().getStringExtra("topic");
+
+        mTextViewPerson = (TextView) findViewById(R.id.textView_person);
+        mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
+        mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
+        mButtonCancelTopic = (ImageView) findViewById(R.id.button_cancel_topic);
+        mButtonVideo = (ImageView) findViewById(R.id.button_video);
+        mButtonAudio = (ImageView) findViewById(R.id.button_audio);
+
+        mTextViewPerson.setText(getString(R.string.text_choosed_person) + ":  " + narratorName);
+        mTextViewTopic.setText(getString(R.string.text_choosed_topic) + ":  " + topic);
+
+        mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ChooseMediumInputActivity.this, MainChooseFriendInputActivity.class);
+                intent.putExtra("topicSelectedItemID", topicSelectedItemID);
+                intent.putExtra("topicKey", topicKey);
+                intent.putExtra("topic", topic);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mButtonCancelTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChooseMediumInputActivity.this, ChooseTopicInputActivity.class);
+                intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+                intent.putExtra("narratorID", narratorID);
+                intent.putExtra("narratorName", narratorName);
+                intent.putExtra("narratorPictureURL", narratorPictureURL);
+                intent.putExtra("narratorIsUser", narratorIsUser);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (selectedMedium) {
+                    case NONE:
+                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotBlue));
+                        if (v.getId()==R.id.button_video) {
+                            selectedMedium = VIDEO;
+                        } else {
+                            selectedMedium = AUDIO;
+                        }
+                        mButtonRight.setEnabled(true);
+                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                        break;
+                    case VIDEO:
+                        if (v.getId()==R.id.button_video) {
+                            mButtonVideo.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotDarkgrey));
+                            selectedMedium = NONE;
+                            mButtonRight.setEnabled(false);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+                        } else {
+                            mButtonVideo.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotDarkgrey));
+                            mButtonAudio.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotBlue));
+                            selectedMedium = AUDIO;
+                            mButtonRight.setEnabled(true);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                        }
+                        break;
+                    case AUDIO:
+                        if (v.getId()==R.id.button_video) {
+                            mButtonVideo.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotBlue));
+                            mButtonAudio.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotDarkgrey));
+                            selectedMedium = VIDEO;
+                            mButtonRight.setEnabled(true);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                        } else {
+                            mButtonAudio.setColorFilter(ContextCompat.getColor(ChooseMediumInputActivity.this, R.color.colorGriotDarkgrey));
+                            selectedMedium = NONE;
+                            mButtonRight.setEnabled(false);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+                        }
+                        break;
+                }
+            }
+        };
+
+        mButtonVideo.setOnClickListener(mClickListener);
+        mButtonAudio.setOnClickListener(mClickListener);
     }
 
     @Override
@@ -39,13 +164,17 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     protected void buttonLeftPressed() {
         Log.d(TAG, "buttonLeftPressed: ");
 
-        //TODO: Diese Activity und alle anderen InputActivities schließen und so zur MainOverview zurückkehren
+        finish();
     }
 
     @Override
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
 
+        Intent intent = new Intent(ChooseMediumInputActivity.this, ChooseTopicInputActivity.class);
+        intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+        intent.putExtra("topicSelectedItemID", topicSelectedItemID);
+        startActivity(intent);
         finish();
     }
 
