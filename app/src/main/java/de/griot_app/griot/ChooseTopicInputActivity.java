@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +28,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     TextView mTextViewPerson;
     ImageView mButtonCancelPerson;
+    ImageView mButtonAddTopic;
 
     private String narratorID;
     private String narratorName;
@@ -58,6 +60,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
         mTextViewPerson = (TextView) findViewById(R.id.textView_person);
         mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
+        mButtonAddTopic = (ImageView) findViewById(R.id.button_add_topic);
 
         mTextViewPerson.setText(getString(R.string.text_choosed_person) + ":  " + narratorName);
 
@@ -65,6 +68,13 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        mButtonAddTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ChooseTopicInputActivity.this, "Thema hinzufügen", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -185,6 +195,11 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                     group.setTopicKey(topicData.getTopicKey());
                     group.setTopic(topicData.getTopic());
                     mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
+
+                    LocalQuestionData headItem = new LocalQuestionData();
+                    headItem.setQuestion(getString(R.string.title_questions));
+                    headItem.setTopicKey(topicData.getTopicKey());
+                    mTopicCatalog.getQuestionGroups().get(topicData.getTopicKey()).getQuestions().add(headItem);
                 }
 
                 mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
@@ -193,7 +208,6 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
-
 //                            int topicKey = localQuestionData.getTopicKey();
 //                            String question = localQuestionData.getQuestion();
                             mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);

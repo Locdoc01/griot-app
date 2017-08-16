@@ -1,6 +1,8 @@
 package de.griot_app.griot.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.R;
@@ -33,6 +36,8 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private TextView tvTopic;
     private ImageView btnCheck;
     private ImageView btnExpand;
+    private TextView tvTitleQUestions;
+    private ImageView btnAddQuestion;
     private TextView tvQuestion;
     private ImageView btnToggle;
 
@@ -117,42 +122,58 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_question, null);
-        }
-        tvQuestion = (TextView) convertView.findViewById(R.id.textView_question);
-        btnToggle = (ImageView) convertView.findViewById(R.id.button_toggle);
+        View v;
+        if (childPosition==0) {
+            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_title_questions, null);
 
-        LocalQuestionData child = (LocalQuestionData) getChild(groupPosition, childPosition);
-        tvQuestion.setText(child.getQuestion());
-        switch (child.getQuestionState()) {
-            case LocalQuestionData.QuestionState.OFF:
-                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
-                break;
-            case LocalQuestionData.QuestionState.ON:
-                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
-                break;
-            case LocalQuestionData.QuestionState.GONE:
-                //TODO: Möglichkeit, Fragen zu löschen später implementieren
-                break;
-        }
-        //TODO überlegen, wo die QuestionStates persistent gespeichert werden sollen, in DB oder lokalem Ort? (muss mit Themenkalatog irgendwie synchronisiert sein))
+            btnAddQuestion = (ImageView) v.findViewById(R.id.button_add_question);
 
-        btnToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocalQuestionData data = (LocalQuestionData) getChild(groupPosition, childPosition);
-                if (data.getQuestionState()==LocalQuestionData.QuestionState.OFF) {
-                    ((ImageView)v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
-                    data.setQuestionState(LocalQuestionData.QuestionState.ON);
-                } else if (data.getQuestionState()==LocalQuestionData.QuestionState.ON) {
-                    ((ImageView)v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
-                    data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+            btnAddQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "Frage hinzufügen", Toast.LENGTH_SHORT).show();
                 }
-//                notifyDataSetChanged();
+            });
+
+        } else {
+            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_question, null);
+
+            tvTitleQUestions = (TextView) v.findViewById(R.id.textView_title_questions);
+            tvQuestion = (TextView) v.findViewById(R.id.textView_question);
+            btnToggle = (ImageView) v.findViewById(R.id.button_toggle);
+
+            LocalQuestionData child = (LocalQuestionData) getChild(groupPosition, childPosition);
+
+            tvQuestion.setText(child.getQuestion());
+            switch (child.getQuestionState()) {
+                case LocalQuestionData.QuestionState.OFF:
+                    btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
+                    break;
+                case LocalQuestionData.QuestionState.ON:
+                    btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
+                    break;
+                case LocalQuestionData.QuestionState.GONE:
+                    //TODO: Möglichkeit, Fragen zu löschen später implementieren
+                    break;
             }
-        });
-        return convertView;
+            //TODO überlegen, wo die QuestionStates persistent gespeichert werden sollen, in DB oder lokalem Ort? (muss mit Themenkalatog irgendwie synchronisiert sein))
+
+            btnToggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LocalQuestionData data = (LocalQuestionData) getChild(groupPosition, childPosition);
+                    if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                        ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
+                        data.setQuestionState(LocalQuestionData.QuestionState.ON);
+                    } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
+                        ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
+                        data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                    }
+//                notifyDataSetChanged();
+                }
+            });
+        }
+        return v;
     }
 
     @Override
