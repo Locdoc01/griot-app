@@ -171,6 +171,8 @@ public class CombinedPersonListCreator {
                     }
                 }
 
+                combineList();      // TODO: evt. nicht an der richtigen Stelle. Liste funktioniert aber einwandfrei
+
                 for ( int i=0 ; i<list.size() ; i++ ) {
                     final int index = i;
                     File file = null;
@@ -198,7 +200,7 @@ public class CombinedPersonListCreator {
                         });
                     } catch (Exception e) {}
                 }
-                combineList();
+
             }
 
             @Override

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -118,27 +119,31 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (narratorSelectedItemID <0) {
-                    narratorSelectedItemID = position;
-                    mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(true);
-                    mButtonRight.setEnabled(true);
-                    mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                if (mCombinedListCreator.getAdapter().getItem(position).getFirstname().equals(getString(R.string.text_add_guest))) {
+                    Toast.makeText(MainChooseFriendInputActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (narratorSelectedItemID ==position) {
-                        mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
-                        narratorSelectedItemID = -1;
-                        mButtonRight.setEnabled(false);
-                        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
-                    } else {
-                        mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
+                    if (narratorSelectedItemID < 0) {
                         narratorSelectedItemID = position;
                         mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(true);
                         mButtonRight.setEnabled(true);
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+                    } else {
+                        if (narratorSelectedItemID == position) {
+                            mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
+                            narratorSelectedItemID = -1;
+                            mButtonRight.setEnabled(false);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+                        } else {
+                            mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
+                            narratorSelectedItemID = position;
+                            mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(true);
+                            mButtonRight.setEnabled(true);
+                            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
 
+                        }
                     }
+                    mCombinedListCreator.getAdapter().notifyDataSetChanged();
                 }
-                mCombinedListCreator.getAdapter().notifyDataSetChanged();
             }
         });
 
