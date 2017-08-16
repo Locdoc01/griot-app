@@ -21,6 +21,7 @@ import de.griot_app.griot.dataclasses.LocalQuestionData;
 import de.griot_app.griot.dataclasses.TopicData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
+import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
 public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
@@ -30,6 +31,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     ImageView mButtonCancelPerson;
     ImageView mButtonAddTopic;
 
+    private int narratorSelectedItemID;
     private String narratorID;
     private String narratorName;
     private String narratorPictureURL;
@@ -40,19 +42,26 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     TopicCatalogAdapter mAdapter;
 
     private QuestionGroup mSelectedItem;
+    private int selectedItemID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        selectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
 
         mTitle.setText(R.string.title_record_interview);
 
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
-        mButtonRight.setEnabled(false);
-        mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+        if (selectedItemID<0) {
+            mButtonRight.setEnabled(false);
+            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+        }
 
+
+        narratorSelectedItemID = getIntent().getIntExtra("selectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
         narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
@@ -67,7 +76,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startActivity(new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class));
             }
         });
 
@@ -215,6 +224,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
                         //TODO: ExtraTopics und ExtraQuestions laden
 
+                        if(selectedItemID >=0) {
+                            mTopicCatalog.getQuestionGroups().get(selectedItemID).setSelected(true);
+                        }
+
                         mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
                         mExpandListView.setAdapter(mAdapter);
                     }
@@ -239,6 +252,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
      * @param groupPosition     Topic position in the ExpandableListView
      */
     public void buttonCheckClicked(int groupPosition) {
+        //TODO: delete
+        /*
         if (mSelectedItem==null) {
             mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
             mSelectedItem.setSelected(true);
@@ -254,6 +269,28 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                 mSelectedItem.setSelected(false);
                 mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
                 mSelectedItem.setSelected(true);
+                mButtonRight.setEnabled(true);
+                mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+        */
+
+        if (selectedItemID <0) {
+            selectedItemID = groupPosition;
+            ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(true);
+            mButtonRight.setEnabled(true);
+            mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
+        } else {
+            if (selectedItemID ==groupPosition) {
+                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(false);
+                selectedItemID = -1;
+                mButtonRight.setEnabled(false);
+                mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
+            } else {
+                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(false);
+                selectedItemID = groupPosition;
+                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(true);
                 mButtonRight.setEnabled(true);
                 mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
             }
@@ -282,12 +319,32 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
 
-        finish();   // TODO: prüfen, ob gewünschtes Verhalten erfolgt
+        Intent intent = new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class);
+        intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+        startActivity(intent);
     }
 
     @Override
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
+
+        Intent intent = new Intent(this, ChooseMediumInputActivity.class);
+     //   if (selectedItemID != -1) {
+            intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+            intent.putExtra("narratorID", narratorID);
+            intent.putExtra("narratorName", narratorName);
+            intent.putExtra("narratorPictureURL", narratorPictureURL);
+            intent.putExtra("narratorIsUser", narratorIsUser);
+            //intent.putExtra("narratorPictureLocalURI", mSelectedItem.getPictureLocalURI());
+
+            QuestionGroup item = (QuestionGroup) mAdapter.getGroup(selectedItemID);
+            intent.putExtra("selectedItemID", selectedItemID);
+            intent.putExtra("topicKey", item.getTopicKey());
+            intent.putExtra("topic", item.getTopic());
+    //    }
+        startActivity(intent);
+        finish();
+
 
         startActivity(new Intent(this, ChooseMediumInputActivity.class));
         //daten weiterreichen
