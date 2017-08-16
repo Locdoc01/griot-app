@@ -172,6 +172,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             }
             //TODO überlegen, wo die QuestionStates persistent gespeichert werden sollen, in DB oder lokalem Ort? (muss mit Themenkalatog irgendwie synchronisiert sein))
 
+            /*
             btnToggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -186,6 +187,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 //                notifyDataSetChanged();
                 }
             });
+            */
         }
         return v;
     }
@@ -212,6 +214,6 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

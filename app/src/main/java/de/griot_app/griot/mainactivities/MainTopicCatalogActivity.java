@@ -71,12 +71,26 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (parent.isGroupExpanded(groupPosition)) {
                     parent.collapseGroup(groupPosition);
-                    ((ImageView)((ConstraintLayout)v).findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.up, null));
+                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.up, null));
                 } else {
                     parent.expandGroup(groupPosition);
-                    ((ImageView)((ConstraintLayout)v).findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.down, null));
+                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.down, null));
                 }
-                mAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+        mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
+                if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
+                    data.setQuestionState(LocalQuestionData.QuestionState.ON);
+                } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
+                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
+                    data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                }
                 return true;
             }
         });
