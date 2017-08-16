@@ -35,6 +35,7 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
 
     protected Toolbar mAppBar;
     protected TextView mTitle;
+    protected ImageView mLineAppBar;
 
     protected ImageView mButtonHome;
     protected ImageView mButtonProfile;
@@ -65,6 +66,8 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
         mTitle = (TextView) findViewById(R.id.title);
+
+        mLineAppBar = (ImageView) findViewById(R.id.line_top_);
 
         mButtonHome = (ImageView) findViewById(R.id.button_home);
         mButtonProfile = (ImageView) findViewById(R.id.button_profile);
