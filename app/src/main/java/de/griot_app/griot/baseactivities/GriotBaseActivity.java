@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -80,6 +81,14 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mButtonTopicCatalog.setOnClickListener(this);
         mButtonQuestionmail.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // hides the keyboard, even if EditText gets focus on startup
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
