@@ -11,8 +11,9 @@ public class QuestionGroup {
 
     private int topicKey;
     private String topic;
-    private List<String> questions;
+    private ArrayList<LocalQuestionData> questions;
     protected Boolean selected = false;
+    protected Boolean expanded = false;
 
     //default-constructor
     public QuestionGroup() {
@@ -33,16 +34,20 @@ public class QuestionGroup {
 
     public String getTopic() { return topic; }
 
-    public List<String> getQuestions() { return questions; }
+    public ArrayList<LocalQuestionData> getQuestions() { return questions; }
 
     public Boolean getSelected() { return selected; }
+
+    public Boolean getExpanded() { return expanded; }
 
     //set-methods
     public void setTopicKey(int topicKey) { this.topicKey = topicKey; }
 
     public void setTopic(String topic) { this.topic = topic; }
 
-    public void setQuestions(List<String> questions) { this.questions = questions; }
+    public void setQuestions(ArrayList<LocalQuestionData> questions) { this.questions = questions; }
 
     public void setSelected(Boolean selected) { this.selected = selected; }
+
+    public void setExpanded(Boolean expanded) { this.expanded = expanded; }
 }
