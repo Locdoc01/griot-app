@@ -106,7 +106,8 @@
 
     <!--Prepare interview-->
     <string name="order_choose_person">Wähle eine Person, die du aufzeichnen möchtest:</string>
-    <string name="text_person">Person</string>
+    <string name="text_choosed_person">Gewählte Person</string>
+    <string name="text_choosed_topic">Gewähltes Thema</string>
     <string name="question_which_topic">Worüber möchtest du sprechen?</string>
     <string name="hint_search_topic">Thema suchen</string>
     <string name="question_which_medium">Wie möchtest du dein Gespräch aufzeichnen?</string>
