@@ -23,30 +23,42 @@ import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
+/**
+ * This Activity allows the user to choose a topic and its questions from the topic catalog for an interview. It's the second step of the "prepare-interview"-dialog.
+ */
 public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ChooseTopicInputActivity.class.getSimpleName();
 
+    //holds the topic item id, if a topic was selected. It's used on this activity for managing the selection. It's also used as intent-data
     private int topicSelectedItemID = -1;
 
+    //intent-data
     private int narratorSelectedItemID;
     private String narratorID;
     private String narratorName;
     private String narratorPictureURL;
     private Boolean narratorIsUser;
 
+    //Views
     TextView mTextViewPerson;
     ImageView mButtonCancelPerson;
     ImageView mButtonAddTopic;
 
+    //DataClass for topic catalog
     TopicCatalog mTopicCatalog;
+
+    //Expandable ListView, that holds the topic catalog
     ExpandableListView mExpandListView;
+
+    //Data-View-Adapter for TopicCatalog
     TopicCatalogAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //stores topic item id, if selected so far (that can be the case, if this activity got startet by another part of "prepare interview"-dialog)
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
 
         mTitle.setText(R.string.title_record_interview);
@@ -54,12 +66,14 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
+
+        //Next-Button is disabled at start, if no topic was selected so far
         if (topicSelectedItemID<0) {
             mButtonRight.setEnabled(false);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
         }
 
-
+        // gets intent-data about previous selection of narrator
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -70,8 +84,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
         mButtonAddTopic = (ImageView) findViewById(R.id.button_add_topic);
 
+        //shows the selected narrator
         mTextViewPerson.setText(getString(R.string.text_choosed_person) + ":  " + narratorName);
 
+        //cancel-person-button (if button is pressed, the selection of narrator is canceled and the user got back to person selection
         mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +96,11 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
+        //adds a topic to topic catalog
         mButtonAddTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO implementieren
                 Toast.makeText(ChooseTopicInputActivity.this, "Thema hinzufügen", Toast.LENGTH_SHORT).show();
             }
         });
@@ -184,17 +202,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-                return false;
-            }
-        });
-
         mTopicCatalog = new TopicCatalog();
-
+        // obtains topic catalog data from Firebase
         mDatabaseRef = mDatabaseRootReference.child("standardTopics");
+        // listener for topic data
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -214,6 +225,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                 }
 
                 mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
+                //listener for question data
                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -228,6 +240,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                             mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
                         }
 
+                        //set the adapter
                         mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
                         mExpandListView.setAdapter(mAdapter);
                     }
@@ -235,6 +248,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.e(TAG, "Error loading Questions");
+                        //TODO: implementieren, falls erforderlich
                     }
                 });
 
@@ -243,13 +257,16 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "Error loading Topics");
+                //TODO: implementieren, falls erforderlich
             }
         });
     }
 
     /**
-     * Selects the topic at the specified groupPosition of the ExpandableListView. This method can be called from an OnclickListener defined in the adapter.
-     * @param groupPosition     Topic position in the ExpandableListView
+     * manages the topic selection along with the next-button functionality.
+     * The selection gets stored in the appropriate QuestionGroup-object.
+     * This method can be called from an OnclickListener defined in the adapter.
+     * @param groupPosition Topic position in the ExpandableListView
      */
     public void buttonCheckClicked(int groupPosition) {
         if (topicSelectedItemID <0) {
@@ -295,6 +312,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
 
+        // navigates back to previous page of "prepare interview"-dialog
+        // selection of narrator gets sent to previous page.
         Intent intent = new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         startActivity(intent);
@@ -305,6 +324,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
+        // Navigates back to next page of "prepare interview"-dialog
+        // All relevant data for the interview or the dialog-pages get sent to the next page.
         Intent intent = new Intent(this, ChooseMediumInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", narratorID);

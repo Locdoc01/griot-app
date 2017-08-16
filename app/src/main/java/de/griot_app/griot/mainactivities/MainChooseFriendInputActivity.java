@@ -31,30 +31,41 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
 
+
+/**
+ * This Activity allows the user to choose a person from his contact list for an interview. It's the first step of the "prepare-interview"-dialog.
+ */
 public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = MainChooseFriendInputActivity.class.getSimpleName();
 
+    //holds the narrator item id, if a narrator was selected as narrator. It's used on this activity for managing the selection. It's also used as intent-data
     private int narratorSelectedItemID = -1;
 
+    //intent-data
     private int topicSelectedItemID;
     private int topicKey;
     private String topic;
 
+    //Views
     TextView mTextViewTopic;
     ImageView mButtonCancelTopic;
     ImageView mLineTopic;
 
+    //ListView, that holds the contact list
     private ListView mListViewPersons;
 
+    //Creates the PersonlistView as a combination of own user data, guest list data, friend list data and approriate headings
     private CombinedPersonListCreator mCombinedListCreator;
 
+    //firebase-query, to get own user data
     private Query mQueryYou;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //stores narrator item id, if selected so far (that can be the case, if this activity got startet by another part of "prepare interview"-dialog)
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
 
         mTitle.setText(R.string.title_record_interview);
@@ -62,15 +73,19 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
+
+        //Next-Button is disabled at start, if no person was selected as narrator so far
         if (narratorSelectedItemID<0) {
             mButtonRight.setEnabled(false);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
         }
 
+        // get intent-data, in case this activity was started from ChooseTopicInputActivity and a topic was selected
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
 
+        // if a topic was selected so far, the selection will be shown and can be canceled
         if (topicSelectedItemID>=0) {
             mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
             mButtonCancelTopic = (ImageView) findViewById(R.id.button_cancel_topic);
@@ -80,8 +95,10 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
             mButtonCancelTopic.setVisibility(View.VISIBLE);
             mLineTopic.setVisibility(View.VISIBLE);
 
+            // show topic selection
             mTextViewTopic.setText(getString(R.string.text_choosed_topic) + ":  " + topic);
 
+            //cancel-topic-button (if button is pressed, the selection is canceled and got hidden
             mButtonCancelTopic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,6 +114,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mListViewPersons = (ListView) findViewById(R.id.listView_main_input_choose_friend);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
+        // manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,6 +150,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
         //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
 
+        // Obtain own user data from Firebase
         mUser = mAuth.getCurrentUser();
         mUserID = mUser.getUid();
 
@@ -171,6 +190,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
                     });
                 } catch (Exception e) {}
 
+                //create the Combined ListView
                 mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mLocalUserData, mListViewPersons);
                 mCombinedListCreator.loadData();
 
@@ -210,6 +230,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
+        //Navigation to the next page of the "prepare interview"-dialog
+        //All relevant data for the interview or the dialog-pages get sent to the next page.
         Intent intent = new Intent();
         LocalPersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
@@ -218,6 +240,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         intent.putExtra("narratorPictureURL", item.getPictureURL());
         intent.putExtra("narratorIsUser", item.getIsUser());
 
+        // if a topic was already selected, ChooseTopicInputActivity will be skipped
         if (topicSelectedItemID >= 0) {
             intent.putExtra("topicSelectedItemID", topicSelectedItemID);
             intent.putExtra("topicKey", topicKey);

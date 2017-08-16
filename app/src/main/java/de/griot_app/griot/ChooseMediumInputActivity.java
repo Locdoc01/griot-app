@@ -13,16 +13,22 @@ import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
+/**
+ * This Activity allows the user to choose a medium for an interview. It's the third step of the "prepare-interview"-dialog.
+ */
 public class ChooseMediumInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ChooseMediumInputActivity.class.getSimpleName();
 
+    //Constants for medium selection
     private static final int NONE = 0;
     private static final int VIDEO = 1;
     private static final int AUDIO = 2;
 
+    //holds the medium selection
     private int selectedMedium = NONE;
 
+    //intent-data
     private int narratorSelectedItemID;
     private String narratorID;
     private String narratorName;
@@ -33,6 +39,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     private int topicKey;
     private String topic;
 
+    //Views
     private TextView mTextViewPerson;
     private ImageView mButtonCancelPerson;
     private TextView mTextViewTopic;
@@ -51,9 +58,12 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         mButtonLeft.setText(R.string.button_cancel);
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
+
+        //next-button is disabled at start
         mButtonRight.setEnabled(false);
         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
+        // gets intent-data about previous selections
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -61,7 +71,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
 
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
-        topicKey = getIntent().getIntExtra("topicKey", -1); //TODO default-wert ok?
+        topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
 
         mTextViewPerson = (TextView) findViewById(R.id.textView_person);
@@ -71,13 +81,15 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         mButtonVideo = (ImageView) findViewById(R.id.button_video);
         mButtonAudio = (ImageView) findViewById(R.id.button_audio);
 
+        //shows previous selections
         mTextViewPerson.setText(getString(R.string.text_choosed_person) + ":  " + narratorName);
         mTextViewTopic.setText(getString(R.string.text_choosed_topic) + ":  " + topic);
 
+        //cancel-person-button (if button is pressed, the selection of narrator is canceled and the user got back to person selection.
+        //Selection of topic will be kept
         mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(ChooseMediumInputActivity.this, MainChooseFriendInputActivity.class);
                 intent.putExtra("topicSelectedItemID", topicSelectedItemID);
                 intent.putExtra("topicKey", topicKey);
@@ -87,6 +99,8 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
             }
         });
 
+        //cancel-topic-button (if button is pressed, the selection of topic is canceled and the user got back to topic selection
+        //Selection of narrator will be kept
         mButtonCancelTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +115,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
             }
         });
 
+        //managed the medium selection along with the next-button functionality.
         mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +186,8 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
 
+        //navigates back to previous page of "prepare interview"-dialog and
+        //previous selections get sent to previous page.
         Intent intent = new Intent(ChooseMediumInputActivity.this, ChooseTopicInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("topicSelectedItemID", topicSelectedItemID);

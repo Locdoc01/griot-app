@@ -28,9 +28,11 @@ import de.griot_app.griot.dataclasses.LocalUserData;
 /**
  * Loads data lists from Firebase from several locations in several single querys,
  * adds the data to several query-specific list-containers,
- * adds a headLine identical to the database-node to the first entry of each container,
+ * adds a category headLine identical to the database-node to the first entry of each container,
  * puts the single lists together to a combined list
  * and set the corespondend adapter to the ListView.
+ * The own user data gets stored as own category at the top of the list.
+ * First Element of the guest category is a special item, that allows to add a new guest profile
  */
 public class CombinedPersonListCreator {
 
@@ -38,27 +40,39 @@ public class CombinedPersonListCreator {
 
     private Activity mContext;
 
+    //own user data
     private LocalUserData mLocalUserData;
 
+    //the combined ListView, that is shown on the screen
     private ListView mCombinedListView;
+
+    //the combined data list
     private ArrayList<LocalPersonData> mCombinedList;
 
+    // a list of single data lists, that are going to be combined
     private ArrayList<ArrayList<LocalPersonData>> mSingleLists;
 
+    // Firebase classes
     private FirebaseDatabase mDatabase;
     private FirebaseStorage mStorage;
     private DatabaseReference mDatabaseRef;
     private StorageReference mStorageRef;
+    //list of Firebase querys
     private ArrayList<Query> mDatabaseQuerys;
+    //list of Firebase storage references
     private ArrayList<StorageReference> mStorageReferences;
 
+    //Data-View-Adapter for the ListView
     private LocalPersonDataAdapter mAdapter;
 
+    //necessary to prevent multiple additions of "add guest"-item
     private boolean addGuestAdded = false;
 
+    // stores the item id, if an item was selected
     private int mSelectedItemID;
 
 
+    //constructor
     public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData localUserData, ListView combinedlistView) {
 
         mContext = context;
@@ -105,10 +119,15 @@ public class CombinedPersonListCreator {
     }
 */
 
+    /**
+     * Returns the Data-View-Adapter for the ListView
+     * @return mAdapter
+     */
     public LocalPersonDataAdapter getAdapter() { return mAdapter; }
 
+
     /**
-     * Adds a ValueEventListener for a single valueEvent (reads only once) to each database query in the query list container.
+     * Adds a ValueEventListener for a single valueEvent (reads just once) to each database query in the query list.
      * The listener will be returned from getDatabaseValueEventListener()
      */
     public void loadData() {
@@ -179,9 +198,7 @@ public class CombinedPersonListCreator {
                         });
                     } catch (Exception e) {}
                 }
-
                 combineList();
-
             }
 
             @Override
@@ -193,7 +210,8 @@ public class CombinedPersonListCreator {
 
     /**
      * Puts the created single data lists together to a combined data list and set the adapter for
-     * that list to the correspondent ListView
+     * that list to the correspondent ListView.
+     * Also adds the own user data as first item and a special "add guest"-item as first item in guest category
      */
     private void combineList() {
         Log.d(TAG, "combineList:");
@@ -201,8 +219,6 @@ public class CombinedPersonListCreator {
         mCombinedList.clear();
         mCombinedList.add(mLocalUserData);
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
-            // wenn es sich um die Liste der Gäste handelt, muss die headline vom ersten Item entfernt
-            // werden und ein weiteres Item eingefügt werden, um einen Nutzer hinzuzufügen
             if (!mSingleLists.get(i).isEmpty()) {
                 if (!addGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
                     LocalGuestData localGuestData = new LocalGuestData();
@@ -216,6 +232,7 @@ public class CombinedPersonListCreator {
                 }
             }
             mCombinedList.addAll(mSingleLists.get(i));
+
 
             if(mSelectedItemID>=0) {
                 mCombinedList.get(mSelectedItemID).setSelected(true);
