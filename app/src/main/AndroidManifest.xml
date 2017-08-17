@@ -47,12 +47,13 @@
         <activity android:name=".ComposeQuestionRequestInputActivity" />
         <activity
             android:name=".ChooseTopicInputActivity"
-            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity"/>
+            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity" />
         <activity
             android:name=".ChooseMediumInputActivity"
-            android:parentActivityName=".ChooseTopicInputActivity"/>
+            android:parentActivityName=".ChooseTopicInputActivity" />
         <activity android:name=".ReviewInterviewInputActivity" />
-        <activity android:name=".SaveInterviewInputActivity"></activity>
+        <activity android:name=".SaveInterviewInputActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
