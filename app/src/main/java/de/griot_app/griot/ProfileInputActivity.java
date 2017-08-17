@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.dataclasses.UserData;
+import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
 public class ProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, View.OnTouchListener{
@@ -40,6 +42,8 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
     private static final String TAG = ProfileInputActivity.class.getSimpleName();
 
     private static final int REQUEST_GALLERY = 888;
+
+    private boolean mImageChanged = false;
 
     private ProfileImageView mProfileImage;
     private Uri mUriLocalProfileImage;
@@ -82,19 +86,22 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
 
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
         mCalendar = Calendar.getInstance();
-        int year = mCalendar.get(Calendar.YEAR);
-        int month = mCalendar.get(Calendar.MONTH);
-        int day = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mDatePickerDialog = new DatePickerDialog(ProfileInputActivity.this, ProfileInputActivity.this, year, month, day);
         mTextViewDate = (TextView) findViewById(R.id.textView_date);
 
         mButtonSave = (Button) findViewById(R.id.button_save);
 
+        mEditEmail.setEnabled(false);
+        //TODO: Passwort soll änderbar sein. Herausfinden, wie
+        mEditPassword.setEnabled(false);
+        mEditPassword2.setEnabled(false);
+
         mEditFirstname.setOnClickListener(this);
         mEditLastname.setOnClickListener(this);
-        mEditEmail.setOnClickListener(this);
-        mEditPassword.setOnClickListener(this);
-        mEditPassword2.setOnClickListener(this);
+        //mEditEmail.setOnClickListener(this);
+
+        //TODO: Passwort soll änderbar sein. Herausfinden, wie
+        //mEditPassword.setOnClickListener(this);
+        //mEditPassword2.setOnClickListener(this);
 
         mProfileImage.setOnTouchListener(this);
         mButtonDatePicker.setOnTouchListener(this);
@@ -150,6 +157,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
             case MotionEvent.ACTION_UP:
                 switch (v.getId()) {
                     case R.id.piv_profile_image:
+                        mImageChanged = true;
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setAspectRatio(1,1)
@@ -187,8 +195,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
     }
 
 
-    // TODO: anpassen, so dass Passwortfelder gemeinsam leer sein dürfen. (Dann werden nur die normalen Daten gespeichert.)
-    // TODO: Wenn beide Passwortfelder valide gefüllt sind, wird auch das passwort geändert
+    // TODO: Wenn beide Passwortfelder valide gefüllt sind, soll auch das passwort geändert werden können
     /**
      * validates the input data for creating an account. Checks for the following:
      * - are all fields filled? (except profile image, which can be empty)
@@ -254,6 +261,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
             mEditEmail.setError(null);
         }
 
+/*
         // if first passwordfield is empty
         if (TextUtils.isEmpty(mEditPassword.getText().toString())) {
             mEditPassword.setError(getResources().getString(R.string.error_required_field));
@@ -275,16 +283,19 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
         } else {
             mEditPassword2.setError(null);
         }
-
+*/
         // if one of the inputfields were empty so far
         if (!valid) {
             focus.requestFocus(); // set focus to first empty field
+/*
             if (TextUtils.isEmpty(mEditPassword.getText().toString())) { // if first password field was empty, clear second one
                 mEditPassword2.setText("");
             }
+*/
             return valid;
         }
 
+/*
         // if password fields are not equal
         if (!mEditPassword.getText().toString().equals(mEditPassword2.getText().toString())) {
             mEditPassword.setError(getResources().getString(R.string.error_passwords_dont_match));
@@ -312,11 +323,75 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
             mEditPassword2.setText("");
             mEditPassword.requestFocus();
         }
+*/
         return valid;
     }
 
     public void saveProfile() {
-        //TODO: implementieren
+
+        // obtain userId
+        mUser = mAuth.getCurrentUser();
+        mUserID = mUser.getUid();
+        //set database reference to /users/mUserID
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID);
+
+        // User details from input form are stored in mLocalUserData
+        mUserData.setFirstname(mEditFirstname.getText().toString().trim());
+        mUserData.setLastname(mEditLastname.getText().toString().trim());
+        mUserData.setBirthday(mCalendar.getTime().toString());
+        mUserData.setBYear(mCalendar.get(Calendar.YEAR));
+        mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
+        mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
+        mUserData.setEmail(mEditEmail.getText().toString().trim());
+
+        if (mImageChanged) {
+            //set storage reference to /users/mUserID/profilePicture
+            mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
+
+            // if a profile image was chosen, it will be uploaded to cloud-Storage
+            if (mUriLocalProfileImage != null) {
+                //upload file with local URI stored in mUriLocalProfileImage
+                mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // on success the remote downloadURL will be stored to mLocalUserData.pictureURL
+                        //TODO: Alternative finden
+                        mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
+                        // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
+                        mDatabaseRef.setValue(mUserData);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // on failure mLocalUserData.pictureURL will remain empty.
+                        Toast.makeText(ProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
+                        Log.e(getSubClassTAG(), "Error uploading profile image");
+                        mDatabaseRef.setValue(mUserData);
+                    }
+                });
+            } else {
+                mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        mUserData.setPictureURL(uri.toString());
+                        // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
+                        mDatabaseRef.setValue(mUserData);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // on failure mLocalUserData.pictureURL will remain empty.
+                        Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
+                        mDatabaseRef.setValue(mUserData);
+                    }
+                });
+            }
+        } else {
+            mUserData.setPictureURL(mLocalUserData.getPictureURL());
+            mDatabaseRef.setValue(mUserData);
+        }
+
+
     }
 
 
@@ -328,59 +403,63 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
-        //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
-        // Obtain own user data from Firebase
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
+        if (!mImageChanged) {
+            //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
+            // Obtain own user data from Firebase
+            mUser = mAuth.getCurrentUser();
+            mUserID = mUser.getUid();
 
-        mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mLocalUserData = ds.getValue(LocalUserData.class);
+            mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        mLocalUserData = ds.getValue(LocalUserData.class);
+                    }
+
+                    File file = null;
+                    try {
+                        file = File.createTempFile("profile_image" + "_", ".jpg");
+                    } catch (Exception e) {
+                    }
+                    final String path = file.getPath();
+
+                    try {
+                        mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
+                        mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                mLocalUserData.setPictureLocalURI(path);
+                                mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalUserData.getPictureLocalURI()));
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(getSubClassTAG(), "Error downloading user profile image file");
+                                mLocalUserData.setPictureLocalURI("");
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+
+                    mEditFirstname.setText(mLocalUserData.getFirstname());
+                    mEditLastname.setText((mLocalUserData.getLastname()));
+                    //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: anpassen
+                    int day = mLocalUserData.getBDay();
+                    int month = mLocalUserData.getBMonth();
+                    int year = mLocalUserData.getBYear();
+                    mDatePickerDialog = new DatePickerDialog(ProfileInputActivity.this, ProfileInputActivity.this, year, month, day);
+                    mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
+                    mEditEmail.setText((mLocalUserData.getEmail()));
                 }
 
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mLocalUserData.setPictureLocalURI(path);
-                            mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalUserData.getPictureLocalURI()));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mLocalUserData.setPictureLocalURI("");
-                        }
-                    });
-                } catch (Exception e) {}
-
-                mEditFirstname.setText(mLocalUserData.getFirstname());
-                mEditLastname.setText((mLocalUserData.getLastname()));
-             //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: anpassen
-                int day = mLocalUserData.getBDay();
-                int month = mLocalUserData.getBMonth();
-                int year = mLocalUserData.getBYear();
-                mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
-                mEditEmail.setText((mLocalUserData.getEmail()));
-             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+            });
+        }
     }
 
 
