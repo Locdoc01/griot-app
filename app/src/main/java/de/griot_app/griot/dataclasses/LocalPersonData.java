@@ -7,9 +7,9 @@ public class LocalPersonData extends LocalContactData {
 
     protected String lastname;
     protected String birthday;
-    protected Integer year;
-    protected Integer month;
-    protected Integer day;
+    protected Integer bYear;
+    protected Integer bMonth;
+    protected Integer bDay;
     protected String email;
     protected Boolean isUser = false;
 
@@ -40,9 +40,9 @@ public class LocalPersonData extends LocalContactData {
         super(contactID, firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
-        this.year = year;
-        this.month = month;
-        this.day = day;
+        this.bYear = year;
+        this.bMonth = month;
+        this.bDay = day;
         this.email = email;
     }
 
@@ -51,9 +51,9 @@ public class LocalPersonData extends LocalContactData {
         return "LocalPersonData{" +
                 "lastname='" + lastname + '\'' +
                 ", birthday='" + birthday + '\'' +
-                ", year='" + year + '\'' +
-                ", month='" + month + '\'' +
-                ", day='" + day + '\'' +
+                ", bYear='" + bYear + '\'' +
+                ", bMonth='" + bMonth + '\'' +
+                ", bDay='" + bDay + '\'' +
                 ", email='" + email + '\'' +
                 ", isUser='" + isUser + '\'' +
                 '}';
@@ -64,11 +64,11 @@ public class LocalPersonData extends LocalContactData {
 
     public String getBirthday() { return birthday; }
 
-    public Integer getYear() { return year; }
+    public Integer getYear() { return bYear; }
 
-    public Integer getMonth() { return month; }
+    public Integer getMonth() { return bMonth; }
 
-    public Integer getDay() { return day; }
+    public Integer getbDay() { return bDay; }
 
     public String getEmail() { return email; }
 
@@ -79,11 +79,11 @@ public class LocalPersonData extends LocalContactData {
 
     public void setBirthday(String birthday) { this.birthday = birthday; }
 
-    public void setYear(Integer year) { this.year = year; }
+    public void setYear(Integer bYear) { this.bYear = bYear; }
 
-    public void setMonth(Integer month) { this.month = month; }
+    public void setMonth(Integer month) { this.bMonth = month; }
 
-    public void setDay(Integer day) { this.day = day; }
+    public void setbDay(Integer bDay) { this.bDay = bDay; }
 
     public void setEmail(String email) { this.email = email; }
 

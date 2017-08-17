@@ -52,9 +52,9 @@ public class UserData extends PersonData {
             String firstname,
             String lastname,
             String birthday,
-            Integer year,
-            Integer month,
-            Integer day,
+            Integer bYear,
+            Integer bMonth,
+            Integer bDay,
             String email,
             String pictureURL,
             String pictureLocalURI,
@@ -69,7 +69,7 @@ public class UserData extends PersonData {
             HashMap<String, String> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
-        super(firstname, lastname, birthday, year, month, day, email, pictureURL, pictureLocalURI, category);
+        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
         isUser = true;
         this.interviewsOwn = interviewsOwn;
         this.interviewsAssociated = interviewsAssociated;
