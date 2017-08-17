@@ -52,6 +52,7 @@
     <string name="title_add_guest">Gast hinzufügen</string>
     <string name="title_edit_your_profile">Dein Profil</string>
     <string name="title_guest_profile">Gastprofil</string>
+    <string name="title_user_profile">Nutzerprofil</string>
     <string name="title_contact_managment">Kontaktverwaltung</string>
     <string name="title_questionmail">Fragenpost</string>
     <string name="title_compose_question_request">Anfrage erstellen</string>
