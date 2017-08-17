@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class GuestData extends PersonData {
 
     private HashMap<String, Boolean> hostID;
-    private String relationshop;
+    private String relationship;
 
     //default-constructor
     public GuestData() {
@@ -40,25 +40,25 @@ public class GuestData extends PersonData {
     ) {
         super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
         this.hostID = hostID;
-        this.relationshop = relationship;
+        this.relationship = relationship;
     }
 
     @Override
     public String toString() {
         return "GuestData{" +
                 "hostID=" + hostID +
-                ", relationshop='" + relationshop + '\'' +
+                ", relationship='" + relationship + '\'' +
                 '}';
     }
 
     //get-methods
     public HashMap<String, Boolean> getHostID() { return hostID; }
 
-    public String getRelationshop() { return relationshop; }
+    public String getRelationship() { return relationship; }
 
 
     //set-methods
     public void setHostID(HashMap<String, Boolean> hostID) { this.hostID = hostID; }
 
-    public void setRelationshop(String relationshop) { this.relationshop = relationshop; }
+    public void setRelationship(String relationship) { this.relationship = relationship; }
 }
