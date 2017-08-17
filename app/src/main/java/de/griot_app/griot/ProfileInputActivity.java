@@ -142,9 +142,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                     case R.id.button_datepicker:
                         ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
                         return true;
-                    case R.id.button_create_account:
-                    case R.id.button_forgotten:
-                    case R.id.button_signin:
+                    case R.id.button_save:
                         ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
                         return true;
                 }
