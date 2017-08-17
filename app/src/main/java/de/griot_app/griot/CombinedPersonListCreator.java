@@ -41,7 +41,7 @@ public class CombinedPersonListCreator {
     private Activity mContext;
 
     //own user data
-    private LocalUserData mLocalUserData;
+    private LocalUserData mOwnUserData;
 
     //the combined ListView, that is shown on the screen
     private ListView mCombinedListView;
@@ -73,13 +73,16 @@ public class CombinedPersonListCreator {
 
 
 
+    //constructors
+    public CombinedPersonListCreator(Activity context, ListView combinedlistView) {
+        this(context, -1, null, combinedlistView);
+    }
 
-    //constructor
-    public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData localUserData, ListView combinedlistView) {
+    public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData ownUserData, ListView combinedlistView) {
 
         mContext = context;
 
-        mLocalUserData = localUserData;
+        mOwnUserData = ownUserData;
 
         mCombinedListView = combinedlistView;
         mCombinedList = new ArrayList<>();
@@ -221,7 +224,10 @@ public class CombinedPersonListCreator {
         Log.d(TAG, "combineList:");
 
         mCombinedList.clear();
-        mCombinedList.add(mLocalUserData);
+        //add ownUserData, if available
+        if (mOwnUserData!=null) {
+            mCombinedList.add(mOwnUserData);
+        }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
             if (!mSingleLists.get(i).isEmpty()) {
                 if (!addGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {

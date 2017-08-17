@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,8 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
     private final Context mContext;
 
     private int position;
-    private TextView tvListSeperator;
+    private TextView tvCategory;
+    private FrameLayout listSeperator;
     private ProfileImageView pivPerson;
     private TextView tvPerson;
     private ImageView btnCheck;
@@ -55,7 +57,8 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.listitem_person, null);
 
-        tvListSeperator = (TextView) v.findViewById(R.id.textView_list_seperator);
+        tvCategory = (TextView) v.findViewById(R.id.category);
+        listSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
         pivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
         tvPerson = (TextView) v.findViewById(R.id.textView_person);
         btnCheck = (ImageView) v.findViewById(R.id.button_check);
@@ -111,10 +114,10 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
         this.position = position;
 
         if (mListData.get(position).getCategory()!=null) {
-            tvListSeperator.setVisibility(View.VISIBLE);
-            tvListSeperator.setText(mListData.get(position).getCategory());
+            listSeperator.setVisibility(View.VISIBLE);
+            tvCategory.setText(mListData.get(position).getCategory());
         } else {
-            tvListSeperator.setVisibility(View.GONE);
+            listSeperator.setVisibility(View.GONE);
         }
 
         if (mListData.get(position).getSelected()) {

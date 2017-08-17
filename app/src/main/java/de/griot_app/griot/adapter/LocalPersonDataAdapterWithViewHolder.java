@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +36,8 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
 
     static class ViewHolder {
         public int position;
-        public TextView tvListSeperator;
+        public TextView tvCategory;
+        public FrameLayout listSeperator;
         public ProfileImageView pivPerson;
         public TextView tvPerson;
         public ImageView btnCheck;
@@ -57,7 +59,8 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
             convertView = inflater.inflate(R.layout.listitem_person, null);
             holder = new ViewHolder();
 
-            holder.tvListSeperator = (TextView) convertView.findViewById(R.id.textView_list_seperator);
+            holder.tvCategory = (TextView) convertView.findViewById(R.id.category);
+            holder.listSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
             holder.pivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
             holder.tvPerson = (TextView) convertView.findViewById(R.id.textView_person);
             holder.btnCheck = (ImageView) convertView.findViewById(R.id.button_check);
@@ -69,10 +72,10 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
 
         holder.position = position;
         if (mListData.get(position).getCategory()!=null) {
-            holder.tvListSeperator.setVisibility(View.VISIBLE);
-            holder.tvListSeperator.setText(mListData.get(position).getCategory());
+            holder.listSeperator.setVisibility(View.VISIBLE);
+            holder.tvCategory.setText(mListData.get(position).getCategory());
         } else {
-            holder.tvListSeperator.setVisibility(View.GONE);
+            holder.listSeperator.setVisibility(View.GONE);
         }
 
         //TODO: finde korrekte Position for den ClickListener
