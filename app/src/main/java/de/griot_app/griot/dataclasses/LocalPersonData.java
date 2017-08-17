@@ -68,7 +68,7 @@ public class LocalPersonData extends LocalContactData {
 
     public Integer getMonth() { return bMonth; }
 
-    public Integer getbDay() { return bDay; }
+    public Integer getDay() { return bDay; }
 
     public String getEmail() { return email; }
 
@@ -83,7 +83,7 @@ public class LocalPersonData extends LocalContactData {
 
     public void setMonth(Integer month) { this.bMonth = month; }
 
-    public void setbDay(Integer bDay) { this.bDay = bDay; }
+    public void setDay(Integer bDay) { this.bDay = bDay; }
 
     public void setEmail(String email) { this.email = email; }
 
