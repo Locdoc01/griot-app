@@ -554,7 +554,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     // TODO: falls Email schon vorhanden war, auch leeren
                     // TODO: mögliche Fehlerfälle ermitteln und System-Meldungen in deutsche Meldungen umwandeln
                 } else {
-                    // TODO: Kommentar löschen: task.getResult().getUser() == mAuth.getCurrentUser()
                     // obtain userId
                     mUser = task.getResult().getUser();
                     mUserID = mUser.getUid();
@@ -569,7 +568,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
                     mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
                     mUserData.setEmail(mEditCreateAccountEmail.getText().toString().trim());
-                    //mUserData.setIsUser(true);    //TODO: wahrscheinlich nicht nötig, aber testen
 
                     //set storage reference to /users/mUserID/profilePicture
                     mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
