@@ -5,37 +5,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.griot_app.griot.baseactivities.GriotBaseInputActivity"
     android:background="@color/colorGriotWhite"
-    tools:showIn="@layout/activity_main_input_choose_friend"><!--zeile später löschen-->
+    tools:showIn="@layout/activity_profile"><!--zeile später löschen-->
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_top"
+        android:id="@+id/base_guideline_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.074"
         android:orientation="horizontal" />
 
     <ImageView
-        android:id="@+id/line_top_"
+        android:id="@+id/base_line_top"
         style="@style/AppTheme.Lines"
-        app:layout_constraintTop_toBottomOf="@id/guideline_top"
+        app:layout_constraintTop_toBottomOf="@id/base_guideline_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/app_bar"
+        android:id="@+id/base_app_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:titleTextColor="@color/colorGriotDarkgrey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_top"/>
+        app:layout_constraintBottom_toBottomOf="@id/base_guideline_top"/>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/base_title"
         style="@style/AppTheme.Text_Titles"
-        app:layout_constraintTop_toTopOf="@id/app_bar"
-        app:layout_constraintBottom_toBottomOf="@id/app_bar"
+        app:layout_constraintTop_toTopOf="@id/base_app_bar"
+        app:layout_constraintBottom_toBottomOf="@id/base_app_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -51,16 +51,16 @@
     -->
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline_bottom"
+        android:id="@+id/base_guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.91"
         android:orientation="horizontal" />
 
     <ImageView
-        android:id="@+id/line_bottom"
+        android:id="@+id/line_bottom_"
         style="@style/AppTheme.Lines"
-        app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+        app:layout_constraintBottom_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -69,7 +69,7 @@
         style="@style/AppTheme.TextButtons"
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
@@ -78,7 +78,7 @@
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
@@ -86,7 +86,7 @@
         style="@style/AppTheme.TextButtons"
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_bottom"
+        app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </merge>
