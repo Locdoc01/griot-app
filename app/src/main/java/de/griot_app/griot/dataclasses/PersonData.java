@@ -63,11 +63,11 @@ public class PersonData extends ContactData {
 
     public String getBirthday() { return birthday; }
 
-    public Integer getYear() { return bYear; }
+    public Integer getBYear() { return bYear; }
 
-    public Integer getMonth() { return bMonth; }
+    public Integer getBMonth() { return bMonth; }
 
-    public Integer getDay() { return bDay; }
+    public Integer getBDay() { return bDay; }
 
     public String getEmail() { return email;}
 
@@ -78,11 +78,11 @@ public class PersonData extends ContactData {
 
     public void setBirthday(String birthday) { this.birthday = birthday; }
 
-    public void setYear(Integer bYear) { this.bYear = bYear; }
+    public void setBYear(Integer bYear) { this.bYear = bYear; }
 
-    public void setMonth(Integer bMonth) { this.bMonth = bMonth; }
+    public void setBMonth(Integer bMonth) { this.bMonth = bMonth; }
 
-    public void setDay(Integer bDay) { this.bDay = bDay; }
+    public void setBDay(Integer bDay) { this.bDay = bDay; }
 
     public void setEmail(String email) { this.email = email; }
 
