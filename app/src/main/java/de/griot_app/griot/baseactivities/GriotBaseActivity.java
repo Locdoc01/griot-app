@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -60,14 +59,14 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
 
         //set up the Toolbar as app bar
-        mAppBar = (Toolbar) findViewById(R.id.app_bar);
+        mAppBar = (Toolbar) findViewById(R.id.base_app_bar);
         setSupportActionBar(mAppBar);
 
         //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
-        mTitle = (TextView) findViewById(R.id.title);
+        mTitle = (TextView) findViewById(R.id.base_title);
 
-        mLineAppBar = (ImageView) findViewById(R.id.line_top_);
+        mLineAppBar = (ImageView) findViewById(R.id.base_line_top);
 
         mButtonHome = (ImageView) findViewById(R.id.button_home);
         mButtonProfile = (ImageView) findViewById(R.id.button_profile);

@@ -55,13 +55,13 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
 
         //set up the Toolbar as app bar
-        mAppbar = (Toolbar) findViewById(R.id.app_bar);
+        mAppbar = (Toolbar) findViewById(R.id.base_app_bar);
         setSupportActionBar(mAppbar);
 
         //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
 
-        mTitle = (TextView) findViewById(R.id.title);
+        mTitle = (TextView) findViewById(R.id.base_title);
 
 
         mButtonLeft = (Button) findViewById(R.id.button_left);
