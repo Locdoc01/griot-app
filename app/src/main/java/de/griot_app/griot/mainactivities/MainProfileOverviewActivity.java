@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.griot_app.griot.CombinedPersonListCreator;
+import de.griot_app.griot.ProfileActivity;
 import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
@@ -82,6 +83,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         mTextViewMedias = (TextView) findViewById(R.id.textView_medias);
 
         mButtonAddGuest.setOnTouchListener(this);
+        mPivUser.setOnTouchListener(this);
         mTextViewUser.setOnTouchListener(this);
         mButtonOptions.setOnTouchListener(this);
         mImageViewFriendsGroups.setOnTouchListener(this);
@@ -204,28 +206,24 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                 switch (v.getId()) {
                     case R.id.button_add_guest:
                         mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.piv_user:
                         return true;
                     case R.id.textView_user:
                         mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Profil anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.button_options:
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.imageView_friends_groups:
                     case R.id.textView_friends_groups:
                         mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Kontaktverwaltung anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.imageView_questionmail:
                     case R.id.textView_questionmail:
                         mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        startActivity(new Intent(this, MainQuestionmailActivity.class));
-                        finish();
                         return true;
                 }
                 return false;
@@ -233,22 +231,29 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                 switch (v.getId()) {
                     case R.id.button_add_guest:
                         mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
                         return true;
+                    case R.id.piv_user:
                     case R.id.textView_user:
                         mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        startActivity(new Intent(MainProfileOverviewActivity.this, ProfileActivity.class));
                         return true;
                     case R.id.button_options:
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.imageView_friends_groups:
                     case R.id.textView_friends_groups:
                         mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        Toast.makeText(MainProfileOverviewActivity.this, "Kontaktverwaltung anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.imageView_questionmail:
                     case R.id.textView_questionmail:
                         mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        startActivity(new Intent(this, MainQuestionmailActivity.class));
+                        finish();
                         return true;
                 }
                 return false;
