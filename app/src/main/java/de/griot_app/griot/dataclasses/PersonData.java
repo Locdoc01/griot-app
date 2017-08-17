@@ -7,6 +7,9 @@ public class PersonData extends ContactData {
 
     protected String lastname;
     protected String birthday;
+    protected Integer year;
+    protected Integer month;
+    protected Integer day;
     protected String email;
     protected Boolean isUser = false;
 
@@ -25,6 +28,9 @@ public class PersonData extends ContactData {
             String firstname,
             String lastname,
             String birthday,
+            Integer year,
+            Integer month,
+            Integer day,
             String email,
             String pictureURL,
             String pictureLocalURI,
@@ -33,6 +39,9 @@ public class PersonData extends ContactData {
         super(firstname, pictureURL, pictureLocalURI, category);
         this.lastname = lastname;
         this.birthday = birthday;
+        this.year = year;
+        this.month = month;
+        this.day = day;
         this.email = email;
     }
 
@@ -41,6 +50,9 @@ public class PersonData extends ContactData {
         return "PersonData{" +
                 "lastname='" + lastname + '\'' +
                 ", birthday='" + birthday + '\'' +
+                ", year='" + year + '\'' +
+                ", month='" + month + '\'' +
+                ", day='" + day + '\'' +
                 ", email='" + email + '\'' +
                 ", isUser='" + isUser + '\'' +
                 '}';
@@ -51,6 +63,12 @@ public class PersonData extends ContactData {
 
     public String getBirthday() { return birthday; }
 
+    public Integer getYear() { return year; }
+
+    public Integer getMonth() { return month; }
+
+    public Integer getDay() { return day; }
+
     public String getEmail() { return email;}
 
     public Boolean getIsUser() { return isUser; }
@@ -59,6 +77,12 @@ public class PersonData extends ContactData {
     public void setLastname(String lastname) { this.lastname = lastname; }
 
     public void setBirthday(String birthday) { this.birthday = birthday; }
+
+    public void setYear(Integer year) { this.year = year; }
+
+    public void setMonth(Integer month) { this.month = month; }
+
+    public void setDay(Integer day) { this.day = day; }
 
     public void setEmail(String email) { this.email = email; }
 
