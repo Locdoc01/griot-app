@@ -134,6 +134,7 @@
     <string name="text_relationship">Beziehung</string>
     <string name="hint_enter_relationship">Beziehung eingeben</string>
     <string name="text_friends">Freunde</string>
+    <string name="text_groups">Gruppen</string>
     <string name="text_parents">Eltern</string>
     <string name="text_father">Vater</string>
     <string name="text_mother">Mutter</string>
