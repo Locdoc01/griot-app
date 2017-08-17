@@ -3,14 +3,12 @@ package de.griot_app.griot.mainactivities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,19 +21,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.util.ArrayList;
 
-import de.griot_app.griot.CombinedPersonListCreator;
-import de.griot_app.griot.ProfileActivity;
+import de.griot_app.griot.ProfileInputActivity;
 import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 import de.griot_app.griot.dataclasses.LocalUserData;
-import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
 public class MainProfileOverviewActivity extends GriotBaseActivity implements View.OnTouchListener {
@@ -236,7 +230,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                     case R.id.piv_user:
                     case R.id.textView_user:
                         mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        startActivity(new Intent(MainProfileOverviewActivity.this, ProfileActivity.class));
+                        startActivity(new Intent(MainProfileOverviewActivity.this, ProfileInputActivity.class));
                         return true;
                     case R.id.button_options:
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));

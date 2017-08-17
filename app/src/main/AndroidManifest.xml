@@ -53,7 +53,8 @@
             android:parentActivityName=".ChooseTopicInputActivity" />
         <activity android:name=".ReviewInterviewInputActivity" />
         <activity android:name=".SaveInterviewInputActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileInputActivity" />
+        <activity android:name=".GuestProfileInputActivity"></activity>
     </application>
 
 </manifest>

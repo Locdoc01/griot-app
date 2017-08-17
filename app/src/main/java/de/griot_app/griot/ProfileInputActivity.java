@@ -35,9 +35,9 @@ import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.views.ProfileImageView;
 
-public class ProfileActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, View.OnTouchListener{
+public class ProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, View.OnTouchListener{
 
-    private static final String TAG = ProfileActivity.class.getSimpleName();
+    private static final String TAG = ProfileInputActivity.class.getSimpleName();
 
     private static final int REQUEST_GALLERY = 888;
 
@@ -85,7 +85,7 @@ public class ProfileActivity extends GriotBaseInputActivity implements DatePicke
         int year = mCalendar.get(Calendar.YEAR);
         int month = mCalendar.get(Calendar.MONTH);
         int day = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mDatePickerDialog = new DatePickerDialog(ProfileActivity.this, ProfileActivity.this, year, month, day);
+        mDatePickerDialog = new DatePickerDialog(ProfileInputActivity.this, ProfileInputActivity.this, year, month, day);
         mTextViewDate = (TextView) findViewById(R.id.textView_date);
 
         mButtonSave = (Button) findViewById(R.id.button_save);
@@ -105,7 +105,7 @@ public class ProfileActivity extends GriotBaseInputActivity implements DatePicke
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_profile;
+        return R.layout.activity_input_profile;
     }
 
     @Override
@@ -140,12 +140,12 @@ public class ProfileActivity extends GriotBaseInputActivity implements DatePicke
                     case R.id.piv_profile_image:
                         return true;
                     case R.id.button_datepicker:
-                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileActivity.this, R.color.colorGriotWhite));
+                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
                         return true;
                     case R.id.button_create_account:
                     case R.id.button_forgotten:
                     case R.id.button_signin:
-                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorGriotWhite));
+                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
                         return true;
                 }
                 return false;
@@ -155,14 +155,14 @@ public class ProfileActivity extends GriotBaseInputActivity implements DatePicke
                         CropImage.activity()
                                 .setGuidelines(CropImageView.Guidelines.ON)
                                 .setAspectRatio(1,1)
-                                .start(ProfileActivity.this);
+                                .start(ProfileInputActivity.this);
                         return true;
                     case R.id.button_datepicker:
-                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileActivity.this, R.color.colorGriotDarkgrey));
+                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotDarkgrey));
                         mDatePickerDialog.show();
                         return true;
                     case R.id.button_save:
-                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileActivity.this, R.color.colorGriotDarkgrey));
+                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotDarkgrey));
                         saveProfile();  //TODO: methode implementiern
                         return true;
                 }
@@ -397,7 +397,7 @@ public class ProfileActivity extends GriotBaseInputActivity implements DatePicke
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        Toast.makeText(ProfileActivity.this, "Sicherheitsabfrage", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ProfileInputActivity.this, "Sicherheitsabfrage", Toast.LENGTH_SHORT).show();
         //TODO: implementieren
     }
 
