@@ -72,6 +72,8 @@ public class CombinedPersonListCreator {
     private int mSelectedItemID;
 
 
+
+
     //constructor
     public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData localUserData, ListView combinedlistView) {
 
@@ -234,11 +236,9 @@ public class CombinedPersonListCreator {
                 }
             }
             mCombinedList.addAll(mSingleLists.get(i));
-
-
-            if(mSelectedItemID>=0) {
-                mCombinedList.get(mSelectedItemID).setSelected(true);
-            }
+        }
+        if(mSelectedItemID>=0 && !mSingleLists.get(0).isEmpty() && !mSingleLists.get(1).isEmpty()) {
+            mCombinedList.get(mSelectedItemID).setSelected(true);
         }
         mAdapter = new LocalPersonDataAdapter(mContext, mCombinedList);
         mCombinedListView.setAdapter(mAdapter);

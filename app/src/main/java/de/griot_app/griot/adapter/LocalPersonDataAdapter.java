@@ -1,20 +1,26 @@
 package de.griot_app.griot.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import de.griot_app.griot.GuestProfileInputActivity;
+import de.griot_app.griot.OwnProfileInputActivity;
+import de.griot_app.griot.UserProfileInputActivity;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
@@ -45,7 +51,7 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.listitem_person, null);
 
@@ -53,6 +59,54 @@ public class LocalPersonDataAdapter extends ArrayAdapter<LocalPersonData> {
         pivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
         tvPerson = (TextView) v.findViewById(R.id.textView_person);
         btnCheck = (ImageView) v.findViewById(R.id.button_check);
+
+        View.OnTouchListener touchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        switch (v.getId()) {
+                            case R.id.piv_person:
+                            case R.id.textView_person:
+                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
+                                    return false;
+                                }
+                                ((TextView)v).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
+                                return true;
+                        }
+                        return false;
+                    case MotionEvent.ACTION_UP:
+                        switch (v.getId()) {
+                            case R.id.textView_person:
+                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
+                                    return false;
+                                }
+                                ((TextView)v).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotDarkgrey));
+                            case R.id.piv_person:
+                                Intent intent;
+                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
+                                    return false;
+                                }
+                                if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                                    intent = new Intent(mContext, OwnProfileInputActivity.class);
+                                } else if (getItem(position).getIsUser()) {
+                                    intent = new Intent(mContext, UserProfileInputActivity.class);
+                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                } else {
+                                    intent = new Intent(mContext, GuestProfileInputActivity.class);
+                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                }
+                                mContext.startActivity(intent);
+                                return true;
+                        }
+                        return false;
+                }
+                return false;
+            }
+        };
+
+        pivPerson.setOnTouchListener(touchListener);
+        tvPerson.setOnTouchListener(touchListener);
 
         this.position = position;
 

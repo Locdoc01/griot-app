@@ -24,7 +24,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.griot_app.griot.ProfileInputActivity;
+import de.griot_app.griot.GuestProfileInputActivity;
+import de.griot_app.griot.OwnProfileInputActivity;
 import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
@@ -225,12 +226,13 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                 switch (v.getId()) {
                     case R.id.button_add_guest:
                         mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainProfileOverviewActivity.this, GuestProfileInputActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.piv_user:
                     case R.id.textView_user:
                         mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        startActivity(new Intent(MainProfileOverviewActivity.this, ProfileInputActivity.class));
+                        startActivity(new Intent(MainProfileOverviewActivity.this, OwnProfileInputActivity.class));
                         return true;
                     case R.id.button_options:
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));

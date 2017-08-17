@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.griot_app.griot.baseactivities.GriotBaseInputActivity"
     android:background="@color/colorGriotWhite"
-    tools:showIn="@layout/activity_profile"><!--zeile später löschen-->
+    tools:showIn="@layout/activity_input_person_profile"><!--zeile später löschen-->
 
     <android.support.constraint.Guideline
         android:id="@+id/base_guideline_top"

@@ -27,6 +27,7 @@ import java.io.File;
 import de.griot_app.griot.ChooseMediumInputActivity;
 import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.CombinedPersonListCreator;
+import de.griot_app.griot.GuestProfileInputActivity;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
@@ -120,7 +121,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (mCombinedListCreator.getAdapter().getItem(position).getFirstname().equals(getString(R.string.text_add_guest))) {
-                    Toast.makeText(MainChooseFriendInputActivity.this, "Gast hinzufügen", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainChooseFriendInputActivity.this, GuestProfileInputActivity.class);
+                    startActivity(intent);
                 } else {
                     if (narratorSelectedItemID < 0) {
                         narratorSelectedItemID = position;
@@ -169,6 +171,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
                 Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     mLocalUserData = ds.getValue(LocalUserData.class);
+                    mLocalUserData.setContactID(ds.getKey());
                     mLocalUserData.setCategory(getString(R.string.text_yourself));
                 }
 

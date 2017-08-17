@@ -34,12 +34,11 @@ import java.util.Calendar;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.dataclasses.UserData;
-import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
-public class ProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, View.OnTouchListener{
+public class OwnProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = ProfileInputActivity.class.getSimpleName();
+    private static final String TAG = OwnProfileInputActivity.class.getSimpleName();
 
     private static final int REQUEST_GALLERY = 888;
 
@@ -60,6 +59,9 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
     private TextView mTextViewDate;
 
     private Button mButtonSave;
+
+    private View.OnClickListener mClickListener;
+    private View.OnTouchListener mTouchListener;
 
     //Data class object
     private UserData mUserData;
@@ -95,24 +97,76 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
         mEditPassword.setEnabled(false);
         mEditPassword2.setEnabled(false);
 
-        mEditFirstname.setOnClickListener(this);
-        mEditLastname.setOnClickListener(this);
+        mClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditFirstname.setError(null);
+                mEditLastname.setError(null);
+                mTextViewDate.setError(null);
+                mEditEmail.setError(null);
+                mEditPassword.setError(null);
+                mEditPassword2.setError(null);
+            }
+        };
+
+        mTouchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        switch (v.getId()) {
+                            case R.id.piv_profile_image:
+                                return true;
+                            case R.id.button_datepicker:
+                                ((ImageView)v).setColorFilter(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotBlue));
+                                return true;
+                            case R.id.button_save:
+                                ((TextView)v).setTextColor(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotBlue));
+                                return true;
+                        }
+                        return false;
+                    case MotionEvent.ACTION_UP:
+                        switch (v.getId()) {
+                            case R.id.piv_profile_image:
+                                mImageChanged = true;
+                                CropImage.activity()
+                                        .setGuidelines(CropImageView.Guidelines.ON)
+                                        .setAspectRatio(1,1)
+                                        .start(OwnProfileInputActivity.this);
+                                return true;
+                            case R.id.button_datepicker:
+                                ((ImageView)v).setColorFilter(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotDarkgrey));
+                                mDatePickerDialog.show();
+                                return true;
+                            case R.id.button_save:
+                                ((TextView)v).setTextColor(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotDarkgrey));
+                                saveProfile();
+                                return true;
+                        }
+                        return false;
+                }
+                return false;
+            }
+        };
+
+        mEditFirstname.setOnClickListener(mClickListener);
+        mEditLastname.setOnClickListener(mClickListener);
         //mEditEmail.setOnClickListener(this);
 
         //TODO: Passwort soll änderbar sein. Herausfinden, wie
         //mEditPassword.setOnClickListener(this);
         //mEditPassword2.setOnClickListener(this);
 
-        mProfileImage.setOnTouchListener(this);
-        mButtonDatePicker.setOnTouchListener(this);
-        mButtonSave.setOnTouchListener(this);
+        mProfileImage.setOnTouchListener(mTouchListener);
+        mButtonDatePicker.setOnTouchListener(mTouchListener);
+        mButtonSave.setOnTouchListener(mTouchListener);
 
         mUserData = new UserData();
     }
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_input_profile;
+        return R.layout.activity_input_own_profile;
     }
 
     @Override
@@ -128,55 +182,6 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
         mTextViewDate.setError(null);
         mCalendar.set(year,month,day,0,0,0);
     }
-
-    @Override
-    public void onClick(View v) {
-        mEditFirstname.setError(null);
-        mEditLastname.setError(null);
-        mTextViewDate.setError(null);
-        mEditEmail.setError(null);
-        mEditPassword.setError(null);
-        mEditPassword2.setError(null);
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                switch (v.getId()) {
-                    case R.id.piv_profile_image:
-                        return true;
-                    case R.id.button_datepicker:
-                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
-                        return true;
-                    case R.id.button_save:
-                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotWhite));
-                        return true;
-                }
-                return false;
-            case MotionEvent.ACTION_UP:
-                switch (v.getId()) {
-                    case R.id.piv_profile_image:
-                        mImageChanged = true;
-                        CropImage.activity()
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setAspectRatio(1,1)
-                                .start(ProfileInputActivity.this);
-                        return true;
-                    case R.id.button_datepicker:
-                        ((ImageView)v).setColorFilter(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotDarkgrey));
-                        mDatePickerDialog.show();
-                        return true;
-                    case R.id.button_save:
-                        ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotDarkgrey));
-                        saveProfile();
-                        return true;
-                }
-                return false;
-        }
-        return false;
-    }
-
 
     //called after an image was chosen and cropped on external Activity
     @Override
@@ -329,13 +334,17 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
 
     public void saveProfile() {
 
+        if (!validateForm()) {
+            return;
+        }
+
         // obtain userId
         mUser = mAuth.getCurrentUser();
         mUserID = mUser.getUid();
         //set database reference to /users/mUserID
         mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID);
 
-        // User details from input form are stored in mLocalUserData
+        // User details from input form are stored in mUserData
         mUserData.setFirstname(mEditFirstname.getText().toString().trim());
         mUserData.setLastname(mEditLastname.getText().toString().trim());
         mUserData.setBirthday(mCalendar.getTime().toString());
@@ -354,7 +363,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                 mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // on success the remote downloadURL will be stored to mLocalUserData.pictureURL
+                        // on success the remote downloadURL will be stored to mUserData.pictureURL
                         //TODO: Alternative finden
                         mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                         // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
@@ -363,8 +372,8 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // on failure mLocalUserData.pictureURL will remain empty.
-                        Toast.makeText(ProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
+                        // on failure mUserData.pictureURL will remain empty.
+                        Toast.makeText(OwnProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mUserData);
                     }
@@ -374,13 +383,13 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                     @Override
                     public void onSuccess(Uri uri) {
                         mUserData.setPictureURL(uri.toString());
-                        // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
+                        // if no profile image was chosen, mUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
                         mDatabaseRef.setValue(mUserData);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // on failure mLocalUserData.pictureURL will remain empty.
+                        // on failure mUserData.pictureURL will remain empty.
                         Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                         mDatabaseRef.setValue(mUserData);
                     }
@@ -449,7 +458,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                     int day = mLocalUserData.getBDay();
                     int month = mLocalUserData.getBMonth();
                     int year = mLocalUserData.getBYear();
-                    mDatePickerDialog = new DatePickerDialog(ProfileInputActivity.this, ProfileInputActivity.this, year, month, day);
+                    mDatePickerDialog = new DatePickerDialog(OwnProfileInputActivity.this, OwnProfileInputActivity.this, year, month, day);
                     mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
                     mEditEmail.setText((mLocalUserData.getEmail()));
                 }
@@ -474,7 +483,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        Toast.makeText(ProfileInputActivity.this, "Sicherheitsabfrage", Toast.LENGTH_SHORT).show();
+        Toast.makeText(OwnProfileInputActivity.this, "Sicherheitsabfrage", Toast.LENGTH_SHORT).show();
         //TODO: implementieren
     }
 
