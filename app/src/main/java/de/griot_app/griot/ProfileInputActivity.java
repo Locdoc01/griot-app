@@ -169,7 +169,7 @@ public class ProfileInputActivity extends GriotBaseInputActivity implements Date
                         return true;
                     case R.id.button_save:
                         ((TextView)v).setTextColor(ContextCompat.getColor(ProfileInputActivity.this, R.color.colorGriotDarkgrey));
-                        saveProfile();  //TODO: methode implementiern
+                        saveProfile();
                         return true;
                 }
                 return false;
