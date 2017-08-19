@@ -3,6 +3,7 @@ package de.griot_app.griot;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,7 +21,8 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.griot_app.griot.adapter.LocalPersonDataAdapter;
+import de.griot_app.griot.adapter.LocalPersonDataChooseAdapter;
+import de.griot_app.griot.adapter.LocalPersonDataOptionsAdapter;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
@@ -37,6 +39,13 @@ import de.griot_app.griot.dataclasses.LocalUserData;
 public class CombinedPersonListCreator {
 
     private static final String TAG = CombinedPersonListCreator.class.getSimpleName();
+
+    public static final int PERSONS_OPTIONS_MODE = 0;
+    public static final int PERSONS_CHOOSE_MODE = 1;
+    public static final int GROUPS_OPTIONS_MODE = 2;
+    public static final int GROUPS_CHOOSE_MODE = 3;
+
+    private int mMode = PERSONS_OPTIONS_MODE;
 
     private Activity mContext;
 
@@ -63,15 +72,14 @@ public class CombinedPersonListCreator {
     private ArrayList<StorageReference> mStorageReferences;
 
     //Data-View-Adapter for the ListView
-    private LocalPersonDataAdapter mAdapter;
+    private ArrayAdapter<LocalPersonData> mAdapter;
+    private LocalPersonDataChooseAdapter mAdapter_;
 
     //necessary to prevent multiple additions of "add guest"-item
     private boolean addGuestAdded = false;
 
     // stores the item id, if an item was selected
     private int mSelectedItemID;
-
-
 
     //constructors
     public CombinedPersonListCreator(Activity context, ListView combinedlistView) {
@@ -94,13 +102,11 @@ public class CombinedPersonListCreator {
         mDatabase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance();
 
-        mDatabaseQuerys.add(mDatabase.getReference().child("guests"));      //TODO genauer spezifizieren
-        mSingleLists.add(new ArrayList<LocalPersonData>());
-        //mStorageReferences.add(mStorage.getReference().child("guests"));
+        //mDatabaseQuerys.add(mDatabase.getReference().child("guests"));      //TODO genauer spezifizieren
+        //mSingleLists.add(new ArrayList<LocalPersonData>());
 
-        mDatabaseQuerys.add(mDatabase.getReference().child("users"));     //TODO genauer spezifizieren
-        mSingleLists.add(new ArrayList<LocalPersonData>());
-        //mStorageReferences.add(mStorage.getReference().child("users"));
+        //mDatabaseQuerys.add(mDatabase.getReference().child("users"));     //TODO genauer spezifizieren
+        //mSingleLists.add(new ArrayList<LocalPersonData>());
 
         mSelectedItemID = selectedItemID;
     }
@@ -113,7 +119,7 @@ public class CombinedPersonListCreator {
      * @param query A database query, from which the data will be obtained.
      * @return A this-reference
      */
-    /*
+
     public CombinedPersonListCreator add(Query query) {
         Log.d(TAG, "add:");
 
@@ -122,14 +128,22 @@ public class CombinedPersonListCreator {
 
         return this;
     }
-*/
+
 
     /**
      * Returns the Data-View-Adapter for the ListView
      * @return mAdapter
      */
-    public LocalPersonDataAdapter getAdapter() { return mAdapter; }
+    public ArrayAdapter<LocalPersonData> getAdapter() { return mAdapter; }
 
+    /**
+     * Set the mode for the ListView. Posibile values are OPTIONS_MODE (0) and CHOOSE_MODE (1).
+     * OPTIONS_MODE shows options button for every item, which, when clicked opens the options menu for the appropriate item.
+     * CHOOSE_MODE makes the items selectable. Only one item is selectable at a time.
+     * If an item got selected, it shows a check-sign and the appropriate DataClass-Object stores the selected state
+     * @param mode  Mode for the ListView
+     */
+    public void setMode(int mode) { mMode = ((mode>3) ? PERSONS_OPTIONS_MODE : mode); }
 
     /**
      * Adds a ValueEventListener for a single valueEvent (reads just once) to each database query in the query list.
@@ -246,7 +260,20 @@ public class CombinedPersonListCreator {
         if(mSelectedItemID>=0 && !mSingleLists.get(0).isEmpty() && !mSingleLists.get(1).isEmpty()) {
             mCombinedList.get(mSelectedItemID).setSelected(true);
         }
-        mAdapter = new LocalPersonDataAdapter(mContext, mCombinedList);
+        switch (mMode) {
+            case PERSONS_CHOOSE_MODE:
+                mAdapter = new LocalPersonDataChooseAdapter(mContext, mCombinedList);
+                break;
+            case PERSONS_OPTIONS_MODE:
+                mAdapter = new LocalPersonDataOptionsAdapter(mContext, mCombinedList);
+                break;
+            case GROUPS_CHOOSE_MODE:
+                // TODO
+                break;
+            case GROUPS_OPTIONS_MODE:
+                // TODO
+                break;
+        }
         mCombinedListView.setAdapter(mAdapter);
     }
 }

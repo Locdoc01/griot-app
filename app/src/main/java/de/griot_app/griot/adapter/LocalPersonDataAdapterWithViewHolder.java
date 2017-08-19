@@ -63,7 +63,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
             holder.listSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
             holder.pivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
             holder.tvPerson = (TextView) convertView.findViewById(R.id.textView_person);
-            holder.btnCheck = (ImageView) convertView.findViewById(R.id.button_check);
+            holder.btnCheck = (ImageView) convertView.findViewById(R.id.button_item);
 
             convertView.setTag(holder);
         } else {
@@ -83,7 +83,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ImageView btnCheck = (ImageView)view.findViewById(R.id.button_check);
+                ImageView btnCheck = (ImageView)view.findViewById(R.id.button_item);
                 if (mChecked<0) {
                     btnCheck.setVisibility(View.VISIBLE);
                     mChecked = position;
@@ -92,7 +92,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
                         btnCheck.setVisibility(View.GONE);
                         mChecked = -1;
                     } else {
-                        parent.getChildAt(mChecked).findViewById(R.id.button_check).setVisibility(View.GONE);
+                        parent.getChildAt(mChecked).findViewById(R.id.button_item).setVisibility(View.GONE);
                         btnCheck.setVisibility(View.VISIBLE);
                         mChecked = position;
                     }

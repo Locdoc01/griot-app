@@ -54,8 +54,9 @@
         <activity android:name=".ReviewInterviewInputActivity" />
         <activity android:name=".SaveInterviewInputActivity" />
         <activity android:name=".OwnProfileInputActivity" />
-        <activity android:name=".GuestProfileInputActivity"></activity>
-        <activity android:name=".UserProfileInputActivity"></activity>
+        <activity android:name=".GuestProfileInputActivity" />
+        <activity android:name=".UserProfileInputActivity" />
+        <activity android:name=".ContactManagmentActivity"></activity>
     </application>
 
 </manifest>

@@ -1,11 +1,7 @@
 package de.griot_app.griot.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.provider.ContactsContract;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 
 import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;

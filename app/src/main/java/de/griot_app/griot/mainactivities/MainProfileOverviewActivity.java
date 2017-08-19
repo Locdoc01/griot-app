@@ -24,6 +24,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.griot_app.griot.ContactManagmentActivity;
 import de.griot_app.griot.GuestProfileInputActivity;
 import de.griot_app.griot.OwnProfileInputActivity;
 import de.griot_app.griot.adapter.LocalInterviewDataAdapter;
@@ -242,7 +243,8 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                     case R.id.textView_friends_groups:
                         mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Kontaktverwaltung anzeigen", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainProfileOverviewActivity.this, ContactManagmentActivity.class));
+                        finish();
                         return true;
                     case R.id.imageView_questionmail:
                     case R.id.textView_questionmail:

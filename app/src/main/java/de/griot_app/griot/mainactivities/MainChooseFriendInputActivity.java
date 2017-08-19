@@ -60,8 +60,10 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     //Creates the PersonlistView as a combination of own user data, guest list data, friend list data and approriate headings
     private CombinedPersonListCreator mCombinedListCreator;
 
-    //firebase-query, to get own user data
+    //firebase-queries for the CombinedListCreator
     private Query mQueryYou;
+    private Query mQueryGuests;
+    private Query mQueryFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +164,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mUserID = mUser.getUid();
 
         mQueryYou = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
-        //mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        //mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
+        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
 
         mQueryYou.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -200,6 +202,9 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
                 //create the Combined ListView
                 mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mLocalUserData, mListViewPersons);
+                mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
+                mCombinedListCreator.add(mQueryGuests);
+                mCombinedListCreator.add(mQueryFriends);
                 mCombinedListCreator.loadData();
 
             }
