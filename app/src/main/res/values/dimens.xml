@@ -6,6 +6,16 @@
     <dimen name="dimen_height_editText">40dp</dimen>
     <dimen name="dimen_height_tabwidget">50dp</dimen>
 
+    <!--dimensions record functions-->
+    <dimen name="carouselHeight">150dp</dimen>
+    <!--carouselLayoutHeight has to be carouselShadowTopHeight + 2*carouselTextViewSpaceHeight -->
+    <dimen name="carouselLayoutHeight">180dp</dimen>
+    <dimen name="carouselShadowTopHeight">80dp</dimen>
+    <dimen name="carouselTextViewSpaceHeight">50dp</dimen>
+    <dimen name="textSizeCurrentQuestion">12sp</dimen>
+    <dimen name="textSizeLastNextQuestion">9sp</dimen>
+    <dimen name="wavelineLayoutHeight">270dp</dimen>
+
     <!--TextSizes-->
     <dimen name="dimen_textSize_large">25sp</dimen>
     <dimen name="dimen_textSize_normal">20sp</dimen>

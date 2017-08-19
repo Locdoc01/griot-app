@@ -31,8 +31,13 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'com.google.firebase:firebase-storage:10.0.1'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.6'
+    compile 'com.github.romainguy:ViewServer:017c01cd512cac3ec054d9eee05fc48c5a9d2de'
     testCompile 'junit:junit:4.12'
 }
+
+
+
+
 
 
 

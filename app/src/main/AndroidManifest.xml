@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.griot_app.griot">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -56,7 +59,13 @@
         <activity android:name=".OwnProfileInputActivity" />
         <activity android:name=".GuestProfileInputActivity" />
         <activity android:name=".UserProfileInputActivity" />
-        <activity android:name=".ContactManagmentActivity"></activity>
+        <activity android:name=".ContactManagmentActivity" />
+        <activity android:name=".recordfunctions.RecordVideoActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".recordfunctions.RecordAudioActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/question_shadow_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/carouselShadowTopHeight"
+        app:srcCompat="@drawable/shadow_top" />
+
+    <ImageView
+        android:id="@+id/question_shadow_top_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorQuestionCarouselShadowLine" />
+
+    <ImageView
+        android:id="@+id/question_shadow_middle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/carouselTextViewSpaceHeight"
+        android:background="@color/colorQuestionCarouselShadow"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/question_shadow_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/carouselTextViewSpaceHeight"
+        android:background="@color/colorQuestionCarouselShadow" />
+
+    <ImageView
+        android:id="@+id/question_shadow_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorQuestionCarouselShadowLine" />
+
+</FrameLayout>
