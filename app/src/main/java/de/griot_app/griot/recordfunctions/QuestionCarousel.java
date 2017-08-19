@@ -104,7 +104,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mRecordIndex = -1;
         mFinishedMode = CHECKED_WHEN_FINISHED;
 
-        ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(mContext).inflate(R.layout.question_carousel, null);
+        ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(mContext).inflate(R.layout.class_question_carousel, null);
         addView(layout);
         mlayoutQuestions = (FrameLayout) layout.findViewById(R.id.layout_questions);
 
@@ -138,7 +138,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * Initializations to be performed in constructurs. Therfore this method has to be called from constructors.
      */
     private void init() {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.question_carousel, this);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.class_question_carousel, this);
         //mlayoutQuestions = (FrameLayout) v.findViewById(R.id.layout_questions);
 
         mShadowTop = (ImageView) v.findViewById(R.id.question_shadow_top);

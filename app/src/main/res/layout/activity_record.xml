@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/record_start" />
 
-    <com.schoob.marcel.camera2videoimage.RecordChronometers
+    <de.griot_app.griot.recordfunctions.RecordChronometers
         android:id="@+id/layout_chronometers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         app:layout_constraintLeft_toLeftOf="parent">
     </FrameLayout>
 
-    <com.schoob.marcel.camera2videoimage.QuestionCarousel
+    <de.griot_app.griot.recordfunctions.QuestionCarousel
         android:id="@+id/layout_carousel"
         android:layout_width="0dp"
         android:layout_height="@dimen/carouselLayoutHeight"

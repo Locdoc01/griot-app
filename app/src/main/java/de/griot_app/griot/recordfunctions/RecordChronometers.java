@@ -1,24 +1,18 @@
 package de.griot_app.griot.recordfunctions;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.CamcorderProfile;
 import android.os.Environment;
 import android.os.StatFs;
 import android.os.SystemClock;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.List;
 
 import de.griot_app.griot.R;
 
@@ -57,7 +51,7 @@ public class RecordChronometers extends FrameLayout {
 
 
     private void init() {
-        View v =  LayoutInflater.from(mContext).inflate(R.layout.record_chronometers, this);
+        View v =  LayoutInflater.from(mContext).inflate(R.layout.class_record_chronometers, this);
 
         mChronometerRecord = (Chronometer) v.findViewById(R.id.chronometer_record);
         mChronometerRemain = (TextView) v.findViewById(R.id.chronometer_remain);
