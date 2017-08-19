@@ -1,4 +1,4 @@
-package de.griot_app.griot.adapter;
+package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.net.Uri;

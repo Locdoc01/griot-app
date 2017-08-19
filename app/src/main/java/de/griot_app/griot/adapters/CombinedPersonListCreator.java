@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.adapters;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -21,8 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.griot_app.griot.adapter.LocalPersonDataChooseAdapter;
-import de.griot_app.griot.adapter.LocalPersonDataOptionsAdapter;
+import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;

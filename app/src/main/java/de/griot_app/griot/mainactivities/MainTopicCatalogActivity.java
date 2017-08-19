@@ -1,28 +1,23 @@
 package de.griot_app.griot.mainactivities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import de.griot_app.griot.ChooseTopicInputActivity;
-import de.griot_app.griot.adapter.TopicCatalogAdapter;
+import de.griot_app.griot.adapters.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.dataclasses.TopicData;
-import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.R;
 
 public class MainTopicCatalogActivity extends GriotBaseActivity {

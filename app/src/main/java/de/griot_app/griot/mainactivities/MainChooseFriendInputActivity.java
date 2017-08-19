@@ -2,7 +2,6 @@ package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,7 +24,7 @@ import java.io.File;
 
 import de.griot_app.griot.ChooseMediumInputActivity;
 import de.griot_app.griot.ChooseTopicInputActivity;
-import de.griot_app.griot.CombinedPersonListCreator;
+import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.GuestProfileInputActivity;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;

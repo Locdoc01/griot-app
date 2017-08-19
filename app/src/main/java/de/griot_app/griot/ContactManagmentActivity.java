@@ -1,21 +1,17 @@
 package de.griot_app.griot;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Query;
 
+import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 
 
