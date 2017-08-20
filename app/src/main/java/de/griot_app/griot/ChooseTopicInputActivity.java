@@ -283,7 +283,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                         }
 
                                         //set the adapter
-                                        mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
+                                        mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog, true);
                                         mExpandListView.setAdapter(mAdapter);
                                     }
 

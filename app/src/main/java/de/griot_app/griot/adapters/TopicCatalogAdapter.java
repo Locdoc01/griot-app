@@ -21,6 +21,7 @@ import de.griot_app.griot.dataclasses.TopicCatalog;
 /**
  * Created by marcel on 15.08.17.
  */
+//TODO: gelöschte StandardTopics und StandardFragen ausblenden (herausfinden, wie man ListItems abhängig vom Datensatz entfernt)
 
 public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
@@ -36,6 +37,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private TextView tvQuestion;
     private ImageView btnToggle;
 
+    //needed to distinguish between functionality of ChooseTopicInputActivity and MainTopicCatalogActivity
     private boolean topicsCheckable;
 
     private SparseArray<LocalTopicData> mTopics;
@@ -43,7 +45,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     public TopicCatalogAdapter(Context context, TopicCatalog catalog) {
         mContext = context;
         mTopics = catalog.getTopics();
-        this.topicsCheckable = true;
+        this.topicsCheckable = false;
 
     }
 
@@ -161,7 +163,6 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             } else {
                  //TODO: Möglichkeit, Fragen zu löschen später implementieren
             }
-            //TODO überlegen, wo die QuestionStates persistent gespeichert werden sollen, in DB oder lokalem Ort? (muss mit Themenkalatog irgendwie synchronisiert sein))
 
             /*
             btnToggle.setOnClickListener(new View.OnClickListener() {
