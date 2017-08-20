@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="de.griot_app.griot.mainactivities.MainChooseFriendInputActivity">
 
     <TextView
@@ -35,8 +37,6 @@
         app:layout_constraintTop_toTopOf="@id/textView_topic"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/textView_topic"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
         android:visibility="gone"/>
 
     <ImageView
