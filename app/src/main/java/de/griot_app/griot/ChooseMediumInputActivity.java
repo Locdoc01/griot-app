@@ -9,9 +9,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
+import de.griot_app.griot.dataclasses.LocalQuestionData;
+import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
+import de.griot_app.griot.recordfunctions.RecordAudioActivity;
+import de.griot_app.griot.recordfunctions.RecordVideoActivity;
 
 /**
  * This Activity allows the user to choose a medium for an interview. It's the third step of the "prepare-interview"-dialog.
@@ -38,6 +44,8 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     private int topicSelectedItemID;
     private int topicKey;
     private String topic;
+
+    private String[] interviewQuestions;
 
     //Views
     private TextView mTextViewPerson;
@@ -73,6 +81,9 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
+
+        interviewQuestions = getIntent().getStringArrayExtra("interviewQuestions");
+
 
         mTextViewPerson = (TextView) findViewById(R.id.textView_person);
         mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
@@ -198,16 +209,34 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     @Override
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
-        /*
-        if (video ausgewählt) {
-            startActivity(new Intent(this, RecordVideoActivity.class));
-            //daten weiterreichen
-        } else {
-            startActivity(new Intent(this, RecordAudioActivity.class));
-            //daten weiterreichen
+        Intent intent = new Intent();
+
+        // Navigates to next page of "prepare interview"-dialog
+        // All relevant data for the interview or the dialog-pages get sent to the next page.
+        intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+        intent.putExtra("narratorID", narratorID);
+        intent.putExtra("narratorName", narratorName);
+        intent.putExtra("narratorPictureURL", narratorPictureURL);
+        intent.putExtra("narratorIsUser", narratorIsUser);
+
+        intent.putExtra("topicSelectedItemID", topicSelectedItemID);
+        intent.putExtra("topicKey", topicKey);
+        intent.putExtra("topic", topic);
+
+        intent.putExtra("interviewQuestions", interviewQuestions);
+
+        switch (selectedMedium) {
+            case VIDEO:
+                intent.setClass(this, RecordVideoActivity.class);
+                startActivity(intent);
+                break;
+            case AUDIO:
+                intent.setClass(this, RecordAudioActivity.class);
+                startActivity(intent);
+                break;
         }
+        startActivity(intent);
         finish();
-        */
     }
 
 }

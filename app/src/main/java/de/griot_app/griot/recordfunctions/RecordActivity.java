@@ -24,6 +24,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,20 @@ public abstract class RecordActivity extends AppCompatActivity {
 
     private static final String APP_DIR_NAME = "Griot";
 
+    //intent-data
+    protected int narratorSelectedItemID;
+    protected String narratorID;
+    protected String narratorName;
+    protected String narratorPictureURL;
+    protected Boolean narratorIsUser;
+
+    protected int topicSelectedItemID;
+    protected int topicKey;
+    protected String topic;
+
+    protected String[] interviewQuestions;
+
+
     protected View.OnClickListener mClickListener;
 
     /** The screen-filling placeholder for e.g. camera preview or other background content. */
@@ -60,7 +75,7 @@ public abstract class RecordActivity extends AppCompatActivity {
     //protected MediaRecorder.OutputFormat mOutputFormat;
 
     /** mListQuestions holds the interview questions as Strings. */
-    protected List<String> mListQuestions;
+    protected ArrayList<String> mListQuestions;
 
     protected int mQuestionCount;
 
@@ -70,7 +85,7 @@ public abstract class RecordActivity extends AppCompatActivity {
      * One inner list holds all filenames of files, that were recorded for one specific question.
      * regularly there will be just one filename in one list, unless a question was recorded more than once.
      */
-    protected List<List<String>> mListFilenames;
+    protected ArrayList<ArrayList<String>> mListFilenames;
 
     protected File mFile;
 
@@ -124,6 +139,20 @@ public abstract class RecordActivity extends AppCompatActivity {
         //This is achieved through the abstract method getSubClassLayoutId(), which has to be implemented in the subclasses to return there
         //appropriate layout ids
         setContentView(getSubClassLayoutId());
+
+        // gets intent-data about previous selections
+        narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
+        narratorID = getIntent().getStringExtra("narratorID");
+        narratorName = getIntent().getStringExtra("narratorName");
+        narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
+        narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
+
+        topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
+        topicKey = getIntent().getIntExtra("topicKey", -1);
+        topic = getIntent().getStringExtra("topic");
+
+        interviewQuestions = getIntent().getStringArrayExtra("interviewQuestions");
+
 
         mBackground = (FrameLayout) findViewById(R.id.record_background);
         mButtonRecord = (ImageView) findViewById(R.id.button_record);
@@ -215,9 +244,12 @@ public abstract class RecordActivity extends AppCompatActivity {
         mInterviewTitle = "Omas Kindheit";
 
         mListQuestions = new ArrayList<>();
+        for (String question : interviewQuestions) {
+            mListQuestions.add(question);
+        }
 
         mDensity = getResources().getDisplayMetrics().density;
-
+/*
         mListQuestions.add("Welchen Berufswunsch hattest du als Kind?");
         mListQuestions.add("Warst du in der Schule glücklich?");
         mListQuestions.add("Erinnerst du dich an dein erstes Spielzeug?");
@@ -229,6 +261,7 @@ public abstract class RecordActivity extends AppCompatActivity {
         mListQuestions.add("Was sind deine schlimmsten Kindheitserinnerungen?");
         mListQuestions.add("Kannst du mir etwas über die Verhältnisse erzählen, in denen du aufgewachsen bist, insbesondere wie es für dich war, getrennt von deinen Geschwistern aufzuwachsen?");
         mListQuestions.add("Wann und wie hast du Schwimmen gelernt?");
+*/
         mQuestionCount = mListQuestions.size();
 
         mListFilenames = new ArrayList<>();

@@ -257,6 +257,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
                                     LocalQuestionData headItem = new LocalQuestionData();
                                     headItem.setQuestion(getString(R.string.title_questions));
+                                    headItem.setQuestionState(LocalQuestionData.QuestionState.OFF);
                                     headItem.setTopicKey(localTopicData.getTopicKey());
                                     mTopicCatalog.getQuestionGroups().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
                                 }
@@ -382,7 +383,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
         //TODO schreibe QuestionStates nach Firebase
 
-        // Navigates back to next page of "prepare interview"-dialog
+        // Navigates to next page of "prepare interview"-dialog
         // All relevant data for the interview or the dialog-pages get sent to the next page.
         Intent intent = new Intent(this, ChooseMediumInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);

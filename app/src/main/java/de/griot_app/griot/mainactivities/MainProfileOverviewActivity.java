@@ -265,6 +265,8 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         mDatabaseRef = mDatabaseRootReference.child("interviews");
         mDatabaseRef.addValueEventListener(mValueEventListener);
 
+
+
         //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
 
         // Obtain own user data from Firebase
