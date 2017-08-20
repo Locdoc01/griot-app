@@ -9,12 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalQuestionData;
-import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 import de.griot_app.griot.recordfunctions.RecordAudioActivity;
 import de.griot_app.griot.recordfunctions.RecordVideoActivity;

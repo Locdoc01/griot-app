@@ -15,7 +15,7 @@ import android.widget.Toast;
 import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
-import de.griot_app.griot.dataclasses.QuestionGroup;
+import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 
 /**
@@ -31,25 +31,25 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private TextView tvTopic;
     private ImageView btnCheck;
     private ImageView btnExpand;
-    private TextView tvTitleQUestions;
+    private TextView tvTitleQuestions;
     private ImageView btnAddQuestion;
     private TextView tvQuestion;
     private ImageView btnToggle;
 
     private boolean topicsCheckable;
 
-    private SparseArray<QuestionGroup> mQuestionGroups;
+    private SparseArray<LocalTopicData> mTopics;
 
     public TopicCatalogAdapter(Context context, TopicCatalog catalog) {
         mContext = context;
-        mQuestionGroups = catalog.getQuestionGroups();
+        mTopics = catalog.getTopics();
         this.topicsCheckable = true;
 
     }
 
     public TopicCatalogAdapter(Context context, TopicCatalog catalog, boolean topicsCheckable) {
         mContext = context;
-        mQuestionGroups = catalog.getQuestionGroups();
+        mTopics = catalog.getTopics();
         this.topicsCheckable = topicsCheckable;
 
     }
@@ -63,7 +63,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         btnCheck = (ImageView) convertView.findViewById(R.id.button_check);
         btnExpand = (ImageView) convertView.findViewById(R.id.button_expand);
 
-        tvTopic.setText(((QuestionGroup)getGroup(groupPosition)).getTopic());
+        tvTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
 
         //if the button is clicked, the appropriate topic gets expanded or collaped
         final ExpandableListView listview = (ExpandableListView) parent;
@@ -93,7 +93,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        if (mQuestionGroups.get(groupPosition).getSelected()) {
+        if (mTopics.get(groupPosition).getSelected()) {
             btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_on, null));
         } else {
             btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_off, null));
@@ -116,7 +116,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return mQuestionGroups.get(groupPosition);
+        return mTopics.get(groupPosition);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return mQuestionGroups.size();
+        return mTopics.size();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         } else {
             v = LayoutInflater.from(mContext).inflate(R.layout.listitem_question, null);
 
-            tvTitleQUestions = (TextView) v.findViewById(R.id.textView_title_questions);
+            tvTitleQuestions = (TextView) v.findViewById(R.id.textView_title_questions);
             tvQuestion = (TextView) v.findViewById(R.id.textView_question);
             btnToggle = (ImageView) v.findViewById(R.id.button_toggle);
 
@@ -185,7 +185,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mQuestionGroups.get(groupPosition).getQuestions().get(childPosition);
+        return mTopics.get(groupPosition).getQuestions().get(childPosition);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ((QuestionGroup)getGroup(groupPosition)).getQuestions().size();
+        return ((LocalTopicData)getGroup(groupPosition)).getQuestions().size();
     }
 
     @Override

@@ -21,7 +21,6 @@ import de.griot_app.griot.adapters.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
 import de.griot_app.griot.dataclasses.LocalTopicData;
-import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
@@ -58,10 +57,9 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     //Data-View-Adapter for TopicCatalog
     TopicCatalogAdapter mAdapter;
 
-
-    ArrayList<Boolean> mUserStandardTopics;
-    HashMap<String, Long> mUserStandardQuestions;
-
+    //store the individual TopicCatalog of the current user
+    ArrayList<Boolean> mUserTopicStates;
+    HashMap<String, Long> mUserQuestionStates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,14 +125,14 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                     int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     if (mExpandListView.isGroupExpanded(groupPosition)) {
                         mExpandListView.collapseGroup(groupPosition);
-                        mTopicCatalog.getQuestionGroups().get(groupPosition).setExpanded(true);
+                        mTopicCatalog.getTopics().get(groupPosition).setExpanded(true);
                     } else {
                         mExpandListView.expandGroup(groupPosition);
-                        mTopicCatalog.getQuestionGroups().get(groupPosition).setExpanded(false);
+                        mTopicCatalog.getTopics().get(groupPosition).setExpanded(false);
                     }
                     /*
                     if (mSelectedItem==null) {
-                        mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
+                        mSelectedItem = (LocalTopicData) mAdapter.getGroup(groupPosition);
                         mSelectedItem.setSelected(true);
                         mButtonRight.setEnabled(true);
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
@@ -146,7 +144,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                         } else {
                             mSelectedItem.setSelected(false);
-                            mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
+                            mSelectedItem = (LocalTopicData) mAdapter.getGroup(groupPosition);
                             mSelectedItem.setSelected(true);
                             mButtonRight.setEnabled(true);
                             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
@@ -170,7 +168,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (mSelectedItem==null) {
-                    mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
+                    mSelectedItem = (LocalTopicData) mAdapter.getGroup(groupPosition);
                     mSelectedItem.setSelected(true);
                     mButtonRight.setEnabled(true);
                     mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
@@ -182,7 +180,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                     } else {
                         mSelectedItem.setSelected(false);
-                        mSelectedItem = (QuestionGroup) mAdapter.getGroup(groupPosition);
+                        mSelectedItem = (LocalTopicData) mAdapter.getGroup(groupPosition);
                         mSelectedItem.setSelected(true);
                         mButtonRight.setEnabled(true);
                         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
@@ -210,12 +208,16 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
+        // If a Question-ListItem is clicked, the question gets activated or deactivated
         mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                //get a reference to the appropriate DataClass-object for the clicked Question-ListItem
                 LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
                 if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                    //change the toggle-button
                     ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
+                    //and change the QuestionState in die DataClass-object
                     data.setQuestionState(LocalQuestionData.QuestionState.ON);
                 } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
                     ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
@@ -226,42 +228,42 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         });
 
 
+        // obtain the individual topic states for standard topics of the current user
         mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mUserStandardTopics = (ArrayList<Boolean>) dataSnapshot.getValue();
+                mUserTopicStates = (ArrayList<Boolean>) dataSnapshot.getValue();
 
+                // obtain the indidual question states for standard questions of the current user
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        mUserStandardQuestions = (HashMap<String, Long>) dataSnapshot.getValue();
+                        mUserQuestionStates = (HashMap<String, Long>) dataSnapshot.getValue();
 
-                        mTopicCatalog = new TopicCatalog();
-                        // obtains topic catalog data from Firebase
+                        // obtains standard topics for topic catalog from Firebase
                         mDatabaseRef = mDatabaseRootReference.child("standardTopics");
-                        // listener for topic data
                         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                mTopicCatalog.getQuestionGroups().clear();
+                                mTopicCatalog = new TopicCatalog();
 
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                     LocalTopicData localTopicData = ds.getValue(LocalTopicData.class);
-                                    QuestionGroup group = new QuestionGroup();
+                                    //adds a new LocalTopicData for the current topic to the TopicCatalog
+                                    localTopicData.setTopicState(mUserTopicStates.get(localTopicData.getTopicKey()));
+                                    mTopicCatalog.getTopics().put(localTopicData.getTopicKey(), localTopicData);
 
-                                    group.setTopicKey(localTopicData.getTopicKey());
-                                    group.setTopic(localTopicData.getTopic());
-                                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
-
+                                    //adds a headItem to the question list for the current topic in the TopicCatalog
                                     LocalQuestionData headItem = new LocalQuestionData();
                                     headItem.setQuestion(getString(R.string.title_questions));
                                     headItem.setQuestionState(LocalQuestionData.QuestionState.OFF);
                                     headItem.setTopicKey(localTopicData.getTopicKey());
-                                    mTopicCatalog.getQuestionGroups().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
+                                    mTopicCatalog.getTopics().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
                                 }
 
+                                //obtain standard questions for topic catalog from Firebase
                                 mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
                                 //listener for question data
                                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -270,14 +272,14 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                             LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
                                             localQuestionData.setQuestionKey(ds.getKey());
-                                            localQuestionData.setQuestionState(mUserStandardQuestions.get(ds.getKey()));
-                                            mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
+                                            localQuestionData.setQuestionState(mUserQuestionStates.get(ds.getKey()));
+                                            mTopicCatalog.getTopics().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
                                         }
 
                                         //TODO: ExtraTopics und ExtraQuestions laden
 
                                         if(topicSelectedItemID >=0) {
-                                            mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
+                                            mTopicCatalog.getTopics().get(topicSelectedItemID).setSelected(true);
                                         }
 
                                         //set the adapter
@@ -321,26 +323,26 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     /**
      * manages the topic selection along with the next-button functionality.
-     * The selection gets stored in the appropriate QuestionGroup-object.
+     * The selection gets stored in the appropriate LocalTopicData-object.
      * This method can be called from an OnclickListener defined in the adapter.
      * @param groupPosition Topic position in the ExpandableListView
      */
     public void buttonCheckClicked(int groupPosition) {
         if (topicSelectedItemID <0) {
             topicSelectedItemID = groupPosition;
-            ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(true);
+            ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(true);
             mButtonRight.setEnabled(true);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
         } else {
             if (topicSelectedItemID ==groupPosition) {
-                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(false);
+                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(false);
                 topicSelectedItemID = -1;
                 mButtonRight.setEnabled(false);
                 mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
             } else {
-                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(false);
+                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(false);
                 topicSelectedItemID = groupPosition;
-                ((QuestionGroup) mAdapter.getGroup(groupPosition)).setSelected(true);
+                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(true);
                 mButtonRight.setEnabled(true);
                 mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
             }
@@ -392,13 +394,13 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         intent.putExtra("narratorPictureURL", narratorPictureURL);
         intent.putExtra("narratorIsUser", narratorIsUser);
 
-        QuestionGroup item = (QuestionGroup) mAdapter.getGroup(topicSelectedItemID);
+        LocalTopicData item = (LocalTopicData) mAdapter.getGroup(topicSelectedItemID);
         intent.putExtra("topicSelectedItemID", topicSelectedItemID);
         intent.putExtra("topicKey", item.getTopicKey());
         intent.putExtra("topic", item.getTopic());
 
         ArrayList<String> questionsSelected = new ArrayList<>();
-        for (LocalQuestionData localQuestionData : ((QuestionGroup) mAdapter.getGroup(topicSelectedItemID)).getQuestions()) {
+        for (LocalQuestionData localQuestionData : ((LocalTopicData) mAdapter.getGroup(topicSelectedItemID)).getQuestions()) {
             if (localQuestionData.getQuestionState()== LocalQuestionData.QuestionState.ON) {
                 questionsSelected.add(localQuestionData.getQuestion());
             }
@@ -423,20 +425,20 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         LocalQuestionData question;
         String questionKey;
         long questionState;
-        mUserStandardQuestions.clear();
-        for (int i=0 ; i<mTopicCatalog.getQuestionGroups().size() ; i++) {
+        mUserQuestionStates.clear();
+        for (int i = 0; i<mTopicCatalog.getTopics().size() ; i++) {
             // must start at index 1, because the first LocalQuestionData-Object holds the headerItem in each topic
-            for (int j=1 ; j<mTopicCatalog.getQuestionGroups().get(i).getQuestions().size() ; j++) {
-                question = mTopicCatalog.getQuestionGroups().get(i).getQuestions().get(j);
+            for (int j = 1; j<mTopicCatalog.getTopics().get(i).getQuestions().size() ; j++) {
+                question = mTopicCatalog.getTopics().get(i).getQuestions().get(j);
                 questionKey = question.getQuestionKey();
                 questionState = question.getQuestionState();
-                mUserStandardQuestions.put(questionKey, questionState);
+                mUserQuestionStates.put(questionKey, questionState);
             }
         }
         mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
-        mDatabaseRef.setValue(mUserStandardTopics);
+        mDatabaseRef.setValue(mUserTopicStates);
         mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
-        mDatabaseRef.setValue(mUserStandardQuestions);
+        mDatabaseRef.setValue(mUserQuestionStates);
         super.onStop();
     }
 }
