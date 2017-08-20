@@ -3,19 +3,19 @@ package de.griot_app.griot.dataclasses;
 /**
  * Data holding class for standard topic data
  */
-public class TopicData {
+public class LocalTopicData {
 
     private int topicKey;
     private String topic;
 
     //default-constructor
-    public TopicData() {
+    public LocalTopicData() {
 
     }
 
     @Override
     public String toString() {
-        return "TopicData{" +
+        return "LocalTopicData{" +
                 "topicKeyn='" + topicKey + '\'' +
                 ", topic=" + topic +
                 '}';

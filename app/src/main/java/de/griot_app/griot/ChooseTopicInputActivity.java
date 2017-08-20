@@ -14,10 +14,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import de.griot_app.griot.adapters.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
-import de.griot_app.griot.dataclasses.TopicData;
+import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
@@ -39,6 +42,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     private String narratorPictureURL;
     private Boolean narratorIsUser;
 
+    String[] interviewQuestions;
+
     //Views
     TextView mTextViewPerson;
     ImageView mButtonCancelPerson;
@@ -52,6 +57,11 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     //Data-View-Adapter for TopicCatalog
     TopicCatalogAdapter mAdapter;
+
+
+    ArrayList<Boolean> mUserStandardTopics;
+    HashMap<String, Long> mUserStandardQuestions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +77,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonRight.setText(R.string.button_next);
 
         //Next-Button is disabled at start, if no topic was selected so far
-        if (topicSelectedItemID<0) {
+        if (topicSelectedItemID < 0) {
             mButtonRight.setEnabled(false);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
         }
@@ -191,10 +201,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (parent.isGroupExpanded(groupPosition)) {
                     parent.collapseGroup(groupPosition);
-                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.up, null));
+                    ((ImageView) v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.up, null));
                 } else {
                     parent.expandGroup(groupPosition);
-                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.down, null));
+                    ((ImageView) v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.down, null));
                 }
                 return true;
             }
@@ -205,66 +215,98 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
                 if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
-                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
+                    ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
                     data.setQuestionState(LocalQuestionData.QuestionState.ON);
                 } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
-                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
+                    ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
                     data.setQuestionState(LocalQuestionData.QuestionState.OFF);
                 }
                 return true;
             }
         });
 
-        mTopicCatalog = new TopicCatalog();
-        // obtains topic catalog data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("standardTopics");
-        // listener for topic data
+
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mTopicCatalog.getQuestionGroups().clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    TopicData topicData = ds.getValue(TopicData.class);
-                    QuestionGroup group = new QuestionGroup();
+                mUserStandardTopics = (ArrayList<Boolean>) dataSnapshot.getValue();
 
-                    group.setTopicKey(topicData.getTopicKey());
-                    group.setTopic(topicData.getTopic());
-                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
-
-                    LocalQuestionData headItem = new LocalQuestionData();
-                    headItem.setQuestion(getString(R.string.title_questions));
-                    headItem.setTopicKey(topicData.getTopicKey());
-                    mTopicCatalog.getQuestionGroups().get(topicData.getTopicKey()).getQuestions().add(headItem);
-                }
-
-                mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
-                //listener for question data
+                mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
-                            mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
-                        }
+                        mUserStandardQuestions = (HashMap<String, Long>) dataSnapshot.getValue();
 
-                        //TODO: ExtraTopics und ExtraQuestions laden
+                        mTopicCatalog = new TopicCatalog();
+                        // obtains topic catalog data from Firebase
+                        mDatabaseRef = mDatabaseRootReference.child("standardTopics");
+                        // listener for topic data
+                        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                mTopicCatalog.getQuestionGroups().clear();
 
-                        if(topicSelectedItemID >=0) {
-                            mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
-                        }
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    LocalTopicData localTopicData = ds.getValue(LocalTopicData.class);
+                                    QuestionGroup group = new QuestionGroup();
 
-                        //set the adapter
-                        mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
-                        mExpandListView.setAdapter(mAdapter);
+                                    group.setTopicKey(localTopicData.getTopicKey());
+                                    group.setTopic(localTopicData.getTopic());
+                                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
+
+                                    LocalQuestionData headItem = new LocalQuestionData();
+                                    headItem.setQuestion(getString(R.string.title_questions));
+                                    headItem.setTopicKey(localTopicData.getTopicKey());
+                                    mTopicCatalog.getQuestionGroups().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
+                                }
+
+                                mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
+                                //listener for question data
+                                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
+                                            localQuestionData.setQuestionKey(ds.getKey());
+                                            localQuestionData.setQuestionState(mUserStandardQuestions.get(ds.getKey()));
+                                            mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
+                                        }
+
+                                        //TODO: ExtraTopics und ExtraQuestions laden
+
+                                        if(topicSelectedItemID >=0) {
+                                            mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
+                                        }
+
+                                        //set the adapter
+                                        mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog);
+                                        mExpandListView.setAdapter(mAdapter);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e(TAG, "Error loading Questions");
+                                        //TODO: implementieren, falls erforderlich
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "Error loading Topics");
+                                //TODO: implementieren, falls erforderlich
+                            }
+                        });
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e(TAG, "Error loading Questions");
+                        Log.e(TAG, "Error loading Topics");
                         //TODO: implementieren, falls erforderlich
                     }
                 });
-
             }
 
             @Override
@@ -274,6 +316,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
     }
+
 
     /**
      * manages the topic selection along with the next-button functionality.
@@ -337,6 +380,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
+        //TODO schreibe QuestionStates nach Firebase
+
         // Navigates back to next page of "prepare interview"-dialog
         // All relevant data for the interview or the dialog-pages get sent to the next page.
         Intent intent = new Intent(this, ChooseMediumInputActivity.class);
@@ -350,7 +395,47 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         intent.putExtra("topicSelectedItemID", topicSelectedItemID);
         intent.putExtra("topicKey", item.getTopicKey());
         intent.putExtra("topic", item.getTopic());
+
+        ArrayList<String> questionsSelected = new ArrayList<>();
+        for (LocalQuestionData localQuestionData : ((QuestionGroup) mAdapter.getGroup(topicSelectedItemID)).getQuestions()) {
+            if (localQuestionData.getQuestionState()== LocalQuestionData.QuestionState.ON) {
+                questionsSelected.add(localQuestionData.getQuestion());
+            }
+        }
+
+        interviewQuestions = new String[questionsSelected.size()];
+
+        for ( int i=0 ; i<questionsSelected.size() ; i++ ) {
+            interviewQuestions[i] = questionsSelected.get(i);
+        }
+
+        intent.putExtra("interviewQuestions", interviewQuestions);
+
         startActivity(intent);
         finish();
+    }
+
+
+    @Override
+    protected void onStop() {
+
+        LocalQuestionData question;
+        String questionKey;
+        long questionState;
+        mUserStandardQuestions.clear();
+        for (int i=0 ; i<mTopicCatalog.getQuestionGroups().size() ; i++) {
+            // must start at index 1, because the first LocalQuestionData-Object holds the headerItem in each topic
+            for (int j=1 ; j<mTopicCatalog.getQuestionGroups().get(i).getQuestions().size() ; j++) {
+                question = mTopicCatalog.getQuestionGroups().get(i).getQuestions().get(j);
+                questionKey = question.getQuestionKey();
+                questionState = question.getQuestionState();
+                mUserStandardQuestions.put(questionKey, questionState);
+            }
+        }
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
+        mDatabaseRef.setValue(mUserStandardTopics);
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
+        mDatabaseRef.setValue(mUserStandardQuestions);
+        super.onStop();
     }
 }

@@ -12,12 +12,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import de.griot_app.griot.ChooseTopicInputActivity;
 import de.griot_app.griot.adapters.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
+import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.dataclasses.QuestionGroup;
 import de.griot_app.griot.dataclasses.TopicCatalog;
-import de.griot_app.griot.dataclasses.TopicData;
 import de.griot_app.griot.R;
 
 public class MainTopicCatalogActivity extends GriotBaseActivity {
@@ -38,6 +42,9 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
 
     //Data-View-Adapter for TopicCatalog
     TopicCatalogAdapter mAdapter;
+
+    ArrayList<Boolean> mUserStandardTopics;
+    HashMap<String, Long> mUserStandardQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,56 +97,87 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             }
         });
 
-        mTopicCatalog = new TopicCatalog();
-        // obtains topic catalog data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("standardTopics");
-        // listener for topic data
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mTopicCatalog.getQuestionGroups().clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    TopicData topicData = ds.getValue(TopicData.class);
-                    QuestionGroup group = new QuestionGroup();
+                mUserStandardTopics = (ArrayList<Boolean>) dataSnapshot.getValue();
 
-                    group.setTopicKey(topicData.getTopicKey());
-                    group.setTopic(topicData.getTopic());
-                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
-
-                    LocalQuestionData headItem = new LocalQuestionData();
-                    headItem.setQuestion(getString(R.string.title_questions));
-                    headItem.setTopicKey(topicData.getTopicKey());
-                    mTopicCatalog.getQuestionGroups().get(topicData.getTopicKey()).getQuestions().add(headItem);
-                }
-
-                mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
-                //listener for question data
+                mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
-                            mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
-                        }
+                        mUserStandardQuestions = (HashMap<String, Long>) dataSnapshot.getValue();
 
-                        //TODO: ExtraTopics und ExtraQuestions laden
+                        mTopicCatalog = new TopicCatalog();
+                        // obtains topic catalog data from Firebase
+                        mDatabaseRef = mDatabaseRootReference.child("standardTopics");
+                        // listener for topic data
+                        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                mTopicCatalog.getQuestionGroups().clear();
 
-                        if(topicSelectedItemID >=0) {
-                            mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
-                        }
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    LocalTopicData localTopicData = ds.getValue(LocalTopicData.class);
+                                    QuestionGroup group = new QuestionGroup();
 
-                        //set the adapter
-                        mAdapter = new TopicCatalogAdapter(MainTopicCatalogActivity.this, mTopicCatalog, false);
-                        mExpandListView.setAdapter(mAdapter);
+                                    group.setTopicKey(localTopicData.getTopicKey());
+                                    group.setTopic(localTopicData.getTopic());
+                                    mTopicCatalog.getQuestionGroups().put(group.getTopicKey(), group);
+
+                                    LocalQuestionData headItem = new LocalQuestionData();
+                                    headItem.setQuestion(getString(R.string.title_questions));
+                                    headItem.setTopicKey(localTopicData.getTopicKey());
+                                    mTopicCatalog.getQuestionGroups().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
+                                }
+
+                                mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
+                                //listener for question data
+                                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
+                                            localQuestionData.setQuestionKey(ds.getKey());
+                                            localQuestionData.setQuestionState(mUserStandardQuestions.get(ds.getKey()));
+                                            mTopicCatalog.getQuestionGroups().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
+                                        }
+
+                                        //TODO: ExtraTopics und ExtraQuestions laden
+
+                                        if(topicSelectedItemID >=0) {
+                                            mTopicCatalog.getQuestionGroups().get(topicSelectedItemID).setSelected(true);
+                                        }
+
+                                        //set the adapter
+                                        mAdapter = new TopicCatalogAdapter(MainTopicCatalogActivity.this, mTopicCatalog);
+                                        mExpandListView.setAdapter(mAdapter);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e(TAG, "Error loading Questions");
+                                        //TODO: implementieren, falls erforderlich
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "Error loading Topics");
+                                //TODO: implementieren, falls erforderlich
+                            }
+                        });
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.e(TAG, "Error loading Questions");
+                        Log.e(TAG, "Error loading Topics");
                         //TODO: implementieren, falls erforderlich
                     }
                 });
-
             }
 
             @Override
@@ -148,7 +186,29 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                 //TODO: implementieren, falls erforderlich
             }
         });
+    }
 
+    @Override
+    protected void onStop() {
+
+        LocalQuestionData question;
+        String questionKey;
+        long questionState;
+        mUserStandardQuestions.clear();
+        for (int i=0 ; i<mTopicCatalog.getQuestionGroups().size() ; i++) {
+            // must start at index 1, because the first LocalQuestionData-Object holds the headerItem in each topic
+            for (int j=1 ; j<mTopicCatalog.getQuestionGroups().get(i).getQuestions().size() ; j++) {
+                question = mTopicCatalog.getQuestionGroups().get(i).getQuestions().get(j);
+                questionKey = question.getQuestionKey();
+                questionState = question.getQuestionState();
+                mUserStandardQuestions.put(questionKey, questionState);
+            }
+        }
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
+        mDatabaseRef.setValue(mUserStandardTopics);
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
+        mDatabaseRef.setValue(mUserStandardQuestions);
+        super.onStop();
     }
 
     @Override

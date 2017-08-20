@@ -154,16 +154,12 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             LocalQuestionData child = (LocalQuestionData) getChild(groupPosition, childPosition);
 
             tvQuestion.setText(child.getQuestion());
-            switch (child.getQuestionState()) {
-                case LocalQuestionData.QuestionState.OFF:
-                    btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
-                    break;
-                case LocalQuestionData.QuestionState.ON:
-                    btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
-                    break;
-                case LocalQuestionData.QuestionState.GONE:
-                    //TODO: Möglichkeit, Fragen zu löschen später implementieren
-                    break;
+            if (child.getQuestionState()==LocalQuestionData.QuestionState.OFF) {
+                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
+            } else if (child.getQuestionState()==LocalQuestionData.QuestionState.ON) {
+                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
+            } else {
+                 //TODO: Möglichkeit, Fragen zu löschen später implementieren
             }
             //TODO überlegen, wo die QuestionStates persistent gespeichert werden sollen, in DB oder lokalem Ort? (muss mit Themenkalatog irgendwie synchronisiert sein))
 
