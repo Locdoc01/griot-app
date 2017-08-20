@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/listitem_interview"><!--zeile später löschen-->
+    tools:showIn="@layout/listitem_interview_question"><!--zeile später löschen-->
 
     <FrameLayout
         android:id="@+id/frame_mediaCover"
@@ -34,7 +34,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorGriotWhite"
@@ -53,8 +53,8 @@
         android:textColor="@color/colorGriotWhite"
         android:textSize="@dimen/dimen_textSize_small"
         android:text="22.12.2017"
-        app:layout_constraintLeft_toLeftOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+        app:layout_constraintLeft_toLeftOf="@id/tv_headline"
+        app:layout_constraintTop_toBottomOf="@id/tv_headline"/>
 
     <TextView
         android:id="@+id/tv_length"

@@ -59,12 +59,12 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
             convertView = inflater.inflate(R.layout.listitem_interview, null);
             holder = new ViewHolder();
 
-            holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_headline);
             holder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
             holder.tvLength = (TextView) convertView.findViewById(R.id.tv_length);
-            holder.tvInterviewer = (TextView) convertView.findViewById(R.id.tv_interviewer);
-            holder.tvNarrator = (TextView) convertView.findViewById(R.id.tv_narrator);
-            holder.tvComments = (TextView) convertView.findViewById(R.id.tv_comments);
+            holder.tvInterviewer = (TextView) convertView.findViewById(R.id.textView_interviewer);
+            holder.tvNarrator = (TextView) convertView.findViewById(R.id.textView_narrator);
+            holder.tvComments = (TextView) convertView.findViewById(R.id.textView_comments);
             holder.ivMediaCoverPlaceholder = (ImageView) convertView.findViewById(R.id.iv_mediaCover_placeholder);
             holder.ivMediaCover = (ImageView) convertView.findViewById(R.id.iv_mediaCover);
             holder.pivInterviewer = (ProfileImageView) convertView.findViewById(R.id.piv_interviewer);
@@ -82,7 +82,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         holder.tvInterviewer.setText(mListData.get(position).getInterviewerName());
         holder.tvNarrator.setText(mListData.get(position).getNarratorName());
         int n = mListData.get(position).getNumberComments();
-        holder.tvComments.setText("" + n + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
+        holder.tvComments.setText("" + (n==0 ? "keine " : n + " ") + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
         try {
             holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
             holder.ivMediaCoverPlaceholder.setVisibility(View.GONE);

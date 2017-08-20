@@ -35,7 +35,7 @@
         app:layout_constraintRight_toRightOf="@id/guideline_interviewer_right"/>
 
     <TextView
-        android:id="@+id/tv_interviewer"
+        android:id="@+id/textView_interviewer"
         style="@style/AppTheme.Text_Normal"
         android:text="Ole Wunder"
         android:layout_marginLeft="16dp"
@@ -59,7 +59,7 @@
         android:orientation="vertical" />
 
     <ImageView
-        android:id="@+id/iv_point"
+        android:id="@+id/imageView_point"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/point"
@@ -69,7 +69,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/piv_narrator" />
 
     <TextView
-        android:id="@+id/tv_narrator"
+        android:id="@+id/textView_narrator"
         style="@style/AppTheme.Text_Normal"
         android:text="Harry Vogt"
         android:layout_marginRight="16dp"
@@ -104,7 +104,7 @@
         app:layout_constraintRight_toRightOf="@id/guideline_narrator_right"/>
 
     <TextView
-        android:id="@+id/tv_comments"
+        android:id="@+id/textView_comments"
         style="@style/AppTheme.Text_Small"
         android:textStyle="bold"
         android:text="2 Kommentare"
@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/piv_interviewer" />
 
     <ImageView
-        android:id="@+id/iv_options"
+        android:id="@+id/button_options"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/options"
@@ -122,7 +122,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comments"
+        app:layout_constraintTop_toBottomOf="@+id/textView_comments"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
