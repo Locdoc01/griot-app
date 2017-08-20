@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class ContentData {
 
     protected String length;
+    protected String date;
     protected String pictureURL;
 //    protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
@@ -25,6 +26,7 @@ public class ContentData {
     //constructor
     public ContentData(
             String length,
+            String date,
             String pictureURL,
 //            String pictureLocalURI,
             HashMap<String, Boolean> associatedUsers,
@@ -32,6 +34,7 @@ public class ContentData {
             HashMap<String, Boolean> tags
     ) {
         this.length = length;
+        this.date = date;
         this.pictureURL = pictureURL;
 //        this.pictureLocalURI = pictureLocalURI;
         this.associatedUsers = associatedUsers;
@@ -43,6 +46,7 @@ public class ContentData {
     public String toString() {
         return "ContentData{" +
                 "length='" + length + '\'' +
+                ", date='" + date + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
 //                ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
@@ -53,6 +57,8 @@ public class ContentData {
 
     //get-methods
     public String getLength() { return length; }
+
+    public String getDate() { return date; }
 
     public String getPictureURL() { return pictureURL; }
 
@@ -66,6 +72,8 @@ public class ContentData {
 
     //set-methods
     public void setLength(String length) { this.length = length; }
+
+    public void setDate(String date) { this.date = date; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 

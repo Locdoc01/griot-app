@@ -9,7 +9,6 @@ import java.util.HashMap;
 public class InterviewData extends ContentData {
 
     private String title;
-    private String date;
     private String topic;
     private String medium;
     private HashMap<String, Boolean> interviewerID;
@@ -57,9 +56,8 @@ public class InterviewData extends ContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(length, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, date, pictureURL, associatedUsers, associatedGuests, tags);
         this.title = title;
-        this.date = date;
         this.topic = topic;
         this.medium = medium;
         this.interviewerID = interviewerID;
@@ -78,7 +76,6 @@ public class InterviewData extends ContentData {
     public String toString() {
         return "InterviewData{" +
                 "title='" + title + '\'' +
-                ", date='" + date + '\'' +
                 ", topic='" + topic + '\'' +
                 ", medium='" + medium + '\'' +
                 ", interviewerID=" + interviewerID +
@@ -96,8 +93,6 @@ public class InterviewData extends ContentData {
 
     //get-methods
     public String getTitle() { return title; }
-
-    public String getDate() { return date; }
 
     public String getTopic() { return topic; }
 
@@ -126,8 +121,6 @@ public class InterviewData extends ContentData {
 
     //set-methods
     public void setTitle(String title) { this.title = title; }
-
-    public void setDate(String date) { this.date = date; }
 
     public void setTopic(String topic) { this.topic = topic; }
 

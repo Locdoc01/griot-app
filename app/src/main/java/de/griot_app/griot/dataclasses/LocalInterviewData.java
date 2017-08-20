@@ -9,7 +9,6 @@ import java.util.HashMap;
 public class LocalInterviewData extends LocalContentData {
 
     private String title;
-    private String date;
     private String topic;
     private String medium;
     private HashMap<String, Boolean> interviewerID;
@@ -62,9 +61,8 @@ public class LocalInterviewData extends LocalContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(contentID, length, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(contentID, length, date, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.title = title;
-        this.date = date;
         this.topic = topic;
         this.medium = medium;
         this.interviewerID = interviewerID;
@@ -85,7 +83,6 @@ public class LocalInterviewData extends LocalContentData {
     public String toString() {
         return "LocalInterviewData{" +
                 "title='" + title + '\'' +
-                ", date='" + date + '\'' +
                 ", topic='" + topic + '\'' +
                 ", medium='" + medium + '\'' +
                 ", interviewerID=" + interviewerID +
@@ -105,8 +102,6 @@ public class LocalInterviewData extends LocalContentData {
 
     //get-methods
     public String getTitle() { return title; }
-
-    public String getDate() { return date; }
 
     public String getTopic() { return topic; }
 
@@ -138,8 +133,6 @@ public class LocalInterviewData extends LocalContentData {
 
     //set-methods
     public void setTitle(String title) { this.title = title; }
-
-    public void setDate(String date) { this.date = date; }
 
     public void setTopic(String topic) { this.topic = topic; }
 

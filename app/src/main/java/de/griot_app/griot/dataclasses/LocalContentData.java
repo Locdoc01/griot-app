@@ -10,6 +10,7 @@ public class LocalContentData {
 
     protected String contentID;
     protected String length;
+    protected String date;
     protected String pictureURL;
     protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
@@ -27,6 +28,7 @@ public class LocalContentData {
     public LocalContentData(
             String contentID,
             String length,
+            String date,
             String pictureURL,
             String pictureLocalURI,
             HashMap<String, Boolean> associatedUsers,
@@ -35,6 +37,7 @@ public class LocalContentData {
     ) {
         this.contentID = contentID;
         this.length = length;
+        this.date = date;
         this.pictureURL = pictureURL;
         this.pictureLocalURI = pictureLocalURI;
         this.associatedUsers = associatedUsers;
@@ -47,6 +50,7 @@ public class LocalContentData {
         return "LocalContentData{" +
                 "contentID='" + contentID + '\'' +
                 ", length='" + length + '\'' +
+                ", date='" + date + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
                 ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
@@ -59,6 +63,8 @@ public class LocalContentData {
     public String getContentID() { return contentID; }
 
     public String getLength() { return length; }
+
+    public String getDate() { return date; }
 
     public String getPictureURL() { return pictureURL; }
 
@@ -74,6 +80,8 @@ public class LocalContentData {
     public void setContentID(String contentID) { this.contentID = contentID; }
 
     public void setLength(String length) { this.length = length; }
+
+    public void setDate(String date) { this.date = date; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 
