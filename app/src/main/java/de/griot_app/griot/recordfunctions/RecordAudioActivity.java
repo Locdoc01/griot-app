@@ -8,6 +8,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -18,6 +19,12 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -97,20 +104,44 @@ public class RecordAudioActivity extends RecordActivity {
         mBackground.getLayoutParams().height = displayHeight;
 */
 
-        ImageView imageView = new ImageView(RecordAudioActivity.this);
-        imageView.setImageResource(R.drawable.add_avatar);       //TODO Profilbild verwenden
+        final ImageView imageViewBackground = new ImageView(RecordAudioActivity.this);
+
+        File file = null;
+        try {
+            file = File.createTempFile("profile_image" + "_", ".jpg");
+        } catch (Exception e) {
+        }
+        final String path = file.getPath();
+
+        try {
+            FirebaseStorage.getInstance()
+                    .getReferenceFromUrl(narratorPictureURL)
+                    .getFile(file)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    imageViewBackground.setImageURI(Uri.parse(path));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(TAG, "Error downloading background image file");
+                    imageViewBackground.setImageResource(R.drawable.avatar_single);
+                }
+            });
+        } catch (Exception e) {}
 
         //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         //params.gravity = Gravity.CENTER;
         //imageView.setLayoutParams(params);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageViewBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        imageView.setColorFilter(filter);
+        imageViewBackground.setColorFilter(filter);
 
-        mBackground.addView(imageView);
+        mBackground.addView(imageViewBackground);
     }
 
 
