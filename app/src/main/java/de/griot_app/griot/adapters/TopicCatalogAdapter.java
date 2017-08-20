@@ -59,7 +59,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_topic, null);
         }
         tvTopic = (TextView) convertView.findViewById(R.id.textView_topic);
         btnCheck = (ImageView) convertView.findViewById(R.id.button_check);
@@ -135,7 +135,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v;
         if (childPosition==0) {
-            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_title_questions, null);
+            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_title_questions, null);
 
             btnAddQuestion = (ImageView) v.findViewById(R.id.button_add_question);
 
@@ -147,7 +147,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             });
 
         } else {
-            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_question, null);
+            v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_question, null);
 
             tvTitleQuestions = (TextView) v.findViewById(R.id.textView_title_questions);
             tvQuestion = (TextView) v.findViewById(R.id.textView_question);

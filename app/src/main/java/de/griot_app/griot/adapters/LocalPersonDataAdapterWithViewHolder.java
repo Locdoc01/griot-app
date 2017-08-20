@@ -44,7 +44,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
     }
 
     public LocalPersonDataAdapterWithViewHolder(Context context, ArrayList<LocalPersonData> data) {
-        super(context, R.layout.listitem_person, data);
+        super(context, R.layout.listitem_contact, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
@@ -56,7 +56,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
         if (convertView == null) {
 
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.listitem_person, null);
+            convertView = inflater.inflate(R.layout.listitem_contact, null);
             holder = new ViewHolder();
 
             holder.tvCategory = (TextView) convertView.findViewById(R.id.category);

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/listitem_main_overview"><!--zeile später löschen-->
+    tools:showIn="@layout/listitem_interview"><!--zeile später löschen-->
 
     <FrameLayout
         android:id="@+id/frame_mediaCover"

@@ -54,7 +54,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     private ArrayList<LocalPersonData> mListData;
 
     public LocalPersonDataChooseAdapter(Context context, ArrayList<LocalPersonData> data) {
-        super(context, R.layout.listitem_person, data);
+        super(context, R.layout.listitem_contact, data);
         mContext = context;
         mListData = new ArrayList<>(data);
 
@@ -65,7 +65,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.listitem_person, null);
+        View v = inflater.inflate(R.layout.listitem_contact, null);
 
         tvCategory = (TextView) v.findViewById(R.id.category);
         listSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);

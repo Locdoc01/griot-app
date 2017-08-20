@@ -50,7 +50,7 @@ public class ProfileImageView extends ConstraintLayout {
     }
 
     private void init() {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.object_profile_image, this);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.class_profile_image, this);
 
         mProfileImage = (ImageView) v.findViewById(R.id.profile_image);
         mProfileImageCircle = (ImageView) v.findViewById(R.id.profile_image_circle);

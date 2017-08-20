@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_profile_image_bottom"/>
 
     <!--
-    <include layout="@layout/object_profile_image"
+    <include layout="@layout/class_profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"

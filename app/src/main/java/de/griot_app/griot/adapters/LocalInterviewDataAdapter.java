@@ -44,7 +44,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
     }
 
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> data) {
-        super(context, R.layout.listitem_main_overview, data);
+        super(context, R.layout.listitem_interview, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
@@ -56,7 +56,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         if (convertView == null) {
 
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.listitem_main_overview, null);
+            convertView = inflater.inflate(R.layout.listitem_interview, null);
             holder = new ViewHolder();
 
             holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);

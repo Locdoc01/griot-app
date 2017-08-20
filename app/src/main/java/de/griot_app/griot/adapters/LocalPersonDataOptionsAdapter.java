@@ -52,7 +52,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     private ArrayList<LocalPersonData> mListData;
 
     public LocalPersonDataOptionsAdapter(Context context, ArrayList<LocalPersonData> data) {
-        super(context, R.layout.listitem_person, data);
+        super(context, R.layout.listitem_contact, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
@@ -63,7 +63,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.listitem_person, null);
+        View v = inflater.inflate(R.layout.listitem_contact, null);
 
         itemBackground = (FrameLayout) v.findViewById(R.id.item_background);
         tvCategory = (TextView) v.findViewById(R.id.category);
