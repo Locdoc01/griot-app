@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.griot_app.griot.views.TagView;
 import de.griot_app.griot.R;
@@ -35,18 +37,16 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
 
     private ArrayList<LocalInterviewQuestionData> mListData;
 
-    static class ViewHolder {
-        public int position;
-        public TextView tvQuestion;
-        public TextView tvDate;
-        public TextView tvLength;
-        public ImageView ivMediaCoverPlaceholder;
-        public ImageView ivMediaCover;
-        public ImageView btnOptions;
-        public TextView tvTags;
-        public ImageView btnAddTag;
-        public LinearLayout scrollViewTags;
-    }
+    private int position;
+    private TextView tvQuestion;
+    private TextView tvDate;
+    private TextView tvLength;
+    private ImageView ivMediaCoverPlaceholder;
+    private ImageView ivMediaCover;
+    private ImageView btnOptions;
+    private TextView tvTags;
+    private ImageView btnAddTag;
+    private LinearLayout scrollViewTags;
 
     public LocalInterviewQuestionDataAdapter(Context context, ArrayList<LocalInterviewQuestionData> data) {
         super(context, R.layout.listitem_interview_question_add_tags, data);
@@ -58,45 +58,53 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
-
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.listitem_interview_question_add_tags, null);
-            holder = new ViewHolder();
+            View v = inflater.inflate(R.layout.listitem_interview_question_add_tags, null);
 
-            holder.tvQuestion = (TextView) convertView.findViewById(R.id.tv_headline);
-            holder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
-            holder.tvLength = (TextView) convertView.findViewById(R.id.tv_length);
-            holder.ivMediaCoverPlaceholder = (ImageView) convertView.findViewById(R.id.iv_mediaCover_placeholder);
-            holder.ivMediaCover = (ImageView) convertView.findViewById(R.id.iv_mediaCover);
-            holder.btnOptions = (ImageView) convertView.findViewById(R.id.button_options);
-            holder.tvTags = (TextView) convertView.findViewById(R.id.textView_tags);
-            holder.btnAddTag = (ImageView) convertView.findViewById(R.id.button_add_tag);
-            holder.scrollViewTags = (LinearLayout) convertView.findViewById(R.id.layout_tags);
+            tvQuestion = (TextView) v.findViewById(R.id.tv_headline);
+            tvDate = (TextView) v.findViewById(R.id.tv_date);
+            tvLength = (TextView) v.findViewById(R.id.tv_length);
+            ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
+            ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
+            btnOptions = (ImageView) v.findViewById(R.id.button_options);
+            tvTags = (TextView) v.findViewById(R.id.textView_tags);
+            btnAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
+            scrollViewTags = (LinearLayout) v.findViewById(R.id.layout_tags);
 
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
 
-        holder.position = position;
-        holder.tvQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
-        holder.tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        holder.tvLength.setText(mListData.get(position).getLength());
+        final int pos = position;
+        tvQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
+        tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
+        tvLength.setText(mListData.get(position).getLength());
 
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
-                holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-                holder.ivMediaCoverPlaceholder.setVisibility(View.GONE);
-                holder.ivMediaCover.setVisibility(View.VISIBLE);
+                ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                ivMediaCoverPlaceholder.setVisibility(View.GONE);
+                ivMediaCover.setVisibility(View.VISIBLE);
             }
         }
 
         int n = mListData.get(position).getTags().size();
-        holder.tvTags.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
+        tvTags.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
 
-        holder.btnAddTag.setOnClickListener(new View.OnClickListener() {
+        Iterator iterator = mListData.get(position).getTags().keySet().iterator();
+        for (int i=0 ; i<mListData.get(position).getTags().size() ; i++) {
+            final TagView tagView = new TagView(mContext);
+            tagView.setTag((String)iterator.next());
+
+            tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListData.get(pos).getTags().remove(tagView.getTextViewTag().getText().toString());
+                    notifyDataSetChanged();
+                }
+            });
+
+            scrollViewTags.addView(tagView);
+        }
+
+        btnAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
@@ -116,19 +124,9 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
                         .setPositiveButton(mContext.getString(R.string.button_next),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-                                        final TagView tagView = new TagView(mContext);
                                         final String tag = editTextInputDialog.getText().toString().trim();
-                                        tagView.setTag(tag);
-                                        tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                holder.scrollViewTags.removeView(tagView);
-                                                mListData.get(holder.position).getTags().remove(tag);
-                                                notifyDataSetChanged();
-                                            }
-                                        });
-                                        holder.scrollViewTags.addView(tagView);
-                                        mListData.get(holder.position).getTags().put(tag, true);
+                                        mListData.get(pos).getTags().put(tag, true);
+                                        notifyDataSetChanged();
                                     }
                                 })
                         .setNegativeButton(mContext.getString(R.string.button_cancel),
@@ -143,13 +141,13 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
             }
         });
 
-        holder.btnOptions.setOnClickListener(new View.OnClickListener() {
+        btnOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
             }
         });
 
-        return convertView;
+        return v;
     }
 }
