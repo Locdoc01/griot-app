@@ -35,7 +35,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     private Context mContext;
 
-    private List<String> mListStrings;
+    private String[] mListStrings;
     private List<CarouselTextView> mListCarousel;
     private int mQuestionCount;
 
@@ -80,6 +80,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     private long mDuration;
 
+    private int mFirstShownQuestion = 0;
+
     private int mRecordIndex;
 
     private int mFinishedMode;
@@ -97,7 +99,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
         mContext = context;
         mListStrings = list;
-        mQuestionCount = mListStrings.size();
+        mAllQuestionsCount = mListStrings.size();
         mCurrentQuestion = 0;
         mDensity = getResources().getDisplayMetrics().mDensity;
         mDuration = 200;
@@ -184,14 +186,20 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * Sets a new question list. The old one together with their questions recording states will be removed.
      * @param list  The new question list
      */
-    public void setQuestionList(List<String> list) {
+    public void setQuestionList(String[] list) {
         mListStrings = list;
-        mQuestionCount = mListStrings.size();
+        mQuestionCount = mListStrings.length;
         mCurrentQuestion = 0;
 
         initiateCarousel();
     }
 
+    public void setFirstShownQuestion(int index) {
+        mFirstShownQuestion = index;
+        for ( int i=0 ; i<index ; i++) {
+            animateUpward();
+        }
+    }
 
     /**
      * Sets only the middle background shadow visible.
@@ -413,7 +421,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         for ( int i=0 ; i<mQuestionCount ; i++ ) {
             //creates CarouselTextViews based on the Strings in mListStrings and add them to mListCarousel as well as to mLayoutQuestions
             CarouselTextView tv = new CarouselTextView(mContext);
-            tv.setText(mListStrings.get(i));
+            tv.setText(mListStrings[i]);
             mListCarousel.add(tv);
 
             //mlayoutQuestions.addView(tv);
