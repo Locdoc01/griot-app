@@ -33,7 +33,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private Context mContext;
 
     private String[] mListStrings;
-    private List<CarouselTextView> mListCarousel;
+    private ArrayList<CarouselTextView> mListCarousel;
     private int mQuestionCount;
 
     private ImageView mShadowTop;
@@ -232,6 +232,14 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         }
     }
 
+    public void setRecordedQuestions(int[] recordedQuestionIndices) {
+        for (int i=0 ; i<recordedQuestionIndices.length ; i++) {
+            mListCarousel.get(recordedQuestionIndices[i]).setRecorded(true);
+        }
+        initiateCarousel();
+    }
+
+    public boolean questionWasRecorded(int questionIndex) { return mListCarousel.get(questionIndex).wasRecorded(); }
 
     /**
      * Returns the index of the current middle TextView.
@@ -365,6 +373,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private void initiateCarousel() {
         Log.d(TAG, "initiateCarousel: ");
 
+        ArrayList<CarouselTextView> oldListCarousel = mListCarousel;
         mListCarousel = new ArrayList<>();
 
         //mlayoutQuestions.removeAllViews();
@@ -392,13 +401,21 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             params.gravity = Gravity.CENTER;
             tv.setLayoutParams(params);
 
+            if (oldListCarousel != null) {
+                tv.setRecorded(oldListCarousel.get(i).wasRecorded());
+            }
+
             if (i == getMiddleIndex()) {
                 // sets initial attributes to first TextView
                 tv.setAlpha(1.0f);
-                tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotWhite));
+                if (tv.wasRecorded()) {
+                    tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
+                } else {
+                    tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotWhite));
+                }
                 tv.setTextSize(getResources().getDimension(R.dimen.textSizeCurrentQuestion));
                 tv.setTypeface(Typeface.DEFAULT_BOLD);
-                if (!mInvertedLayout) {
+                if (!mInvertedLayout && !tv.wasRecorded()) {
                     // set shadow for better readability
                     tv.setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
                 }
@@ -411,7 +428,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                     tv.setAlpha(0.0f);
                 }
                 //sets initial attribtes to all other TextViews except first one
-                tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorLastNextQuestion));
+                if (tv.wasRecorded()) {
+                    tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
+                } else {
+                    tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorLastNextQuestion));
+                }
                 tv.setTextSize(getResources().getDimension(R.dimen.textSizeLastNextQuestion));
                 tv.setTypeface(Typeface.DEFAULT);
             }

@@ -55,6 +55,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     protected String[] recordedMediaSingleFilePaths;
     protected String[] recordedCoverFilePaths;
     protected String[] recordedQuestions;
+    protected int[] recordedQuestionIndices;
     protected String[] recordedQuestionLengths;
 
     protected String interviewDir;
@@ -107,6 +108,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
 
         recordedQuestions = getIntent().getStringArrayExtra("recordedQuestions");
+        recordedQuestionIndices = getIntent().getIntArrayExtra("recordedQuestionIndices");
         recordedQuestionLengths = getIntent().getStringArrayExtra("recordedQuestionLengths");
 
         recordedMediaSingleFilePaths = getIntent().getStringArrayExtra("recordedMediaSingleFilePaths");
@@ -222,6 +224,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("allMediaSingleFilePaths", allMediaSingleFilePaths);
 
         intent.putExtra("recordedQuestions", recordedQuestions);
+        intent.putExtra("recordedQuestionIndices", recordedQuestionIndices);
         intent.putExtra("recordedQuestionLengths", recordedQuestionLengths);
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
@@ -269,9 +272,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("allMediaSingleFilePaths", allMediaSingleFilePaths);
 
         intent.putExtra("recordedQuestions", recordedQuestions);
+        intent.putExtra("recordedQuestionIndices", recordedQuestionIndices);
         intent.putExtra("recordedQuestionLengths", recordedQuestionLengths);
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
+
+        intent.putExtra("interviewDir", interviewDir);
+
+        intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
 
         //TODO: Daten zu den einzeln InterviewFragen weiterreichen (Tags, etc)
 

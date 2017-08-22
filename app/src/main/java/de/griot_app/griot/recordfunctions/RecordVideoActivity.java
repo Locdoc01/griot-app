@@ -378,9 +378,8 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mMediaRecorder.setProfile(mCamcorderProfile);
             //    mMediaRecorder.setVideoEncodingBitRate(mCamcorderProfile.videoBitRate);
 
-            Log.d(TAG, "+++++++++++++++++++");
             mFile = getOutputFile();
-            Log.d(TAG, "------------------- " + mFile.toString());
+
             Log.d(TAG, "mFile.toString: " + mFile.toString());
             Log.d(TAG, "mFile.getPath.toString: " + mFile.getPath());
             Log.d(TAG, "Uri.fromFile(mFile).toString: " + Uri.fromFile(mFile).toString());

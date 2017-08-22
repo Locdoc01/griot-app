@@ -91,6 +91,7 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected String[] recordedCoverFilePaths;
     protected String[] recordedQuestions;
     protected String[] recordedQuestionLengths;
+    protected int[] recordedQuestionIndices;
     protected int recordedQuestionsCount;
 
     protected View.OnClickListener mClickListener;
@@ -179,7 +180,7 @@ public abstract class RecordActivity extends AppCompatActivity {
         allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
 
         recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
-        Log.d(TAG, "------------------------------------ " + recordedQuestionsCount);
+        recordedQuestionIndices = getIntent().getIntArrayExtra("recordedQuestionIndices");
 
         mInterviewDir = getIntent().getStringExtra("interviewDir");
 
@@ -213,6 +214,12 @@ public abstract class RecordActivity extends AppCompatActivity {
 
         mCarousel = (QuestionCarousel) findViewById(R.id.layout_carousel);
         mCarousel.setQuestionList(allQuestions);
+
+        if (recordedQuestionIndices != null) {
+            mCarousel.setRecordedQuestions(recordedQuestionIndices);
+        }
+
+        //TODO: setze firstshownquestion auf die erste Frage, die noch nicht beantwortet wurde
         mCarousel.setFirstShownQuestion(mFirstShownQuestion);
 
         mBackground = (FrameLayout) findViewById(R.id.record_background);
@@ -441,7 +448,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                 }
             }
         }
-        Log.d(TAG, "ppppppppp " + mInterviewDir);
+
         return new File(mInterviewDir + File.separator + fileBeginning + dateTime + fileEnding);
     }
 
@@ -464,6 +471,7 @@ public abstract class RecordActivity extends AppCompatActivity {
         recordedMediaSingleFilePaths = new String[recordedQuestionsCount];
         recordedCoverFilePaths = new String[recordedQuestionsCount];
         recordedQuestionLengths = new String[recordedQuestionsCount];
+        recordedQuestionIndices = new int[recordedQuestionsCount];
 
         allMediaSingleFilePaths = new String[allMediaMultiFilePaths.size()];
         int recordedIndex=0;
@@ -504,8 +512,8 @@ public abstract class RecordActivity extends AppCompatActivity {
                 } else {
                     recordedCoverFilePaths[recordedIndex] = null;
                 }
-
                 recordedQuestions[recordedIndex] = allQuestions[i];
+                recordedQuestionIndices[recordedIndex] = i;
                 recordedMediaSingleFilePaths[recordedIndex] = allMediaMultiFilePaths.get(i).get(0);
                 recordedIndex++;
             }
@@ -540,7 +548,9 @@ public abstract class RecordActivity extends AppCompatActivity {
         intent.putExtra("allQuestions", allQuestions);
         intent.putExtra("allMediaSingleFilePaths", allMediaSingleFilePaths);
 
+
         intent.putExtra("recordedQuestions", recordedQuestions);
+        intent.putExtra("recordedQuestionIndices", recordedQuestionIndices);
         intent.putExtra("recordedQuestionLengths", recordedQuestionLengths);
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
