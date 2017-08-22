@@ -1,20 +1,12 @@
-package de.griot_app.griot;
+package de.griot_app.griot.views;
 
 import android.content.Context;
-import android.os.Environment;
-import android.os.StatFs;
-import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Chronometer;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.File;
 
 import de.griot_app.griot.R;
 
