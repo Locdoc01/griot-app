@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.android.debug.hv.ViewServer;
@@ -51,6 +50,8 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mMedium = MEDIUM_VIDEO;
 
         //TODO: entfernen
         ViewServer.get(this).addWindow(this);
@@ -377,18 +378,16 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mMediaRecorder.setProfile(mCamcorderProfile);
             //    mMediaRecorder.setVideoEncodingBitRate(mCamcorderProfile.videoBitRate);
 
-            mFile = getOutputFile(MEDIUM_VIDEO);
-
+            Log.d(TAG, "+++++++++++++++++++");
+            mFile = getOutputFile();
+            Log.d(TAG, "------------------- " + mFile.toString());
             Log.d(TAG, "mFile.toString: " + mFile.toString());
             Log.d(TAG, "mFile.getPath.toString: " + mFile.getPath());
             Log.d(TAG, "Uri.fromFile(mFile).toString: " + Uri.fromFile(mFile).toString());
             Log.d(TAG, "mFile.getName: " + mFile.getName());
 
             //TODO Fehler wenn Carousel leer ist. (Nur relevant, wenn Fall wirklich auftreten kann)
-            mListFilenames.get(mCarousel.getCurrentIndex()).add(mFile.getPath());
-            //alternativen
-            //mListFilenames.get(mCarousel.getCurrentIndex()).add(mFile.getName());
-            //mListFilenames.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+            mCurrentRecordingIndex = mCarousel.getCurrentIndex();
 
             // hat keinen Effekt:
             mMediaRecorder.setPreviewDisplay(mCameraPreview.getHolder().getSurface());
@@ -409,6 +408,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
 
         }catch (Exception e) {
             Log.e(TAG, "Error starting MediaRecorder: " + e.getMessage());
+            e.printStackTrace();
             mCamera.lock();
             return false;
         }
@@ -426,11 +426,23 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             Log.e(TAG, "Error stopping record: " + e.getMessage());
         }
         mChronometers.stop();
+
+        // if current question wasn't recorded so far
+        if (allMediaMultiFilePaths.get(mCurrentRecordingIndex).isEmpty()) {
+            recordedQuestionsCount++;
+        }
+
+        // add the (next) file path of the current questions media file.
+        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(mFile.getPath());
+        //alternativen
+        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(mFile.getName());
+        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+
+        mCurrentRecordingIndex = -1;
         setup();
         mButtonChangeCamera.setEnabled(true);
         mButtonChangeCamera.setColorFilter(Color.WHITE);
     }
-
 
     private void releaseCamera() {
         Log.d(TAG, "releaseCamera: ");
@@ -442,5 +454,4 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mCamera = null;
         }
     }
-
 }

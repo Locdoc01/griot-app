@@ -1,10 +1,11 @@
 package de.griot_app.griot.recordfunctions;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Environment;
@@ -21,14 +22,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import de.griot_app.griot.R;
+import de.griot_app.griot.ReviewInterviewInputActivity;
 
 
 /**
@@ -41,8 +43,10 @@ import de.griot_app.griot.R;
  */
 public abstract class RecordActivity extends AppCompatActivity {
 
-    protected static final int MEDIUM_VIDEO = 0;
-    protected static final int MEDIUM_AUDIO = 1;
+    public static final int MEDIUM_VIDEO = 0;
+    public static final int MEDIUM_AUDIO = 1;
+
+    protected int mMedium = -1;
 
     private static final String TAG = RecordActivity.class.getSimpleName();
 
@@ -57,12 +61,37 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected String narratorPictureURL;
     protected Boolean narratorIsUser;
 
+    private String interviewerID;
+    private String interviewerName;
+    private String interviewerPictureURL;
+
     protected int topicSelectedItemID;
     protected int topicKey;
     protected String topic;
 
-    protected String[] interviewQuestions;
+    protected String dateYear;
+    protected String dateMonth;
+    protected String dateDay;
 
+    protected String[] allQuestions;
+
+    protected String[] addedQuestions;
+
+    protected int mAllQuestionsCount;
+    /**
+     * mListFiles stores the filenames of the created media files.
+     * Outer list index correspond with index from mListAllQuestions, thus one element is equivalent to one interview question.
+     * One inner list holds all filenames of files, that were recorded for one specific question.
+     * regularly there will be just one filename in one list, unless a question was recorded more than once.
+     */
+    protected ArrayList<ArrayList<String>> allMediaMultiFilePaths;
+    protected String[] allMediaSingleFilePaths;
+
+    protected String[] recordedMediaSingleFilePaths;
+    protected String[] recordedCoverFilePaths;
+    protected String[] recordedQuestions;
+    protected String[] recordedQuestionLengths;
+    protected int recordedQuestionsCount;
 
     protected View.OnClickListener mClickListener;
 
@@ -74,19 +103,8 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected MediaRecorder mMediaRecorder;
     //protected MediaRecorder.OutputFormat mOutputFormat;
 
-    /** mListQuestions holds the interview questions as Strings. */
-    protected ArrayList<String> mListQuestions;
 
-    protected int mQuestionCount;
-
-    /**
-     * mListFiles stores the filenames of the created media files.
-     * Outer list index correspond with index from mListQuestions, thus one element is equivalent to one interview question.
-     * One inner list holds all filenames of files, that were recorded for one specific question.
-     * regularly there will be just one filename in one list, unless a question was recorded more than once.
-     */
-    protected ArrayList<ArrayList<String>> mListFilenames;
-
+    protected String mInterviewDir;
     protected File mFile;
 
     protected float mDensity;
@@ -96,9 +114,11 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected ImageView mButtonRecord;
     protected Button mButtonFinished;
 
-    private String mInterviewTitle;
+    private int mFirstShownQuestion = 0;
 
     private boolean mIsRecording = false;
+
+    protected int mCurrentRecordingIndex = -1;
 
     /**
      * Abstract method, that returns the appropriate layout id for extending subclass. This method can be used in onCreate()
@@ -147,12 +167,53 @@ public abstract class RecordActivity extends AppCompatActivity {
         narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
 
+        interviewerID = getIntent().getStringExtra("interviewerID");
+        interviewerName = getIntent().getStringExtra("interviewerName");
+        interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
+
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
 
-        interviewQuestions = getIntent().getStringArrayExtra("interviewQuestions");
+        allQuestions = getIntent().getStringArrayExtra("allQuestions");
+        allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
 
+        recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
+        Log.d(TAG, "------------------------------------ " + recordedQuestionsCount);
+
+        mInterviewDir = getIntent().getStringExtra("interviewDir");
+
+        addedQuestions = getIntent().getStringArrayExtra("addedQuestions");
+
+        if (addedQuestions != null) {
+            mFirstShownQuestion = allQuestions.length;
+            String[] tmp = new String[allQuestions.length + addedQuestions.length];
+            for (int i=0 ; i<allQuestions.length+addedQuestions.length ; i++) {
+                if (i < allQuestions.length) {
+                    tmp[i] = allQuestions[i];
+                } else {
+                    tmp[i] = addedQuestions[i - allQuestions.length];
+                }
+            }
+            allQuestions = tmp;
+        }
+        mAllQuestionsCount = allQuestions.length;
+
+        allMediaMultiFilePaths = new ArrayList<>();
+
+        for (int i = 0; i < mAllQuestionsCount; i++) {
+            allMediaMultiFilePaths.add(new ArrayList<String>());
+            // if there were some recordings done before, getting from the Intent, add them
+            if (allMediaSingleFilePaths != null) {
+                if (allMediaSingleFilePaths[i] != null) {
+                    allMediaMultiFilePaths.get(i).add(allMediaSingleFilePaths[i]);
+                }
+            }
+        }
+
+        mCarousel = (QuestionCarousel) findViewById(R.id.layout_carousel);
+        mCarousel.setQuestionList(allQuestions);
+        mCarousel.setFirstShownQuestion(mFirstShownQuestion);
 
         mBackground = (FrameLayout) findViewById(R.id.record_background);
         mButtonRecord = (ImageView) findViewById(R.id.button_record);
@@ -185,26 +246,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.button_finished:
-                        //switches the carousels finishedMode
-                        // TODO: ACHTUNG: Dies kann so nicht verwendet werden. Es wird beim Wechsel ein neues Carousel angelegt wobei der bisherige Status der Fragen nicht berücksichtigt wird
-                        // NUR ZU VORFÜHRZWECKEN
-                        if (mCarousel.getFinishedMode() == QuestionCarousel.CHECKED_WHEN_FINISHED) {
-                            //mCarousel = new QuestionCarousel(RecordActivity.this);
-                            mCarousel.setQuestionList(mListQuestions);
-                            //mLayoutCarousel.removeAllViews();
-                            //mLayoutCarousel.addView(mCarousel);
-                            mCarousel.setFinishedMode(QuestionCarousel.BLUE_WHEN_FINISHED);
-                        } else {
-                            //mCarousel = new QuestionCarousel(RecordActivity.this);
-                            mCarousel.setQuestionList(mListQuestions);
-                            //mLayoutCarousel.removeAllViews();
-                            //mLayoutCarousel.addView(mCarousel);
-                            mCarousel.setFinishedMode(QuestionCarousel.CHECKED_WHEN_FINISHED);
-                        }
-
-                        //Intent i = new Intent(RecordActivity.this, RecordAudioActivity.class);
-                        //startActivity(i);
-
+                        finishInterview();
                         break;
                 }
             }
@@ -241,51 +283,9 @@ public abstract class RecordActivity extends AppCompatActivity {
             });
         }
 
-        mInterviewTitle = "Omas Kindheit";
-
-        mListQuestions = new ArrayList<>();
-        for (String question : interviewQuestions) {
-            mListQuestions.add(question);
-        }
-
         mDensity = getResources().getDisplayMetrics().density;
-/*
-        mListQuestions.add("Welchen Berufswunsch hattest du als Kind?");
-        mListQuestions.add("Warst du in der Schule glücklich?");
-        mListQuestions.add("Erinnerst du dich an dein erstes Spielzeug?");
-        mListQuestions.add("Was war deine Lieblingskindersendung?");
-        mListQuestions.add("Was war dein Lieblingsmärchen?");
-        mListQuestions.add("Was sind deine schönsten Kindheitserinnerungen?");
-        mListQuestions.add("Haben dir deine Eltern früher Geschichten erzählt?");
-        mListQuestions.add("Kannst du mir etwas über die Ortschaft erzählen, in der du aufgewachsen bist und wie es für dich war, ohne Bruder aufzuwachsen?");
-        mListQuestions.add("Was sind deine schlimmsten Kindheitserinnerungen?");
-        mListQuestions.add("Kannst du mir etwas über die Verhältnisse erzählen, in denen du aufgewachsen bist, insbesondere wie es für dich war, getrennt von deinen Geschwistern aufzuwachsen?");
-        mListQuestions.add("Wann und wie hast du Schwimmen gelernt?");
-*/
-        mQuestionCount = mListQuestions.size();
-
-        mListFilenames = new ArrayList<>();
-
-        for (int i = 0; i < mQuestionCount; i++) {
-            mListFilenames.add(new ArrayList<String>());
-        }
-
-        //findViewById(R.id.stub_chronometers).setVisibility(View.VISIBLE);
-        //or
-        //View importPanel = ((ViewStub) findViewById(R.id.stub_chronometers)).inflate();
-        //importPanel.addView(mChronometers);
-
-
-        mCarousel = (QuestionCarousel) findViewById(R.id.layout_carousel);
-        mCarousel.setQuestionList(mListQuestions);
-        //mCarousel = new QuestionCarousel(RecordActivity.this, mListQuestions);
-        //mLayoutCarousel = (FrameLayout) findViewById(R.id.layout_carousel_OLD_OLD_OLD_OLD_OLD_OLD_OLD_OLD_OLD_OLD_OLD);
-        //mLayoutCarousel.addView(mCarousel);
 
         checkForPermissions();
-
-
-
     }
 
 
@@ -341,10 +341,10 @@ public abstract class RecordActivity extends AppCompatActivity {
             grantedAudio = false;
         }
         if (!grantedAudio) {
-            showToastLong("Für die Benutzung sind mindestens Berechtigungen für Mikrofon und Speicherzugriff nötig!");
-            // TODO: Intent zu MainActivity
+            Toast.makeText(RecordActivity.this, "Für die Benutzung sind mindestens Berechtigungen für Mikrofon und Speicherzugriff nötig!", Toast.LENGTH_SHORT).show();
+            finish();
         } else if (!grantedVideo) {
-            showToastLong("Ohne Berechtigung für die Kamera ist nur Audio-Aufzeichnung möglich!");
+            Toast.makeText(RecordActivity.this, "Ohne Berechtigung für die Kamera ist nur Audio-Aufzeichnung möglich!", Toast.LENGTH_SHORT).show();
             // TODO: Intent zu RecordAudioActivity
         } else {
             Log.d(TAG, "onRequestPermissionResult: All permissions granted");
@@ -406,46 +406,45 @@ public abstract class RecordActivity extends AppCompatActivity {
 
     /**
      * Creates and returns a File object, which holds a filename for the next recorded file. The filename includes the record date and time and
-     * has the format "AUD_yyyy-MM-dd_HHmmss.mp3" for audio files or "VID_yyyy-MM-dd_HHmmss.mp4" for video files. The file type is dependant on
-     * the given int value representing a medium.
+     * has the format "AUD_yyyy-MM-dd_HHmmss.mp3" for audio files or "VID_yyyy-MM-dd_HHmmss.mp4" for video files.
      * If not existant, a subdirectory for the specific interview will also be created into the Movies-directory of external storages public directory,
      * so that the recorded files will be available to other apps including the systems gallery app.
      *
-     * @param medium    int value that represents the medium. Accepted are MEDIUM_AUDIO for an audio file and MEDIUM_VIDEO for a video file.
-     *                  Any other value will cause an Exception.
      * @return          File object holding the filename for the next recorded file.
-     * @throws Exception
      */
-    protected File getOutputFile(int medium) throws Exception {
+    protected File getOutputFile() throws Exception {
         Log.d(TAG, "getOutputFile: ");
         String fileBeginning;
         String fileEnding;
-        if (medium == MEDIUM_AUDIO) {
+        if (mMedium == MEDIUM_AUDIO) {
             fileBeginning = "AUD_";
             fileEnding = ".m4a";
-        } else if (medium == MEDIUM_VIDEO) {
+        } else if (mMedium == MEDIUM_VIDEO) {
             fileBeginning = "VID_";
             fileEnding = ".mp4";
         } else {
-            throw new Exception("Error: Unknown Medium");
+            throw new Exception("unexpected media type");
         }
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        File interviewDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), APP_DIR_NAME + File.separator + date + "_" + mInterviewTitle);
-        if (!interviewDir.exists()) {
-            if (!interviewDir.mkdirs()) {
-                Log.e(TAG, "Error creating interview directory");
-                return null;
+//        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
+        dateYear = new SimpleDateFormat("yyyy").format(new Date());
+        dateMonth = new SimpleDateFormat("MM").format(new Date());
+        dateDay = new SimpleDateFormat("dd").format(new Date());
+        File dir;
+        if (recordedQuestionsCount ==0) {
+            dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), APP_DIR_NAME + File.separator + dateTime);
+            mInterviewDir = dir.getPath();
+            if (!dir.exists()) {
+                if (!dir.mkdirs()) {
+                    Log.e(TAG, "Error creating interview directory");
+                    return null;
+                }
             }
         }
-        String dateTime = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
-        return new File(interviewDir.getPath() + File.separator + fileBeginning + dateTime + fileEnding);
+        Log.d(TAG, "ppppppppp " + mInterviewDir);
+        return new File(mInterviewDir + File.separator + fileBeginning + dateTime + fileEnding);
     }
 
-/*
-    protected Uri getOutputFileUri() {
-        return Uri.fromFile(getOutputFile());
-    }
-*/
 
     /**
      * Makes sure, that the recorded files will be scanned by MediaScanner, so that they will be available from other apps like the systems gallery.
@@ -458,8 +457,97 @@ public abstract class RecordActivity extends AppCompatActivity {
     }
 
 
-    public void showToastLong(String text) {
-        Toast.makeText(RecordActivity.this, text, Toast.LENGTH_LONG).show();
-    }
+    protected void finishInterview() {
+        Log.d(TAG, "finishedInterview: ");
 
+        recordedQuestions = new String[recordedQuestionsCount];
+        recordedMediaSingleFilePaths = new String[recordedQuestionsCount];
+        recordedCoverFilePaths = new String[recordedQuestionsCount];
+        recordedQuestionLengths = new String[recordedQuestionsCount];
+
+        allMediaSingleFilePaths = new String[allMediaMultiFilePaths.size()];
+        int recordedIndex=0;
+        for (int i = 0; i< allMediaMultiFilePaths.size() ; i++) {
+            if (!allMediaMultiFilePaths.get(i).isEmpty()) {
+
+                //TODO: EInzelvideos verbinden zu einem und diese in allMediaMuiltiFilePaths.get(i).get(0) speichern
+
+                allMediaSingleFilePaths[i] = allMediaMultiFilePaths.get(i).get(0);
+                String videoPath = allMediaSingleFilePaths[i];
+
+                MediaMetadataRetriever media = new MediaMetadataRetriever();
+                media.setDataSource(videoPath);
+
+                String length = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+               /*
+                if (Integer.parseInt(length)<2000) {    // TODO: geht nur, wenn mit ArrayLists statt arrays gearbeitet wird
+                    continue;
+                }
+                */
+                recordedQuestionLengths[recordedIndex] = length;
+
+                Bitmap cover = media.getFrameAtTime((Integer.parseInt(length)<2000) ? Integer.parseInt(length) : 2000);
+                if (cover != null) {
+                    File coverFile = new File(mInterviewDir, "thumb_" + i + ".jpg");
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    cover.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                    byte[] bitmapData = bos.toByteArray();
+                    try {
+                        FileOutputStream fos = new FileOutputStream(coverFile);
+                        fos.write(bitmapData);
+                        fos.flush();
+                        fos.close();
+                    } catch (Exception e) {
+                    }
+                    String coverFilePath = coverFile.getPath();
+                    recordedCoverFilePaths[recordedIndex] = coverFilePath;
+                } else {
+                    recordedCoverFilePaths[recordedIndex] = null;
+                }
+
+                recordedQuestions[recordedIndex] = allQuestions[i];
+                recordedMediaSingleFilePaths[recordedIndex] = allMediaMultiFilePaths.get(i).get(0);
+                recordedIndex++;
+            }
+        }
+
+        Intent intent = new Intent(this, ReviewInterviewInputActivity.class);
+
+        // Navigates to next page of "prepare interview"-dialog
+        // All relevant data for the interview or the dialog-pages get sent to the next page.
+        intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
+        intent.putExtra("narratorID", narratorID);
+        intent.putExtra("narratorName", narratorName);
+        intent.putExtra("narratorPictureURL", narratorPictureURL);
+        intent.putExtra("narratorIsUser", narratorIsUser);
+
+        intent.putExtra("interviewerID", interviewerID);
+        intent.putExtra("interviewerName", interviewerName);
+        intent.putExtra("interviewerPictureURL", interviewerPictureURL);
+
+        intent.putExtra("topicSelectedItemID", topicSelectedItemID);
+        intent.putExtra("topicKey", topicKey);
+        intent.putExtra("topic", topic);
+
+        intent.putExtra("medium", mMedium);
+
+        intent.putExtra("dateYear", dateYear);
+        intent.putExtra("dateMonth", dateMonth);
+        intent.putExtra("dateDay", dateDay);
+
+       // intent.putExtra("interviewDir", mInterviewDir.toString());
+
+        intent.putExtra("allQuestions", allQuestions);
+        intent.putExtra("allMediaSingleFilePaths", allMediaSingleFilePaths);
+
+        intent.putExtra("recordedQuestions", recordedQuestions);
+        intent.putExtra("recordedQuestionLengths", recordedQuestionLengths);
+        intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
+        intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
+
+        intent.putExtra("interviewDir", mInterviewDir);
+
+        startActivity(intent);
+        finish();
+    }
 }

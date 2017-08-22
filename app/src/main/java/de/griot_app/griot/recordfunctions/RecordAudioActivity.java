@@ -1,22 +1,12 @@
 package de.griot_app.griot.recordfunctions;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,6 +48,8 @@ public class RecordAudioActivity extends RecordActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mMedium = MEDIUM_AUDIO;
 
         mChronometers.setBitRate( mAudioBitRate );
         mCarousel.setInvertedLayout();
@@ -157,11 +149,10 @@ public class RecordAudioActivity extends RecordActivity {
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mMediaRecorder.setOutputFormat(mOutputFormat);
 
-            mFile = getOutputFile(MEDIUM_VIDEO);
-            mListFilenames.get(mCarousel.getCurrentIndex()).add(mFile.getPath());
-            //alternativen
-            //mListFilenames.get(mCarousel.getCurrentIndex()).add(mFile.getName());
-            //mListFilenames.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+            mFile = getOutputFile();
+
+            mCurrentRecordingIndex = mCarousel.getCurrentIndex();
+
             mMediaRecorder.setOutputFile(mFile.getPath());
 
             //TODO evt verschiedene Qualitäten als Option anbieten
@@ -200,7 +191,19 @@ public class RecordAudioActivity extends RecordActivity {
         }
         mChronometers.stop();
         mTimerAmplitude.cancel();
-        setup();
 
+        // if current question wasn't recorded so far
+        if (allMediaMultiFilePaths.get(mCurrentRecordingIndex).isEmpty()) {
+            recordedQuestionsCount++;
+        }
+
+        // add the (next) file path of the current questions media file.
+        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(mFile.getPath());
+        //alternativen
+        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(mFile.getName());
+        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+
+        mCurrentRecordingIndex = -1;
+        setup();
     }
 }
