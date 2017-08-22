@@ -36,6 +36,10 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
     private String narratorPictureURL;
     private Boolean narratorIsUser;
 
+    private String interviewerID;
+    private String interviewerName;
+    private String interviewerPictureURL;
+
     private int topicSelectedItemID;
     private int topicKey;
     private String topic;
@@ -73,11 +77,15 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
 
+        interviewerID = getIntent().getStringExtra("interviewerID");
+        interviewerName = getIntent().getStringExtra("interviewerName");
+        interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
+
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
 
-        interviewQuestions = getIntent().getStringArrayExtra("interviewQuestions");
+        interviewQuestions = getIntent().getStringArrayExtra("allQuestions");
 
 
         mTextViewPerson = (TextView) findViewById(R.id.textView_person);
@@ -214,11 +222,15 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
         intent.putExtra("narratorPictureURL", narratorPictureURL);
         intent.putExtra("narratorIsUser", narratorIsUser);
 
+        intent.putExtra("interviewerID", interviewerID);
+        intent.putExtra("interviewerName", interviewerName);
+        intent.putExtra("interviewerPictureURL", interviewerPictureURL);
+
         intent.putExtra("topicSelectedItemID", topicSelectedItemID);
         intent.putExtra("topicKey", topicKey);
         intent.putExtra("topic", topic);
 
-        intent.putExtra("interviewQuestions", interviewQuestions);
+        intent.putExtra("allQuestions", interviewQuestions);
 
         switch (selectedMedium) {
             case VIDEO:
@@ -230,7 +242,6 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
                 startActivity(intent);
                 break;
         }
-        startActivity(intent);
         finish();
     }
 

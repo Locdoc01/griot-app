@@ -41,6 +41,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     private String narratorPictureURL;
     private Boolean narratorIsUser;
 
+    private String interviewerID;
+    private String interviewerName;
+    private String interviewerPictureURL;
+
     String[] interviewQuestions;
 
     //Views
@@ -86,6 +90,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         narratorName = getIntent().getStringExtra("narratorName");
         narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", true);
+
+        interviewerID = getIntent().getStringExtra("interviewerID");
+        interviewerName = getIntent().getStringExtra("interviewerName");
+        interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
 
         mTextViewPerson = (TextView) findViewById(R.id.textView_person);
         mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
@@ -394,6 +402,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         intent.putExtra("narratorPictureURL", narratorPictureURL);
         intent.putExtra("narratorIsUser", narratorIsUser);
 
+        intent.putExtra("interviewerID", interviewerID);
+        intent.putExtra("interviewerName", interviewerName);
+        intent.putExtra("interviewerPictureURL", interviewerPictureURL);
+
         LocalTopicData item = (LocalTopicData) mAdapter.getGroup(topicSelectedItemID);
         intent.putExtra("topicSelectedItemID", topicSelectedItemID);
         intent.putExtra("topicKey", item.getTopicKey());
@@ -412,7 +424,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             interviewQuestions[i] = questionsSelected.get(i);
         }
 
-        intent.putExtra("interviewQuestions", interviewQuestions);
+        intent.putExtra("allQuestions", interviewQuestions);
 
         startActivity(intent);
         finish();

@@ -251,6 +251,11 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         intent.putExtra("narratorPictureURL", item.getPictureURL());
         intent.putExtra("narratorIsUser", item.getIsUser());
 
+        item = mCombinedListCreator.getAdapter().getItem(0);
+        intent.putExtra("interviewerID", mUserID);
+        intent.putExtra("interviewerName", item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname()));
+        intent.putExtra("interviewerPictureURL", item.getPictureURL());
+
         // if a topic was already selected, ChooseTopicInputActivity will be skipped
         if (topicSelectedItemID >= 0) {
             intent.putExtra("topicSelectedItemID", topicSelectedItemID);
