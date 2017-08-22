@@ -34,13 +34,13 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         public TextView tvTitle;
         public TextView tvDate;
         public TextView tvLength;
-        public TextView tvInterviewer;
-        public TextView tvNarrator;
-        public TextView tvComments;
         public ImageView ivMediaCoverPlaceholder;
         public ImageView ivMediaCover;
         public ProfileImageView pivInterviewer;
         public ProfileImageView pivNarrator;
+        public TextView tvInterviewer;
+        public TextView tvNarrator;
+        public TextView tvComments;
     }
 
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> data) {
@@ -62,13 +62,13 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
             holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_headline);
             holder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
             holder.tvLength = (TextView) convertView.findViewById(R.id.tv_length);
-            holder.tvInterviewer = (TextView) convertView.findViewById(R.id.textView_interviewer);
-            holder.tvNarrator = (TextView) convertView.findViewById(R.id.textView_narrator);
-            holder.tvComments = (TextView) convertView.findViewById(R.id.textView_comments);
             holder.ivMediaCoverPlaceholder = (ImageView) convertView.findViewById(R.id.iv_mediaCover_placeholder);
             holder.ivMediaCover = (ImageView) convertView.findViewById(R.id.iv_mediaCover);
             holder.pivInterviewer = (ProfileImageView) convertView.findViewById(R.id.piv_interviewer);
             holder.pivNarrator = (ProfileImageView) convertView.findViewById(R.id.piv_narrator);
+            holder.tvInterviewer = (TextView) convertView.findViewById(R.id.textView_interviewer);
+            holder.tvNarrator = (TextView) convertView.findViewById(R.id.textView_narrator);
+            holder.tvComments = (TextView) convertView.findViewById(R.id.textView_comments);
 
             convertView.setTag(holder);
         } else {
@@ -77,23 +77,24 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
 
         holder.position = position;
         holder.tvTitle.setText(mListData.get(position).getTitle());
-        holder.tvDate.setText(mListData.get(position).getDate());
+        holder.tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
         holder.tvLength.setText(mListData.get(position).getLength());
+
+        if (mListData.get(position).getPictureLocalURI() != null) {
+            if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
+                holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                holder.ivMediaCoverPlaceholder.setVisibility(View.GONE);
+                holder.ivMediaCover.setVisibility(View.VISIBLE);
+            }
+        }
+
+        try { holder.pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
+        try { holder.pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
+
         holder.tvInterviewer.setText(mListData.get(position).getInterviewerName());
         holder.tvNarrator.setText(mListData.get(position).getNarratorName());
         int n = mListData.get(position).getNumberComments();
-        holder.tvComments.setText("" + (n==0 ? "keine " : n + " ") + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
-        try {
-            holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-            holder.ivMediaCoverPlaceholder.setVisibility(View.GONE);
-            holder.ivMediaCover.setVisibility(View.VISIBLE);
-        } catch(Exception e) {}
-        try {
-            holder.pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI()));
-        } catch (Exception e) {}
-        try {
-            holder.pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI()));
-        } catch (Exception e) {}
+        holder.tvComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
         return convertView;
     }
