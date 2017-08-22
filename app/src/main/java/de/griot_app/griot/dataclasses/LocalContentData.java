@@ -10,7 +10,9 @@ public class LocalContentData {
 
     protected String contentID;
     protected String length;
-    protected String date;
+    protected String dateYear;
+    protected String dateMonth;
+    protected String dateDay;
     protected String pictureURL;
     protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
@@ -28,7 +30,9 @@ public class LocalContentData {
     public LocalContentData(
             String contentID,
             String length,
-            String date,
+            String dateYear,
+            String dateMonth,
+            String dateDay,
             String pictureURL,
             String pictureLocalURI,
             HashMap<String, Boolean> associatedUsers,
@@ -37,7 +41,9 @@ public class LocalContentData {
     ) {
         this.contentID = contentID;
         this.length = length;
-        this.date = date;
+        this.dateYear = dateYear;
+        this.dateMonth = dateMonth;
+        this.dateDay = dateDay;
         this.pictureURL = pictureURL;
         this.pictureLocalURI = pictureLocalURI;
         this.associatedUsers = associatedUsers;
@@ -50,7 +56,9 @@ public class LocalContentData {
         return "LocalContentData{" +
                 "contentID='" + contentID + '\'' +
                 ", length='" + length + '\'' +
-                ", date='" + date + '\'' +
+                ", dateYear='" + dateYear + '\'' +
+                ", dateMonth='" + dateMonth + '\'' +
+                ", dateDay='" + dateDay + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
                 ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
@@ -64,7 +72,9 @@ public class LocalContentData {
 
     public String getLength() { return length; }
 
-    public String getDate() { return date; }
+    public String getDateYear() { return dateYear; }
+    public String getDateMonth() { return dateMonth; }
+    public String getDateDay() { return dateDay; }
 
     public String getPictureURL() { return pictureURL; }
 
@@ -81,7 +91,9 @@ public class LocalContentData {
 
     public void setLength(String length) { this.length = length; }
 
-    public void setDate(String date) { this.date = date; }
+    public void setDateYear(String dateYear) { this.dateYear = dateYear; }
+    public void setDateMonth(String dateMonth) { this.dateMonth = dateMonth; }
+    public void setDateDay(String dateDay) { this.dateDay = dateDay; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 

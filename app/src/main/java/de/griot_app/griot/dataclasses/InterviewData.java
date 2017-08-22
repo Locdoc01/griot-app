@@ -36,7 +36,9 @@ public class InterviewData extends ContentData {
     //constructor
     public InterviewData(
             String title,
-            String date,
+            String dateYear,
+            String dateMonth,
+            String dateDay,
             String topic,
             String medium,
             String length,
@@ -56,7 +58,7 @@ public class InterviewData extends ContentData {
             HashMap<String, CommentData> comments,
             ArrayList<HashMap<String, Boolean>> interviewQuestions
     ) {
-        super(length, date, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, dateYear, dateMonth, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.topic = topic;
         this.medium = medium;
@@ -87,7 +89,7 @@ public class InterviewData extends ContentData {
                 ", narratorIsUser=" + narratorIsUser +
                 ", numberComments=" + numberComments +
                 ", comments=" + comments +
-                ", interviewQuestions=" + interviewQuestions +
+                ", allQuestions=" + interviewQuestions +
                 '}';
     }
 

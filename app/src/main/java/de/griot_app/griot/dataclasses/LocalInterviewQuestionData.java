@@ -23,7 +23,9 @@ public class LocalInterviewQuestionData extends LocalContentData {
             HashMap<String, Boolean> interviewID,
             String question,
             String length,
-            String date,
+            String dateYear,
+            String dateMonth,
+            String dateDay,
             String pictureURL,
             String pictureLocalURI,
             String recordURL,
@@ -31,7 +33,7 @@ public class LocalInterviewQuestionData extends LocalContentData {
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
-        super(contentID, length, date, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(contentID, length, dateYear, dateMonth, dateDay, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.interviewID = interviewID;
         this.question = question;
         this.recordURL = recordURL;
