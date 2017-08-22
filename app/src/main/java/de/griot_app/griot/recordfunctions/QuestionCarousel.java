@@ -30,9 +30,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     private static final String TAG = QuestionCarousel.class.getSimpleName();
 
-    public static final int BLUE_WHEN_FINISHED = 0;
-    public static final int CHECKED_WHEN_FINISHED = 1;
-
     private Context mContext;
 
     private String[] mListStrings;
@@ -84,7 +81,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     private int mRecordIndex;
 
-    private int mFinishedMode;
     private boolean mInvertedLayout;
 
 
@@ -93,27 +89,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * @param context   The holding activity
     //* @param list      A List of Strings. This will be the data model for the view
      */
-/*
-    public QuestionCarousel(Context context, List<String> list) {
-        super(context);
-
-        mContext = context;
-        mListStrings = list;
-        mAllQuestionsCount = mListStrings.size();
-        mCurrentQuestion = 0;
-        mDensity = getResources().getDisplayMetrics().mDensity;
-        mDuration = 200;
-        mRecordIndex = -1;
-        mFinishedMode = CHECKED_WHEN_FINISHED;
-
-        ConstraintLayout layout = (ConstraintLayout) LayoutInflater.from(mContext).inflate(R.layout.class_question_carousel, null);
-        addView(layout);
-        mlayoutQuestions = (FrameLayout) layout.findViewById(R.id.layout_questions);
-
-        initiateCarousel();
-    }
-*/
-
 
     // All three constructors are necessary in order to create an object of this class from a layout, so that it could be found by findViewbyid()
     public QuestionCarousel(Context context) {
@@ -154,7 +129,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mDensity = getResources().getDisplayMetrics().density;
         mDuration = 200;
         mRecordIndex = -1;
-        mFinishedMode = BLUE_WHEN_FINISHED;
         mInvertedLayout = false;
 
         Log.d(TAG, "setQuestionList: getChildCount: " + getChildCount());
@@ -220,9 +194,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mShadowTop.setVisibility(VISIBLE);
         getmShadowMiddle.setVisibility(GONE);
         mShadowBottom.setVisibility(VISIBLE);
-        if (mFinishedMode == BLUE_WHEN_FINISHED) {
-            mListCarousel.get(mCurrentQuestion).setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
-        }
+        mListCarousel.get(mCurrentQuestion).setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
     }
 
     /**
@@ -252,18 +224,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      */
     public void setRecordOff() {
         if (mRecordIndex >= 0) {
-            if (mFinishedMode == CHECKED_WHEN_FINISHED) {
-                //Alternative 1: erledigte Fragen werden mit Häkchen versehen
-                Drawable draw = getResources().getDrawable(R.drawable.check);
-                int size = (int) (getResources().getDimension(R.dimen.textSizeLastNextQuestion) * mDensity);
-                draw.setBounds(0, 0, size, size);
-                mListCarousel.get(mRecordIndex).setCompoundDrawables(draw, null, null, null);
-            } else {
-                //Alternative 2: erledigte Fragen werden abgedunkelt
-                mListCarousel.get(mRecordIndex).setCompoundDrawables(null, null, null, null);
-                mListCarousel.get(mRecordIndex).setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
-                mListCarousel.get(mRecordIndex).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
-            }
+            mListCarousel.get(mRecordIndex).setCompoundDrawables(null, null, null, null);
+            mListCarousel.get(mRecordIndex).setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
+            mListCarousel.get(mRecordIndex).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
             mListCarousel.get(mRecordIndex).setRecorded(true);
             mRecordIndex = -1;
         }
@@ -275,9 +238,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * @return index of current middle TextView
      */
     public int getCurrentIndex() { return mCurrentQuestion; }
-
-    public int getFinishedMode() { return mFinishedMode; }
-    public void setFinishedMode(int finishedMode) { mFinishedMode = finishedMode; }
 
     @Override
     public boolean onTouch(View view, MotionEvent event){
@@ -604,7 +564,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (mCurrentQuestion > 0) {
             getTopTextView().setTypeface(Typeface.DEFAULT);
             getTopTextView().setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
-            if (getTopTextView().wasRecorded() && mFinishedMode == BLUE_WHEN_FINISHED) {
+            if (getTopTextView().wasRecorded()) {
                 getTopTextView().setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
             } else {
                 getTopTextView().setTextColor(ContextCompat.getColor(mContext, R.color.colorLastNextQuestion));
@@ -614,7 +574,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (!mInvertedLayout) {
             getMiddleTextView().setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
         }
-        if (getMiddleTextView().wasRecorded() && mFinishedMode == BLUE_WHEN_FINISHED) {
+        if (getMiddleTextView().wasRecorded()) {
             getMiddleTextView().setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
             getMiddleTextView().setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
         } else {
@@ -623,7 +583,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (mCurrentQuestion < mQuestionCount-1) {
             getBottomTextView().setTypeface(Typeface.DEFAULT);
             getBottomTextView().setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
-            if (getBottomTextView().wasRecorded() && mFinishedMode == BLUE_WHEN_FINISHED) {
+            if (getBottomTextView().wasRecorded()) {
                 getBottomTextView().setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
             } else {
                 getBottomTextView().setTextColor(ContextCompat.getColor(mContext, R.color.colorLastNextQuestion));
