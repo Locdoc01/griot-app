@@ -20,7 +20,7 @@ public class InterviewData extends ContentData {
     private Boolean narratorIsUser;
     private Integer numberComments;
     private HashMap<String, CommentData> comments;
-    private ArrayList<HashMap<String, Boolean>> interviewQuestions;
+    private ArrayList<HashMap<String, Boolean>> interviewQuestionIDs;
 
     //default-constructor
     public InterviewData() {
@@ -30,7 +30,7 @@ public class InterviewData extends ContentData {
         narratorIsUser = false;
         numberComments = 0;
         comments = new HashMap<>();
-        interviewQuestions = new ArrayList<>();
+        interviewQuestionIDs = new ArrayList<>();
     }
 
     //constructor
@@ -56,7 +56,7 @@ public class InterviewData extends ContentData {
             HashMap<String, Boolean> tags,
             Integer numberComments,
             HashMap<String, CommentData> comments,
-            ArrayList<HashMap<String, Boolean>> interviewQuestions
+            ArrayList<HashMap<String, Boolean>> interviewQuestionIDs
     ) {
         super(length, dateYear, dateMonth, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
         this.title = title;
@@ -71,7 +71,7 @@ public class InterviewData extends ContentData {
         this.narratorIsUser = narratorIsUser;
         this.numberComments = numberComments;
         this.comments = comments;
-        this.interviewQuestions = interviewQuestions;
+        this.interviewQuestionIDs = interviewQuestionIDs;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class InterviewData extends ContentData {
                 ", narratorIsUser=" + narratorIsUser +
                 ", numberComments=" + numberComments +
                 ", comments=" + comments +
-                ", allQuestions=" + interviewQuestions +
+                ", interviewQuestionIDs=" + interviewQuestionIDs +
                 '}';
     }
 
@@ -118,7 +118,7 @@ public class InterviewData extends ContentData {
 
     public HashMap<String, CommentData> getComments() { return comments; }
 
-    public ArrayList<HashMap<String, Boolean>> getInterviewQuestions() { return interviewQuestions; }
+    public ArrayList<HashMap<String, Boolean>> getInterviewQuestionIDs() { return interviewQuestionIDs; }
 
 
     //set-methods
@@ -146,5 +146,5 @@ public class InterviewData extends ContentData {
 
     public void setComments(HashMap<String, CommentData> comments) { this.comments = comments; }
 
-    public void setInterviewQuestions(ArrayList<HashMap<String, Boolean>> interviewQuestions) { this.interviewQuestions = interviewQuestions; }
+    public void setInterviewQuestionIDs(ArrayList<HashMap<String, Boolean>> interviewQuestionIDs) { this.interviewQuestionIDs = interviewQuestionIDs; }
 }
