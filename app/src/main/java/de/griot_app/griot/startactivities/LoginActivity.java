@@ -537,7 +537,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             return;
         }
 
-        showProgressBar(getString(R.string.dialog_creating_account));
+        showProgressBar(getString(R.string.progress_creating_account));
 
         // actual call for creating the account. An OnCompleteListener //TODO
         mAuth.createUserWithEmailAndPassword(mEditCreateAccountEmail.getText().toString().trim(), mEditCreateAccountPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -632,7 +632,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         if (!validateFormSignIn()) {
             return;
         }
-        showProgressBar(getString(R.string.dialog_signing_in));
+        showProgressBar(getString(R.string.progress_signing_in));
 
         mAuth.signInWithEmailAndPassword(mEditSignInEmail.getText().toString().trim(), mEditSignInPassword.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
