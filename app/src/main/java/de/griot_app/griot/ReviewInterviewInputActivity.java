@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import de.griot_app.griot.adapters.LocalInterviewQuestionDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
@@ -28,37 +30,43 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     private static final String TAG = ReviewInterviewInputActivity.class.getSimpleName();
 
     //intent-data
-    protected int narratorSelectedItemID;
-    protected String narratorID;
-    protected String narratorName;
-    protected String narratorPictureURL;
-    protected Boolean narratorIsUser;
+    private int narratorSelectedItemID;
+    private String narratorID;
+    private String narratorName;
+    private String narratorPictureURL;
+    private Boolean narratorIsUser;
 
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
 
-    protected int topicSelectedItemID;
-    protected int topicKey;
-    protected String topic;
+    private int topicSelectedItemID;
+    private int topicKey;
+    private String topic;
 
-    protected int medium;
+    private String title;
 
-    protected String dateYear;
-    protected String dateMonth;
-    protected String dateDay;
+    private int medium;
 
-    protected String[] allQuestions;
+    private String dateYear;
+    private String dateMonth;
+    private String dateDay;
 
-    protected String[] allMediaSingleFilePaths;
+    private String[] allQuestions;
 
-    protected String[] recordedMediaSingleFilePaths;
-    protected String[] recordedCoverFilePaths;
-    protected String[] recordedQuestions;
-    protected int[] recordedQuestionIndices;
-    protected String[] recordedQuestionLengths;
+    private String[] allMediaSingleFilePaths;
 
-    protected String interviewDir;
+    private String[] recordedMediaSingleFilePaths;
+    private String[] recordedCoverFilePaths;
+    private String[] recordedQuestions;
+    private int[] recordedQuestionIndices;
+    private String[] recordedQuestionLengths;
+
+    private String interviewDir;
+
+    private int recordedQuestionsCount;
+
+    private String tags[][];
 
     // ListView, that holds the interview questions
     private ListView mListViewInterviewQuestions;
@@ -98,6 +106,8 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
 
+        title = getIntent().getStringExtra("title");
+
         medium = getIntent().getIntExtra("medium", -1);
 
         dateYear = getIntent().getStringExtra("dateYear");
@@ -115,6 +125,13 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         recordedCoverFilePaths = getIntent().getStringArrayExtra("recordedCoverFilePaths");
 
         interviewDir = getIntent().getStringExtra("interviewDir");
+
+        recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
+
+        tags = new String[recordedQuestionsCount][];
+        for (int i=0 ; i<recordedQuestionsCount ; i++) {
+            tags[i] = getIntent().getStringArrayExtra("tags" + i);
+        }
 
         mListViewInterviewQuestions = (ListView) findViewById(R.id.listView_review_interviews);
 
@@ -138,6 +155,12 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             data.setDateDay(dateDay);
 
             data.setPictureLocalURI(recordedCoverFilePaths[i]);
+            if (tags[i] != null) {
+                for (int j = 0; j < tags[i].length; j++) {
+                    data.getTags().put(tags[i][j], true);
+                }
+            }
+
             mListInterviewQuestionData.add(data);
         }
 
@@ -233,7 +256,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
 
         intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
 
-        //TODO: Daten zu den einzeln InterviewFragen weiterreichen (Tags, etc)
+        for (int i=0 ; i<recordedQuestions.length ; i++) {
+            String[] tags = new String[mListInterviewQuestionData.get(i).getTags().size()];
+            Iterator<String> iterator = mListInterviewQuestionData.get(i).getTags().keySet().iterator();
+            for (int j=0 ; j<tags.length ; j++) {
+                tags[j] = iterator.next();
+            }
+            intent.putExtra("tags" + i, tags);
+        }
 
         startActivity(intent);
         finish();
@@ -262,6 +292,8 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("topicKey", topicKey);
         intent.putExtra("topic", topic);
 
+        intent.putExtra("title", title);
+
         intent.putExtra("medium", medium);      // TODO evt. überflüssig
 
         intent.putExtra("dateYear", dateYear);
@@ -281,7 +313,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
 
         intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
 
-        //TODO: Daten zu den einzeln InterviewFragen weiterreichen (Tags, etc)
+        for (int i=0 ; i<recordedQuestions.length ; i++) {
+            String[] tags = new String[mListInterviewQuestionData.get(i).getTags().size()];
+            Iterator<String> iterator = mListInterviewQuestionData.get(i).getTags().keySet().iterator();
+            for (int j=0 ; j<tags.length ; j++) {
+                tags[j] = iterator.next();
+            }
+            intent.putExtra("tags" + i, tags);
+        }
 
         startActivity(intent);
         finish();
