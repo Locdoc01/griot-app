@@ -9,7 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.griot_app.griot.ComposeQuestionRequestInputActivity;
 import de.griot_app.griot.R;
@@ -42,6 +46,10 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
     protected ImageView mButtonNotifications;
     protected ImageView mButtonTopicCatalog;
     protected FloatingActionButton mButtonQuestionmail;
+
+    private ImageView mBackgroundProgress;
+    private ProgressBar mProgressBar;
+    private TextView mTextViewProgress;
 
     /**
      * Abstract method, which returns the appropriate layout contactID for extending subclass.
@@ -83,6 +91,9 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mButtonTopicCatalog.setOnClickListener(this);
         mButtonQuestionmail.setOnClickListener(this);
 
+        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
+        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
+        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
     }
 
     @Override
@@ -99,6 +110,40 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         // stops default animation, in case of changing the Activity
         overridePendingTransition(0, 0);
     }
+
+    protected void showProgressBar(String message) {
+        mButtonHome.setOnClickListener(null);
+        mButtonProfile.setOnClickListener(null);
+        mButtonRecord.setOnClickListener(null);
+        mButtonNotifications.setOnClickListener(null);
+        mButtonTopicCatalog.setOnClickListener(null);
+        mButtonQuestionmail.setOnClickListener(null);
+
+        mTextViewProgress.setText(message);
+
+        mBackgroundProgress.setVisibility(View.VISIBLE);
+        mTextViewProgress.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void showProgressBarFinishMessage(String message) {
+        mProgressBar.setVisibility(View.GONE);
+        mTextViewProgress.setText(message);
+    }
+
+    protected void hideProgressBar() {
+        mButtonHome.setOnClickListener(this);
+        mButtonProfile.setOnClickListener(this);
+        mButtonRecord.setOnClickListener(this);
+        mButtonNotifications.setOnClickListener(this);
+        mButtonTopicCatalog.setOnClickListener(this);
+        mButtonQuestionmail.setOnClickListener(this);
+
+        mBackgroundProgress.setVisibility(View.GONE);
+        mTextViewProgress.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+    }
+
 
     /**
      * TODO: Beschreibung ändern:

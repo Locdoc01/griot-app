@@ -8,7 +8,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.griot_app.griot.R;
 
@@ -28,6 +33,10 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
     protected Button mButtonLeft;
     protected Button mButtonCenter;
     protected Button mButtonRight;
+
+    private ImageView mBackgroundProgress;
+    private ProgressBar mProgressBar;
+    private TextView mTextViewProgress;
 
     /**
      * Abstract method, which returns the appropriate layout contactID for extending subclass.
@@ -71,6 +80,10 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         mButtonLeft.setOnTouchListener(this);
         mButtonCenter.setOnTouchListener(this);
         mButtonRight.setOnTouchListener(this);
+
+        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
+        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
+        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
     }
 
     @Override
@@ -80,6 +93,34 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    protected void showProgressBar(String message) {
+        mButtonLeft.setVisibility(View.GONE);
+        mButtonCenter.setVisibility(View.GONE);
+        mButtonRight.setVisibility(View.GONE);
+
+        mTextViewProgress.setText(message);
+
+        mBackgroundProgress.setVisibility(View.VISIBLE);
+        mTextViewProgress.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void showProgressBarFinishMessage(String message) {
+        mProgressBar.setVisibility(View.GONE);
+        mTextViewProgress.setText(message);
+    }
+
+    protected void hideProgressBar() {
+        mButtonLeft.setVisibility(View.VISIBLE);
+        mButtonCenter.setVisibility(View.VISIBLE);
+        mButtonRight.setVisibility(View.VISIBLE);
+
+        mBackgroundProgress.setVisibility(View.GONE);
+        mTextViewProgress.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+    }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
