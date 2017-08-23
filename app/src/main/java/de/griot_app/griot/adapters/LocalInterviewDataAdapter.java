@@ -29,19 +29,17 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
 
     private ArrayList<LocalInterviewData> mListData;
 
-    static class ViewHolder {
-        public int position;
-        public TextView tvTitle;
-        public TextView tvDate;
-        public TextView tvLength;
-        public ImageView ivMediaCoverPlaceholder;
-        public ImageView ivMediaCover;
-        public ProfileImageView pivInterviewer;
-        public ProfileImageView pivNarrator;
-        public TextView tvInterviewer;
-        public TextView tvNarrator;
-        public TextView tvComments;
-    }
+        private int position;
+        private TextView tvTitle;
+        private TextView tvDate;
+        private TextView tvLength;
+        private ImageView ivMediaCoverPlaceholder;
+        private ImageView ivMediaCover;
+        private ProfileImageView pivInterviewer;
+        private ProfileImageView pivNarrator;
+        private TextView tvInterviewer;
+        private TextView tvNarrator;
+        private TextView tvComments;
 
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> data) {
         super(context, R.layout.listitem_interview, data);
@@ -52,50 +50,45 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final ViewHolder holder;
-        if (convertView == null) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.listitem_interview, null);
 
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(R.layout.listitem_interview, null);
-            holder = new ViewHolder();
+        tvTitle = (TextView) v.findViewById(R.id.tv_headline);
+        tvDate = (TextView) v.findViewById(R.id.tv_date);
+        tvLength = (TextView) v.findViewById(R.id.tv_length);
+        ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
+        ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
+        pivInterviewer = (ProfileImageView) v.findViewById(R.id.piv_interviewer);
+        pivNarrator = (ProfileImageView) v.findViewById(R.id.piv_narrator);
+        tvInterviewer = (TextView) v.findViewById(R.id.textView_interviewer);
+        tvNarrator = (TextView) v.findViewById(R.id.textView_narrator);
+        tvComments = (TextView) v.findViewById(R.id.textView_comments);
 
-            holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_headline);
-            holder.tvDate = (TextView) convertView.findViewById(R.id.tv_date);
-            holder.tvLength = (TextView) convertView.findViewById(R.id.tv_length);
-            holder.ivMediaCoverPlaceholder = (ImageView) convertView.findViewById(R.id.iv_mediaCover_placeholder);
-            holder.ivMediaCover = (ImageView) convertView.findViewById(R.id.iv_mediaCover);
-            holder.pivInterviewer = (ProfileImageView) convertView.findViewById(R.id.piv_interviewer);
-            holder.pivNarrator = (ProfileImageView) convertView.findViewById(R.id.piv_narrator);
-            holder.tvInterviewer = (TextView) convertView.findViewById(R.id.textView_interviewer);
-            holder.tvNarrator = (TextView) convertView.findViewById(R.id.textView_narrator);
-            holder.tvComments = (TextView) convertView.findViewById(R.id.textView_comments);
-
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        holder.position = position;
-        holder.tvTitle.setText(mListData.get(position).getTitle());
-        holder.tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        holder.tvLength.setText(mListData.get(position).getLength());
+        position = position;
+        tvTitle.setText(mListData.get(position).getTitle());
+        tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
+        tvLength.setText(mListData.get(position).getLength());
 
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
-                holder.ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-                holder.ivMediaCoverPlaceholder.setVisibility(View.GONE);
-                holder.ivMediaCover.setVisibility(View.VISIBLE);
+                ImageView test = new ImageView(mContext);
+                test.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                if (test.getDrawable() != null) {
+                    ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                    ivMediaCoverPlaceholder.setVisibility(View.GONE);
+                    ivMediaCover.setVisibility(View.VISIBLE);
+                }
             }
         }
 
-        try { holder.pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
-        try { holder.pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
+        try { pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
+        try { pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
 
-        holder.tvInterviewer.setText(mListData.get(position).getInterviewerName());
-        holder.tvNarrator.setText(mListData.get(position).getNarratorName());
+        tvInterviewer.setText(mListData.get(position).getInterviewerName());
+        tvNarrator.setText(mListData.get(position).getNarratorName());
         int n = mListData.get(position).getNumberComments();
-        holder.tvComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
+        tvComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
-        return convertView;
+        return v;
     }
 }
