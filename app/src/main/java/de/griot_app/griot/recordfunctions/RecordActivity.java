@@ -69,6 +69,8 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected int topicKey;
     protected String topic;
 
+    protected String title;
+
     protected String dateYear;
     protected String dateMonth;
     protected String dateDay;
@@ -175,6 +177,8 @@ public abstract class RecordActivity extends AppCompatActivity {
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
+
+        title = getIntent().getStringExtra("title");
 
         allQuestions = getIntent().getStringArrayExtra("allQuestions");
         allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
@@ -537,7 +541,10 @@ public abstract class RecordActivity extends AppCompatActivity {
         intent.putExtra("topicKey", topicKey);
         intent.putExtra("topic", topic);
 
+        intent.putExtra("title", title);
+
         intent.putExtra("medium", mMedium);
+
 
         intent.putExtra("dateYear", dateYear);
         intent.putExtra("dateMonth", dateMonth);
@@ -556,6 +563,8 @@ public abstract class RecordActivity extends AppCompatActivity {
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
 
         intent.putExtra("interviewDir", mInterviewDir);
+
+        intent.putExtra("recordedQuestionsCount", recordedQuestionsCount);
 
         startActivity(intent);
         finish();
