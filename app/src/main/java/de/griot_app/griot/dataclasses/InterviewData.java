@@ -11,10 +11,10 @@ public class InterviewData extends ContentData {
     private String title;
     private String topic;
     private String medium;
-    private HashMap<String, Boolean> interviewerID;
+    private String interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
-    private HashMap<String, Boolean> narratorID;
+    private String narratorID;
     private String narratorName;
     private String narratorPictureURL;
     private Boolean narratorIsUser;
@@ -25,8 +25,6 @@ public class InterviewData extends ContentData {
     //default-constructor
     public InterviewData() {
         super();
-        interviewerID = new HashMap<>();
-        narratorID = new HashMap<>();
         narratorIsUser = false;
         numberComments = 0;
         comments = new HashMap<>();
@@ -44,10 +42,10 @@ public class InterviewData extends ContentData {
             String length,
             String pictureURL,
             String pictureLocalURI,
-            HashMap<String, Boolean> interviewerID,
+            String interviewerID,
             String interviewerName,
             String interviewerPictureURL,
-            HashMap<String, Boolean> narratorID,
+            String narratorID,
             String narratorName,
             String narratorPictureURL,
             Boolean narratorIsUser,
@@ -100,13 +98,13 @@ public class InterviewData extends ContentData {
 
     public String getMedium() { return medium; }
 
-    public HashMap<String, Boolean> getInterviewerID() { return interviewerID; }
+    public String getInterviewerID() { return interviewerID; }
 
     public String getInterviewerName() { return interviewerName; }
 
     public String getInterviewerPictureURL() { return interviewerPictureURL; }
 
-    public HashMap<String, Boolean> getNarratorID() { return narratorID; }
+    public String getNarratorID() { return narratorID; }
 
     public String getNarratorName() { return narratorName; }
 
@@ -128,13 +126,13 @@ public class InterviewData extends ContentData {
 
     public void setMedium(String medium) { this.medium = medium; }
 
-    public void setInterviewerID(HashMap<String, Boolean> interviewerID) { this.interviewerID = interviewerID; }
+    public void setInterviewerID(String interviewerID) { this.interviewerID = interviewerID; }
 
     public void setInterviewerName(String interviewerName) { this.interviewerName = interviewerName; }
 
     public void setInterviewerPictureURL(String interviewerPictureURL) { this.interviewerPictureURL = interviewerPictureURL; }
 
-    public void setNarratorID(HashMap<String, Boolean> narratorID) { this.narratorID = narratorID; }
+    public void setNarratorID(String narratorID) { this.narratorID = narratorID; }
 
     public void setNarratorName(String narratorName) { this.narratorName = narratorName; }
 

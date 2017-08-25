@@ -600,15 +600,10 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             try { interviewLength += Double.parseDouble(recordedQuestionLengths[i]); } catch (Exception e) {}
         }
         interviewData.setLength("" + interviewLength);
-
-        HashMap<String, Boolean> interviewer = new HashMap<>();
-        interviewer.put(interviewerID, true);
-        interviewData.setInterviewerID(interviewer);
+        interviewData.setInterviewerID(interviewerID);
         interviewData.setInterviewerName(interviewerName);
         interviewData.setInterviewerPictureURL(interviewerPictureURL);
-        HashMap<String, Boolean> narrator = new HashMap<>();
-        narrator.put(narratorID, true);
-        interviewData.setNarratorID(narrator);
+        interviewData.setNarratorID(narratorID);
         interviewData.setNarratorName(narratorName);
         interviewData.setNarratorPictureURL(narratorPictureURL);
         interviewData.setNarratorIsUser(narratorIsUser);

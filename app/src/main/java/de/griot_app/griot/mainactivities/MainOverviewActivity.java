@@ -69,10 +69,10 @@ public class MainOverviewActivity extends GriotBaseActivity {
                 intent.putExtra("medium", mLocalInterviewDataAdapter.getItem(position).getMedium());
                 intent.putExtra("length", mLocalInterviewDataAdapter.getItem(position).getLength());
                 intent.putExtra("pictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getPictureLocalURI());
-                intent.putExtra("interviewerID", mLocalInterviewDataAdapter.getItem(position).getInterviewerID().keySet().iterator().next());
+                intent.putExtra("interviewerID", mLocalInterviewDataAdapter.getItem(position).getInterviewerID());
                 intent.putExtra("interviewerName", mLocalInterviewDataAdapter.getItem(position).getInterviewerName());
                 intent.putExtra("interviewerPictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getInterviewerPictureLocalURI());
-                intent.putExtra("narratorID", mLocalInterviewDataAdapter.getItem(position).getNarratorID().keySet().iterator().next());
+                intent.putExtra("narratorID", mLocalInterviewDataAdapter.getItem(position).getNarratorID());
                 intent.putExtra("narratorName", mLocalInterviewDataAdapter.getItem(position).getNarratorName());
                 intent.putExtra("narratorPictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getNarratorPictureLocalURI());
                 intent.putExtra("narratorIsUser", mLocalInterviewDataAdapter.getItem(position).getNarratorIsUser());

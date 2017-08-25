@@ -11,11 +11,11 @@ public class LocalInterviewData extends LocalContentData {
     private String title;
     private String topic;
     private String medium;
-    private HashMap<String, Boolean> interviewerID;
+    private String interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
     private String interviewerPictureLocalURI;
-    private HashMap<String, Boolean> narratorID;
+    private String narratorID;
     private String narratorName;
     private String narratorPictureURL;
     private String narratorPictureLocalURI;
@@ -27,8 +27,6 @@ public class LocalInterviewData extends LocalContentData {
     //default-constructor
     public LocalInterviewData() {
         super();
-        interviewerID = new HashMap<>();
-        narratorID = new HashMap<>();
         narratorIsUser = false;
         numberComments = 0;
         comments = new HashMap<>();
@@ -47,11 +45,11 @@ public class LocalInterviewData extends LocalContentData {
             String length,
             String pictureURL,
             String pictureLocalURI,
-            HashMap<String, Boolean> interviewerID,
+            String interviewerID,
             String interviewerName,
             String interviewerPictureURL,
             String interviewerPictureLocalURI,
-            HashMap<String, Boolean> narratorID,
+            String narratorID,
             String narratorName,
             String narratorPictureURL,
             String narratorPictureLocalURI,
@@ -109,7 +107,7 @@ public class LocalInterviewData extends LocalContentData {
 
     public String getMedium() { return medium; }
 
-    public HashMap<String, Boolean> getInterviewerID() { return interviewerID; }
+    public String getInterviewerID() { return interviewerID; }
 
     public String getInterviewerName() { return interviewerName; }
 
@@ -117,7 +115,7 @@ public class LocalInterviewData extends LocalContentData {
 
     public String getInterviewerPictureLocalURI() { return interviewerPictureLocalURI; }
 
-    public HashMap<String, Boolean> getNarratorID() { return narratorID; }
+    public String getNarratorID() { return narratorID; }
 
     public String getNarratorName() { return narratorName; }
 
@@ -140,7 +138,7 @@ public class LocalInterviewData extends LocalContentData {
 
     public void setMedium(String medium) { this.medium = medium; }
 
-    public void setInterviewerID(HashMap<String, Boolean> interviewerID) { this.interviewerID = interviewerID; }
+    public void setInterviewerID(String interviewerID) { this.interviewerID = interviewerID; }
 
     public void setInterviewerName(String interviewerName) { this.interviewerName = interviewerName; }
 
@@ -148,7 +146,7 @@ public class LocalInterviewData extends LocalContentData {
 
     public void setInterviewerPictureLocalURI(String interviewerPictureLocalURI) { this.interviewerPictureLocalURI = interviewerPictureLocalURI; }
 
-    public void setNarratorID(HashMap<String, Boolean> narratorID) { this.narratorID = narratorID; }
+    public void setNarratorID(String narratorID) { this.narratorID = narratorID; }
 
     public void setNarratorName(String narratorName) { this.narratorName = narratorName; }
 
