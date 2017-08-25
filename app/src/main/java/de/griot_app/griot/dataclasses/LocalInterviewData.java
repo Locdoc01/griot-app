@@ -22,7 +22,7 @@ public class LocalInterviewData extends LocalContentData {
     private Boolean narratorIsUser;
     private Integer numberComments;
     private HashMap<String, CommentData> comments;
-    private ArrayList<HashMap<String, Boolean>> interviewQuestionIDs;
+    private ArrayList<String> interviewQuestionIDs;
 
     //default-constructor
     public LocalInterviewData() {
@@ -59,7 +59,7 @@ public class LocalInterviewData extends LocalContentData {
             HashMap<String, Boolean> tags,
             Integer numberComments,
             HashMap<String, CommentData> comments,
-            ArrayList<HashMap<String, Boolean>> interviewQuestionIDs
+            ArrayList<String> interviewQuestionIDs
     ) {
         super(contentID, length, dateYear, dateMonth, dateDay, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.title = title;
@@ -129,7 +129,7 @@ public class LocalInterviewData extends LocalContentData {
 
     public HashMap<String, CommentData> getComments() { return comments; }
 
-    public ArrayList<HashMap<String, Boolean>> getInterviewQuestionIDs() { return interviewQuestionIDs; }
+    public ArrayList<String> getInterviewQuestionIDs() { return interviewQuestionIDs; }
 
     //set-methods
     public void setTitle(String title) { this.title = title; }
@@ -160,5 +160,5 @@ public class LocalInterviewData extends LocalContentData {
 
     public void setComments(HashMap<String, CommentData> comments) { this.comments = comments; }
 
-    public void setInterviewQuestionIDs(ArrayList<HashMap<String, Boolean>> interviewQuestionIDs) { this.interviewQuestionIDs = interviewQuestionIDs; }
+    public void setInterviewQuestionIDs(ArrayList<String> interviewQuestionIDs) { this.interviewQuestionIDs = interviewQuestionIDs; }
 }

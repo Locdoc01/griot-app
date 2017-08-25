@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class ExtraQuestionData {
 
-    private HashMap<String, Boolean> topic;
+    private String topic;
     private String question;
 
     //default-constructor
@@ -15,7 +15,7 @@ public class ExtraQuestionData {
     }
 
     //constructor
-    public ExtraQuestionData(HashMap<String, Boolean> topic, String question) {
+    public ExtraQuestionData(String topic, String question) {
         this.topic = topic;
         this.question = question;
     }
@@ -29,12 +29,12 @@ public class ExtraQuestionData {
     }
 
     //get-methods
-    public HashMap<String, Boolean> getTopic() { return topic; }
+    public String getTopic() { return topic; }
 
     public String getQuestion() { return question; }
 
     //set-methods
-    public void setTopic(HashMap<String, Boolean> topic) { this.topic = topic; }
+    public void setTopic(String topic) { this.topic = topic; }
 
     public void setQuestion(String question) { this.question = question; }
 }

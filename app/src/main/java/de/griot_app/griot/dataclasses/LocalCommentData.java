@@ -11,14 +11,13 @@ public class LocalCommentData {
     private String commentID;
     private String comment;
     private String time;
-    private HashMap<String, Boolean> commentatorID;
+    private String commentatorID;
     private String commentatorName;
     private String commentatorPictureURL;
     private String commentatorPictureLocalURI;
 
     //default-constructor
     public LocalCommentData() {
-        commentatorID = new HashMap<>();
     }
 
     //constructor
@@ -26,7 +25,7 @@ public class LocalCommentData {
             String commentID,
             String comment,
             String time,
-            HashMap<String, Boolean> commentatorID,
+            String commentatorID,
             String commentatorName,
             String commentatorPictureURL,
             String commentatorPictureLocalURI
@@ -60,7 +59,7 @@ public class LocalCommentData {
 
     public String getTime() { return time; }
 
-    public HashMap<String, Boolean> getCommentatorID() { return commentatorID; }
+    public String getCommentatorID() { return commentatorID; }
 
     public String getCommentatorName() { return commentatorName; }
 
@@ -75,7 +74,7 @@ public class LocalCommentData {
 
     public void setTime(String time) { this.time = time; }
 
-    public void setCommentatorID(HashMap<String, Boolean> commentatorID) { this.commentatorID = commentatorID; }
+    public void setCommentatorID(String commentatorID) { this.commentatorID = commentatorID; }
 
     public void setCommentatorName(String commentatorName) { this.commentatorName = commentatorName; }
 

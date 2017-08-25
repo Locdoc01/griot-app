@@ -7,20 +7,19 @@ import java.util.HashMap;
  */
 public class LocalInterviewQuestionData extends LocalContentData {
 
-    private HashMap<String, Boolean> interviewID;
+    private String interviewID;
     private String question;
     private String recordURL;
 
     //default-constructor
     public LocalInterviewQuestionData() {
         super();
-        interviewID = new HashMap<>();
     }
 
     //constructor
     public LocalInterviewQuestionData(
             String contentID,
-            HashMap<String, Boolean> interviewID,
+            String interviewID,
             String question,
             String length,
             String dateYear,
@@ -49,14 +48,14 @@ public class LocalInterviewQuestionData extends LocalContentData {
     }
 
     //get-methods
-    public HashMap<String, Boolean> getInterviewID() { return interviewID; }
+    public String getInterviewID() { return interviewID; }
 
     public String getQuestion() { return question; }
 
     public String getRecordURL() { return recordURL; }
 
     //set-methods
-    public void setInterviewID(HashMap<String, Boolean> interviewID) { this.interviewID = interviewID; }
+    public void setInterviewID(String interviewID) { this.interviewID = interviewID; }
 
     public void setQuestion(String question) { this.question = question; }
 
