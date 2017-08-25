@@ -520,14 +520,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         showProgressBar(getString(R.string.progress_uploading_interview));
 
         final DatabaseReference interviewsReference = mDatabaseRootReference.child("interviews");
-        final HashMap<String, Boolean> interviewID = new HashMap<>();
-        interviewID.put(interviewsReference.push().getKey(), true);
+        final String interviewID = interviewsReference.push().getKey();
 
-        final ArrayList<HashMap<String, Boolean>> interviewQuestionIDs = new ArrayList<>();
+        final ArrayList<String> interviewQuestionIDs = new ArrayList<>();
         final DatabaseReference interviewQuestionsReference = mDatabaseRootReference.child("interviewQuestions");
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
-            HashMap<String, Boolean> interviewQuestionID = new HashMap<>();
-            interviewQuestionID.put(interviewQuestionsReference.push().getKey(), true);
+            final String interviewQuestionID = interviewQuestionsReference.push().getKey();
             interviewQuestionIDs.add(interviewQuestionID);
             final InterviewQuestionData interviewQuestionData = new InterviewQuestionData();
             interviewQuestionData.setInterviewID(interviewID);
@@ -542,46 +540,52 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             final int index = i;
             mStorageRef = mStorageRootReference
                     .child("interviews")
-                    .child(interviewID.keySet().iterator().next())
-                    .child(interviewQuestionID.keySet().iterator().next() + ".jpg");
-            mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
+                    .child(interviewID)
+                    .child(interviewQuestionIDs.get(index) + (medium==RecordActivity.MEDIUM_VIDEO ? ".mp4" : ".m4a"));
+            mStorageRef.putFile(Uri.parse("file://" + recordedMediaSingleFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    interviewQuestionData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
-                    mUploadMediaCoverSuccessCount++;
+                    interviewQuestionData.setRecordURL(taskSnapshot.getDownloadUrl().toString());
+                    mUploadMediaSuccessCount++;
 
-                    mStorageRef = mStorageRootReference
-                            .child("interviews")
-                            .child(interviewID.keySet().iterator().next())
-                            .child(interviewQuestionIDs.get(index).keySet().iterator().next() + (medium==RecordActivity.MEDIUM_VIDEO ? ".mp4" : ".m4a"));
-                    mStorageRef.putFile(Uri.parse("file://" + recordedMediaSingleFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    if (medium==RecordActivity.MEDIUM_VIDEO) {
+                        mStorageRef = mStorageRootReference
+                                .child("interviews")
+                                .child(interviewID)
+                                .child(interviewQuestionID + ".jpg");
+                        mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            interviewQuestionData.setRecordURL(taskSnapshot.getDownloadUrl().toString());
-                            interviewQuestionsReference
-                                    .child(interviewQuestionIDs.get(index).keySet().iterator().next())
-                                    .setValue(interviewQuestionData);
-                            mUploadMediaSuccessCount++;
-                            doAfterUpload();
-
-                        }
-
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error uploading media file");
-                            mUploadMediaFailureCount++;
-                            doAfterUpload();
-                        }
-                    });
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                interviewQuestionData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
+                                mUploadMediaCoverSuccessCount++;
+                                interviewQuestionsReference
+                                        .child(interviewQuestionIDs.get(index))
+                                        .setValue(interviewQuestionData);
+                                doAfterUpload();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(getSubClassTAG(), "Error uploading media cover image");
+                                mUploadMediaCoverFailureCount++;
+                                doAfterUpload();
+                            }
+                        });
+                    } else {
+                        interviewQuestionData.setPictureURL(narratorPictureURL);
+                        mUploadMediaCoverSuccessCount = recordedQuestionsCount+1;
+                        interviewQuestionsReference
+                                .child(interviewQuestionIDs.get(index))
+                                .setValue(interviewQuestionData);
+                        doAfterUpload();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.e(getSubClassTAG(), "Error uploading media cover image");
-                    mUploadMediaCoverFailureCount++;
+                    Log.e(getSubClassTAG(), "Error uploading media file");
+                    mUploadMediaFailureCount++;
                     doAfterUpload();
                 }
             });
@@ -614,30 +618,39 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         }
         interviewData.setInterviewQuestionIDs(interviewQuestionIDs);
 
-        mStorageRef = mStorageRootReference
-                .child("interviews")
-                .child(interviewID.keySet().iterator().next())
-                .child(interviewID.keySet().iterator().next() + ".jpg");
-        mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[0])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        if (medium==RecordActivity.MEDIUM_VIDEO) {
+            mStorageRef = mStorageRootReference
+                    .child("interviews")
+                    .child(interviewID)
+                    .child(interviewID + ".jpg");
+            mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[0])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                interviewData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
-                interviewsReference
-                        .child(interviewID.keySet().iterator().next())
-                        .setValue(interviewData);
-                mUploadMediaCoverSuccessCount++;
-                doAfterUpload();
-            }
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    interviewData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
+                    interviewsReference
+                            .child(interviewID)
+                            .setValue(interviewData);
+                    mUploadMediaCoverSuccessCount++;
+                    doAfterUpload();
+                }
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(getSubClassTAG(), "Error uploading media cover image");
-                mUploadMediaCoverFailureCount++;
-                doAfterUpload();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(getSubClassTAG(), "Error uploading media cover image");
+                    mUploadMediaCoverFailureCount++;
+                    doAfterUpload();
+                }
+            });
+        } else {
+            interviewData.setPictureURL(narratorPictureURL);
+            interviewsReference
+                    .child(interviewID)
+                    .setValue(interviewData);
+            mUploadMediaCoverSuccessCount = recordedQuestionsCount+1;
+            doAfterUpload();
+        }
     }
 
     private void doAfterUpload() {
