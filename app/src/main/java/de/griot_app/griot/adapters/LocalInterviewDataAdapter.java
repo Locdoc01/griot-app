@@ -112,7 +112,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                 switch (v.getId()) {
                     case R.id.button_interviewer:
                         Intent intent;
-                        if (mListData.get(pos).getInterviewerID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                        if (mListData.get(pos).getInterviewerID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
                         } else {
                             intent = new Intent(mContext, UserProfileInputActivity.class);
@@ -121,7 +121,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                         mContext.startActivity(intent);
                         break;
                     case R.id.button_narrator:
-                        if (mListData.get(pos).getNarratorID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                        if (mListData.get(pos).getNarratorID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
                         } else if (mListData.get(pos).getNarratorIsUser()) {
                             intent = new Intent(mContext, UserProfileInputActivity.class);

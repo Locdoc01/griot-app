@@ -105,7 +105,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
                                 Intent intent;
                                 if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
                                     intent = new Intent(mContext, GuestProfileInputActivity.class);
-                                } else if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                                } else if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                     intent = new Intent(mContext, OwnProfileInputActivity.class);
                                 } else if (getItem(position).getIsUser()) {
                                     intent = new Intent(mContext, UserProfileInputActivity.class);
