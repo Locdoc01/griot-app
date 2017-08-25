@@ -97,6 +97,10 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     private int mUploadMediaCoverSuccessCount = 0;
     private int mUploadMediaCoverFailureCount = 0;
 
+    private String interviewID;
+
+    private boolean firstSaveAttempt = true;
+
     //Views
     private EditText mEditTextTitle;
     private TextView mTextViewTitle;
@@ -520,13 +524,23 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         showProgressBar(getString(R.string.progress_uploading_interview));
 
         final DatabaseReference interviewsReference = mDatabaseRootReference.child("interviews");
-        final String interviewID = interviewsReference.push().getKey();
+        // the boolean firstSaveAttempt ensures, that in case of an interrupted upload the interview will be saved to the same key at further attempts.
+        // Thus the potentially incomplete upload will be overwritten by the complete one.
+        // Otherwise there could pile up dead interview fragments in the database, which cannot be accessed.
+        if (firstSaveAttempt) {
+            interviewID = interviewsReference.push().getKey();
+        }
 
         final ArrayList<String> interviewQuestionIDs = new ArrayList<>();
         final DatabaseReference interviewQuestionsReference = mDatabaseRootReference.child("interviewQuestions");
+        if (firstSaveAttempt) {
+            for (int i = 0; i < recordedQuestionsCount; i++) {
+                interviewQuestionIDs.add(interviewQuestionsReference.push().getKey());
+            }
+        }
+        firstSaveAttempt = false;
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
-            final String interviewQuestionID = interviewQuestionsReference.push().getKey();
-            interviewQuestionIDs.add(interviewQuestionID);
+            final String interviewQuestionID = interviewQuestionIDs.get(i);
             final InterviewQuestionData interviewQuestionData = new InterviewQuestionData();
             interviewQuestionData.setInterviewID(interviewID);
             interviewQuestionData.setQuestion(recordedQuestions[i]);
