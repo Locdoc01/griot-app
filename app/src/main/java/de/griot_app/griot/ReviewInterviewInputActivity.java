@@ -141,15 +141,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             //DataClass-object here serves only as a holder for the ListView data (NOT for Firebase)
             LocalInterviewQuestionData data = new LocalInterviewQuestionData();
             data.setQuestion(recordedQuestions[i]);
-
-            int seconds=0, hours, minutes;
-            try { seconds = (int) (Double.parseDouble(recordedQuestionLengths[i]) / 1000.0); } catch (Exception e) {}
-            hours = (int)((double)seconds/(60*60));
-            seconds = seconds - hours * 60*60;
-            minutes = (int)((double)seconds/60);
-            seconds = seconds - minutes * 60;
-            data.setLength("" + (hours==0 ? "" : hours + ":") + (minutes<10 ? "0" + minutes : minutes) + ":" + (seconds<10 ? "0" + seconds : seconds));
-
+            data.setLength(recordedQuestionLengths[i]);
             data.setDateYear(dateYear);
             data.setDateMonth(dateMonth);
             data.setDateDay(dateDay);
