@@ -8,13 +8,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -67,6 +70,8 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private ProfileImageView mPivNarrator;
     private TextView mTextViewInterviewer;
     private TextView mTextViewNarrator;
+    private FrameLayout mButtonInterviewer;
+    private FrameLayout mButtonNarrator;
     private TextView mTextViewCommentsHeader;
     private ImageView mButtonOptions;
     private TextView mTextViewInterviewTitle;
@@ -77,6 +82,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private TextView mTextViewCommentsFooter;
     private EditText mEditTextPostComment;
     private ImageView mButtonPostComment;
+    private View.OnClickListener clickListener;
 
     // ListView, that holds the interview items
     private ListView mListViewInterviewQuestions;
@@ -128,6 +134,8 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mPivNarrator = (ProfileImageView) mListHeader.findViewById(R.id.piv_narrator);
         mTextViewInterviewer = (TextView) mListHeader.findViewById(R.id.textView_interviewer);
         mTextViewNarrator = (TextView) mListHeader.findViewById(R.id.textView_narrator);
+        mButtonInterviewer = (FrameLayout) mListHeader.findViewById(R.id.button_interviewer);
+        mButtonNarrator = (FrameLayout) mListHeader.findViewById(R.id.button_narrator);
         mTextViewCommentsHeader = (TextView) mListHeader.findViewById(R.id.textView_comments_header);
         mButtonOptions = (ImageView) mListHeader.findViewById(R.id.button_options);
         mTextViewInterviewTitle = (TextView) mListHeader.findViewById(R.id.textView_interview_title);
@@ -185,6 +193,44 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         //TODO: associated users & guests zur ScrollView hinzufügen
 
         mTextViewCommentsFooter.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
+
+        clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.button_interviewer:
+                        Intent intent;
+                        if (interviewerID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            intent = new Intent(DetailsInterviewActivity.this, OwnProfileInputActivity.class);
+                        } else {
+                            intent = new Intent(DetailsInterviewActivity.this, UserProfileInputActivity.class);
+                            intent.putExtra("contactID", interviewerID);
+                        }
+                        startActivity(intent);
+                        break;
+                    case R.id.button_narrator:
+                        if (narratorID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            intent = new Intent(DetailsInterviewActivity.this, OwnProfileInputActivity.class);
+                        } else if (narratorIsUser) {
+                            intent = new Intent(DetailsInterviewActivity.this, UserProfileInputActivity.class);
+                            intent.putExtra("contactID", narratorID);
+                        } else {
+                            intent = new Intent(DetailsInterviewActivity.this, GuestProfileInputActivity.class);
+                            intent.putExtra("contactID", narratorID);
+                        }
+                        startActivity(intent);
+                        break;
+                    case R.id.button_options:
+                        Toast.makeText(DetailsInterviewActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+
+        mButtonOptions.setOnClickListener(clickListener);
+        mButtonInterviewer.setOnClickListener(clickListener);
+        mButtonNarrator.setOnClickListener(clickListener);
+
 
         mListLocalInterviewQuestionData = new ArrayList<>();
 
