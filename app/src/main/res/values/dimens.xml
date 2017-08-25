@@ -6,6 +6,8 @@
     <dimen name="dimen_height_editText">40dp</dimen>
     <dimen name="dimen_height_tabwidget">50dp</dimen>
 
+    <dimen name="dimen_piv_visibility">60dp</dimen>
+
     <!--dimensions record functions-->
     <dimen name="carouselHeight">150dp</dimen>
     <!--carouselLayoutHeight has to be carouselShadowTopHeight + 2*carouselTextViewSpaceHeight -->
