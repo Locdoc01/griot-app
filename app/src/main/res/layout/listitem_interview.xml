@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     tools:context="de.griot_app.griot.mainactivities.MainOverviewActivity">
 
     <include layout="@layout/group_media_cover"/>

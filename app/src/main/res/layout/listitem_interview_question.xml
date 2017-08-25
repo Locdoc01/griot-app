@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     tools:context="de.griot_app.griot.ReviewInterviewInputActivity">
+    <!-- android:descendantFocusability="blocksDescendants"
+    is necessary, if OnItemClickListener shall be applied to ListView and list items contain focusable or clickable views-->
 
     <include layout="@layout/group_media_cover"/>
 
