@@ -318,7 +318,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     @Override
                     public void onSuccess(Uri uri) {
                         mGuestData.setPictureURL(uri.toString());
-                        Log.d(TAG, "---------------------------------" + uri.toString());
                         // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
                         mDatabaseRef.setValue(mGuestData);
                     }
