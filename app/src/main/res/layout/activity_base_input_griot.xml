@@ -55,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorGriotWhite"
-        app:layout_constraintTop_toTopOf="@id/base_guideline_top"
+        app:layout_constraintTop_toBottomOf="@id/base_line_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/base_guideline_bottom"
