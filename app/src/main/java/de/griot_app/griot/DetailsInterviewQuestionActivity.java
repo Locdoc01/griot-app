@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -65,6 +67,8 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private ProfileImageView mPivNarrator;
     private TextView mTextViewInterviewer;
     private TextView mTextViewNarrator;
+    private FrameLayout mButtonInterviewer;
+    private FrameLayout mButtonNarrator;
     private TextView mTextViewComments;
     private ImageView mButtonOptions;
     private TextView mTextViewQuestion;
@@ -72,6 +76,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private LinearLayout mLayoutScrollViewTags;
     private TextView mTextViewTopic;
     private LinearLayout mLayoutScrollViewVisibility;
+    private View.OnClickListener clickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +116,8 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mPivNarrator = (ProfileImageView) findViewById(R.id.piv_narrator);
         mTextViewInterviewer = (TextView) findViewById(R.id.textView_interviewer);
         mTextViewNarrator = (TextView) findViewById(R.id.textView_narrator);
+        mButtonInterviewer = (FrameLayout) findViewById(R.id.button_interviewer);
+        mButtonNarrator = (FrameLayout) findViewById(R.id.button_narrator);
         mTextViewComments = (TextView) findViewById(R.id.textView_comments);
         mButtonOptions = (ImageView) findViewById(R.id.button_options);
         mTextViewQuestion = (TextView) findViewById(R.id.textView_question);
@@ -162,6 +169,44 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
             pivNarrator.setLayoutParams(params);
         }
         //TODO: associated users & guests zur ScrollView hinzufügen
+
+        clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.button_interviewer:
+                        Intent intent;
+                        if (interviewerID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            intent = new Intent(DetailsInterviewQuestionActivity.this, OwnProfileInputActivity.class);
+                        } else {
+                            intent = new Intent(DetailsInterviewQuestionActivity.this, UserProfileInputActivity.class);
+                            intent.putExtra("contactID", interviewerID);
+                        }
+                        startActivity(intent);
+                        break;
+                    case R.id.button_narrator:
+                        if (narratorID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            intent = new Intent(DetailsInterviewQuestionActivity.this, OwnProfileInputActivity.class);
+                        } else if (narratorIsUser) {
+                            intent = new Intent(DetailsInterviewQuestionActivity.this, UserProfileInputActivity.class);
+                            intent.putExtra("contactID", narratorID);
+                        } else {
+                            intent = new Intent(DetailsInterviewQuestionActivity.this, GuestProfileInputActivity.class);
+                            intent.putExtra("contactID", narratorID);
+                        }
+                        startActivity(intent);
+                        break;
+                    case R.id.button_options:
+                        Toast.makeText(DetailsInterviewQuestionActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+
+        mButtonOptions.setOnClickListener(clickListener);
+        mButtonInterviewer.setOnClickListener(clickListener);
+        mButtonNarrator.setOnClickListener(clickListener);
+
     }
 
     @Override

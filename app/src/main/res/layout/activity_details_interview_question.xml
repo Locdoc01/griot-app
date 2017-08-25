@@ -81,6 +81,15 @@
                 app:layout_constraintTop_toTopOf="@+id/piv_interviewer"
                 app:layout_constraintBottom_toBottomOf="@+id/piv_interviewer" />
 
+            <FrameLayout
+                android:id="@+id/button_interviewer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@id/piv_interviewer"
+                app:layout_constraintLeft_toRightOf="@id/guideline_interviewer_left"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_options_left"
+                app:layout_constraintBottom_toBottomOf="@id/piv_interviewer"/>
+
             <android.support.constraint.Guideline
                 android:id="@+id/guideline_options_left"
                 android:layout_width="wrap_content"
@@ -139,6 +148,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/guideline_narrator_left"
                 app:layout_constraintRight_toRightOf="@id/guideline_narrator_right"/>
+
+            <FrameLayout
+                android:id="@+id/button_narrator"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@id/piv_narrator"
+                app:layout_constraintLeft_toRightOf="@id/guideline_options_right"
+                app:layout_constraintRight_toLeftOf="@id/guideline_narrator_right"
+                app:layout_constraintBottom_toBottomOf="@id/piv_narrator"/>
 
             <TextView
                 android:id="@+id/textView_comments"
