@@ -621,29 +621,21 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (mCurrentQuestion < mQuestionCount-1) {
 
             if (mCurrentQuestion == 0) {
-                if (mQuestionCount>2) {
-                    mAnimatorSetNextQuestion
-                            .play(mAnimatorSetMiddleToTop)
-                            .with(mAnimatorSetBottomToMiddle)
-                            .with(mAnimatorFadeInBottom);
-                } else {
-                    mAnimatorSetNextQuestion
-                            .play(mAnimatorSetMiddleToTop)
-                            .with(mAnimatorSetBottomToMiddle);
-                }
+                mAnimatorSetNextQuestion
+                        .play(mAnimatorSetMiddleToTop)
+                        .with(mAnimatorSetBottomToMiddle)
+                        .with(mAnimatorFadeInBottom);
             } else if (mCurrentQuestion == mQuestionCount-2) {
-                if (mQuestionCount>2) {
-                    mAnimatorSetNextQuestion
-                            .play(mAnimatorFadeOutTop)
-                            .with(mAnimatorSetMiddleToTop)
-                            .with(mAnimatorSetBottomToMiddle)
-                            .with(mAnimatorFadeInBottom);;
-                } else {
-                    mAnimatorSetNextQuestion
-                            .play(mAnimatorFadeOutTop)
-                            .with(mAnimatorSetMiddleToTop)
-                            .with(mAnimatorSetBottomToMiddle);
-                }
+                mAnimatorSetNextQuestion
+                        .play(mAnimatorFadeOutTop)
+                        .with(mAnimatorSetMiddleToTop)
+                        .with(mAnimatorSetBottomToMiddle);
+            } else {
+                mAnimatorSetNextQuestion
+                        .play(mAnimatorFadeOutTop)
+                        .with(mAnimatorSetMiddleToTop)
+                        .with(mAnimatorSetBottomToMiddle)
+                        .with(mAnimatorFadeInBottom);
             }
             mAnimatorSetNextQuestion.addListener(new Animator.AnimatorListener() {
                 @Override public void onAnimationStart(Animator animation) { mAnimationInProgress = true; }
@@ -672,29 +664,21 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (mCurrentQuestion > 0) {
 
             if (mCurrentQuestion == mQuestionCount-1) {
-                if (mQuestionCount>2) {
-                    mAnimatorSetLastQuestion
-                            .play(mAnimatorSetMiddleToBottom)
-                            .with(mAnimatorSetTopToMiddle)
-                            .with(mAnimatorFadeInTop);
-                } else {
-                    mAnimatorSetLastQuestion
-                            .play(mAnimatorSetMiddleToBottom)
-                            .with(mAnimatorSetTopToMiddle);
-                }
+                mAnimatorSetLastQuestion
+                        .play(mAnimatorSetMiddleToBottom)
+                        .with(mAnimatorSetTopToMiddle)
+                        .with(mAnimatorFadeInTop);
             } else if (mCurrentQuestion == 1) {
-                if (mQuestionCount > 2) {
-                    mAnimatorSetLastQuestion
-                            .play(mAnimatorFadeOutBottom)
-                            .with(mAnimatorSetMiddleToBottom)
-                            .with(mAnimatorSetTopToMiddle)
-                            .with(mAnimatorFadeInTop);
-                } else {
-                    mAnimatorSetLastQuestion
-                            .play(mAnimatorFadeOutBottom)
-                            .with(mAnimatorSetMiddleToBottom)
-                            .with(mAnimatorSetTopToMiddle);
-                }
+                mAnimatorSetLastQuestion
+                        .play(mAnimatorFadeOutBottom)
+                        .with(mAnimatorSetMiddleToBottom)
+                        .with(mAnimatorSetTopToMiddle);
+            }else {
+                mAnimatorSetLastQuestion
+                        .play(mAnimatorFadeOutBottom)
+                        .with(mAnimatorSetMiddleToBottom)
+                        .with(mAnimatorSetTopToMiddle)
+                        .with(mAnimatorFadeInTop);
             }
 
             mAnimatorSetLastQuestion.addListener(new Animator.AnimatorListener() {
