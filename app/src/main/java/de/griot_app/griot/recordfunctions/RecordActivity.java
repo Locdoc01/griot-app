@@ -180,6 +180,10 @@ public abstract class RecordActivity extends AppCompatActivity {
 
         title = getIntent().getStringExtra("title");
 
+        dateYear = getIntent().getStringExtra("dateYear");
+        dateMonth = getIntent().getStringExtra("dateMonth");
+        dateDay = getIntent().getStringExtra("dateDay");
+
         allQuestions = getIntent().getStringArrayExtra("allQuestions");
         allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
 
@@ -438,11 +442,11 @@ public abstract class RecordActivity extends AppCompatActivity {
         }
 //        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String dateTime = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
-        dateYear = new SimpleDateFormat("yyyy").format(new Date());
-        dateMonth = new SimpleDateFormat("MM").format(new Date());
-        dateDay = new SimpleDateFormat("dd").format(new Date());
         File dir;
         if (recordedQuestionsCount ==0) {
+            dateYear = new SimpleDateFormat("yyyy").format(new Date());
+            dateMonth = new SimpleDateFormat("MM").format(new Date());
+            dateDay = new SimpleDateFormat("dd").format(new Date());
             dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), APP_DIR_NAME + File.separator + dateTime);
             mInterviewDir = dir.getPath();
             if (!dir.exists()) {
