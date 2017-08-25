@@ -7,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +22,7 @@ import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.griot_app.griot.adapters.LocalInterviewQuestionDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
@@ -35,8 +34,6 @@ import de.griot_app.griot.views.TagView;
 public class DetailsInterviewActivity extends GriotBaseActivity {
 
     private static final String TAG = DetailsInterviewActivity.class.getSimpleName();
-
-    private String selectedInterviewQuestionID;
 
     // intent-data
     private String selectedInterviewID;
@@ -72,7 +69,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private TextView mTextViewNarrator;
     private TextView mTextViewCommentsHeader;
     private ImageView mButtonOptions;
-    private TextView mInterviewTitle;
+    private TextView mTextViewInterviewTitle;
     private TextView mDate;
     private LinearLayout mLayoutScrollViewTags;
     private TextView mTextViewTopic;
@@ -116,7 +113,9 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         tags = getIntent().getStringArrayExtra("tags");
         numberComments = getIntent().getIntExtra("numberComments", 0);
 
-        mTitle.setText(interviewTitle);
+        mAppBar.setVisibility(View.GONE);
+        mLineAppBar.setVisibility(View.GONE);
+        //mTitle.setText(interviewTitle);
 //        mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
         mListHeader = getLayoutInflater().inflate(R.layout.listheader_details_interview, null);
@@ -131,7 +130,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewNarrator = (TextView) mListHeader.findViewById(R.id.textView_narrator);
         mTextViewCommentsHeader = (TextView) mListHeader.findViewById(R.id.textView_comments_header);
         mButtonOptions = (ImageView) mListHeader.findViewById(R.id.button_options);
-        mInterviewTitle = (TextView) mListHeader.findViewById(R.id.textView_interview_title);
+        mTextViewInterviewTitle = (TextView) mListHeader.findViewById(R.id.textView_interview_title);
         mDate = (TextView) mListHeader.findViewById(R.id.textView_date);
         mLayoutScrollViewTags = (LinearLayout) mListHeader.findViewById(R.id.layout_scrollView_tags);
         //Footer views
@@ -158,7 +157,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewInterviewer.setText(interviewerName);
         mTextViewNarrator.setText(narratorName);
         mTextViewCommentsHeader.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
-        mInterviewTitle.setText(interviewTitle);
+        mTextViewInterviewTitle.setText(interviewTitle);
         mDate.setText(dateDay + "." + dateMonth + "." + dateYear);
 
         for (int i=0 ; i<tags.length ; i++) {
@@ -196,10 +195,52 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mListViewInterviewQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedInterviewQuestionID = mLocalInterviewQuestionDataAdapter.getItem(position).getContentID();
+                //adding a ListViewHeader causes an increasing of position by 1, so it has to be decreased to get the right position value
+                position--;
                 Intent intent = new Intent(DetailsInterviewActivity.this, DetailsInterviewQuestionActivity.class);
-                intent.putExtra("selectedInterviewQuestionID", selectedInterviewQuestionID);
+                intent.putExtra("selectedInterviewQuestionID", mLocalInterviewQuestionDataAdapter.getItem(position).getContentID());
+
+                intent.putExtra("question", mLocalInterviewQuestionDataAdapter.getItem(position).getQuestion());
+                intent.putExtra("dateYearQuestion", mLocalInterviewQuestionDataAdapter.getItem(position).getDateYear());
+                intent.putExtra("dateMonthQuestion", mLocalInterviewQuestionDataAdapter.getItem(position).getDateMonth());
+                intent.putExtra("dateDayQuestion", mLocalInterviewQuestionDataAdapter.getItem(position).getDateDay());
+                intent.putExtra("topic", topic);
+                intent.putExtra("medium", medium);
+                intent.putExtra("lengthQuestion", mLocalInterviewQuestionDataAdapter.getItem(position).getLength());
+                intent.putExtra("pictureLocalURIQuestion", mLocalInterviewQuestionDataAdapter.getItem(position).getPictureLocalURI());
+                intent.putExtra("interviewerID", interviewerID);
+                intent.putExtra("interviewerName", interviewerName);
+                intent.putExtra("interviewerPictureLocalURI", interviewerPictureLocalURI);
+                intent.putExtra("narratorID", narratorID);
+                intent.putExtra("narratorName", narratorName);
+                intent.putExtra("narratorPictureLocalURI", narratorPictureLocalURI);
+                intent.putExtra("narratorIsUser", narratorIsUser);
+
+                String[] associatedUsersQuestion = new String[mLocalInterviewQuestionDataAdapter.getItem(position).getAssociatedUsers().size()];
+                Iterator<String> iterator = mLocalInterviewQuestionDataAdapter.getItem(position).getAssociatedUsers().keySet().iterator();
+                for (int i=0 ; i<associatedUsersQuestion.length ; i++) {
+                    associatedUsersQuestion[i] = iterator.next();
+                }
+                intent.putExtra("associatedUsersQuestion", associatedUsersQuestion);
+
+                String[] associatedGuestsQuestion = new String[mLocalInterviewQuestionDataAdapter.getItem(position).getAssociatedGuests().size()];
+                iterator = mLocalInterviewQuestionDataAdapter.getItem(position).getAssociatedGuests().keySet().iterator();
+                for (int i=0 ; i<associatedGuestsQuestion.length ; i++) {
+                    associatedGuestsQuestion[i] = iterator.next();
+                }
+                intent.putExtra("associatedGuestsQuestion", associatedGuestsQuestion);
+
+                String[] tagsQuestion = new String[mLocalInterviewQuestionDataAdapter.getItem(position).getTags().size()];
+                iterator = mLocalInterviewQuestionDataAdapter.getItem(position).getTags().keySet().iterator();
+                for (int i=0 ; i<tagsQuestion.length ; i++) {
+                    tagsQuestion[i] = iterator.next();
+                }
+                intent.putExtra("tagsQuestion", tagsQuestion);
+
+                intent.putExtra("numberComments", numberComments);
+
                 startActivity(intent);
+                finish();
             }
         });
 
