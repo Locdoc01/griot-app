@@ -21,6 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.griot_app.griot.Helper;
 import de.griot_app.griot.views.TagView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
@@ -80,7 +81,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         final int pos = position;
         tvQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
         tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        tvLength.setText(mListData.get(position).getLength());
+        tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
 
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {

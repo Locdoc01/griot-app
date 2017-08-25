@@ -595,16 +595,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         interviewData.setTopic(topic);
         interviewData.setMedium(medium == RecordActivity.MEDIUM_VIDEO ? "video" : "audio");
 
-        int miliseconds=0, seconds, hours, minutes;
+        int interviewLength = 0;
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
-            try { miliseconds += Double.parseDouble(recordedQuestionLengths[i]); } catch (Exception e) {}
+            try { interviewLength += Double.parseDouble(recordedQuestionLengths[i]); } catch (Exception e) {}
         }
-        seconds = (int)(miliseconds/1000.0);
-        hours = (int)((double)seconds/(60*60));
-        seconds = seconds - hours * 60*60;
-        minutes = (int)((double)seconds/60);
-        seconds = seconds - minutes * 60;
-        interviewData.setLength("" + (hours==0 ? "" : hours + ":") + (minutes<10 ? "0" + minutes : minutes) + ":" + (seconds<10 ? "0" + seconds : seconds));
+        interviewData.setLength("" + interviewLength);
+
         HashMap<String, Boolean> interviewer = new HashMap<>();
         interviewer.put(interviewerID, true);
         interviewData.setInterviewerID(interviewer);
