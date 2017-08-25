@@ -51,6 +51,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
     private TextView tvNarrator;
     private FrameLayout btnInterviewer;
     private FrameLayout btnNarrator;
+    private TextView btnComments;
     private TextView tvComments;
 
     private View.OnClickListener clickListener;
@@ -79,7 +80,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         tvNarrator = (TextView) v.findViewById(R.id.textView_narrator);
         btnInterviewer = (FrameLayout) v.findViewById(R.id.button_interviewer);
         btnNarrator = (FrameLayout) v.findViewById(R.id.button_narrator);
-        tvComments = (TextView) v.findViewById(R.id.textView_comments);
+        btnComments = (TextView) v.findViewById(R.id.button_comments);
 
         tvTitle.setText(mListData.get(position).getTitle());
         tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
@@ -103,7 +104,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         tvInterviewer.setText(mListData.get(position).getInterviewerName());
         tvNarrator.setText(mListData.get(position).getNarratorName());
         int n = mListData.get(position).getNumberComments();
-        tvComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
+        btnComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
         final int pos = position;
         clickListener = new View.OnClickListener() {
@@ -132,16 +133,20 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                         }
                         mContext.startActivity(intent);
                         break;
+                    case R.id.button_comments:
+                        Toast.makeText(mContext, "Show Comments", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.button_options:
-                    Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
         };
 
-        btnOptions.setOnClickListener(clickListener);
         btnInterviewer.setOnClickListener(clickListener);
         btnNarrator.setOnClickListener(clickListener);
+        btnComments.setOnClickListener(clickListener);
+        btnOptions.setOnClickListener(clickListener);
         return v;
     }
 }

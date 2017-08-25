@@ -69,7 +69,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private TextView mTextViewNarrator;
     private FrameLayout mButtonInterviewer;
     private FrameLayout mButtonNarrator;
-    private TextView mTextViewComments;
+    private TextView mButtonComments;
     private ImageView mButtonOptions;
     private TextView mTextViewQuestion;
     private TextView mDate;
@@ -118,7 +118,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mTextViewNarrator = (TextView) findViewById(R.id.textView_narrator);
         mButtonInterviewer = (FrameLayout) findViewById(R.id.button_interviewer);
         mButtonNarrator = (FrameLayout) findViewById(R.id.button_narrator);
-        mTextViewComments = (TextView) findViewById(R.id.textView_comments);
+        mButtonComments = (TextView) findViewById(R.id.button_comments);
         mButtonOptions = (ImageView) findViewById(R.id.button_options);
         mTextViewQuestion = (TextView) findViewById(R.id.textView_question);
         mDate = (TextView) findViewById(R.id.textView_date);
@@ -142,7 +142,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
         mTextViewInterviewer.setText(interviewerName);
         mTextViewNarrator.setText(narratorName);
-        mTextViewComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
+        mButtonComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
         mTextViewQuestion.setText(question);
         mDate.setText(dateDay + "." + dateMonth + "." + dateYear);
 
@@ -196,6 +196,9 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                         }
                         startActivity(intent);
                         break;
+                    case R.id.button_comments:
+                        Toast.makeText(DetailsInterviewQuestionActivity.this, "Show Comments", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.button_options:
                         Toast.makeText(DetailsInterviewQuestionActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
                         break;
@@ -203,9 +206,10 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
             }
         };
 
-        mButtonOptions.setOnClickListener(clickListener);
         mButtonInterviewer.setOnClickListener(clickListener);
         mButtonNarrator.setOnClickListener(clickListener);
+        mButtonComments.setOnClickListener(clickListener);
+        mButtonOptions.setOnClickListener(clickListener);
 
     }
 

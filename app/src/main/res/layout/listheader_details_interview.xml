@@ -146,7 +146,7 @@
         app:layout_constraintBottom_toBottomOf="@id/piv_narrator"/>
 
     <TextView
-        android:id="@+id/textView_comments_header"
+        android:id="@+id/button_comments"
         style="@style/AppTheme.Text_Small"
         android:textStyle="bold"
         android:text="2 Kommentare"
@@ -164,7 +164,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right"
-        app:layout_constraintTop_toBottomOf="@+id/textView_comments_header" />
+        app:layout_constraintTop_toBottomOf="@+id/button_comments" />
 
     <ImageView
         android:id="@+id/line_interview"

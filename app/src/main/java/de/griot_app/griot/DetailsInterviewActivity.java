@@ -72,14 +72,14 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private TextView mTextViewNarrator;
     private FrameLayout mButtonInterviewer;
     private FrameLayout mButtonNarrator;
-    private TextView mTextViewCommentsHeader;
+    private TextView mButtonComments;
     private ImageView mButtonOptions;
     private TextView mTextViewInterviewTitle;
     private TextView mDate;
     private LinearLayout mLayoutScrollViewTags;
     private TextView mTextViewTopic;
     private LinearLayout mLayoutScrollViewVisibility;
-    private TextView mTextViewCommentsFooter;
+    private TextView mTextViewComments;
     private EditText mEditTextPostComment;
     private ImageView mButtonPostComment;
     private View.OnClickListener clickListener;
@@ -136,7 +136,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewNarrator = (TextView) mListHeader.findViewById(R.id.textView_narrator);
         mButtonInterviewer = (FrameLayout) mListHeader.findViewById(R.id.button_interviewer);
         mButtonNarrator = (FrameLayout) mListHeader.findViewById(R.id.button_narrator);
-        mTextViewCommentsHeader = (TextView) mListHeader.findViewById(R.id.textView_comments_header);
+        mButtonComments = (TextView) mListHeader.findViewById(R.id.button_comments);
         mButtonOptions = (ImageView) mListHeader.findViewById(R.id.button_options);
         mTextViewInterviewTitle = (TextView) mListHeader.findViewById(R.id.textView_interview_title);
         mDate = (TextView) mListHeader.findViewById(R.id.textView_date);
@@ -144,7 +144,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         //Footer views
         mTextViewTopic = (TextView) mListFooter.findViewById(R.id.textView_topic);
         mLayoutScrollViewVisibility = (LinearLayout) mListFooter.findViewById(R.id.layout_scrollView_visibility);
-        mTextViewCommentsFooter = (TextView) mListFooter.findViewById(R.id.textView_comments_footer);
+        mTextViewComments = (TextView) mListFooter.findViewById(R.id.textView_comments);
         mEditTextPostComment = (EditText) mListFooter.findViewById(R.id.editText_post_comment);
         mButtonPostComment = (ImageView) mListFooter.findViewById(R.id.button_post_comment);
 
@@ -164,7 +164,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
         mTextViewInterviewer.setText(interviewerName);
         mTextViewNarrator.setText(narratorName);
-        mTextViewCommentsHeader.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
+        mButtonComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
         mTextViewInterviewTitle.setText(interviewTitle);
         mDate.setText(dateDay + "." + dateMonth + "." + dateYear);
 
@@ -192,7 +192,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         }
         //TODO: associated users & guests zur ScrollView hinzufügen
 
-        mTextViewCommentsFooter.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
+        mTextViewComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
 
         clickListener = new View.OnClickListener() {
             @Override
@@ -220,6 +220,9 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                         }
                         startActivity(intent);
                         break;
+                    case R.id.button_comments:
+                        Toast.makeText(DetailsInterviewActivity.this, "Show Comments", Toast.LENGTH_SHORT).show();
+                        break;
                     case R.id.button_options:
                         Toast.makeText(DetailsInterviewActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
                         break;
@@ -227,9 +230,10 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
             }
         };
 
-        mButtonOptions.setOnClickListener(clickListener);
         mButtonInterviewer.setOnClickListener(clickListener);
         mButtonNarrator.setOnClickListener(clickListener);
+        mButtonComments.setOnClickListener(clickListener);
+        mButtonOptions.setOnClickListener(clickListener);
 
 
         mListLocalInterviewQuestionData = new ArrayList<>();
