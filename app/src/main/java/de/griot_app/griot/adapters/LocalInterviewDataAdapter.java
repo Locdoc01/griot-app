@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,6 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
 
     private ArrayList<LocalInterviewData> mListData;
 
-    private int mPosition;
     private TextView tvTitle;
     private TextView tvDate;
     private TextView tvLength;
@@ -81,54 +81,54 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         btnNarrator = (FrameLayout) v.findViewById(R.id.button_narrator);
         tvComments = (TextView) v.findViewById(R.id.textView_comments);
 
-        mPosition = position;
-        tvTitle.setText(mListData.get(mPosition).getTitle());
-        tvDate.setText(mListData.get(mPosition).getDateDay() + "." + mListData.get(mPosition).getDateMonth() + "." + mListData.get(mPosition).getDateYear());
-        tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(mPosition).getLength())));
+        tvTitle.setText(mListData.get(position).getTitle());
+        tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
+        tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
 
-        if (mListData.get(mPosition).getPictureLocalURI() != null) {
-            if (Uri.parse(mListData.get(mPosition).getPictureLocalURI()) != null) {
+        if (mListData.get(position).getPictureLocalURI() != null) {
+            if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
                 ImageView test = new ImageView(mContext);
-                test.setImageURI(Uri.parse(mListData.get(mPosition).getPictureLocalURI()));
+                test.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                 if (test.getDrawable() != null) {
-                    ivMediaCover.setImageURI(Uri.parse(mListData.get(mPosition).getPictureLocalURI()));
+                    ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                     ivMediaCoverPlaceholder.setVisibility(View.GONE);
                     ivMediaCover.setVisibility(View.VISIBLE);
                 }
             }
         }
 
-        try { pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(mPosition).getInterviewerPictureLocalURI())); } catch (Exception e) {}
-        try { pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(mPosition).getNarratorPictureLocalURI())); } catch (Exception e) {}
+        try { pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
+        try { pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
 
-        tvInterviewer.setText(mListData.get(mPosition).getInterviewerName());
-        tvNarrator.setText(mListData.get(mPosition).getNarratorName());
-        int n = mListData.get(mPosition).getNumberComments();
+        tvInterviewer.setText(mListData.get(position).getInterviewerName());
+        tvNarrator.setText(mListData.get(position).getNarratorName());
+        int n = mListData.get(position).getNumberComments();
         tvComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
+        final int pos = position;
         clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.button_interviewer:
                         Intent intent;
-                        if (mListData.get(mPosition).getInterviewerID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                        if (mListData.get(pos).getInterviewerID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
                         } else {
                             intent = new Intent(mContext, UserProfileInputActivity.class);
-                            intent.putExtra("contactID", mListData.get(mPosition).getInterviewerID());
+                            intent.putExtra("contactID", mListData.get(pos).getInterviewerID());
                         }
                         mContext.startActivity(intent);
                         break;
                     case R.id.button_narrator:
-                        if (mListData.get(mPosition).getNarratorID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
+                        if (mListData.get(pos).getNarratorID().equals(FirebaseAuth.getInstance().getCurrentUser())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
-                        } else if (mListData.get(mPosition).getNarratorIsUser()) {
+                        } else if (mListData.get(pos).getNarratorIsUser()) {
                             intent = new Intent(mContext, UserProfileInputActivity.class);
-                            intent.putExtra("contactID", mListData.get(mPosition).getNarratorID());
+                            intent.putExtra("contactID", mListData.get(pos).getNarratorID());
                         } else {
                             intent = new Intent(mContext, GuestProfileInputActivity.class);
-                            intent.putExtra("contactID", getItem(mPosition).getNarratorID());
+                            intent.putExtra("contactID", getItem(pos).getNarratorID());
                         }
                         mContext.startActivity(intent);
                         break;
