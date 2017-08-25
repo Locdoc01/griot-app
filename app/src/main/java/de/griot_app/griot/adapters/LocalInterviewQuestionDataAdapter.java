@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +37,8 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
 
     private ArrayList<LocalInterviewQuestionData> mListData;
 
+    private boolean showTags = true;
+
     private int position;
     private TextView tvQuestion;
     private TextView tvDate;
@@ -46,30 +48,33 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     private ImageView btnOptions;
     private TextView tvTags;
     private ImageView btnAddTag;
-    private LinearLayout scrollViewTags;
+    private HorizontalScrollView scrollViewTags;
+    private LinearLayout layoutScrollViewTags;
 
     public LocalInterviewQuestionDataAdapter(Context context, ArrayList<LocalInterviewQuestionData> data) {
-        super(context, R.layout.listitem_interview_question_add_tags, data);
+        super(context, R.layout.listitem_interview_question, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
 
+    public void setShowTags(boolean showTags) { this.showTags = showTags; }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            View v = inflater.inflate(R.layout.listitem_interview_question_add_tags, null);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View v = inflater.inflate(R.layout.listitem_interview_question, null);
 
-            tvQuestion = (TextView) v.findViewById(R.id.tv_headline);
-            tvDate = (TextView) v.findViewById(R.id.tv_date);
-            tvLength = (TextView) v.findViewById(R.id.tv_length);
-            ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
-            ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
-            btnOptions = (ImageView) v.findViewById(R.id.button_options);
-            tvTags = (TextView) v.findViewById(R.id.textView_tags);
-            btnAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
-            scrollViewTags = (LinearLayout) v.findViewById(R.id.layout_tags);
+        tvQuestion = (TextView) v.findViewById(R.id.tv_headline);
+        tvDate = (TextView) v.findViewById(R.id.tv_date);
+        tvLength = (TextView) v.findViewById(R.id.tv_length);
+        ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
+        ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
+        btnOptions = (ImageView) v.findViewById(R.id.button_options);
+        tvTags = (TextView) v.findViewById(R.id.textView_tags);
+        btnAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
+        scrollViewTags = (HorizontalScrollView) v.findViewById(R.id.scrollView_tags);
+        layoutScrollViewTags = (LinearLayout) v.findViewById(R.id.layout_scrollView_tags);
 
 
         final int pos = position;
@@ -85,61 +90,67 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
             }
         }
 
-        int n = mListData.get(position).getTags().size();
-        tvTags.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
+        if (!showTags) {
+            tvTags.setVisibility(View.GONE);
+            btnAddTag.setVisibility(View.GONE);
+            layoutScrollViewTags.setVisibility(View.GONE);
+        } else {
+            int n = mListData.get(position).getTags().size();
+            tvTags.setText("" + (n == 0 ? mContext.getString(R.string.text_none) : n) + " " + (n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
 
-        Iterator iterator = mListData.get(position).getTags().keySet().iterator();
-        for (int i=0 ; i<mListData.get(position).getTags().size() ; i++) {
-            final TagView tagView = new TagView(mContext);
-            tagView.setTag((String)iterator.next());
+            Iterator iterator = mListData.get(position).getTags().keySet().iterator();
+            for (int i = 0; i < mListData.get(position).getTags().size(); i++) {
+                final TagView tagView = new TagView(mContext);
+                tagView.setTag((String) iterator.next());
 
-            tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
+                tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListData.get(pos).getTags().remove(tagView.getTextViewTag().getText().toString());
+                        notifyDataSetChanged();
+                    }
+                });
+
+                layoutScrollViewTags.addView(tagView);
+            }
+
+            btnAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListData.get(pos).getTags().remove(tagView.getTextViewTag().getText().toString());
-                    notifyDataSetChanged();
+                    View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
+
+                    final TextView textViewInputDialog = (TextView) dialogView.findViewById(R.id.textView_inputDialog);
+                    final EditText editTextInputDialog = (EditText) dialogView.findViewById(R.id.editText_inputDialog);
+
+                    textViewInputDialog.setText(mContext.getString(R.string.dialog_add_tag));
+                    editTextInputDialog.setHint(mContext.getString(R.string.hint_add_tag));
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.CustomDialogTheme));
+                    // set dialog view
+                    alertDialogBuilder.setView(dialogView);
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton(mContext.getString(R.string.button_next),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            final String tag = editTextInputDialog.getText().toString().trim();
+                                            mListData.get(pos).getTags().put(tag, true);
+                                            notifyDataSetChanged();
+                                        }
+                                    })
+                            .setNegativeButton(mContext.getString(R.string.button_cancel),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    // create and show alert dialog
+                    alertDialogBuilder.create().show();
                 }
             });
-
-            scrollViewTags.addView(tagView);
         }
-
-        btnAddTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
-
-                final TextView textViewInputDialog = (TextView) dialogView.findViewById(R.id.textView_inputDialog);
-                final EditText editTextInputDialog = (EditText) dialogView.findViewById(R.id.editText_inputDialog);
-
-                textViewInputDialog.setText(mContext.getString(R.string.dialog_add_tag));
-                editTextInputDialog.setHint(mContext.getString(R.string.hint_add_tag));
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.CustomDialogTheme));
-                // set dialog view
-                alertDialogBuilder.setView(dialogView);
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton(mContext.getString(R.string.button_next),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        final String tag = editTextInputDialog.getText().toString().trim();
-                                        mListData.get(pos).getTags().put(tag, true);
-                                        notifyDataSetChanged();
-                                    }
-                                })
-                        .setNegativeButton(mContext.getString(R.string.button_cancel),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create and show alert dialog
-                alertDialogBuilder.create().show();
-            }
-        });
 
         btnOptions.setOnClickListener(new View.OnClickListener() {
             @Override
