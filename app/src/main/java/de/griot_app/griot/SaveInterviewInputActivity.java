@@ -548,6 +548,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             interviewQuestionData.setDateYear(dateYear);
             interviewQuestionData.setDateMonth(dateMonth);
             interviewQuestionData.setDateDay(dateDay);
+            interviewQuestionData.setMedium(medium == RecordActivity.MEDIUM_VIDEO ? "video" : "audio");
             for (int j=0 ; j<tags[i].length ; j++) {
                 interviewQuestionData.getTags().put(tags[i][j], true);
             }
@@ -556,7 +557,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                     .child("interviews")
                     .child(interviewID)
                     .child(interviewQuestionIDs.get(index) + (medium==RecordActivity.MEDIUM_VIDEO ? ".mp4" : ".m4a"));
-            mStorageRef.putFile(Uri.parse("file://" + recordedMediaSingleFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            mStorageRef.putFile(Uri.parse(recordedMediaSingleFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     interviewQuestionData.setRecordURL(taskSnapshot.getDownloadUrl().toString());
@@ -567,7 +568,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                                 .child("interviews")
                                 .child(interviewID)
                                 .child(interviewQuestionID + ".jpg");
-                        mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        mStorageRef.putFile(Uri.parse(recordedCoverFilePaths[index])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -637,7 +638,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                     .child("interviews")
                     .child(interviewID)
                     .child(interviewID + ".jpg");
-            mStorageRef.putFile(Uri.parse("file://" + recordedCoverFilePaths[0])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            mStorageRef.putFile(Uri.parse(recordedCoverFilePaths[0])).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
