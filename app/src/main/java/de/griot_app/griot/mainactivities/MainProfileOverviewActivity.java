@@ -9,6 +9,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,8 +45,10 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
     private ImageView mButtonOptions;
     private ImageView mImageViewFriendsGroups;
     private TextView mTextViewFriendsGroups;
+    private FrameLayout mButtonFriendsGroups;
     private ImageView mImageViewQuestionmail;
     private TextView mTextViewQuestionmail;
+    private FrameLayout mButtonQuestionmail;
     private TextView mTextViewMedias;
 
     // ListView, that holds the interview items
@@ -62,7 +65,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         super.onCreate(savedInstanceState);
 
         mAppBar.setVisibility(View.GONE);
-        mButtonQuestionmail.setVisibility(View.GONE);
+        super.mButtonQuestionmail.setVisibility(View.GONE);
 
         mTitle.setVisibility(View.GONE);
         mLineAppBar.setVisibility(View.GONE);
@@ -74,18 +77,22 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         mButtonOptions = (ImageView) findViewById(R.id.button_options);
         mImageViewFriendsGroups = (ImageView) findViewById(R.id.imageView_friends_groups);
         mTextViewFriendsGroups = (TextView) findViewById(R.id.textView_friends_groups);
+        mButtonFriendsGroups = (FrameLayout) findViewById(R.id.button_friends_groups);
         mImageViewQuestionmail = (ImageView) findViewById(R.id.imageView_questionmail);
         mTextViewQuestionmail = (TextView) findViewById(R.id.textView_questionmail);
+        mButtonQuestionmail = (FrameLayout) findViewById(R.id.button_questionmail);
         mTextViewMedias = (TextView) findViewById(R.id.textView_medias);
 
         mButtonAddGuest.setOnTouchListener(this);
         mPivUser.setOnTouchListener(this);
         mTextViewUser.setOnTouchListener(this);
         mButtonOptions.setOnTouchListener(this);
-        mImageViewFriendsGroups.setOnTouchListener(this);
-        mTextViewFriendsGroups.setOnTouchListener(this);
-        mImageViewQuestionmail.setOnTouchListener(this);
-        mTextViewQuestionmail.setOnTouchListener(this);
+        mButtonFriendsGroups.setOnTouchListener(this);
+        //mImageViewFriendsGroups.setOnTouchListener(this);
+        //mTextViewFriendsGroups.setOnTouchListener(this);
+        mButtonQuestionmail.setOnTouchListener(this);
+        //mImageViewQuestionmail.setOnTouchListener(this);
+        //mTextViewQuestionmail.setOnTouchListener(this);
 
         mListLocalInterviewData = new ArrayList<>();
 
@@ -211,13 +218,11 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                     case R.id.button_options:
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         return true;
-                    case R.id.imageView_friends_groups:
-                    case R.id.textView_friends_groups:
+                    case R.id.button_friends_groups:
                         mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         return true;
-                    case R.id.imageView_questionmail:
-                    case R.id.textView_questionmail:
+                    case R.id.button_questionmail:
                         mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
                         return true;
@@ -239,15 +244,13 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                         mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         Toast.makeText(MainProfileOverviewActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.imageView_friends_groups:
-                    case R.id.textView_friends_groups:
+                    case R.id.button_friends_groups:
                         mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         startActivity(new Intent(MainProfileOverviewActivity.this, ContactManagmentActivity.class));
                         finish();
                         return true;
-                    case R.id.imageView_questionmail:
-                    case R.id.textView_questionmail:
+                    case R.id.button_questionmail:
                         mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
                         startActivity(new Intent(this, MainQuestionmailActivity.class));
