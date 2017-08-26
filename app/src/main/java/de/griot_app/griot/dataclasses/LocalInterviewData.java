@@ -10,7 +10,6 @@ public class LocalInterviewData extends LocalContentData {
 
     private String title;
     private String topic;
-    private String medium;
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
@@ -61,10 +60,9 @@ public class LocalInterviewData extends LocalContentData {
             HashMap<String, CommentData> comments,
             ArrayList<String> interviewQuestionIDs
     ) {
-        super(contentID, length, dateYear, dateMonth, dateDay, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
+        super(contentID, length, dateYear, dateMonth, dateDay, medium, pictureURL, pictureLocalURI, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.topic = topic;
-        this.medium = medium;
         this.interviewerID = interviewerID;
         this.interviewerName = interviewerName;
         this.interviewerPictureURL = interviewerPictureURL;
@@ -84,7 +82,6 @@ public class LocalInterviewData extends LocalContentData {
         return "LocalInterviewData{" +
                 "title='" + title + '\'' +
                 ", topic='" + topic + '\'' +
-                ", medium='" + medium + '\'' +
                 ", interviewerID=" + interviewerID +
                 ", interviewerName='" + interviewerName + '\'' +
                 ", interviewerPictureURL='" + interviewerPictureURL + '\'' +
@@ -104,8 +101,6 @@ public class LocalInterviewData extends LocalContentData {
     public String getTitle() { return title; }
 
     public String getTopic() { return topic; }
-
-    public String getMedium() { return medium; }
 
     public String getInterviewerID() { return interviewerID; }
 
@@ -135,8 +130,6 @@ public class LocalInterviewData extends LocalContentData {
     public void setTitle(String title) { this.title = title; }
 
     public void setTopic(String topic) { this.topic = topic; }
-
-    public void setMedium(String medium) { this.medium = medium; }
 
     public void setInterviewerID(String interviewerID) { this.interviewerID = interviewerID; }
 

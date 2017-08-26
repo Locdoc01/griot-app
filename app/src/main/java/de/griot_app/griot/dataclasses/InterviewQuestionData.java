@@ -24,6 +24,7 @@ public class InterviewQuestionData extends ContentData {
             String dateYear,
             String dateMonth,
             String dateDay,
+            String medium,
             String pictureURL,
             String pictureLocalURI,
             String recordURL,
@@ -31,7 +32,7 @@ public class InterviewQuestionData extends ContentData {
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
-        super(length, dateYear, dateMonth, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, dateYear, dateMonth, medium, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
         this.interviewID = interviewID;
         this.question = question;
         this.recordURL = recordURL;

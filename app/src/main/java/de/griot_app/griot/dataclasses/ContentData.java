@@ -12,6 +12,7 @@ public class ContentData {
     protected String dateYear;
     protected String dateMonth;
     protected String dateDay;
+    protected String medium;
     protected String pictureURL;
 //    protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
@@ -31,6 +32,7 @@ public class ContentData {
             String dateYear,
             String dateMonth,
             String dateDay,
+            String medium,
             String pictureURL,
 //            String pictureLocalURI,
             HashMap<String, Boolean> associatedUsers,
@@ -41,6 +43,7 @@ public class ContentData {
         this.dateYear = dateYear;
         this.dateMonth = dateMonth;
         this.dateDay = dateDay;
+        this.medium = medium;
         this.pictureURL = pictureURL;
 //        this.pictureLocalURI = pictureLocalURI;
         this.associatedUsers = associatedUsers;
@@ -55,6 +58,7 @@ public class ContentData {
                 ", dateYear='" + dateYear + '\'' +
                 ", dateMonth='" + dateMonth + '\'' +
                 ", dateDay='" + dateDay + '\'' +
+                ", medium='" + medium + '\'' +
                 ", pictureURL='" + pictureURL + '\'' +
 //                ", pictureLocalURI='" + pictureLocalURI + '\'' +
                 ", associatedUsers=" + associatedUsers +
@@ -69,6 +73,8 @@ public class ContentData {
     public String getDateYear() { return dateYear; }
     public String getDateMonth() { return dateMonth; }
     public String getDateDay() { return dateDay; }
+
+    public String getMedium() { return medium; }
 
     public String getPictureURL() { return pictureURL; }
 
@@ -86,6 +92,8 @@ public class ContentData {
     public void setDateYear(String dateYear) { this.dateYear = dateYear; }
     public void setDateMonth(String dateMonth) { this.dateMonth = dateMonth; }
     public void setDateDay(String dateDay) { this.dateDay = dateDay; }
+
+    public void setMedium(String medium) { this.medium = medium; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 

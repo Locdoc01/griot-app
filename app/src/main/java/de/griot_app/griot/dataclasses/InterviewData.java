@@ -56,10 +56,9 @@ public class InterviewData extends ContentData {
             HashMap<String, CommentData> comments,
             ArrayList<String> interviewQuestionIDs
     ) {
-        super(length, dateYear, dateMonth, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, dateYear, dateMonth, dateDay, medium, pictureURL, associatedUsers, associatedGuests, tags);
         this.title = title;
         this.topic = topic;
-        this.medium = medium;
         this.interviewerID = interviewerID;
         this.interviewerName = interviewerName;
         this.interviewerPictureURL = interviewerPictureURL;
@@ -77,7 +76,6 @@ public class InterviewData extends ContentData {
         return "InterviewData{" +
                 "title='" + title + '\'' +
                 ", topic='" + topic + '\'' +
-                ", medium='" + medium + '\'' +
                 ", interviewerID=" + interviewerID +
                 ", interviewerName='" + interviewerName + '\'' +
                 ", interviewerPictureURL='" + interviewerPictureURL + '\'' +
@@ -95,8 +93,6 @@ public class InterviewData extends ContentData {
     public String getTitle() { return title; }
 
     public String getTopic() { return topic; }
-
-    public String getMedium() { return medium; }
 
     public String getInterviewerID() { return interviewerID; }
 
@@ -123,8 +119,6 @@ public class InterviewData extends ContentData {
     public void setTitle(String title) { this.title = title; }
 
     public void setTopic(String topic) { this.topic = topic; }
-
-    public void setMedium(String medium) { this.medium = medium; }
 
     public void setInterviewerID(String interviewerID) { this.interviewerID = interviewerID; }
 
