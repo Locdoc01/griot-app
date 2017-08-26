@@ -47,7 +47,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
     //intent-data
     private String contactID;
-    //private boolean isUser;
 
     private ProfileImageView mProfileImage;
     private Uri mUriLocalProfileImage;
@@ -78,16 +77,16 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         super.onCreate(savedInstanceState);
 
         contactID = getIntent().getStringExtra("contactID");
-       // isUser = getIntent().getBooleanExtra("isUser", true);
 
         if (contactID!=null) {
             mTitle.setText(R.string.title_guest_profile);
+            mButtonCenter.setText(R.string.button_back);
         } else {
             mTitle.setText(R.string.title_add_guest);
+            mButtonCenter.setText(R.string.button_cancel);
         }
 
         mButtonLeft.setVisibility(View.GONE);
-        mButtonCenter.setText(R.string.button_cancel);
         mButtonRight.setVisibility(View.GONE);
 
         //Initialization of views for create account tab

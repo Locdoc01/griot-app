@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +40,12 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
     private EditText mEditLastname;
     private EditText mEditEmail;
 
+    private ImageView mButtonDatePicker;
 
     private TextView mTextViewDate;
     private TextView mTextViewRelationship;
 
-    //private Button mButtonSave;
+    private Button mButtonSave;
 
 
     @Override
@@ -54,7 +57,7 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
         mTitle.setText(R.string.title_user_profile);
 
         mButtonLeft.setVisibility(View.GONE);
-        mButtonCenter.setText(R.string.button_cancel);
+        mButtonCenter.setText(R.string.button_back);
         mButtonRight.setVisibility(View.GONE);
 
         //Initialization of views for create account tab
@@ -64,14 +67,19 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
         mEditLastname = (EditText) findViewById(R.id.editText_lastname);
         mEditEmail = (EditText) findViewById(R.id.editText_email);
 
-        mEditFirstname.setEnabled(false);
-        mEditLastname.setEnabled(false);
-        mEditEmail.setEnabled(false);
+        mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
 
         mTextViewDate = (TextView) findViewById(R.id.textView_date);
         mTextViewRelationship = (TextView) findViewById(R.id.textView_relationship);
 
-        //mButtonSave = (Button) findViewById(R.id.button_save);
+        mEditFirstname.setEnabled(false);
+        mEditLastname.setEnabled(false);
+        mEditEmail.setEnabled(false);
+
+        mButtonDatePicker.setVisibility(View.GONE);
+
+        mButtonSave = (Button) findViewById(R.id.button_save);
+        mButtonSave.setVisibility(View.GONE);
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
