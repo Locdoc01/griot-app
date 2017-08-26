@@ -2,6 +2,9 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +47,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
     private TextView tvLength;
     //private ImageView ivMediaCoverPlaceholder;
     private ImageView ivMediaCover;
+    private ImageView ivMediaCoverForeground;
     private ImageView btnOptions;
     private ProfileImageView pivInterviewer;
     private ProfileImageView pivNarrator;
@@ -73,6 +77,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         tvLength = (TextView) v.findViewById(R.id.tv_length);
         //ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
         ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
+        ivMediaCoverForeground = (ImageView) v.findViewById(R.id.iv_mediaCover_foreground);
         btnOptions = (ImageView) v.findViewById(R.id.button_options);
         pivInterviewer = (ProfileImageView) v.findViewById(R.id.piv_interviewer);
         pivNarrator = (ProfileImageView) v.findViewById(R.id.piv_narrator);
@@ -92,6 +97,15 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                 test.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                 if (test.getDrawable() != null) {
                     ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                    if (mListData.get(position).getMedium().equals("audio")) {
+                        ivMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                        ColorMatrix matrix = new ColorMatrix();
+                        matrix.setSaturation(0);
+                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                        ivMediaCover.setColorFilter(filter);
+                        ivMediaCoverForeground.setVisibility(View.VISIBLE);
+                    }
                     //ivMediaCoverPlaceholder.setVisibility(View.GONE);
                     //ivMediaCover.setVisibility(View.VISIBLE);
                 }

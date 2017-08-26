@@ -1,6 +1,8 @@
 package de.griot_app.griot;
 
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -62,6 +64,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
     // views
     private ImageView mMediaPlayer;
+    private ImageView mMediaPlayerForeground;
 //    private ImageView mMediaPlayerPlaceholder;
     private ProfileImageView mPivInterviewer;
     private ProfileImageView mPivNarrator;
@@ -111,6 +114,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
 
         mMediaPlayer = (ImageView) findViewById(R.id.mediaPlayer);
+        mMediaPlayerForeground = (ImageView) findViewById(R.id.mediaPlayer_foreground);
 //        mMediaPlayerPlaceholder = (ImageView) findViewById(R.id.mediaPlayer_placeholder);
         mPivInterviewer = (ProfileImageView) findViewById(R.id.piv_interviewer);
         mPivNarrator = (ProfileImageView) findViewById(R.id.piv_narrator);
@@ -132,6 +136,15 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                 test.setImageURI(Uri.parse(pictureLocalURI));
                 if (test.getDrawable() != null) {
                     mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
+                    if (medium.equals("audio")) {
+                        mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                        ColorMatrix matrix = new ColorMatrix();
+                        matrix.setSaturation(0);
+                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                        mMediaPlayer.setColorFilter(filter);
+                        mMediaPlayerForeground.setVisibility(View.VISIBLE);
+                    }
 //                    mMediaPlayerPlaceholder.setVisibility(View.GONE);
 //                    mMediaPlayer.setVisibility(View.VISIBLE);
                 }

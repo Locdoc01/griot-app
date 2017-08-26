@@ -2,9 +2,14 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -46,6 +51,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     private TextView tvLength;
 //    private ImageView ivMediaCoverPlaceholder;
     private ImageView ivMediaCover;
+    private ImageView ivMediaCoverForeground;
     private ImageView btnOptions;
     private TextView tvTags;
     private ImageView btnAddTag;
@@ -71,6 +77,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         tvLength = (TextView) v.findViewById(R.id.tv_length);
         //ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
         ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
+        ivMediaCoverForeground = (ImageView) v.findViewById(R.id.iv_mediaCover_foreground);
         btnOptions = (ImageView) v.findViewById(R.id.button_options);
         tvTags = (TextView) v.findViewById(R.id.textView_tags);
         btnAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
@@ -86,6 +93,14 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
                 ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                if (mListData.get(position).getMedium().equals("audio")) {
+                    ivMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    ColorMatrix matrix = new ColorMatrix();
+                    matrix.setSaturation(0);
+                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                    ivMediaCover.setColorFilter(filter);
+                    ivMediaCoverForeground.setVisibility(View.VISIBLE);
+                }
 //                ivMediaCoverPlaceholder.setVisibility(View.GONE);
 //                ivMediaCover.setVisibility(View.VISIBLE);
             }
