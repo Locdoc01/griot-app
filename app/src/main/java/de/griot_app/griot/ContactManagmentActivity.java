@@ -3,6 +3,7 @@ package de.griot_app.griot;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -52,9 +53,6 @@ public class ContactManagmentActivity extends GriotBaseActivity {
 
         mTabLeft = (Button) findViewById(R.id.tab_left);
         mTabRight = (Button) findViewById(R.id.tab_right);
-
-        mTabRight.setOnClickListener(mTabListener);
-        mTabLeft.setOnClickListener(mTabListener);
 
         mEditTextSearchPerson = (EditText) findViewById(R.id.editText_search_person);
         mEditTextSearchGroup = (EditText) findViewById(R.id.editText_search_group);
@@ -110,6 +108,9 @@ public class ContactManagmentActivity extends GriotBaseActivity {
                 }
             }
         };
+
+        mTabRight.setOnClickListener(mTabListener);
+        mTabLeft.setOnClickListener(mTabListener);
     }
 
     @Override
