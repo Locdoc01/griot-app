@@ -3,8 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="@layout/listitem_interview_question"><!--zeile später löschen-->
+    tools:showIn="@layout/listitem_interview"><!--zeile später löschen-->
 
+
+    <ImageView
+        android:id="@+id/iv_mediaCover"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/empty_16_9"
+        android:background="@color/colorGriotLightgrey"
+        android:padding="@dimen/dimen_height_lines"
+        android:cropToPadding="true"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!--
     <FrameLayout
         android:id="@+id/frame_mediaCover"
         android:layout_width="0dp"
@@ -32,7 +48,7 @@
             android:visibility="gone"/>
 
     </FrameLayout>
-
+-->
     <LinearLayout
         android:id="@+id/frame_headline_background"
         android:layout_width="wrap_content"
@@ -40,8 +56,8 @@
         android:orientation="vertical"
         android:background="@color/colorTextBackgroundMediaCover"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toTopOf="@id/frame_mediaCover"
-        app:layout_constraintLeft_toLeftOf="@id/frame_mediaCover">
+        app:layout_constraintTop_toTopOf="@id/iv_mediaCover"
+        app:layout_constraintLeft_toLeftOf="@id/iv_mediaCover"><!---->
 
         <TextView
             android:id="@+id/tv_headline"
@@ -54,8 +70,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintLeft_toLeftOf="@id/frame_mediaCover"
-            app:layout_constraintTop_toTopOf="@id/frame_mediaCover"/>
+            app:layout_constraintLeft_toLeftOf="@id/iv_mediaCover"
+            app:layout_constraintTop_toTopOf="@id/iv_mediaCover"/><!---->
 
         <TextView
             android:id="@+id/tv_date"
@@ -89,7 +105,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="@id/frame_mediaCover"
-        app:layout_constraintBottom_toBottomOf="@id/frame_mediaCover"/>
+        app:layout_constraintRight_toRightOf="@id/iv_mediaCover"
+        app:layout_constraintBottom_toBottomOf="@id/iv_mediaCover"/><!---->
 
 </merge>

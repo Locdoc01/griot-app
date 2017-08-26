@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/mediaPlayer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/empty_16_9"
+        android:background="@color/colorGriotLightgrey"
+        android:padding="@dimen/dimen_height_lines"
+        android:cropToPadding="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!--
     <FrameLayout
         android:id="@+id/frame_mediaPlayer"
         android:layout_width="0dp"
@@ -32,6 +46,7 @@
             android:visibility="gone"/>
 
     </FrameLayout>
+    -->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_interviewer_left"
@@ -49,12 +64,10 @@
 
     <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_interviewer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:adjustViewBounds="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/frame_mediaPlayer"
+        app:layout_constraintTop_toBottomOf="@id/mediaPlayer"
         app:layout_constraintLeft_toLeftOf="@id/guideline_interviewer_left"
         app:layout_constraintRight_toRightOf="@id/guideline_interviewer_right"/>
 
@@ -127,12 +140,10 @@
 
     <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_narrator"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:adjustViewBounds="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/frame_mediaPlayer"
+        app:layout_constraintTop_toBottomOf="@id/mediaPlayer"
         app:layout_constraintLeft_toLeftOf="@id/guideline_narrator_left"
         app:layout_constraintRight_toRightOf="@id/guideline_narrator_right"/>
 
@@ -152,7 +163,7 @@
         android:text="2 Kommentare"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="16dp"
+        android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@+id/piv_interviewer" />
 
     <ImageView
@@ -160,8 +171,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/options"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:background="@color/colorGriotLightgrey"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right"
         app:layout_constraintTop_toBottomOf="@+id/button_comments" />
@@ -169,7 +181,7 @@
     <ImageView
         android:id="@+id/line_interview"
         style="@style/AppTheme.Lines"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/button_options"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

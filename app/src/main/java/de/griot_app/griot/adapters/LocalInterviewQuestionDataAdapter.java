@@ -44,7 +44,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     private TextView tvQuestion;
     private TextView tvDate;
     private TextView tvLength;
-    private ImageView ivMediaCoverPlaceholder;
+//    private ImageView ivMediaCoverPlaceholder;
     private ImageView ivMediaCover;
     private ImageView btnOptions;
     private TextView tvTags;
@@ -69,7 +69,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         tvQuestion = (TextView) v.findViewById(R.id.tv_headline);
         tvDate = (TextView) v.findViewById(R.id.tv_date);
         tvLength = (TextView) v.findViewById(R.id.tv_length);
-        ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
+        //ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
         ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
         btnOptions = (ImageView) v.findViewById(R.id.button_options);
         tvTags = (TextView) v.findViewById(R.id.textView_tags);
@@ -86,8 +86,8 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
                 ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-                ivMediaCoverPlaceholder.setVisibility(View.GONE);
-                ivMediaCover.setVisibility(View.VISIBLE);
+//                ivMediaCoverPlaceholder.setVisibility(View.GONE);
+//                ivMediaCover.setVisibility(View.VISIBLE);
             }
         }
 

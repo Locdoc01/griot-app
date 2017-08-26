@@ -7,6 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".DetailsInterviewQuestionActivity">
 
+    <ImageView
+        android:id="@+id/mediaPlayer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/empty_16_9"
+        android:background="@color/colorGriotLightgrey"
+        android:padding="@dimen/dimen_height_lines"
+        android:cropToPadding="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <!--
     <FrameLayout
         android:id="@+id/frame_mediaPlayer"
         android:layout_width="0dp"
@@ -33,11 +47,12 @@
             android:visibility="gone"/>
 
     </FrameLayout>
+-->
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/frame_mediaPlayer"
+        app:layout_constraintTop_toBottomOf="@id/mediaPlayer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/base_guideline_bottom">

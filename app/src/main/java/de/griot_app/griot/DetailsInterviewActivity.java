@@ -65,7 +65,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private View mListFooter;
 
     private ImageView mMediaPlayer;
-    private ImageView mMediaPlayerPlaceholder;
+//    private ImageView mMediaPlayerPlaceholder;
     private ProfileImageView mPivInterviewer;
     private ProfileImageView mPivNarrator;
     private TextView mTextViewInterviewer;
@@ -129,7 +129,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
 
         //Header views
         mMediaPlayer = (ImageView) mListHeader.findViewById(R.id.mediaPlayer);
-        mMediaPlayerPlaceholder = (ImageView) mListHeader.findViewById(R.id.mediaPlayer_placeholder);
+//        mMediaPlayerPlaceholder = (ImageView) mListHeader.findViewById(R.id.mediaPlayer_placeholder);
         mPivInterviewer = (ProfileImageView) mListHeader.findViewById(R.id.piv_interviewer);
         mPivNarrator = (ProfileImageView) mListHeader.findViewById(R.id.piv_narrator);
         mTextViewInterviewer = (TextView) mListHeader.findViewById(R.id.textView_interviewer);
@@ -154,8 +154,8 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                 test.setImageURI(Uri.parse(pictureLocalURI));
                 if (test.getDrawable() != null) {
                     mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
-                    mMediaPlayerPlaceholder.setVisibility(View.GONE);
-                    mMediaPlayer.setVisibility(View.VISIBLE);
+//                    mMediaPlayerPlaceholder.setVisibility(View.GONE);
+//                    mMediaPlayer.setVisibility(View.VISIBLE);
                 }
             }
         }
