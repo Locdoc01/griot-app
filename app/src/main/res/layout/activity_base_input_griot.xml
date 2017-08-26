@@ -101,7 +101,8 @@
     <Button
         android:id="@+id/button_left"
         style="@style/AppTheme.TextButtons"
-        android:layout_margin="16dp"
+        android:layout_height="0dp"
+        android:paddingRight="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
@@ -109,7 +110,9 @@
     <Button
         android:id="@+id/button_center"
         style="@style/AppTheme.TextButtons"
-        android:layout_margin="16dp"
+        android:layout_height="0dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
@@ -118,7 +121,8 @@
     <Button
         android:id="@+id/button_right"
         style="@style/AppTheme.TextButtons"
-        android:layout_margin="16dp"
+        android:layout_height="0dp"
+        android:paddingLeft="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/base_guideline_bottom"
         app:layout_constraintBottom_toBottomOf="parent" />
