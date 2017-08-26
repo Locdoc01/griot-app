@@ -1,5 +1,6 @@
 package de.griot_app.griot.dataclasses;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,9 +13,9 @@ public class UserData extends PersonData {
     private HashMap<String, String> guests;
     private HashMap<String, String> friends;
     private HashMap<String, String> groups;
-    private HashMap<String, Boolean> standardTopics;
+    private ArrayList<Boolean> standardTopics;
     private HashMap<String, Boolean> extraTopics;
-    private HashMap<String, String> standardQuestions;
+    private HashMap<String, Integer> standardQuestions;
     private HashMap<String, String> extraQuestions;
 
     //default-constructor
@@ -26,7 +27,7 @@ public class UserData extends PersonData {
         guests = new HashMap<>();
         friends = new HashMap<>();
         groups = new HashMap<>();
-        standardTopics = new HashMap<>();
+        standardTopics = new ArrayList<>();
         extraTopics = new HashMap<>();
         standardQuestions = new HashMap<>();
         extraQuestions = new HashMap<>();
@@ -41,7 +42,7 @@ public class UserData extends PersonData {
         guests = new HashMap<>();
         friends = new HashMap<>();
         groups = new HashMap<>();
-        standardTopics = new HashMap<>();
+        standardTopics = new ArrayList<>();
         extraTopics = new HashMap<>();
         standardQuestions = new HashMap<>();
         extraQuestions = new HashMap<>();
@@ -64,9 +65,9 @@ public class UserData extends PersonData {
             HashMap<String, String> guests,
             HashMap<String, String> friends,
             HashMap<String, String> groups,
-            HashMap<String, Boolean> standardTopics,
+            ArrayList<Boolean> standardTopics,
             HashMap<String, Boolean> extraTopics,
-            HashMap<String, String> standardQuestions,
+            HashMap<String, Integer> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
         super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
@@ -109,11 +110,11 @@ public class UserData extends PersonData {
 
     public HashMap<String, String> getGroups() { return groups; }
 
-    public HashMap<String, Boolean> getStandardTopics() { return standardTopics; }
+    public ArrayList<Boolean> getStandardTopics() { return standardTopics; }
 
     public HashMap<String, Boolean> getExtraTopics() { return extraTopics; }
 
-    public HashMap<String, String> getStandardQuestions() { return standardQuestions; }
+    public HashMap<String, Integer> getStandardQuestions() { return standardQuestions; }
 
     public HashMap<String, String> getExtraQuestions() { return extraQuestions; }
 
@@ -128,11 +129,11 @@ public class UserData extends PersonData {
 
     public void setGroups(HashMap<String, String> groups) { this.groups = groups; }
 
-    public void setStandardTopics(HashMap<String, Boolean> standardTopics) { this.standardTopics = standardTopics; }
+    public void setStandardTopics(ArrayList<Boolean> standardTopics) { this.standardTopics = standardTopics; }
 
     public void setExtraTopics(HashMap<String, Boolean> extraTopics) { this.extraTopics = extraTopics; }
 
-    public void setStandardQuestions(HashMap<String, String> standardQuestions) { this.standardQuestions = standardQuestions; }
+    public void setStandardQuestions(HashMap<String, Integer> standardQuestions) { this.standardQuestions = standardQuestions; }
 
     public void setExtraQuestions(HashMap<String, String> extraQuestions) { this.extraQuestions = extraQuestions; }
 }
