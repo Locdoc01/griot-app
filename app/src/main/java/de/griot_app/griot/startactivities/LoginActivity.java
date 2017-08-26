@@ -30,12 +30,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
+import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.FirebaseActivity;
@@ -569,48 +575,81 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
                     mUserData.setEmail(mEditCreateAccountEmail.getText().toString().trim());
 
-                    //set storage reference to /users/mUserID/profilePicture
-                    mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
+                    mDatabaseRootReference.child("standardTopics").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            ArrayList<Boolean> standardTopics = new ArrayList<>();
+                            for ( int i=0 ; i<dataSnapshot.getChildrenCount() ; i++) {
+                                standardTopics.add(true);
+                            }
+                            mUserData.setStandardTopics(standardTopics);
 
-                    // if a profile image was chosen, it will be uploaded to cloud-Storage
-                    if (mUriLocalProfileImage != null) {
-                        //upload file with local URI stored in mUriLocalProfileImage
-                        mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // on success the remote downloadURL will be stored to mLocalUserData.pictureURL
-                                //TODO: Alternative finden
-                                mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
-                                // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
-                                mDatabaseRef.setValue(mUserData);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // on failure mLocalUserData.pictureURL will remain empty.
-                                Toast.makeText(LoginActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
-                                Log.e(getSubClassTAG(), "Error uploading profile image");
-                                mDatabaseRef.setValue(mUserData);
-                            }
-                        });
-                    } else {
+                            mDatabaseRootReference.child("standardQuestions").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    HashMap<String, Integer> standardQuestions = new HashMap<>();
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        standardQuestions.put(ds.getKey(), 0);
+                                    }
+                                    mUserData.setStandardQuestions(standardQuestions);
 
-                        mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                mUserData.setPictureURL(uri.toString());
-                                // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
-                                mDatabaseRef.setValue(mUserData);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // on failure mLocalUserData.pictureURL will remain empty.
-                                Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
-                                mDatabaseRef.setValue(mUserData);
-                            }
-                        });
-                    }
+                                    //set storage reference to /users/mUserID/profilePicture
+                                    mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
+
+                                    // if a profile image was chosen, it will be uploaded to cloud-Storage
+                                    if (mUriLocalProfileImage != null) {
+                                        //upload file with local URI stored in mUriLocalProfileImage
+                                        mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                // on success the remote downloadURL will be stored to mLocalUserData.pictureURL
+                                                //TODO: Alternative finden
+                                                mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
+                                                // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
+                                                mDatabaseRef.setValue(mUserData);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // on failure mLocalUserData.pictureURL will remain empty.
+                                                Toast.makeText(LoginActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
+                                                Log.e(getSubClassTAG(), "Error uploading profile image");
+                                                mDatabaseRef.setValue(mUserData);
+                                            }
+                                        });
+                                    } else {
+                                        mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                mUserData.setPictureURL(uri.toString());
+                                                // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
+                                                mDatabaseRef.setValue(mUserData);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                // on failure mLocalUserData.pictureURL will remain empty.
+                                                Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
+                                                mDatabaseRef.setValue(mUserData);
+                                            }
+                                        });
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.e(getSubClassTAG(), "Error downloading standard questions");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e(getSubClassTAG(), "Error downloading standard topics");
+                        }
+                    });
+
 
                     // start MainOverview
                     Intent intent = new Intent(LoginActivity.this, MainOverviewActivity.class);
