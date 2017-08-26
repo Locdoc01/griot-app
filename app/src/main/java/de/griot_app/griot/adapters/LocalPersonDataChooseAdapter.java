@@ -45,10 +45,6 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     private TextView tvPerson;
     private ImageView btnCheck;
 
-    private float mTouchStart;
-    private float mDensity;
-
-    private int mTouchedID = -1;
     private ConstraintLayout mTouchedParent = null;
 
     private ArrayList<LocalPersonData> mListData;
@@ -57,8 +53,6 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         super(context, R.layout.listitem_contact, data);
         mContext = context;
         mListData = new ArrayList<>(data);
-
-        mDensity = mContext.getResources().getDisplayMetrics().density;
     }
 
     @NonNull
@@ -79,9 +73,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        mTouchStart = event.getY();
                         mTouchedParent = (ConstraintLayout)v.getParent();
-                        mTouchedID = v.getId();
                         switch (v.getId()) {
                             case R.id.piv_person:
                             case R.id.textView_person:

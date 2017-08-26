@@ -3,6 +3,7 @@ package de.griot_app.griot.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -46,7 +47,6 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     private TextView tvPerson;
     private ImageView btnOptions;
 
-    private int mTouchedID = -1;
     private ConstraintLayout mTouchedParent = null;
 
     private ArrayList<LocalPersonData> mListData;
@@ -78,28 +78,29 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-                    //happens on down action
                     case MotionEvent.ACTION_DOWN:
                         mTouchedParent = (ConstraintLayout)v.getParent();
-                        mTouchedID = v.getId();
                         switch (v.getId()) {
                             case R.id.item_background:
+                                /*
                                 ((TextView)mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
+                                // If profile image or name was touched, it gets blue, and after 0.3s darkgrey again. This prevents color issue if movement occurs during action_down
+                                Handler h = mTouchedParent.getHandler();
+                                if (h != null) {
+                                    h.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ((TextView) mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotDarkgrey));
+                                        }
+                                    }, 300);
+                                }
+                                */
                                 return true;
                             case R.id.button_item:
-                                ((ImageView)mTouchedParent.findViewById(R.id.button_item)).setColorFilter(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
                                 return true;
                         }
                         return false;
                     case MotionEvent.ACTION_UP:
-                        //happens on any up action
-                        switch (mTouchedID) {
-                            case R.id.item_background:
-                                ((TextView)mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotDarkgrey));
-                            case R.id.button_item:
-                                ((ImageView)mTouchedParent.findViewById(R.id.button_item)).setColorFilter(ContextCompat.getColor(mContext, R.color.colorGriotDarkgrey));
-                        }
-                        //happens, if up action took place at the same item as down action
                         switch (v.getId()) {
                             case R.id.item_background:
                                 Intent intent;
