@@ -63,14 +63,6 @@ public class RecordAudioActivity extends RecordActivity {
 
     /*
     @Override
-    protected void onPause() {
-        super.onPause();
-        //releaseCamera();
-    }
-    */
-
-    /*
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id....:
@@ -79,36 +71,23 @@ public class RecordAudioActivity extends RecordActivity {
     }
 */
 
-
-
     @Override
     protected void setup() {
         Log.d(TAG, "setup: ");
 
-        /*
-        Point point = new Point();
-        getWindowManager().getDefaultDisplay().getSize(point);
-        int displayWidth = point.x;
-        int displayHeight = point.y;
-        Log.d(TAG, "setupBackground: display: width: " + displayWidth + " , height: " + displayHeight);
-
-        mBackground.getLayoutParams().width = displayWidth;
-        mBackground.getLayoutParams().height = displayHeight;
-*/
-
         final ImageView imageViewBackground = new ImageView(RecordAudioActivity.this);
 
-        File file = null;
+        mCoverFile = null;
         try {
-            file = File.createTempFile("profile_image" + "_", ".jpg");
+            mCoverFile = File.createTempFile("profile_image" + "_", ".jpg");
         } catch (Exception e) {
         }
-        final String path = file.getPath();
+        final String path = mCoverFile.getPath();
 
         try {
             FirebaseStorage.getInstance()
                     .getReferenceFromUrl(narratorPictureURL)
-                    .getFile(file)
+                    .getFile(mCoverFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -123,9 +102,6 @@ public class RecordAudioActivity extends RecordActivity {
             });
         } catch (Exception e) {}
 
-        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        //params.gravity = Gravity.CENTER;
-        //imageView.setLayoutParams(params);
         imageViewBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         ColorMatrix matrix = new ColorMatrix();
@@ -149,11 +125,11 @@ public class RecordAudioActivity extends RecordActivity {
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mMediaRecorder.setOutputFormat(mOutputFormat);
 
-            mFile = getOutputFile();
+            mMediaFile = getOutputFile();
 
             mCurrentRecordingIndex = mCarousel.getCurrentIndex();
 
-            mMediaRecorder.setOutputFile(mFile.getPath());
+            mMediaRecorder.setOutputFile(mMediaFile.getPath());
 
             //TODO evt verschiedene Qualitäten als Option anbieten
             mMediaRecorder.setAudioEncoder(mAudioEncoder);
@@ -198,10 +174,7 @@ public class RecordAudioActivity extends RecordActivity {
         }
 
         // add the (next) file path of the current questions media file.
-        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(mFile.getPath());
-        //alternativen
-        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(mFile.getName());
-        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(Uri.fromFile(mMediaFile).toString());
 
         mCurrentRecordingIndex = -1;
         setup();

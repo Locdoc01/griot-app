@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -13,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -108,7 +108,9 @@ public abstract class RecordActivity extends AppCompatActivity {
 
 
     protected String mInterviewDir;
-    protected File mFile;
+    protected File mMediaFile;
+
+    protected File mCoverFile;
 
     protected float mDensity;
 
@@ -245,18 +247,15 @@ public abstract class RecordActivity extends AppCompatActivity {
                             if (startRecording()) {
                                 mIsRecording = true;
                                 mCarousel.setRecordOn(mCarousel.getCurrentIndex());
-                                //TODO: Farbe als Resource einpflegen
-                                mButtonFinished.setTextColor(Color.parseColor("#505154"));
+                                mButtonFinished.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                                 mButtonRecord.setImageResource(R.drawable.record_stop);
                             }
                         } else {
                             stopRecording();
                             mIsRecording = false;
                             mCarousel.setRecordOff();
-                            //TODO: Farbe als Resource einpflegen
-                            mButtonFinished.setTextColor(Color.parseColor("#FFFFFF"));
+                            mButtonFinished.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
                             mButtonRecord.setImageResource(R.drawable.record_start);
-                            Log.d(TAG, "File recorded: " + mFile.exists());
                             scanMedia();
                         }
                         break;
@@ -356,10 +355,10 @@ public abstract class RecordActivity extends AppCompatActivity {
             grantedAudio = false;
         }
         if (!grantedAudio) {
-            Toast.makeText(RecordActivity.this, "Für die Benutzung sind mindestens Berechtigungen für Mikrofon und Speicherzugriff nötig!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecordActivity.this, getString(R.string.text_permission_micro_storage), Toast.LENGTH_SHORT).show();
             finish();
         } else if (!grantedVideo) {
-            Toast.makeText(RecordActivity.this, "Ohne Berechtigung für die Kamera ist nur Audio-Aufzeichnung möglich!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecordActivity.this, getString(R.string.text_permission_camera), Toast.LENGTH_SHORT).show();
             // TODO: Intent zu RecordAudioActivity
         } else {
             Log.d(TAG, "onRequestPermissionResult: All permissions granted");
@@ -400,10 +399,9 @@ public abstract class RecordActivity extends AppCompatActivity {
      * the status bar automatically after it got visible.
      */
     private void hideStatusBar() {
-        Log.d(TAG, "hideStatusBar: ");
+        Log.d(TAG, "hideStatusBar: SDK: " + android.os.Build.VERSION.SDK_INT);
         // sorgt für Ausblendung der StatusBar.
         View decorView = getWindow().getDecorView();
-        Log.d(TAG, "hideStatusBar: SDK: " + android.os.Build.VERSION.SDK_INT);
         if (android.os.Build.VERSION.SDK_INT < 19) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -467,7 +465,7 @@ public abstract class RecordActivity extends AppCompatActivity {
     private void scanMedia() {
         //makes sure, that the file will be shown in gallery
         Intent mediaScannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        mediaScannerIntent.setData(Uri.fromFile(mFile));
+        mediaScannerIntent.setData(Uri.fromFile(mMediaFile));
         sendBroadcast(mediaScannerIntent);
     }
 
@@ -492,7 +490,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                 String videoPath = allMediaSingleFilePaths[i];
 
                 MediaMetadataRetriever media = new MediaMetadataRetriever();
-                media.setDataSource(videoPath);
+                media.setDataSource(Uri.parse(videoPath).getPath());
 
                 String length = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                /*
@@ -501,24 +499,27 @@ public abstract class RecordActivity extends AppCompatActivity {
                 }
                 */
                 recordedQuestionLengths[recordedIndex] = length;
-
-                Bitmap cover = media.getFrameAtTime((Integer.parseInt(length)<2000) ? Integer.parseInt(length) : 2000);
-                if (cover != null) {
-                    File coverFile = new File(mInterviewDir, "thumb_" + i + ".jpg");
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    cover.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                    byte[] bitmapData = bos.toByteArray();
-                    try {
-                        FileOutputStream fos = new FileOutputStream(coverFile);
-                        fos.write(bitmapData);
-                        fos.flush();
-                        fos.close();
-                    } catch (Exception e) {
-                    }
-                    String coverFilePath = coverFile.getPath();
-                    recordedCoverFilePaths[recordedIndex] = coverFilePath;
+                if (mMedium==MEDIUM_AUDIO) {
+                    recordedCoverFilePaths[recordedIndex] = Uri.fromFile(mCoverFile).toString();
                 } else {
-                    recordedCoverFilePaths[recordedIndex] = null;
+                    Bitmap cover = media.getFrameAtTime((Integer.parseInt(length) < 2000) ? Integer.parseInt(length) : 2000);
+                    if (cover != null) {
+                        File coverFile = new File(mInterviewDir, "thumb_" + i + ".jpg");
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        cover.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+                        byte[] bitmapData = bos.toByteArray();
+                        try {
+                            FileOutputStream fos = new FileOutputStream(coverFile);
+                            fos.write(bitmapData);
+                            fos.flush();
+                            fos.close();
+                        } catch (Exception e) {
+                        }
+                        String coverFilePath = Uri.fromFile(coverFile).toString();
+                        recordedCoverFilePaths[recordedIndex] = coverFilePath;
+                    } else {
+                        recordedCoverFilePaths[recordedIndex] = null;
+                    }
                 }
                 recordedQuestions[recordedIndex] = allQuestions[i];
                 recordedQuestionIndices[recordedIndex] = i;

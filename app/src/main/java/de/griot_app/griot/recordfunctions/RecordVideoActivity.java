@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -103,21 +104,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     }
 
 
-        /*
-    // According to the Camera API the actual recommendation for checking for Camera is to use
-    // getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA).
-    // Unfortunately this didn't work properly since the method always returned true no matter
-    // if there really was an actual camera available or not
-    // However, the method Camera.getNumberOfCameras() that I use instead, also works in that matter
-    // at least for Android API Levels supported by my app.
-    private boolean deviceHasCamera() {
-        Log.d(TAG, "deviceHasCamera: ");
-        return Camera.getNumberOfCameras() != 0;
-    }
-*/
-
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -166,26 +152,10 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         if (mCamera != null) {
             mParameters = mCamera.getParameters();
             List<String> stringList;
-            /*
-            List<Camera.Size> sizeList;
 
             // Optimal Video Size
-            Camera.Size optimalSize = null;
-            long resolution = 0;
-            sizeList = mParameters.getSupportedPreviewSizes();
-            List<Camera.Size> supportedSizes = mCamera.getParameters().getSupportedVideoSizes();
-            for (Camera.Size size : supportedSizes) {
-                if (size.width * size.height > resolution) {
-                    resolution = size.width * size.height;
-                    optimalSize = size;
-                }
-            }
-            Log.d(TAG, "getCameraParameters: optimal video size: width: " + optimalSize.width + " , height: " + optimalSize.height);
-            mOptimalVideoSize = optimalSize;
-*/
-            // Optimal Video Size
             mOptimalVideoSize = mParameters.getPreferredPreviewSizeForVideo();
-            Log.d(TAG, "getCameraParameters: preffered video preview size: width: " + mParameters.getPreferredPreviewSizeForVideo().width + " , height: " + mParameters.getPreferredPreviewSizeForVideo().height);
+            Log.d(TAG, "getCameraParameters: preferred video preview size: width: " + mParameters.getPreferredPreviewSizeForVideo().width + " , height: " + mParameters.getPreferredPreviewSizeForVideo().height);
 
 
             //Flash Mode
@@ -270,20 +240,14 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
 
         // folgende Abfrage sorgt dafür, dass die Größe des FrameLayouts, welches die Preview zeigt, optimal auf den Bildschirm passt, ohne beschnitten zu werden.
         if (displayRatio > videoSizeRatio) {
-            Log.d(TAG, "initiateCameraPreview: displayRatio > videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
             mBackground.getLayoutParams().width = (int) ((double) displayHeight * videoSizeWidth / videoSizeHeight);
             mBackground.getLayoutParams().height = displayHeight;
-            Log.d(TAG, "initiateCameraPreview: displayRatio > videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
         } else if (displayRatio < videoSizeRatio) {
-            Log.d(TAG, "initiateCameraPreview: displayRatio < videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
             mBackground.getLayoutParams().width = displayWidth;
             mBackground.getLayoutParams().height = (int) ((double) displayWidth * videoSizeHeight / videoSizeWidth);
-            Log.d(TAG, "initiateCameraPreview: displayRatio < videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
         } else {
-            Log.d(TAG, "initiateCameraPreview: displayRatio == videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
             mBackground.getLayoutParams().width = displayWidth;
             mBackground.getLayoutParams().height = displayHeight;
-            Log.d(TAG, "initiateCameraPreview: displayRatio == videoFrameRate: FrameLayoutCameraPreview: width: " + mBackground.getLayoutParams().width + " , height: " + mBackground.getLayoutParams().height);
         }
 
         // Fängt einen gerätespezifischen Bug ab
@@ -292,17 +256,9 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mBackground.getLayoutParams().height++;
         }
 
-//        mBackground.requestLayout();
-
         mCameraPreview = new CameraPreview(RecordVideoActivity.this, mCamera);
         mBackground.removeAllViews();
         mBackground.addView(mCameraPreview);
-
-        //ViewGroup parent = (ViewGroup) mBackground.getParent();
-        //parent.removeView(mBackground);
-        //parent.addView(mBackground, 0);
-
-        //mButtonRecord.bringToFront();
 
         if (mFlashModeTorchSupported) {
             mButtonFlash.setVisibility(View.VISIBLE);
@@ -358,40 +314,43 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             // profile on the MediaRecorder using mMediaRecorder.setProfile like this:
             //TODO: Unterstützung und Definition verschiedener CamcorderProfile (auch abhängig von der Kamera (vorne/hinten))
             //   mCamcorderProfile = CamcorderProfile.get(mCurrentCamera, mCurrentVideoQuality);
-
+/*
             Log.e(TAG, "fileFormat: " + mCamcorderProfile.fileFormat);
             Log.e(TAG, "videoFrameRate: " + mCamcorderProfile.videoFrameRate);
             Log.e(TAG, "videoFrameWidth: " + mCamcorderProfile.videoFrameWidth + " , videoFrameHeight: " + mCamcorderProfile.videoFrameHeight);
             Log.e(TAG, "videoCodec: " + mCamcorderProfile.videoCodec);
             Log.e(TAG, " ");
-
-//            mCamcorderProfile.fileFormat = MediaRecorder.OutputFormat.MPEG_4;
-//            mCamcorderProfile.videoFrameRate = 30;
-//            mCamcorderProfile.videoFrameWidth = optimalVideoSize.width;
-//            mCamcorderProfile.videoFrameHeight = optimalVideoSize.height;
-//            mCamcorderProfile.videoCodec = MediaRecorder.VideoEncoder.DEFAULT;
-
+*/
+/*
+            mCamcorderProfile.fileFormat = MediaRecorder.OutputFormat.MPEG_4;
+            mCamcorderProfile.videoFrameRate = 30;
+            mCamcorderProfile.videoFrameWidth = optimalVideoSize.width;
+            mCamcorderProfile.videoFrameHeight = optimalVideoSize.height;
+            mCamcorderProfile.videoCodec = MediaRecorder.VideoEncoder.DEFAULT;
+*/
+/*
             Log.e(TAG, "fileFormat: " + mCamcorderProfile.fileFormat);
             Log.e(TAG, "videoFrameRate: " + mCamcorderProfile.videoFrameRate);
             Log.e(TAG, "videoFrameWidth: " + mCamcorderProfile.videoFrameWidth + " , videoFrameHeight: " + mCamcorderProfile.videoFrameHeight);
             Log.e(TAG, "videoCodec: " + mCamcorderProfile.videoCodec);
+*/
             mMediaRecorder.setProfile(mCamcorderProfile);
             //    mMediaRecorder.setVideoEncodingBitRate(mCamcorderProfile.videoBitRate);
 
-            mFile = getOutputFile();
-
-            Log.d(TAG, "mFile.toString: " + mFile.toString());
-            Log.d(TAG, "mFile.getPath.toString: " + mFile.getPath());
-            Log.d(TAG, "Uri.fromFile(mFile).toString: " + Uri.fromFile(mFile).toString());
-            Log.d(TAG, "mFile.getName: " + mFile.getName());
-
+            mMediaFile = getOutputFile();
+/*
+            Log.d(TAG, "mMediaFile.toString: " + mMediaFile.toString());
+            Log.d(TAG, "mMediaFile.getPath.toString: " + mMediaFile.getPath());
+            Log.d(TAG, "Uri.fromFile(mMediaFile).toString: " + Uri.fromFile(mMediaFile).toString());
+            Log.d(TAG, "mMediaFile.getName: " + mMediaFile.getName());
+*/
             //TODO Fehler wenn Carousel leer ist. (Nur relevant, wenn Fall wirklich auftreten kann)
             mCurrentRecordingIndex = mCarousel.getCurrentIndex();
 
             // hat keinen Effekt:
             mMediaRecorder.setPreviewDisplay(mCameraPreview.getHolder().getSurface());
 
-            mMediaRecorder.setOutputFile(mFile.getPath());
+            mMediaRecorder.setOutputFile(mMediaFile.getPath());
             mMediaRecorder.setVideoSize(mOptimalVideoSize.width, mOptimalVideoSize.height);
 
             mMediaRecorder.prepare();
@@ -401,9 +360,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             // da ein KameraWechsel während der Aufnahme zu einem Fehler führen würde
             // muss der ChangeCamera-Button solange deaktiviert werden
             mButtonChangeCamera.setEnabled(false);
-            //TODO testen !!!!!!!!!!
-            //mButtonChangeCamera.setImageResource(R.mipmap.btn_change_camera_disabled);
-            mButtonChangeCamera.setColorFilter(Color.parseColor("#505154"));
+            mButtonChangeCamera.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
         }catch (Exception e) {
             Log.e(TAG, "Error starting MediaRecorder: " + e.getMessage());
@@ -432,15 +389,12 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         }
 
         // add the (next) file path of the current questions media file.
-        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(mFile.getPath());
-        //alternativen
-        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(mFile.getName());
-        //allMediaMultiFilePaths.get(mCarousel.getCurrentIndex()).add(Uri.fromFile(mFile));     //(dafür List<List<Uri>> erforderlich)
+        allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(Uri.fromFile(mMediaFile).toString());
 
         mCurrentRecordingIndex = -1;
         setup();
         mButtonChangeCamera.setEnabled(true);
-        mButtonChangeCamera.setColorFilter(Color.WHITE);
+        mButtonChangeCamera.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
     }
 
     private void releaseCamera() {
