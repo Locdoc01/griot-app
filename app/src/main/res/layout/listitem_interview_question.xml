@@ -31,7 +31,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/options"
-        android:layout_marginTop="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/iv_mediaCover"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right" /><!---->
@@ -43,7 +44,6 @@
         style="@style/AppTheme.Text_Small"
         android:text="4 Schlagwörter"
         android:textStyle="italic"
-        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
