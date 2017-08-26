@@ -20,6 +20,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <ImageView
+        android:id="@+id/mediaPlayer_foreground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#dd333333"
+        app:layout_constraintTop_toTopOf="@id/mediaPlayer"
+        app:layout_constraintLeft_toLeftOf="@id/mediaPlayer"
+        app:layout_constraintRight_toRightOf="@id/mediaPlayer"
+        app:layout_constraintBottom_toBottomOf="@id/mediaPlayer"/>
+
     <!--
     <FrameLayout
         android:id="@+id/frame_mediaPlayer"

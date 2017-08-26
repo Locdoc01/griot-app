@@ -20,6 +20,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <ImageView
+        android:id="@+id/iv_mediaCover_foreground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#dd333333"
+        app:layout_constraintTop_toTopOf="@id/iv_mediaCover"
+        app:layout_constraintLeft_toLeftOf="@id/iv_mediaCover"
+        app:layout_constraintRight_toRightOf="@id/iv_mediaCover"
+        app:layout_constraintBottom_toBottomOf="@id/iv_mediaCover"
+        android:visibility="gone"/>
+
+
     <!--
     <FrameLayout
         android:id="@+id/frame_mediaCover"
