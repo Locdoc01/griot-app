@@ -158,18 +158,28 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             mOwnUserData.setPictureLocalURI(path);
+
+                            //specified in subclasses
+                            doOnStartAfterLoadingUserInformation();
+                            //TODO: Falls Fehler auftreten, nach "TODO hier" verschieben
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(getSubClassTAG(), "Error downloading user profile image file");
                             mOwnUserData.setPictureLocalURI("");
+
+                            //specified in subclasses
+                            doOnStartAfterLoadingUserInformation();
+                            //TODO: Falls Fehler auftreten, nach "TODO hier" verschieben
+
                         }
                     });
                 } catch (Exception e) {}
 
-                //specified in subclasses
-                doOnStartAfterLoadingUserInformation();
+                //TODO hier
+
             }
 
             @Override
