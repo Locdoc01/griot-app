@@ -278,6 +278,8 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         //set database reference to /guests/contactID
         mDatabaseRef = mDatabaseRootReference.child("guests").child(contactID);
 
+        //store userID as host to mGuestData
+        mGuestData.setHostID(mUserID);
         // Guest details from input form are stored in mGuestData
         mGuestData.setFirstname(mEditFirstname.getText().toString().trim());
         mGuestData.setLastname(mEditLastname.getText().toString().trim());
@@ -305,6 +307,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         mGuestData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                         // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mGuestData);
+                        doAfterUpload();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -345,6 +348,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     }
 
     private void doAfterUpload() {
+        //add guest to user in Database
+        mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("guests").child(contactID);
+        mDatabaseRef.setValue(true);
         Toast.makeText(GuestProfileInputActivity.this, "Gast gespeichert", Toast.LENGTH_LONG).show();
         mTitle.setText(R.string.title_guest_profile);
         mButtonCenter.setText(R.string.button_back);
@@ -369,6 +375,10 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Obtain own user data from Firebase
+        mUser = mAuth.getCurrentUser();
+        mUserID = mUser.getUid();
 
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
