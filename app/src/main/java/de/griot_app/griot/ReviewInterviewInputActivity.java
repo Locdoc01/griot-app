@@ -171,6 +171,9 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
 
     @Override
     protected void buttonLeftPressed() {

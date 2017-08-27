@@ -33,6 +33,9 @@ public class ComposeQuestionRequestInputActivity extends GriotBaseInputActivity 
     protected String getSubClassTAG() { return TAG; }
 
     @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
+    @Override
     protected void buttonLeftPressed() {
         Log.d(TAG, "buttonLeftPressed: ");
     }

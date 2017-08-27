@@ -374,6 +374,9 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     protected String getSubClassTAG() { return TAG; }
 
     @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
+    @Override
     protected void onStart() {
         super.onStart();
         //mDatabaseRef = mDatabaseRootReference.child("interviewQuestions");

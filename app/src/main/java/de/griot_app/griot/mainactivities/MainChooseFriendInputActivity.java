@@ -151,68 +151,6 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
-
-        // Obtain own user data from Firebase
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
-
-        mQueryYou = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
-        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
-
-        mQueryYou.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mLocalUserData = ds.getValue(LocalUserData.class);
-                    mLocalUserData.setContactID(ds.getKey());
-                    mLocalUserData.setCategory(getString(R.string.text_yourself));
-                }
-
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
-                }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mLocalUserData.setPictureLocalURI(path);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mLocalUserData.setPictureLocalURI("");
-                        }
-                    });
-                } catch (Exception e) {}
-
-                //create the Combined ListView
-                mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mLocalUserData, mListViewPersons);
-                mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
-                mCombinedListCreator.add(mQueryGuests);
-                mCombinedListCreator.add(mQueryFriends);
-                mCombinedListCreator.loadData();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @Override
     protected int getSubClassLayoutId() {
@@ -221,6 +159,19 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
 
     @Override
     protected String getSubClassTAG() { return TAG; }
+
+
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {
+        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
+        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        //create the Combined ListView
+        mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mOwnUserData, mListViewPersons);
+        mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
+        mCombinedListCreator.add(mQueryGuests);
+        mCombinedListCreator.add(mQueryFriends);
+        mCombinedListCreator.loadData();
+    }
 
 
     @Override
