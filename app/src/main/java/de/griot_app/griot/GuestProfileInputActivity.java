@@ -270,7 +270,10 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
         mGuestData = new GuestData();
 
-        contactID = mDatabaseRootReference.child("guests").push().getKey();
+        // only on creating a new guest profile a push-key gets obtained from Firebase. Otherwise the altered profile will be stored to the same contactID
+        if (contactID ==null) {
+            contactID = mDatabaseRootReference.child("guests").push().getKey();
+        }
 
         //set database reference to /guests/contactID
         mDatabaseRef = mDatabaseRootReference.child("guests").child(contactID);
@@ -285,7 +288,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             mGuestData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
         }
         mGuestData.setEmail(mEditEmail.getText().toString().trim());
-        ((GuestData) mGuestData).setRelationship(mTextViewRelationship.getText().toString()); // TODO: gbfs. anpassen
+        mGuestData.setRelationship(mTextViewRelationship.getText().toString());
 
 //        if (mImageChanged) {
             //set storage reference to /guests/contactID/profilePicture
@@ -302,6 +305,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         mGuestData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                         // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mGuestData);
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -310,6 +314,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         Toast.makeText(GuestProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mGuestData);
+                        doAfterUpload();
                     }
                 });
             } else {
@@ -319,6 +324,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         mGuestData.setPictureURL(uri.toString());
                         // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
                         mDatabaseRef.setValue(mGuestData);
+                        doAfterUpload();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -326,6 +332,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         // on failure mLocalUserData.pictureURL will remain empty.
                         Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                         mDatabaseRef.setValue(mGuestData);
+                        doAfterUpload();
                     }
                 });
             }
@@ -337,6 +344,27 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 */
     }
 
+    private void doAfterUpload() {
+        Toast.makeText(GuestProfileInputActivity.this, "Gast gespeichert", Toast.LENGTH_LONG).show();
+        mTitle.setText(R.string.title_guest_profile);
+        mButtonCenter.setText(R.string.button_back);
+        File file = null;
+        try {
+            file = File.createTempFile("profile_image" + "_", ".jpg");
+        } catch (Exception e) {
+        }
+        final Uri path = Uri.fromFile(file);
+
+        try {
+            mStorageRef = mStorage.getReferenceFromUrl(mGuestData.getPictureURL());
+            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    mProfileImage.getProfileImage().setImageURI(path);
+                }
+            });
+        } catch (Exception e) {}
+    }
 
     @Override
     protected void onStart() {
@@ -360,8 +388,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     File file = null;
                     try {
                         file = File.createTempFile("profile_image" + "_", ".jpg");
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                     final String path = file.getPath();
 
                     try {
@@ -379,8 +406,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                                 mLocalGuestData.setPictureLocalURI("");
                             }
                         });
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
 
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
