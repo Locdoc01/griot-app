@@ -350,7 +350,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     private void doAfterUpload() {
         //add guest to user in Database
         mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("guests").child(contactID);
-        mDatabaseRef.setValue(true);
+        mDatabaseRef.setValue(mGuestData.getRelationship());
         Toast.makeText(GuestProfileInputActivity.this, "Gast gespeichert", Toast.LENGTH_LONG).show();
         mTitle.setText(R.string.title_guest_profile);
         mButtonCenter.setText(R.string.button_back);
