@@ -676,6 +676,9 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         boolean allUploadsSuccessful = mUploadMediaCoverFailureCount+mUploadMediaFailureCount==0;
         if (allUploadsAttempted) {
             if (allUploadsSuccessful) {
+                //add interview to user in Database
+                mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsAll").child(interviewID);
+                mDatabaseRef.setValue(true);
                 showProgressBarFinishMessage(getString(R.string.progress_upload_success));
                 new Timer().schedule(new TimerTask() {
                     @Override
