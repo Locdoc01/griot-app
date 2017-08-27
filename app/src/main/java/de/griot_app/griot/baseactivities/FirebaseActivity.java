@@ -49,6 +49,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
+    protected Query mQuery;
     protected FirebaseStorage mStorage;
     protected StorageReference mStorageRootReference;
     protected StorageReference mStorageRef;
