@@ -210,6 +210,9 @@ public class MainOverviewActivity extends GriotBaseActivity {
     protected String getSubClassTAG() { return TAG; }
 
     @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_app_bar_main_overview, menu);

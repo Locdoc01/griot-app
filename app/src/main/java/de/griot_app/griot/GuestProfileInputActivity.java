@@ -185,6 +185,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
     //called, when a date was set through mDatePickerDialog
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
@@ -375,10 +378,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-
-        // Obtain own user data from Firebase
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
 
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

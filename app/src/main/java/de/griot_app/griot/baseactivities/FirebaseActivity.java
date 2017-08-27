@@ -21,18 +21,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalCommentData;
-import de.griot_app.griot.dataclasses.LocalGroupData;
-import de.griot_app.griot.dataclasses.LocalGuestData;
-import de.griot_app.griot.dataclasses.LocalInterviewData;
-import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
-import de.griot_app.griot.dataclasses.UserData;
 
 /**
  *  Abstract base activity for all griot-app-activities.
@@ -46,6 +37,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseUser mUser;
     protected String mUserID;
     protected LocalUserData mLocalUserData;
+    protected LocalUserData mOwnUserData;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
@@ -127,6 +119,10 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        if (mAuth.getCurrentUser() != null) {
+            loadUserInformation();
+        }
     }
 
     @Override
@@ -144,8 +140,9 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mLocalUserData = ds.getValue(LocalUserData.class);
-                    mLocalUserData.setCategory(getString(R.string.text_yourself));
+                    mOwnUserData = ds.getValue(LocalUserData.class);
+                    mOwnUserData.setContactID(ds.getKey());
+                    mOwnUserData.setCategory(getString(R.string.text_yourself));
                 }
 
                 File file = null;
@@ -156,20 +153,23 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                 final String path = file.getPath();
 
                 try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
+                    mStorageRef = mStorage.getReferenceFromUrl(mOwnUserData.getPictureURL());
                     mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mLocalUserData.setPictureLocalURI(path);
+                            mOwnUserData.setPictureLocalURI(path);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mLocalUserData.setPictureLocalURI("");
+                            mOwnUserData.setPictureLocalURI("");
                         }
                     });
                 } catch (Exception e) {}
+
+                //specified in subclasses
+                doOnStartAfterLoadingUserInformation();
             }
 
             @Override
@@ -178,6 +178,9 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    protected abstract void doOnStartAfterLoadingUserInformation();
+
 }
 
 

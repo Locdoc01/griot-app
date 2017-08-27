@@ -166,6 +166,9 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
+
     //called, when a date was set through mDatePickerDialog
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
