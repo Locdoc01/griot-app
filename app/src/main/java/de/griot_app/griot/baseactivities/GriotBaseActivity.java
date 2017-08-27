@@ -33,9 +33,6 @@ import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
  */
 public abstract class GriotBaseActivity extends FirebaseActivity implements View.OnClickListener {
 
-    //TODO: löschen
-    //private static final String TAG = GriotBaseActivity.class.getSimpleName();
-
     protected Toolbar mAppBar;
     protected TextView mTitle;
     protected ImageView mLineAppBar;
