@@ -376,10 +376,10 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mDatabaseRef = mDatabaseRootReference.child("interviewQuestions");
-        mDatabaseRef.addValueEventListener(mValueEventListener);
-        //mQuery = mDatabaseRootReference.child("interviewQuestions").orderByChild("interviewID").equalTo(selectedInterviewID);
-        //mQuery.addValueEventListener(mValueEventListener);
+        //mDatabaseRef = mDatabaseRootReference.child("interviewQuestions");
+        //mDatabaseRef.addValueEventListener(mValueEventListener);
+        mQuery = mDatabaseRootReference.child("interviewQuestions").orderByChild("interviewID").equalTo(selectedInterviewID);
+        mQuery.addValueEventListener(mValueEventListener);
     }
 
     @Override
@@ -387,6 +387,6 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         super.onStop();
         //TODO: muss mDatabaseRef hier gesetzt werden?
         //TODO: kann man auf einen Schlag alle Listener entfernen?
-//        mQuery.removeEventListener(mValueEventListener);
+        mQuery.removeEventListener(mValueEventListener);
     }
 }
