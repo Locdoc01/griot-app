@@ -25,4 +25,7 @@ public class MainQuestionmailActivity extends GriotBaseActivity {
 
     @Override
     protected String getSubClassTAG() { return TAG; }
+
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
 }

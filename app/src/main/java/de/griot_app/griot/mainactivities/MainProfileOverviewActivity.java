@@ -203,6 +203,12 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
     protected String getSubClassTAG() { return TAG; }
 
     @Override
+    protected void doOnStartAfterLoadingUserInformation() {
+        mTextViewUser.setText(mOwnUserData.getFirstname() + " " + mOwnUserData.getLastname());
+        mPivUser.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
+    }
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -267,55 +273,6 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         super.onStart();
         mDatabaseRef = mDatabaseRootReference.child("interviews");
         mDatabaseRef.addValueEventListener(mValueEventListener);
-
-
-
-        //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
-
-        // Obtain own user data from Firebase
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
-
-        mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mLocalUserData = ds.getValue(LocalUserData.class);
-                }
-
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
-                }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mLocalUserData.setPictureLocalURI(path);
-                            mPivUser.getProfileImage().setImageURI(Uri.parse(mLocalUserData.getPictureLocalURI()));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mLocalUserData.setPictureLocalURI("");
-                        }
-                    });
-                } catch (Exception e) {}
-
-                mTextViewUser.setText(mLocalUserData.getFirstname() + " " + mLocalUserData.getLastname());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 

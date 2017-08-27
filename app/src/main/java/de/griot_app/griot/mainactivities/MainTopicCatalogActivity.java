@@ -217,4 +217,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
 
     @Override
     protected String getSubClassTAG() { return TAG; }
+
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {}
 }
