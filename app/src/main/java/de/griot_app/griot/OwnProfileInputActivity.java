@@ -172,6 +172,23 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    @Override
+    protected void doOnStartAfterLoadingUserInformation() {
+        if (!mImageChanged) {
+            mProfileImage.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
+        }
+
+        mEditFirstname.setText(mOwnUserData.getFirstname());
+        mEditLastname.setText((mOwnUserData.getLastname()));
+        //   mCalendar.setTime(mOwnUserData.getBirthday());  //TODO: anpassen
+        int day = mOwnUserData.getBDay();
+        int month = mOwnUserData.getBMonth();
+        int year = mOwnUserData.getBYear();
+        mDatePickerDialog = new DatePickerDialog(OwnProfileInputActivity.this, OwnProfileInputActivity.this, year, month, day);
+        mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
+        mEditEmail.setText((mOwnUserData.getEmail()));
+    }
+
     //called, when a date was set through mDatePickerDialog
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
@@ -338,9 +355,6 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             return;
         }
 
-        // obtain userId
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
         //set database reference to /users/mUserID
         mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID);
 
@@ -410,65 +424,6 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
 
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-
-        if (!mImageChanged) {
-            //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
-            // Obtain own user data from Firebase
-            mUser = mAuth.getCurrentUser();
-            mUserID = mUser.getUid();
-
-            mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        mLocalUserData = ds.getValue(LocalUserData.class);
-                    }
-
-                    File file = null;
-                    try {
-                        file = File.createTempFile("profile_image" + "_", ".jpg");
-                    } catch (Exception e) {
-                    }
-                    final String path = file.getPath();
-
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
-                        mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mLocalUserData.setPictureLocalURI(path);
-                                mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalUserData.getPictureLocalURI()));
-
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                                mLocalUserData.setPictureLocalURI("");
-                            }
-                        });
-                    } catch (Exception e) {
-                    }
-
-                    mEditFirstname.setText(mLocalUserData.getFirstname());
-                    mEditLastname.setText((mLocalUserData.getLastname()));
-                    //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: anpassen
-                    int day = mLocalUserData.getBDay();
-                    int month = mLocalUserData.getBMonth();
-                    int year = mLocalUserData.getBYear();
-                    mDatePickerDialog = new DatePickerDialog(OwnProfileInputActivity.this, OwnProfileInputActivity.this, year, month, day);
-                    mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
-                    mEditEmail.setText((mLocalUserData.getEmail()));
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
 
 
