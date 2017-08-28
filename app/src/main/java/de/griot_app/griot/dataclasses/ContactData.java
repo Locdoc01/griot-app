@@ -15,10 +15,6 @@ public class ContactData {
     public ContactData() {
     }
 
-    //TODO: evt nicht benötigt
-    public ContactData(String category) {
-        this.category = category;
-    }
 
     //constructor
     public ContactData(

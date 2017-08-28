@@ -18,24 +18,10 @@ public class UserData extends PersonData {
     private HashMap<String, Integer> standardQuestions;
     private HashMap<String, String> extraQuestions;
 
+
     //default-constructor
     public UserData() {
         super();
-        isUser = true;
-        interviewsOwn = new HashMap<>();
-        interviewsAll = new HashMap<>();
-        guests = new HashMap<>();
-        friends = new HashMap<>();
-        groups = new HashMap<>();
-        standardTopics = new ArrayList<>();
-        extraTopics = new HashMap<>();
-        standardQuestions = new HashMap<>();
-        extraQuestions = new HashMap<>();
-    }
-
-    //TODO: evt nicht benötigt
-    public UserData(String category) {
-        super(category);
         isUser = true;
         interviewsOwn = new HashMap<>();
         interviewsAll = new HashMap<>();

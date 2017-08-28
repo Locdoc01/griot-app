@@ -16,10 +16,6 @@ public class LocalGuestData extends LocalPersonData {
         super();
     }
 
-    //TODO: evt nicht benötigt
-    public LocalGuestData(String category) {
-        super(category);
-    }
 
     //constructor
     public LocalGuestData(

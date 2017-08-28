@@ -17,11 +17,6 @@ public class GroupData extends ContactData {
         members = new HashMap<>();
     }
 
-    //TODO: evt nicht benötigt
-    public GroupData(String category) {
-        super(category);
-        members = new HashMap<>();
-    }
 
     //constructor
     public GroupData(

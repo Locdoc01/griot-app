@@ -13,15 +13,12 @@ public class PersonData extends ContactData {
     protected String email;
     protected Boolean isUser = false;
 
+
     //default-constructor
     public PersonData() {
         super();
     }
 
-    //TODO: evt nicht benötigt
-    public PersonData(String category) {
-        super(category);
-    }
 
     //constructor
     public PersonData(

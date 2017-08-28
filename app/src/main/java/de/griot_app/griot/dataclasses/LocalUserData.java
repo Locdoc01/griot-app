@@ -48,20 +48,6 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
         extraQuestions = new HashMap<>();
     }
 
-    //TODO: evt nicht benötigt
-    public LocalUserData(String category) {
-        super(category);
-        isUser = true;
-        interviewsOwn = new HashMap<>();
-        interviewsAll = new HashMap<>();
-        guests = new HashMap<>();
-        friends = new HashMap<>();
-        groups = new HashMap<>();
-        standardTopics = new ArrayList<>();
-        extraTopics = new HashMap<>();
-        standardQuestions = new HashMap<>();
-        extraQuestions = new HashMap<>();
-    }
 
     //constructor
     public LocalUserData(

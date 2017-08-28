@@ -17,11 +17,6 @@ public class LocalGroupData extends LocalContactData {
         members = new HashMap<>();
     }
 
-    //TODO: evt nicht benötigt
-    public LocalGroupData(String category) {
-        super(category);
-        members = new HashMap<>();
-    }
 
     //constructor
     public LocalGroupData(

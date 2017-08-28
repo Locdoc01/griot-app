@@ -17,11 +17,6 @@ public class LocalContactData {
     public LocalContactData() {
     }
 
-    //TODO: evt nicht benötigt
-    public LocalContactData(String category) {
-        this.category = category;
-    }
-
 
     //constructor
     public LocalContactData(

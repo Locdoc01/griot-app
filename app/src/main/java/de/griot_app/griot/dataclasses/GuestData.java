@@ -11,15 +11,12 @@ public class GuestData extends PersonData {
     private String hostID;
     private String relationship;
 
+
     //default-constructor
     public GuestData() {
         super();
     }
 
-    //TODO: evt nicht benötigt
-    public GuestData(String category) {
-        super(category);
-    }
 
     //constructor
     public GuestData(

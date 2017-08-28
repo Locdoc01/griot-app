@@ -18,10 +18,6 @@ public class LocalPersonData extends LocalContactData {
         super();
     }
 
-    //TODO: evt nicht benötigt
-    public LocalPersonData(String category) {
-        super(category);
-    }
 
     //constructor
     public LocalPersonData(
