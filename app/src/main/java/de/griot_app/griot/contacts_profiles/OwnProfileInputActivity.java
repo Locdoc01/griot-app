@@ -31,32 +31,33 @@ import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.views.ProfileImageView;
 
+/**
+ * Input activity, which shows the own user profile and allows to alter and save it
+ */
 public class OwnProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = OwnProfileInputActivity.class.getSimpleName();
 
-    private static final int REQUEST_GALLERY = 888;
+    //private static final int REQUEST_GALLERY = 888;
 
     private boolean mImageChanged = false;
 
     private ProfileImageView mProfileImage;
-    private Uri mUriLocalProfileImage;
-
     private EditText mEditFirstname;
     private EditText mEditLastname;
     private EditText mEditEmail;
     private EditText mEditPassword;
     private EditText mEditPassword2;
-
     private ImageView mButtonDatePicker;
-    private Calendar mCalendar;
     private DatePickerDialog mDatePickerDialog;
     private TextView mTextViewDate;
-
     private Button mButtonSave;
 
     private View.OnClickListener mClickListener;
     private View.OnTouchListener mTouchListener;
+
+    private Calendar mCalendar;
+    private Uri mUriLocalProfileImage;
 
     //Data class object
     private UserData mUserData;
@@ -71,27 +72,27 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mButtonCenter.setVisibility(View.GONE);
         mButtonRight.setText(R.string.option_delete_account);
 
-        //Initialization of views for create account tab
+        //Get references to the layout objects
         mProfileImage = (ProfileImageView) findViewById(R.id.piv_profile_image);
-        mUriLocalProfileImage = null;
-
         mEditFirstname = (EditText) findViewById(R.id.editText_firstname);
         mEditLastname = (EditText) findViewById(R.id.editText_lastname);
         mEditEmail = (EditText) findViewById(R.id.editText_email);
         mEditPassword = (EditText) findViewById(R.id.editText_password);
         mEditPassword2 = (EditText) findViewById(R.id.editText_password2);
-
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
-        mCalendar = Calendar.getInstance();
         mTextViewDate = (TextView) findViewById(R.id.textView_date);
-
         mButtonSave = (Button) findViewById(R.id.button_save);
+
 
         mEditEmail.setEnabled(false);
         //TODO: Passwort soll änderbar sein. Herausfinden, wie
         mEditPassword.setEnabled(false);
         mEditPassword2.setEnabled(false);
 
+        mUriLocalProfileImage = null;
+        mCalendar = Calendar.getInstance();
+
+        //Hide possible error messages from input views by click in one of them
         mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +105,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             }
         };
 
+        //OnTouchListener for button views
         mTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -123,6 +125,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
                     case MotionEvent.ACTION_UP:
                         switch (v.getId()) {
                             case R.id.piv_profile_image:
+                                Log.d(TAG, "profile image clicked: ");
                                 mImageChanged = true;
                                 CropImage.activity()
                                         .setGuidelines(CropImageView.Guidelines.ON)
@@ -130,10 +133,12 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
                                         .start(OwnProfileInputActivity.this);
                                 return true;
                             case R.id.button_datepicker:
+                                Log.d(TAG, "datepicker clicked: ");
                                 ((ImageView)v).setColorFilter(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotDarkgrey));
                                 mDatePickerDialog.show();
                                 return true;
                             case R.id.button_save:
+                                Log.d(TAG, "save clicked: ");
                                 ((TextView)v).setTextColor(ContextCompat.getColor(OwnProfileInputActivity.this, R.color.colorGriotDarkgrey));
                                 saveProfile();
                                 return true;
@@ -148,7 +153,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mEditLastname.setOnClickListener(mClickListener);
         //mEditEmail.setOnClickListener(this);
 
-        //TODO: Passwort soll änderbar sein. Herausfinden, wie
+        //TODO: Find out how to change passwort in Firebase
         //mEditPassword.setOnClickListener(this);
         //mEditPassword2.setOnClickListener(this);
 
@@ -167,8 +172,11 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    //Method is called in super.onStart() after own user information got obtained from Firebase
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
+        Log.d(TAG, "doOnStartAfterLoadingUserInformation: ");
+        //Set own user information to input views
         if (!mImageChanged) {
             mProfileImage.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
         }
@@ -184,9 +192,10 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mEditEmail.setText((mOwnUserData.getEmail()));
     }
 
-    //called, when a date was set through mDatePickerDialog
+    //Sets the date to TextView and Calendar, when a date was set through mDatePickerDialog.
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
+        Log.d(TAG, "onDateSet: year: " + year + " , month: " + month + " , day: " + day);
         //set the chosen date to mDatePickerDialog, so that it will be set to this date on next call
         mDatePickerDialog.getDatePicker().updateDate(year, month, day);
         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
@@ -195,9 +204,10 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mCalendar.set(year,month,day,0,0,0);
     }
 
-    //called after an image was chosen and cropped on external Activity
+    //Sets the profile image, after an image was chosen and cropped on external Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: requestCode: " + requestCode + " , resultCode: " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -212,7 +222,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     }
 
 
-    // TODO: Wenn beide Passwortfelder valide gefüllt sind, soll auch das passwort geändert werden können
+    // TODO: password should also be changable, if both password fields are valid
     /**
      * validates the input data for creating an account. Checks for the following:
      * - are all fields filled? (except profile image, which can be empty)
@@ -226,11 +236,11 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     private boolean validateForm() {
         Log.d(TAG, "validateForm: ");
 
-        boolean valid = true;   // set to false, if one of the inputfields is not valid
-        View focus = null;      // set to the first invalid inputfield, if there is any
+        boolean valid = true;   //Set to false, if one of the inputfields is not valid
+        View focus = null;      //Set to the first invalid inputfield, if there is any
 
 
-        // if surname field is empty
+        //If surname field is empty
         if (TextUtils.isEmpty(mEditFirstname.getText().toString().trim())) {
             mEditFirstname.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -239,7 +249,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mEditFirstname.setError(null);
         }
 
-        // if lastname field is empty
+        //If lastname field is empty
         if (TextUtils.isEmpty(mEditLastname.getText().toString().trim())) {
             mEditLastname.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -250,7 +260,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mEditLastname.setError(null);
         }
 
-        // if birthday is not set
+        //If birthday is not set
         if (mTextViewDate.getText().toString().equals(R.string.date_empty)) {
             mTextViewDate.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -261,7 +271,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mTextViewDate.setError(null);
         }
 
-        // if emailfield is empty or has invalid form
+        //If email field is empty or has invalid form
         if (TextUtils.isEmpty(mEditEmail.getText().toString().trim())) {
             mEditEmail.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -279,7 +289,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         }
 
 /*
-        // if first passwordfield is empty
+        // if first password field is empty
         if (TextUtils.isEmpty(mEditPassword.getText().toString())) {
             mEditPassword.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -290,7 +300,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mEditPassword.setError(null);
         }
 
-        // if second passwordfield is empty
+        // if second password field is empty
         if (TextUtils.isEmpty(mEditPassword2.getText().toString())) {
             mEditPassword2.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -301,7 +311,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mEditPassword2.setError(null);
         }
 */
-        // if one of the inputfields were empty so far
+        //If one of the input fields were empty so far
         if (!valid) {
             focus.requestFocus(); // set focus to first empty field
 /*
@@ -344,16 +354,17 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         return valid;
     }
 
+
     public void saveProfile() {
+        Log.d(TAG, "saveProfile: ");
 
         if (!validateForm()) {
             return;
         }
-
-        //set database reference to /users/mUserID
+        //Set database reference to /users/mUserID
         mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID);
 
-        // User details from input form are stored in mUserData
+        //User details from input form are stored in mUserData
         mUserData.setFirstname(mEditFirstname.getText().toString().trim());
         mUserData.setLastname(mEditLastname.getText().toString().trim());
         mUserData.setBirthday(mCalendar.getTime().toString());
@@ -363,25 +374,25 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mUserData.setEmail(mEditEmail.getText().toString().trim());
 
         if (mImageChanged) {
-            //set storage reference to /users/mUserID/profilePicture
+            //Set storage reference to /users/mUserID/profilePicture
             mStorageRef = mStorageRootReference.child("users").child(mUserID).child("profilePicture.jpg");
 
-            // if a profile image was chosen, it will be uploaded to cloud-Storage
+            //If a profile image was chosen, it will be uploaded to cloud-Storage
             if (mUriLocalProfileImage != null) {
-                //upload file with local URI stored in mUriLocalProfileImage
+                //Upload file with local URI stored in mUriLocalProfileImage
                 mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // on success the remote downloadURL will be stored to mUserData.pictureURL
+                        //On success the remote downloadURL will be stored to mUserData.pictureURL
                         //TODO: Alternative finden
                         mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
-                        // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
+                        //Send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mUserData);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // on failure mUserData.pictureURL will remain empty.
+                        //On failure mUserData.pictureURL will remain empty.
                         Toast.makeText(OwnProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mUserData);
@@ -392,13 +403,13 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
                     @Override
                     public void onSuccess(Uri uri) {
                         mUserData.setPictureURL(uri.toString());
-                        // if no profile image was chosen, mUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
+                        //If no profile image was chosen, mUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "users"
                         mDatabaseRef.setValue(mUserData);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // on failure mUserData.pictureURL will remain empty.
+                        //On failure mUserData.pictureURL will remain empty.
                         Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                         mDatabaseRef.setValue(mUserData);
                     }

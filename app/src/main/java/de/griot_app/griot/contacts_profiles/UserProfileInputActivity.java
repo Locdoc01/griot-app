@@ -26,26 +26,26 @@ import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.views.ProfileImageView;
 
+/**
+ * Input activity, which shows an existing user profile.
+ */
 public class UserProfileInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = UserProfileInputActivity.class.getSimpleName();
 
-    private static final int REQUEST_GALLERY = 888;
+    //private static final int REQUEST_GALLERY = 888;
 
-    //intent-data
+    //Intent data
     private String contactID;
 
+    //Views
     private ProfileImageView mProfileImage;
-
     private EditText mEditFirstname;
     private EditText mEditLastname;
     private EditText mEditEmail;
-
     private ImageView mButtonDatePicker;
-
     private TextView mTextViewDate;
     private TextView mTextViewRelationship;
-
     private Button mButtonSave;
 
 
@@ -53,6 +53,7 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Get possible intent data
         contactID = getIntent().getStringExtra("contactID");
 
         mTitle.setText(R.string.title_user_profile);
@@ -61,15 +62,12 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setVisibility(View.GONE);
 
-        //Initialization of views for create account tab
+        //Get references to the layout objects
         mProfileImage = (ProfileImageView) findViewById(R.id.piv_profile_image);
-
         mEditFirstname = (EditText) findViewById(R.id.editText_firstname);
         mEditLastname = (EditText) findViewById(R.id.editText_lastname);
         mEditEmail = (EditText) findViewById(R.id.editText_email);
-
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
-
         mTextViewDate = (TextView) findViewById(R.id.textView_date);
         mTextViewRelationship = (TextView) findViewById(R.id.textView_relationship);
 
@@ -112,7 +110,6 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
 
         //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
         // Obtain user data from Firebase, if the profile of an existing user was selected
-
         mDatabaseRootReference.child("users").orderByKey().equalTo(contactID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,6 +143,7 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                 } catch (Exception e) {
                 }
 
+                //initialize the views with the obtained data
                 mEditFirstname.setText(mLocalUserData.getFirstname());
                 mEditLastname.setText((mLocalUserData.getLastname()));
                 int day = mLocalUserData.getBDay();
@@ -155,7 +153,6 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                 mEditEmail.setText((mLocalUserData.getEmail()));
 //                    mTextViewRelationship.setText(((mLocalUserData).getRelationship()));  //TODO
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

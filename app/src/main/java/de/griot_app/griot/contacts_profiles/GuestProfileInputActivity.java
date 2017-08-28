@@ -1,4 +1,4 @@
-package de.griot_app.griot.contacts_profiles;
+    package de.griot_app.griot.contacts_profiles;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -61,11 +61,11 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     private TextView mTextViewRelationship;
     private Button mButtonSave;
 
-    private Calendar mCalendar;
-    private Uri mUriLocalProfileImage;
-
     private View.OnClickListener mClickListener;
     private View.OnTouchListener mTouchListener;
+
+    private Calendar mCalendar;
+    private Uri mUriLocalProfileImage;
 
     //Switch variables
     private boolean mImageChanged = false;
@@ -74,7 +74,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     //Data class object
     private GuestData mGuestData;
     private LocalGuestData mLocalGuestData;
-
 
 
     @Override
@@ -205,6 +204,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     //Sets the date to TextView and Calendar, when a date was set through mDatePickerDialog.
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
+        Log.d(TAG, "onDateSet: year: " + year + " , month: " + month + " , day: " + day);
         //set the chosen date to mDatePickerDialog, so that it will be set to this date on next call
         mDatePickerDialog.getDatePicker().updateDate(year, month, day);
         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
@@ -217,6 +217,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     //Sets the profile image, after an image was chosen and cropped on external Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: requestCode: " + requestCode + " , resultCode: " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -240,11 +241,11 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     private boolean validateForm() {
         Log.d(TAG, "validateForm: ");
 
-        boolean valid = true;   // set to false, if one of the inputfields is not valid
-        View focus = null;      // set to the first invalid inputfield, if there is any
+        boolean valid = true;   //Set to false, if one of the inputfields is not valid
+        View focus = null;      //Set to the first invalid inputfield, if there is any
 
 
-        // if surname field is empty
+        //If surname field is empty
         if (TextUtils.isEmpty(mEditFirstname.getText().toString().trim())) {
             mEditFirstname.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -253,7 +254,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             mEditFirstname.setError(null);
         }
 
-        // if emailfield is empty or has invalid form
+        //If email field is empty or has invalid form
         if (TextUtils.isEmpty(mEditEmail.getText().toString().trim())) {
             mEditEmail.setError(getResources().getString(R.string.error_required_field));
             valid = false;
@@ -270,7 +271,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             mEditEmail.setError(null);
         }
 
-        // if one of the inputfields were empty so far
+        //If one of the input fields were empty so far
         if (!valid) {
             focus.requestFocus(); // set focus to first empty field
             return valid;
@@ -283,14 +284,14 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
      * Saves the input data to Firebase and creates a guest profile, if input data is valid.
      */
     public void saveProfile() {
+        Log.d(TAG, "saveProfile: ");
 
         if (!validateForm()) {
             return;
         }
-
         mGuestData = new GuestData();
 
-        // only on creating a new guest profile a push-key gets obtained from Firebase database. Otherwise the altered profile will be stored to the same contactID
+        //Only on creating a new guest profile a push-key gets obtained from Firebase database. Otherwise the altered profile will be stored to the same contactID
         if (contactID ==null) {
             contactID = mDatabaseRootReference.child("guests").push().getKey();
         }
@@ -298,7 +299,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         //set database reference to /guests/contactID
         mDatabaseRef = mDatabaseRootReference.child("guests").child(contactID);
 
-        // Guest details from input form are stored in mGuestData
+        //Guest details from input form are stored in mGuestData
         mGuestData.setFirstname(mEditFirstname.getText().toString().trim());
         mGuestData.setLastname(mEditLastname.getText().toString().trim());
         mGuestData.setHostID(mUserID);
@@ -311,19 +312,19 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         mGuestData.setEmail(mEditEmail.getText().toString().trim());
         mGuestData.setRelationship(mTextViewRelationship.getText().toString());
 
-            //set storage reference to /guests/contactID/profilePicture
+            //Set storage reference to /guests/contactID/profilePicture
             mStorageRef = mStorageRootReference.child("guests").child(contactID).child("profilePicture.jpg");
 
-            // if a profile image was chosen, it will be uploaded to cloud-Storage
-            if (mUriLocalProfileImage != null) {
-                //upload file with local URI stored in mUriLocalProfileImage
+        //If a profile image was chosen, it will be uploaded to cloud-Storage
+        if (mUriLocalProfileImage != null) {
+                //Upload file with local URI stored in mUriLocalProfileImage
                 mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // on success the remote downloadURL will be stored to mGuestData.pictureURL
+                        //On success the remote downloadURL will be stored to mGuestData.pictureURL
                         //TODO: Alternative finden
                         mGuestData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
-                        // send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
+                        //Send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mGuestData);
                         doAfterUpload();
 
@@ -331,13 +332,14 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // on failure mLocalUserData.pictureURL will remain empty.
+                        //On failure mLocalUserData.pictureURL will remain empty.
                         Toast.makeText(GuestProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mGuestData);
                         doAfterUpload();
                     }
                 });
+            //If a profile image already exists
             } else if (mLocalGuestData == null) {
                 mStorageRootReference.child("guests").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -356,6 +358,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         doAfterUpload();
                     }
                 });
+            //If no profile Image extists or was chosen
             } else {
                 mGuestData.setPictureURL(mLocalGuestData.getPictureURL());
                 mDatabaseRef.setValue(mGuestData);
@@ -363,11 +366,16 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             }
     }
 
+    /**
+     * This method is called in saveProfile() after the attempted upload of profile data was finished
+     */
     private void doAfterUpload() {
-        //add guest to user in Database
+        Log.d(TAG, "doAfterUpload: ");
+        //Add guest to user in Database
         mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("guests").child(contactID);
         mDatabaseRef.setValue(mGuestData.getRelationship());
         Toast.makeText(GuestProfileInputActivity.this, "Gast gespeichert", Toast.LENGTH_LONG).show();
+        //Change title and navigation button of activity
         mTitle.setText(R.string.title_guest_profile);
         mButtonCenter.setText(R.string.button_back);
         File file = null;
@@ -377,6 +385,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         }
         final Uri path = Uri.fromFile(file);
 
+        //Load the updated profile image (necessary, of no image was chosen and the standard profile image was set to pictureURL
         try {
             mStorageRef = mStorage.getReferenceFromUrl(mGuestData.getPictureURL());
             mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -388,6 +397,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         } catch (Exception e) {}
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -395,9 +405,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        // Obtain guest data from Firebase, if the profile of an existing guest was selected
         if (contactID!=null && !mImageChanged) {
             //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
-            // Obtain guest data from Firebase, if the profile of an existing guest was selected
 
             mDatabaseRootReference.child("guests").orderByKey().equalTo(contactID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -430,6 +440,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         });
                     } catch (Exception e) {}
 
+                    //initialize the views with the obtained data
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
                     if (mLocalGuestData.getBDay()!=null) {

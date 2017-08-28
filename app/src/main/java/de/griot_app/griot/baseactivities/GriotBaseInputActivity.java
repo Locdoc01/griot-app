@@ -66,6 +66,7 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         //hides the title, since centering it is not supported. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
 
+        // get references to the layout objects
         mTitle = (TextView) findViewById(R.id.base_title);
         mButtonLeft = (Button) findViewById(R.id.button_left);
         mButtonCenter = (Button) findViewById(R.id.button_center);
