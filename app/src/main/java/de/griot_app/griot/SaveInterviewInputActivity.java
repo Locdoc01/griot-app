@@ -632,11 +632,15 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         boolean allUploadsSuccessful = mUploadMediaCoverFailureCount+mUploadMediaFailureCount==0;
         if (allUploadsAttempted) {
             if (allUploadsSuccessful) {
-                //add interview to user in Database
+                //add interview to userID/interviewsOwn & userID/interviewsAll in Database
+                mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsOwn").child(interviewID);
+                mDatabaseRef.setValue(true);
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsAll").child(interviewID);
                 mDatabaseRef.setValue(true);
-                //add interview to narrator in Database, if narrator and interviewer aren't the same person and if narrator is a user
+                //add interview to narratorID/interviewsOwn & narratorID/interviewsAll in Database, if narrator and interviewer aren't the same person and if narrator is a user
                 if (!narratorID.equals(mUserID) && narratorIsUser) {
+                    mDatabaseRef = mDatabaseRootReference.child("users").child(narratorID).child("interviewsOwn").child(interviewID);
+                    mDatabaseRef.setValue(true);
                     mDatabaseRef = mDatabaseRootReference.child("users").child(narratorID).child("interviewsAll").child(interviewID);
                     mDatabaseRef.setValue(true);
                 }
