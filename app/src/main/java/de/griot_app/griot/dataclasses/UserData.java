@@ -8,8 +8,8 @@ import java.util.HashMap;
  */
 public class UserData extends PersonData {
 
+    private HashMap<String, Boolean> interviewsOwn;
     private HashMap<String, Boolean> interviewsAll;
-    private HashMap<String, Boolean> interviewsAssociated;
     private HashMap<String, String> guests;
     private HashMap<String, String> friends;
     private HashMap<String, String> groups;
@@ -22,8 +22,8 @@ public class UserData extends PersonData {
     public UserData() {
         super();
         isUser = true;
+        interviewsOwn = new HashMap<>();
         interviewsAll = new HashMap<>();
-        interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
         friends = new HashMap<>();
         groups = new HashMap<>();
@@ -37,8 +37,8 @@ public class UserData extends PersonData {
     public UserData(String category) {
         super(category);
         isUser = true;
+        interviewsOwn = new HashMap<>();
         interviewsAll = new HashMap<>();
-        interviewsAssociated = new HashMap<>();
         guests = new HashMap<>();
         friends = new HashMap<>();
         groups = new HashMap<>();
@@ -60,8 +60,8 @@ public class UserData extends PersonData {
             String pictureURL,
             String pictureLocalURI,
             String category,
+            HashMap<String, Boolean> interviewsOwn,
             HashMap<String, Boolean> interviewsAll,
-            HashMap<String, Boolean> interviewsAssociated,
             HashMap<String, String> guests,
             HashMap<String, String> friends,
             HashMap<String, String> groups,
@@ -72,8 +72,8 @@ public class UserData extends PersonData {
     ) {
         super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
         isUser = true;
+        this.interviewsOwn = interviewsOwn;
         this.interviewsAll = interviewsAll;
-        this.interviewsAssociated = interviewsAssociated;
         this.guests = guests;
         this.friends = friends;
         this.groups = groups;
@@ -87,8 +87,8 @@ public class UserData extends PersonData {
     @Override
     public String toString() {
         return "UserData{" +
-                "interviewsAll=" + interviewsAll +
-                ", interviewsAssociated=" + interviewsAssociated +
+                "interviewsOwn=" + interviewsOwn +
+                ", interviewsAll=" + interviewsAll +
                 ", guests=" + guests +
                 ", friends=" + friends +
                 ", groups=" + groups +
@@ -100,9 +100,9 @@ public class UserData extends PersonData {
     }
 
     //get-methods
-    public HashMap<String, Boolean> getInterviewsAll() { return interviewsAll; }
+    public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }
 
-    public HashMap<String, Boolean> getInterviewsAssociated() { return interviewsAssociated; }
+    public HashMap<String, Boolean> getInterviewsAll() { return interviewsAll; }
 
     public HashMap<String, String> getGuests() { return guests; }
 
@@ -119,9 +119,9 @@ public class UserData extends PersonData {
     public HashMap<String, String> getExtraQuestions() { return extraQuestions; }
 
     //set-methods
-    public void setInterviewsAll(HashMap<String, Boolean> interviewsAll) { this.interviewsAll = interviewsAll; }
+    public void setInterviewsOwn(HashMap<String, Boolean> interviewsOwn) { this.interviewsOwn = interviewsOwn; }
 
-    public void setInterviewsAssociated(HashMap<String, Boolean> interviewsAssociated) { this.interviewsAssociated = interviewsAssociated; }
+    public void setInterviewsAll(HashMap<String, Boolean> interviewsAll) { this.interviewsAll = interviewsAll; }
 
     public void setGuests(HashMap<String, String> guests) { this.guests = guests; }
 
