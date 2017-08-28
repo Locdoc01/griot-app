@@ -39,12 +39,14 @@ import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.views.TagView;
 
-
+/**
+ * Activity that shows the details of a selected interview, including al of its belonging interview questions
+ */
 public class DetailsInterviewActivity extends GriotBaseActivity {
 
     private static final String TAG = DetailsInterviewActivity.class.getSimpleName();
 
-    // intent-data
+    //Intent-data
     private String selectedInterviewID;
     private String interviewTitle;
     private String dateYear;
@@ -66,13 +68,13 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private String[] tags;
     private int numberComments;
 
-    // views
+    //List header & footer
     private View mListHeader;
     private View mListFooter;
 
+    //Views
     private ImageView mMediaPlayer;
     private ImageView mMediaPlayerForeground;
-//    private ImageView mMediaPlayerPlaceholder;
     private ProfileImageView mPivInterviewer;
     private ProfileImageView mPivNarrator;
     private TextView mTextViewInterviewer;
@@ -91,10 +93,10 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private ImageView mButtonPostComment;
     private View.OnClickListener clickListener;
 
-    // ListView, that holds the interview items
+    //ListView, that holds the interview question items
     private ListView mListViewInterviewQuestions;
 
-    // data list
+    //ArrayList containing the data of interview questions
     private ArrayList<LocalInterviewQuestionData> mListLocalInterviewQuestionData;
 
     //Data-View-Adapter for the ListView
@@ -104,6 +106,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Get intent data
         selectedInterviewID = getIntent().getStringExtra("selectedInterviewID");
 
         interviewTitle = getIntent().getStringExtra("interviewTitle");
@@ -126,18 +129,19 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         tags = getIntent().getStringArrayExtra("tags");
         numberComments = getIntent().getIntExtra("numberComments", 0);
 
+        //Hides the app bar
         mAppBar.setVisibility(View.GONE);
         mLineAppBar.setVisibility(View.GONE);
         //mTitle.setText(interviewTitle);
 //        mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
+        //Inflates ListView header & footer layouts
         mListHeader = getLayoutInflater().inflate(R.layout.listheader_details_interview, null);
         mListFooter = getLayoutInflater().inflate(R.layout.listfooter_details_interview, null);
 
-        //Header views
+        //Get references to header layout objects
         mMediaPlayer = (ImageView) mListHeader.findViewById(R.id.mediaPlayer);
         mMediaPlayerForeground = (ImageView) mListHeader.findViewById(R.id.mediaPlayer_foreground);
-//        mMediaPlayerPlaceholder = (ImageView) mListHeader.findViewById(R.id.mediaPlayer_placeholder);
         mPivInterviewer = (ProfileImageView) mListHeader.findViewById(R.id.piv_interviewer);
         mPivNarrator = (ProfileImageView) mListHeader.findViewById(R.id.piv_narrator);
         mTextViewInterviewer = (TextView) mListHeader.findViewById(R.id.textView_interviewer);
@@ -149,19 +153,21 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewInterviewTitle = (TextView) mListHeader.findViewById(R.id.textView_interview_title);
         mDate = (TextView) mListHeader.findViewById(R.id.textView_date);
         mLayoutScrollViewTags = (LinearLayout) mListHeader.findViewById(R.id.layout_scrollView_tags);
-        //Footer views
+        //Get references to footer layout objects
         mTextViewTopic = (TextView) mListFooter.findViewById(R.id.textView_topic);
         mLayoutScrollViewVisibility = (LinearLayout) mListFooter.findViewById(R.id.layout_scrollView_visibility);
         mTextViewComments = (TextView) mListFooter.findViewById(R.id.textView_comments);
         mEditTextPostComment = (EditText) mListFooter.findViewById(R.id.editText_post_comment);
         mButtonPostComment = (ImageView) mListFooter.findViewById(R.id.button_post_comment);
 
+        //Initialize mediaPlayer
         if (pictureLocalURI != null) {
             if (Uri.parse(pictureLocalURI) != null) {
                 ImageView test = new ImageView(this);
                 test.setImageURI(Uri.parse(pictureLocalURI));
                 if (test.getDrawable() != null) {
                     mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
+                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
                     if (medium.equals("audio")) {
                         mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -171,13 +177,11 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                         mMediaPlayer.setColorFilter(filter);
                         mMediaPlayerForeground.setVisibility(View.VISIBLE);
                     }
-
-//                    mMediaPlayerPlaceholder.setVisibility(View.GONE);
-//                    mMediaPlayer.setVisibility(View.VISIBLE);
                 }
             }
         }
 
+        //Initialize other header & footer views
         mPivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
         mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
         mTextViewInterviewer.setText(interviewerName);
@@ -186,6 +190,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewInterviewTitle.setText(interviewTitle);
         mDate.setText(dateDay + "." + dateMonth + "." + dateYear);
 
+        // create TagViews and add them to ScrollView
         for (int i=0 ; i<tags.length ; i++) {
             TagView tagView = new TagView(this);
             tagView.setTag(tags[i]);
@@ -212,11 +217,13 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
 
         mTextViewComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
 
+        // set OnClickListener to button views
         clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.button_interviewer:
+                        Log.d(TAG, "interviewer clicked: ");
                         Intent intent;
                         if (interviewerID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(DetailsInterviewActivity.this, OwnProfileInputActivity.class);
@@ -227,6 +234,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                         startActivity(intent);
                         break;
                     case R.id.button_narrator:
+                        Log.d(TAG, "narrator clicked: ");
                         if (narratorID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(DetailsInterviewActivity.this, OwnProfileInputActivity.class);
                         } else if (narratorIsUser) {
@@ -239,9 +247,11 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                         startActivity(intent);
                         break;
                     case R.id.button_comments:
+                        Log.d(TAG, "comments clicked: ");
                         Toast.makeText(DetailsInterviewActivity.this, "Show Comments", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.button_options:
+                        Log.d(TAG, "options clicked: ");
                         Toast.makeText(DetailsInterviewActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -256,15 +266,19 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
 
         mListLocalInterviewQuestionData = new ArrayList<>();
 
+        //get reference to ListView and add header & footer
         mListViewInterviewQuestions = (ListView) findViewById(R.id.listView_interviewQuestions);
         mListViewInterviewQuestions.addHeaderView(mListHeader);
         mListViewInterviewQuestions.addFooterView(mListFooter);
 
+        // set OnItemClickListener to the ListView to start DetailsInterviewQuestionDataActivity for the clicked Question
         mListViewInterviewQuestions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //adding a ListViewHeader causes an increasing of position by 1, so it has to be decreased to get the right position value
                 position--;
+
+                //create Intent and put extra data to it
                 Intent intent = new Intent(DetailsInterviewActivity.this, DetailsInterviewQuestionActivity.class);
                 intent.putExtra("selectedInterviewQuestionID", mLocalInterviewQuestionDataAdapter.getItem(position).getContentID());
 
@@ -313,7 +327,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         });
 
 
-        // Obtains all necessary data from Firebase
+        // Set ValueEventListener to obtains all interview question data from Firebase
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -383,8 +397,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //mDatabaseRef = mDatabaseRootReference.child("interviewQuestions");
-        //mDatabaseRef.addValueEventListener(mValueEventListener);
+        //Obtain data from Firebase
         mQuery = mDatabaseRootReference.child("interviewQuestions").orderByChild("interviewID").equalTo(selectedInterviewID);
         mQuery.addValueEventListener(mValueEventListener);
     }

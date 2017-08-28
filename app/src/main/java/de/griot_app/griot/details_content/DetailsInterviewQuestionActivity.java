@@ -5,6 +5,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,12 +23,14 @@ import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.views.TagView;
 
-
+/**
+ * Activity that shows the details of a selected interview question
+ */
 public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
     private static final String TAG = DetailsInterviewQuestionActivity.class.getSimpleName();
 
-    // intent-data
+    //Intent-data
     private String selectedInterviewQuestionID;
     private String question;
     private String dateYear;
@@ -49,10 +52,9 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private String[] tags;
     private int numberComments;
 
-    // views
+    //Views
     private ImageView mMediaPlayer;
     private ImageView mMediaPlayerForeground;
-//    private ImageView mMediaPlayerPlaceholder;
     private ProfileImageView mPivInterviewer;
     private ProfileImageView mPivNarrator;
     private TextView mTextViewInterviewer;
@@ -72,6 +74,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Get intent data
         selectedInterviewQuestionID = getIntent().getStringExtra("selectedInterviewQuestionID");
 
         question = getIntent().getStringExtra("question");
@@ -94,15 +97,15 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         tags = getIntent().getStringArrayExtra("tagsQuestion");
         numberComments = getIntent().getIntExtra("numberComments", 0);
 
+        //Hides the app bar
         mAppBar.setVisibility(View.GONE);
         mLineAppBar.setVisibility(View.GONE);
         //mTitle.setText(question);
 //        mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
-
+        //Get references to layout objects
         mMediaPlayer = (ImageView) findViewById(R.id.mediaPlayer);
         mMediaPlayerForeground = (ImageView) findViewById(R.id.mediaPlayer_foreground);
-//        mMediaPlayerPlaceholder = (ImageView) findViewById(R.id.mediaPlayer_placeholder);
         mPivInterviewer = (ProfileImageView) findViewById(R.id.piv_interviewer);
         mPivNarrator = (ProfileImageView) findViewById(R.id.piv_narrator);
         mTextViewInterviewer = (TextView) findViewById(R.id.textView_interviewer);
@@ -117,12 +120,14 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
 
+        //Initialize mediaPlayer
         if (pictureLocalURI != null) {
             if (Uri.parse(pictureLocalURI) != null) {
                 ImageView test = new ImageView(this);
                 test.setImageURI(Uri.parse(pictureLocalURI));
                 if (test.getDrawable() != null) {
                     mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
+                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
                     if (medium.equals("audio")) {
                         mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -132,12 +137,11 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                         mMediaPlayer.setColorFilter(filter);
                         mMediaPlayerForeground.setVisibility(View.VISIBLE);
                     }
-//                    mMediaPlayerPlaceholder.setVisibility(View.GONE);
-//                    mMediaPlayer.setVisibility(View.VISIBLE);
                 }
             }
         }
 
+        //Initialize other views
         mPivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
         mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
         mTextViewInterviewer.setText(interviewerName);
@@ -146,6 +150,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mTextViewQuestion.setText(question);
         mDate.setText(dateDay + "." + dateMonth + "." + dateYear);
 
+        // create TagViews and add them to ScrollView
         for (int i=0 ; i<tags.length ; i++) {
             TagView tagView = new TagView(this);
             tagView.setTag(tags[i]);
@@ -170,11 +175,13 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         }
         //TODO: associated users & guests zur ScrollView hinzufügen
 
+        // set OnClickListener to button views
         clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.button_interviewer:
+                        Log.d(TAG, "interviewer clicked: ");
                         Intent intent;
                         if (interviewerID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(DetailsInterviewQuestionActivity.this, OwnProfileInputActivity.class);
@@ -185,6 +192,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                         startActivity(intent);
                         break;
                     case R.id.button_narrator:
+                        Log.d(TAG, "narrator clicked: ");
                         if (narratorID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(DetailsInterviewQuestionActivity.this, OwnProfileInputActivity.class);
                         } else if (narratorIsUser) {
@@ -197,9 +205,11 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                         startActivity(intent);
                         break;
                     case R.id.button_comments:
+                        Log.d(TAG, "comments clicked: ");
                         Toast.makeText(DetailsInterviewQuestionActivity.this, "Show Comments", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.button_options:
+                        Log.d(TAG, "options clicked: ");
                         Toast.makeText(DetailsInterviewQuestionActivity.this, "Show Options", Toast.LENGTH_SHORT).show();
                         break;
                 }
