@@ -37,35 +37,39 @@ import de.griot_app.griot.dataclasses.GuestData;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.views.ProfileImageView;
 
+/**
+ * Input activity, which allows to create a new guest profile or to show an existing one.
+ * If an existing profile is shown, it can be altered and saved again.
+ */
 public class GuestProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = GuestProfileInputActivity.class.getSimpleName();
 
-    private static final int REQUEST_GALLERY = 888;
+    //private static final int REQUEST_GALLERY = 888;
 
-    private boolean mImageChanged = false;
-    private boolean mDateSet = false;
-
-    //intent-data
+    //Intent data
     private String contactID;
 
+    //Views
     private ProfileImageView mProfileImage;
-    private Uri mUriLocalProfileImage;
-
     private EditText mEditFirstname;
     private EditText mEditLastname;
     private EditText mEditEmail;
-
     private ImageView mButtonDatePicker;
-    private Calendar mCalendar;
     private DatePickerDialog mDatePickerDialog;
     private TextView mTextViewDate;
     private TextView mTextViewRelationship;
-
     private Button mButtonSave;
+
+    private Calendar mCalendar;
+    private Uri mUriLocalProfileImage;
 
     private View.OnClickListener mClickListener;
     private View.OnTouchListener mTouchListener;
+
+    //Switch variables
+    private boolean mImageChanged = false;
+    private boolean mDateSet = false;
 
     //Data class object
     private GuestData mGuestData;
@@ -77,8 +81,12 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Get possible intent data
         contactID = getIntent().getStringExtra("contactID");
 
+        //If the contactID of an existing guest was obtained by intent, the appropriate profile for that guest will be shown.
+        //Otherwise the profile form shows up empty
+        //Title and center navigation button are set accordingly
         if (contactID!=null) {
             mTitle.setText(R.string.title_guest_profile);
             mButtonCenter.setText(R.string.button_back);
@@ -87,18 +95,21 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             mButtonCenter.setText(R.string.button_cancel);
         }
 
+        //Hide left and right base navigation buttons
         mButtonLeft.setVisibility(View.GONE);
         mButtonRight.setVisibility(View.GONE);
 
-        //Initialization of views for create account tab
+        //Get references to the layout objects
         mProfileImage = (ProfileImageView) findViewById(R.id.piv_profile_image);
-        mUriLocalProfileImage = null;
-
         mEditFirstname = (EditText) findViewById(R.id.editText_firstname);
         mEditLastname = (EditText) findViewById(R.id.editText_lastname);
         mEditEmail = (EditText) findViewById(R.id.editText_email);
-
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
+        mTextViewDate = (TextView) findViewById(R.id.textView_date);
+        mTextViewRelationship = (TextView) findViewById(R.id.textView_relationship);
+        mButtonSave = (Button) findViewById(R.id.button_save);
+
+        //Set date
         mCalendar = Calendar.getInstance();
         if (contactID==null) {
             int year = mCalendar.get(Calendar.YEAR);
@@ -106,11 +117,10 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             int day = mCalendar.get(Calendar.DAY_OF_MONTH);
             mDatePickerDialog = new DatePickerDialog(GuestProfileInputActivity.this, GuestProfileInputActivity.this, year, month, day);
         }
-        mTextViewDate = (TextView) findViewById(R.id.textView_date);
-        mTextViewRelationship = (TextView) findViewById(R.id.textView_relationship);
 
-        mButtonSave = (Button) findViewById(R.id.button_save);
+        mUriLocalProfileImage = null;
 
+        //Hide possible error messages from input views by click in one of them
         mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +131,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
             }
         };
 
+        //OnTouchListener for button views
         mTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -140,6 +151,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     case MotionEvent.ACTION_UP:
                         switch (v.getId()) {
                             case R.id.piv_profile_image:
+                                Log.d(TAG, "profile image clicked: ");
                                 mImageChanged = true;
                                 CropImage.activity()
                                         .setGuidelines(CropImageView.Guidelines.ON)
@@ -147,6 +159,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                                         .start(GuestProfileInputActivity.this);
                                 return true;
                             case R.id.button_datepicker:
+                                Log.d(TAG, "datepicker clicked: ");
                                 ((ImageView)v).setColorFilter(ContextCompat.getColor(GuestProfileInputActivity.this, R.color.colorGriotDarkgrey));
                                 if (!mDateSet) {
                                     int year = mCalendar.get(Calendar.YEAR);
@@ -157,6 +170,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                                 mDatePickerDialog.show();
                                 return true;
                             case R.id.button_save:
+                                Log.d(TAG, "save button clicked: ");
                                 ((TextView)v).setTextColor(ContextCompat.getColor(GuestProfileInputActivity.this, R.color.colorGriotDarkgrey));
                                 saveProfile();
                                 return true;
@@ -174,8 +188,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         mProfileImage.setOnTouchListener(mTouchListener);
         mButtonDatePicker.setOnTouchListener(mTouchListener);
         mButtonSave.setOnTouchListener(mTouchListener);
-
-        //mGuestData = new GuestData();
     }
 
     @Override
@@ -189,7 +201,8 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     @Override
     protected void doOnStartAfterLoadingUserInformation() {}
 
-    //called, when a date was set through mDatePickerDialog
+
+    //Sets the date to TextView and Calendar, when a date was set through mDatePickerDialog.
     @Override
     public void onDateSet(DatePicker datepicker, int year, int month, int day) {
         //set the chosen date to mDatePickerDialog, so that it will be set to this date on next call
@@ -201,7 +214,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     }
 
 
-    //called after an image was chosen and cropped on external Activity
+    //Sets the profile image, after an image was chosen and cropped on external Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -266,6 +279,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         return valid;
     }
 
+    /**
+     * Saves the input data to Firebase and creates a guest profile, if input data is valid.
+     */
     public void saveProfile() {
 
         if (!validateForm()) {
@@ -274,7 +290,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
         mGuestData = new GuestData();
 
-        // only on creating a new guest profile a push-key gets obtained from Firebase. Otherwise the altered profile will be stored to the same contactID
+        // only on creating a new guest profile a push-key gets obtained from Firebase database. Otherwise the altered profile will be stored to the same contactID
         if (contactID ==null) {
             contactID = mDatabaseRootReference.child("guests").push().getKey();
         }
@@ -282,11 +298,10 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         //set database reference to /guests/contactID
         mDatabaseRef = mDatabaseRootReference.child("guests").child(contactID);
 
-        //store userID as host to mGuestData
-        mGuestData.setHostID(mUserID);
         // Guest details from input form are stored in mGuestData
         mGuestData.setFirstname(mEditFirstname.getText().toString().trim());
         mGuestData.setLastname(mEditLastname.getText().toString().trim());
+        mGuestData.setHostID(mUserID);
         if (mDateSet) {
             mGuestData.setBirthday(mCalendar.getTime().toString());
             mGuestData.setBYear(mCalendar.get(Calendar.YEAR));
@@ -296,7 +311,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         mGuestData.setEmail(mEditEmail.getText().toString().trim());
         mGuestData.setRelationship(mTextViewRelationship.getText().toString());
 
-//        if (mImageChanged) {
             //set storage reference to /guests/contactID/profilePicture
             mStorageRef = mStorageRootReference.child("guests").child(contactID).child("profilePicture.jpg");
 
@@ -324,7 +338,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         doAfterUpload();
                     }
                 });
-            } else {
+            } else if (mLocalGuestData == null) {
                 mStorageRootReference.child("guests").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -342,13 +356,11 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         doAfterUpload();
                     }
                 });
+            } else {
+                mGuestData.setPictureURL(mLocalGuestData.getPictureURL());
+                mDatabaseRef.setValue(mGuestData);
+                doAfterUpload();
             }
-/*
-        } else {
-            mGuestData.setPictureURL(mLocalGuestData.getPictureURL());
-            mDatabaseRef.setValue(mGuestData);
-        }
-*/
     }
 
     private void doAfterUpload() {
