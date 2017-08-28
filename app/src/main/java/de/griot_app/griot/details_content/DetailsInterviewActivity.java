@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.details_content;
 
 import android.content.Intent;
 import android.graphics.ColorMatrix;
@@ -29,8 +29,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.adapters.LocalInterviewQuestionDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
+import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
 import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.views.TagView;

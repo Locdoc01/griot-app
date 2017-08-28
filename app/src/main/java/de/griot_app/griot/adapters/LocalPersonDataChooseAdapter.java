@@ -21,9 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import de.griot_app.griot.GuestProfileInputActivity;
-import de.griot_app.griot.OwnProfileInputActivity;
-import de.griot_app.griot.UserProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;

@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.contacts_profiles;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,19 +20,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
 import java.util.Calendar;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.views.ProfileImageView;
 

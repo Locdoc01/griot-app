@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="de.griot_app.griot.ChooseTopicInputActivity">
+    tools:context="de.griot_app.griot.perform_interview.ChooseTopicInputActivity">
 
     <TextView
         android:id="@+id/textView_person"

@@ -25,14 +25,13 @@ import com.google.firebase.storage.FileDownloadTask;
 import java.io.File;
 import java.util.ArrayList;
 
-import de.griot_app.griot.ContactManagmentActivity;
-import de.griot_app.griot.GuestProfileInputActivity;
-import de.griot_app.griot.OwnProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.ContactManagmentActivity;
+import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.adapters.LocalInterviewDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
-import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.views.ProfileImageView;
 
 public class MainProfileOverviewActivity extends GriotBaseActivity implements View.OnTouchListener {

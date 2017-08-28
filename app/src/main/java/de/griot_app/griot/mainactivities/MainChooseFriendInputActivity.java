@@ -2,7 +2,6 @@ package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
@@ -12,24 +11,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
-
-import de.griot_app.griot.ChooseMediumInputActivity;
-import de.griot_app.griot.ChooseTopicInputActivity;
+import de.griot_app.griot.perform_interview.ChooseMediumInputActivity;
+import de.griot_app.griot.perform_interview.ChooseTopicInputActivity;
 import de.griot_app.griot.adapters.CombinedPersonListCreator;
-import de.griot_app.griot.GuestProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
-import de.griot_app.griot.dataclasses.LocalUserData;
 
 
 /**

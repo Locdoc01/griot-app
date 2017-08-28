@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.contacts_profiles;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalUserData;
 import de.griot_app.griot.views.ProfileImageView;

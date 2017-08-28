@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.griot_app.griot.ChooseTopicInputActivity;
+import de.griot_app.griot.perform_interview.ChooseTopicInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalQuestionData;
 import de.griot_app.griot.dataclasses.LocalTopicData;

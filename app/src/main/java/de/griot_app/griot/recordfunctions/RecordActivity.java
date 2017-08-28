@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.ReviewInterviewInputActivity;
+import de.griot_app.griot.perform_interview.ReviewInterviewInputActivity;
 
 
 /**

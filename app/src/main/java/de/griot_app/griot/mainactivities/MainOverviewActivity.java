@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.griot_app.griot.DetailsInterviewActivity;
+import de.griot_app.griot.details_content.DetailsInterviewActivity;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.adapters.LocalInterviewDataAdapter;

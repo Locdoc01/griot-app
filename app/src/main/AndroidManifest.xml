@@ -49,27 +49,27 @@
         <activity
             android:name=".mainactivities.MainTopicCatalogActivity"
             android:parentActivityName=".mainactivities.MainOverviewActivity" />
-        <activity android:name=".ComposeQuestionRequestInputActivity" />
+        <activity android:name=".questionmail.ComposeQuestionRequestInputActivity" />
         <activity
-            android:name=".ChooseTopicInputActivity"
+            android:name=".perform_interview.ChooseTopicInputActivity"
             android:parentActivityName=".mainactivities.MainChooseFriendInputActivity" />
         <activity
-            android:name=".ChooseMediumInputActivity"
-            android:parentActivityName=".ChooseTopicInputActivity" />
-        <activity android:name=".ReviewInterviewInputActivity" />
-        <activity android:name=".SaveInterviewInputActivity" />
-        <activity android:name=".OwnProfileInputActivity" />
-        <activity android:name=".GuestProfileInputActivity" />
-        <activity android:name=".UserProfileInputActivity" />
-        <activity android:name=".ContactManagmentActivity" />
+            android:name=".perform_interview.ChooseMediumInputActivity"
+            android:parentActivityName=".perform_interview.ChooseTopicInputActivity" />
+        <activity android:name=".perform_interview.ReviewInterviewInputActivity" />
+        <activity android:name=".perform_interview.SaveInterviewInputActivity" />
+        <activity android:name=".contacts_profiles.OwnProfileInputActivity" />
+        <activity android:name=".contacts_profiles.GuestProfileInputActivity" />
+        <activity android:name=".contacts_profiles.UserProfileInputActivity" />
+        <activity android:name=".contacts_profiles.ContactManagmentActivity" />
         <activity
             android:name=".recordfunctions.RecordVideoActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".recordfunctions.RecordAudioActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".DetailsInterviewActivity" />
-        <activity android:name=".DetailsInterviewQuestionActivity"></activity>
+        <activity android:name=".details_content.DetailsInterviewActivity" />
+        <activity android:name=".details_content.DetailsInterviewQuestionActivity"></activity>
     </application>
 
 </manifest>

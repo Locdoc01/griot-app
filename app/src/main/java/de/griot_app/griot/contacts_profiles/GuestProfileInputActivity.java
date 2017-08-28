@@ -1,4 +1,4 @@
-package de.griot_app.griot;
+package de.griot_app.griot.contacts_profiles;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -31,6 +31,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.util.Calendar;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.GuestData;
 import de.griot_app.griot.dataclasses.LocalGuestData;

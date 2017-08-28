@@ -12,10 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import de.griot_app.griot.ComposeQuestionRequestInputActivity;
+import de.griot_app.griot.questionmail.ComposeQuestionRequestInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 import de.griot_app.griot.mainactivities.MainNotificationsActivity;

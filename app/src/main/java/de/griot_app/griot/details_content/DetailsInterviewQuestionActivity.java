@@ -1,37 +1,24 @@
-package de.griot_app.griot;
+package de.griot_app.griot.details_content;
 
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import de.griot_app.griot.adapters.LocalInterviewQuestionDataAdapter;
+import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
-import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
+import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
+import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.views.TagView;
 

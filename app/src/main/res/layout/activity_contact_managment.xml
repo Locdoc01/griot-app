@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="de.griot_app.griot.ContactManagmentActivity">
+    tools:context="de.griot_app.griot.contacts_profiles.ContactManagmentActivity">
 
     <Button
         android:id="@+id/tab_left"

@@ -1,9 +1,8 @@
-package de.griot_app.griot;
+package de.griot_app.griot.contacts_profiles;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.ListView;
 
 import com.google.firebase.database.Query;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 

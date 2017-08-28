@@ -1,9 +1,10 @@
-package de.griot_app.griot;
+package de.griot_app.griot.questionmail;
 
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
+import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 
 public class ComposeQuestionRequestInputActivity extends GriotBaseInputActivity {
