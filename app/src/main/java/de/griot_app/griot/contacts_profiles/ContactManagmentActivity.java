@@ -17,17 +17,22 @@ import de.griot_app.griot.baseactivities.GriotBaseActivity;
 
 
 /**
- *
+ * Activity provides the contact managmant, which holds one ListView for person contacts and one for group contacts in to tifferent tabs
+ * By clicking on a list item the appropriate profile for the contact gets opened.
+ * By clicking on add guest the add-guest-form gets opened
  */
 public class ContactManagmentActivity extends GriotBaseActivity {
 
     private static final String TAG = ContactManagmentActivity.class.getSimpleName();
 
-    private boolean mTabLeftSelected = true;
-
+    //Views for tabs
     private Button mTabLeft;
     private Button mTabRight;
 
+    //necessary for tab handling
+    private boolean mTabLeftSelected = true;
+
+    //OnClickListener for tabs
     private View.OnClickListener mTabListener;
 
     private EditText mEditTextSearchPerson;
@@ -37,12 +42,14 @@ public class ContactManagmentActivity extends GriotBaseActivity {
     private ListView mListViewPersons;
     private ListView mListViewGroups;
 
+    //Queries for obtaining information for all person contacts
     private Query mQueryGuests;
     private Query mQueryFriends;
+    //TODO: add queries for groups
 
     //Creates the PersonlistView as a combination of guest list data, friend list data and approriate headings
     private CombinedPersonListCreator mCombinedListCreator;
-    //TODO: ausprobieren, ob die Klasse auch für Gruppen geeignet ist
+    //TODO: check, if CombinePersonListCreator works for groups as well
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +70,17 @@ public class ContactManagmentActivity extends GriotBaseActivity {
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         mListViewGroups.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO specify to get only guests of the current user
+        mQueryFriends = mDatabaseRootReference.child("users");  //TODO specify to get only friends of the current user
 
-        //create the Combined ListView
+        //create the combined ListView
         mCombinedListCreator = new CombinedPersonListCreator(ContactManagmentActivity.this, mListViewPersons);
         mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_OPTIONS_MODE);
         mCombinedListCreator.add(mQueryGuests);
         mCombinedListCreator.add(mQueryFriends);
+        //TODO same for groups
 
-        mCombinedListCreator.loadData();
-        //TODO Gruppen
-
+        //OnClickListener, which control the tabs
         mTabListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,12 +133,8 @@ public class ContactManagmentActivity extends GriotBaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+        mCombinedListCreator.loadData();
+        //TODO same for groups
 
     }
 }
