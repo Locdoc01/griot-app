@@ -26,9 +26,16 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalUserData;
 
 /**
- *  Abstract base activity for all griot-app-activities.
- *  Provides Firebase-Authentification, Firebase-DatabaseReferences and Firebase-StorageReferences.
- *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed
+ *  Abstract base activity for all activities in griot-app.
+ *
+ *  Provides Firebase-Authentification, Firebase-DatabaseReferences, Firebase-StorageReferences
+ *  and loads own user information.
+ *
+ *  If some actions in subclasses have to be done AFTER own user information was obtained from Firebase, they can be put into
+ *  doOnStartAfterLoadingUserInformation(), which has to be overwritten in subclasses. This method gets called
+ *  in FirebaseActivity.onStart(), after own user information was obtained.
+ *
+ *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed.
  */
 public abstract class FirebaseActivity extends AppCompatActivity {
 
@@ -67,6 +74,14 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected abstract String getSubClassTAG();
 
 
+    /**
+     * Abstract method, which is called in onStart(), AFTER own user information was obtained from Firebase.
+     * This method has to be overwritten in subclasses an can be used to run code after own user information was obtained.
+     */
+    protected abstract void doOnStartAfterLoadingUserInformation();
+
+
+    //Get Firebase references and creates an AuthStateListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +98,6 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                 }
             }
         };
-
-        //TODO: verschieben an sichere Position (Zuweisung nur gültig bei angemeldetem User
-        mUser = mAuth.getCurrentUser();
-        //mUserID = mUser.getUid();
-        //TODO
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRootReference = mDatabase.getReference();
@@ -115,25 +125,32 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     public HashMap<String, LocalCommentData> getCommentData() { return mLocalCommentData; }
 */
 
+    //Set the AuthStateListener
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
 
+        // if the user is signed in, obtain user information
         if (mAuth.getCurrentUser() != null) {
             loadUserInformation();
         }
     }
 
+    //Remove the AuthStateListener
     @Override
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
+    //Obtain own user information
     protected void loadUserInformation() {
+        Log.d(getSubClassTAG(), "loadUserInformation: ");
+
         mUser = mAuth.getCurrentUser();
         mUserID = mUser.getUid();
+
         Query query = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -159,9 +176,9 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                             mOwnUserData.setPictureLocalURI(path);
 
-                            //specified in subclasses
+                            //Gets specified in subclasses
                             doOnStartAfterLoadingUserInformation();
-                            //TODO: Falls Fehler auftreten, nach "TODO hier" verschieben
+                            //TODO: Falls Fehler auftreten, nach "hier" verschieben
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -170,26 +187,22 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                             Log.e(getSubClassTAG(), "Error downloading user profile image file");
                             mOwnUserData.setPictureLocalURI("");
 
-                            //specified in subclasses
+                            //Gets specified in subclasses
                             doOnStartAfterLoadingUserInformation();
-                            //TODO: Falls Fehler auftreten, nach "TODO hier" verschieben
+                            //TODO: Falls Fehler auftreten, nach "hier" verschieben
 
                         }
                     });
                 } catch (Exception e) {}
 
-                //TODO hier
-
+                //hier
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //TODO
             }
         });
     }
-
-    protected abstract void doOnStartAfterLoadingUserInformation();
 
 }
 

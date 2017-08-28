@@ -22,12 +22,13 @@ import de.griot_app.griot.mainactivities.MainQuestionmailActivity;
 import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
 
 /**
- *  Abstract base activity for usual griot-app-activities.
- *  Provides the following base functionality: title bar, bottom button bar, floating action button,
- *  Firebase-Authentification, Firebase-DatabaseReferences and Firebase-StorageReferences.
- *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed
- *  TODO MainMenu
+ * Abstract base activity for usual activities of griot-app.
+ *
+ * Provides the following base functionality:
+ * title bar, bottom button bar, floating action button, progress bar, main menu, options menues
+ * and all functionalities from FirebaseActivity.
  */
+ //TODO main menu & options menues
 public abstract class GriotBaseActivity extends FirebaseActivity implements View.OnClickListener {
 
     protected Toolbar mAppBar;
@@ -64,12 +65,12 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mAppBar = (Toolbar) findViewById(R.id.base_app_bar);
         setSupportActionBar(mAppBar);
 
-        //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
+        //hides the title, since centering it is not supported. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
+
+        // get references to the layout objects
         mTitle = (TextView) findViewById(R.id.base_title);
-
         mLineAppBar = (ImageView) findViewById(R.id.base_line_top);
-
         mButtonHome = (ImageView) findViewById(R.id.button_home);
         mButtonProfile = (ImageView) findViewById(R.id.button_profile);
         mButtonRecord = (ImageView) findViewById(R.id.button_record);
@@ -77,6 +78,9 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
         mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
         mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
+        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
+        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
+        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
 
         mButtonHome.setOnClickListener(this);
         mButtonProfile.setOnClickListener(this);
@@ -84,10 +88,6 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mButtonNotifications.setOnClickListener(this);
         mButtonTopicCatalog.setOnClickListener(this);
         mButtonQuestionmail.setOnClickListener(this);
-
-        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
-        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
-        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
     }
 
     @Override
@@ -101,10 +101,14 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
     @Override
     protected void onPause() {
         super.onPause();
-        // stops default animation, in case of changing the Activity
+        // stops default animation, when Activity changes
         overridePendingTransition(0, 0);
     }
 
+    /**
+     * Shows the progress bar along with the given message
+     * @param message
+     */
     protected void showProgressBar(String message) {
         mButtonHome.setOnClickListener(null);
         mButtonProfile.setOnClickListener(null);
@@ -120,11 +124,18 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Hides the progress bar and shows the given finish-message
+     * @param message
+     */
     protected void showProgressBarFinishMessage(String message) {
         mProgressBar.setVisibility(View.GONE);
         mTextViewProgress.setText(message);
     }
 
+    /**
+     * Hides progress bar and progress message and shows usual layout
+     */
     protected void hideProgressBar() {
         mButtonHome.setOnClickListener(this);
         mButtonProfile.setOnClickListener(this);

@@ -12,19 +12,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import de.griot_app.griot.R;
 
 /**
- * BaseActivity for griot-app-activities which are involved in input dialogs.
- * Provides base functionality for those activities like title bar and navigation bar.
+ * Abstract base activity for activities of griot-app, which take user input.
+ *
+ * Provides the following base functionality:
+ * Title bar, customizable navigation buttons at the bottom, a progress bar
+ * and all functionalities from FirebaseActivity.
  */
 public abstract class GriotBaseInputActivity extends FirebaseActivity implements View.OnTouchListener {
-
-    //TODO: löschen
-    //private static final String TAG = GriotBaseInputActivity.class.getSimpleName();
 
     protected Toolbar mAppbar;
 
@@ -46,12 +43,11 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
     protected abstract int getSubClassLayoutId();
 
     /**
-     * methods, which provide the functionality for subclass-specific bottom buttons.
+     * methods, which provide the customizable functionality for subclass-specific bottom buttons.
      * If a button is needed in subclass, implement the apropriate method with the needed code and set the text to the button in subclass
      * (by default it's set with empty text). Otherwise leave it as it is.
      * This methods are called from onTouch()-method of GriotBaseInputActivity.
      */
-    //Like that onTouch() can be implemented in superclass, although triggered funcionality is specific and only known to subclass
     protected void buttonLeftPressed() {}
     protected void buttonCenterPressed() {}
     protected void buttonRightPressed() {}
@@ -67,23 +63,20 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         mAppbar = (Toolbar) findViewById(R.id.base_app_bar);
         setSupportActionBar(mAppbar);
 
-        //hides the title, since it's to complicated to center it. Instead a seperate TextView is used for showing the title in center-position
+        //hides the title, since centering it is not supported. Instead a seperate TextView is used for showing the title in center-position
         getSupportActionBar().setTitle("");
 
         mTitle = (TextView) findViewById(R.id.base_title);
-
-
         mButtonLeft = (Button) findViewById(R.id.button_left);
         mButtonCenter = (Button) findViewById(R.id.button_center);
         mButtonRight = (Button) findViewById(R.id.button_right);
+        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
+        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
+        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
 
         mButtonLeft.setOnTouchListener(this);
         mButtonCenter.setOnTouchListener(this);
         mButtonRight.setOnTouchListener(this);
-
-        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
-        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
-        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
     }
 
     @Override
@@ -94,6 +87,10 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    /**
+     * Shows the progress bar along with the given message
+     * @param message
+     */
     protected void showProgressBar(String message) {
         mButtonLeft.setVisibility(View.GONE);
         mButtonCenter.setVisibility(View.GONE);
@@ -106,11 +103,18 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Hides the progress bar and shows the given finish-message
+     * @param message
+     */
     protected void showProgressBarFinishMessage(String message) {
         mProgressBar.setVisibility(View.GONE);
         mTextViewProgress.setText(message);
     }
 
+    /**
+     * Hides progress bar and progress message and shows usual layout
+     */
     protected void hideProgressBar() {
         mButtonLeft.setVisibility(View.VISIBLE);
         mButtonCenter.setVisibility(View.VISIBLE);
@@ -122,6 +126,8 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
     }
 
 
+    // OnTouchListener for customizable navigation buttons.
+    // If a button is needed in subclass, implement the functionality in the appropriate method in subclass
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
