@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,38 +30,46 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 
 /**
- * Created by marcel on 08.08.17.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
+ *
+ * This adapter is specialized for ListViews, which allows the user to choose a contact.
+ * Use CombinedPersonListCreator to obtain a combined ListView of all contacts and set CombinedPersonListCreator.mMode either to
+ * CombinedPersonListCreator.PERSONS_CHOOSE_MODE or CombinedPersonListCreator.GROUPS_CHOOSE_MODE, using setMode().
  */
-
 public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> {
 
     private static final String TAG = LocalPersonDataChooseAdapter.class.getSimpleName();
 
     private final Context mContext;
 
-    private int position;
+    //The ArrayList containing the LocalPersonData-objects
+    private ArrayList<LocalPersonData> mListData;
+
+    //Views, which are shown in every ListView item
     private TextView tvCategory;
     private FrameLayout listSeperator;
     private ProfileImageView pivPerson;
     private TextView tvPerson;
     private ImageView btnCheck;
 
+    //necessary for OnTouchListener
     private ConstraintLayout mTouchedParent = null;
 
-    private ArrayList<LocalPersonData> mListData;
-
+    //constructor
     public LocalPersonDataChooseAdapter(Context context, ArrayList<LocalPersonData> data) {
         super(context, R.layout.listitem_contact, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
 
+    //inflates the layout for every ListView item and initializes its views
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.listitem_contact, null);
 
+        // get references to the objects, which are created during the intflation of the layout xml-file
         tvCategory = (TextView) v.findViewById(R.id.category);
         listSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
         pivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
@@ -68,6 +77,36 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         btnCheck = (ImageView) v.findViewById(R.id.button_item);
         btnCheck.setImageResource(R.drawable.check);
 
+        //show List category
+        if (mListData.get(position).getCategory()!=null) {
+            listSeperator.setVisibility(View.VISIBLE);
+            tvCategory.setText(mListData.get(position).getCategory());
+        } else {
+            listSeperator.setVisibility(View.GONE);
+        }
+
+        //show check mark, if item got selected
+        if (mListData.get(position).getSelected()) {
+            btnCheck.setVisibility(View.VISIBLE);
+        } else {
+            btnCheck.setVisibility(View.GONE);
+        }
+
+        //show profile pictures, if available, otherwise show placeholder
+        if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
+            pivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
+            pivPerson.getProfileImagePlus().setVisibility(View.GONE);
+            pivPerson.getProfileImageCircle().setVisibility(View.GONE);
+        } else {
+            try {
+                pivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+            } catch (Exception e) {
+            }
+        }
+
+        tvPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
+
+        //Set an OnTouchListener for clickable views
         View.OnTouchListener touchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -98,10 +137,14 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
                         switch (v.getId()) {
                             case R.id.textView_person:
                             case R.id.piv_person:
+                                Log.d(TAG, "person clicked: ");
                                 Intent intent;
+                                //If first guest item was clicked, nothing happens. (First item is for adding a guest, which gets triggered through OnListItemClickListener)
                                 if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
                                     return false;
                                 }
+                                //If clicked person was the user himself, his own user profile gets opened
+                                //Otherwise the persons user profile or guest profile gets opened, depending if person is user or guest
                                 if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                     intent = new Intent(mContext, OwnProfileInputActivity.class);
                                 } else if (getItem(position).getIsUser()) {
@@ -122,33 +165,6 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
 
         pivPerson.setOnTouchListener(touchListener);
         tvPerson.setOnTouchListener(touchListener);
-
-        this.position = position;
-
-        if (mListData.get(position).getCategory()!=null) {
-            listSeperator.setVisibility(View.VISIBLE);
-            tvCategory.setText(mListData.get(position).getCategory());
-        } else {
-            listSeperator.setVisibility(View.GONE);
-        }
-
-        if (mListData.get(position).getSelected()) {
-            btnCheck.setVisibility(View.VISIBLE);
-        } else {
-            btnCheck.setVisibility(View.GONE);
-        }
-        if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
-            pivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            pivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            pivPerson.getProfileImageCircle().setVisibility(View.GONE);
-        } else {
-            try {
-                pivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
-            } catch (Exception e) {
-            }
-        }
-
-        tvPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
 
         return v;
     }

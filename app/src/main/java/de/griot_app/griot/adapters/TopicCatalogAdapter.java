@@ -19,9 +19,11 @@ import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 
 /**
- * Created by marcel on 15.08.17.
+ * ArrayList-ListView-Adapter, which converts an SparseArray of LocalTopicData-objects into ExpandableListView group items.
+ * The LocalTopicData-objects holds ArrayLists of LocalQuestionData-objects, which are converted into ExpandableListView child items.
+ * Thus the result is a two-dimensional ListView, which is used fot the topic catalog
  */
-//TODO: gelöschte StandardTopics und StandardFragen ausblenden (herausfinden, wie man ListItems abhängig vom Datensatz entfernt)
+//TODO: hide deleted standardTopics and standardFragen (find out, how to delete ListView items depending on the data)
 
 public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
@@ -29,6 +31,10 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     private final Context mContext;
 
+    //The SparseArray containing the LocalTopicData-objects
+    private SparseArray<LocalTopicData> mTopics;
+
+    //Views, which are shown in every ListView item
     private TextView tvTopic;
     private ImageView btnCheck;
     private ImageView btnExpand;
@@ -37,11 +43,16 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private TextView tvQuestion;
     private ImageView btnToggle;
 
-    //needed to distinguish between functionality of ChooseTopicInputActivity and MainTopicCatalogActivity
+    //Needed to distinguish between functionality of ChooseTopicInputActivity and MainTopicCatalogActivity
     private boolean topicsCheckable;
 
-    private SparseArray<LocalTopicData> mTopics;
+    //Constructors
 
+    /**
+     * Default-constructor. Topics are not checkable by default.
+     * @param context Calling Activity
+     * @param catalog Object of TopicCatalog, which holds all data of topics and questions.
+     */
     public TopicCatalogAdapter(Context context, TopicCatalog catalog) {
         mContext = context;
         mTopics = catalog.getTopics();
@@ -49,6 +60,12 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     }
 
+    /**
+     * Constructor, which allows to set topicsCheckable. If set to true, topics can be selected. Only one topic can be selected at a time.
+     * @param context Calling Activity
+     * @param catalog Object of TopicCatalog, which holds all data of topics and questions.
+     * @param topicsCheckable If set to true, topics can be selected. Only one topic can be selected at a time.
+     */
     public TopicCatalogAdapter(Context context, TopicCatalog catalog, boolean topicsCheckable) {
         mContext = context;
         mTopics = catalog.getTopics();
@@ -56,14 +73,15 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     }
 
+    //inflates the layout for every ListView group item and initializes its views
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_topic, null);
-        }
-        tvTopic = (TextView) convertView.findViewById(R.id.textView_topic);
-        btnCheck = (ImageView) convertView.findViewById(R.id.button_check);
-        btnExpand = (ImageView) convertView.findViewById(R.id.button_expand);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_topic, null);
+
+        // get references to the objects, which are created during the intflation of the layout xml-file
+        tvTopic = (TextView) v.findViewById(R.id.textView_topic);
+        btnCheck = (ImageView) v.findViewById(R.id.button_check);
+        btnExpand = (ImageView) v.findViewById(R.id.button_expand);
 
         tvTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
 
@@ -85,25 +103,23 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
         if (!topicsCheckable) {
             btnCheck.setVisibility(View.GONE);
-        }
-
-        // if the button is clicked, the appropriate topic gets selected (or unselected)
-        btnCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ChooseTopicInputActivity)mContext).buttonCheckClicked(groupPosition);     //TODO Funktioniert nur für ChooseTopicInputActivity
-            }
-        });
-
-        if (mTopics.get(groupPosition).getSelected()) {
-            btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_on, null));
         } else {
-            btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_off, null));
+            // if the button is clicked, the appropriate topic gets selected (or unselected)
+            btnCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ChooseTopicInputActivity) mContext).buttonCheckClicked(groupPosition);     //TODO works only for ChooseTopicInputActivity
+                }
+            });
+            if (mTopics.get(groupPosition).getSelected()) {
+                btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_on, null));
+            } else {
+                btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_off, null));
+            }
         }
-        return convertView;
+
+        return v;
     }
-
-
 
     @Override
     public void onGroupCollapsed(int groupPosition) {
@@ -113,7 +129,6 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     @Override
     public void onGroupExpanded(int groupPosition) {
         super.onGroupExpanded(groupPosition);
-
     }
 
     @Override
@@ -131,10 +146,12 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         return mTopics.size();
     }
 
+    //inflates the layout for every ListView child item and initializes its views
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v;
         if (childPosition==0) {
+            // head item for question group.
             v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_title_questions, null);
 
             btnAddQuestion = (ImageView) v.findViewById(R.id.button_add_question);
@@ -145,8 +162,8 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
                     Toast.makeText(mContext, "Frage hinzufügen", Toast.LENGTH_SHORT).show();
                 }
             });
-
         } else {
+            //other items in question group
             v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_question, null);
 
             tvTitleQuestions = (TextView) v.findViewById(R.id.textView_title_questions);
@@ -161,25 +178,8 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             } else if (child.getQuestionState()==LocalQuestionData.QuestionState.ON) {
                 btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
             } else {
-                 //TODO: Möglichkeit, Fragen zu löschen später implementieren
+                 //TODO: ability to delete questions
             }
-
-            /*
-            btnToggle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LocalQuestionData data = (LocalQuestionData) getChild(groupPosition, childPosition);
-                    if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
-                        ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
-                        data.setQuestionState(LocalQuestionData.QuestionState.ON);
-                    } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
-                        ((ImageView) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
-                        data.setQuestionState(LocalQuestionData.QuestionState.OFF);
-                    }
-//                notifyDataSetChanged();
-                }
-            });
-            */
         }
         return v;
     }

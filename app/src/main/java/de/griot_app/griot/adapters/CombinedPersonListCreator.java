@@ -10,8 +10,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -27,64 +25,85 @@ import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
 
 /**
- * Loads data lists from Firebase from several locations in several single querys,
- * adds the data to several query-specific list-containers,
- * adds a category headLine identical to the database-node to the first entry of each container,
+ * Loads data lists from Firebase Database from several locations in several single querys,
+ * adds the data to several query-specific ArrayList-containers,
+ * adds a category headLine to the first entry of each ArrayList identical to the database-node,
  * puts the single lists together to a combined list
- * and set the corespondend adapter to the ListView.
+ * and set the correspondent adapter to the ListView.
  * The own user data gets stored as own category at the top of the list.
- * First Element of the guest category is a special item, that allows to add a new guest profile
+ * First Element of the guests category is a special item, that allows to add a new guest profile
  */
 public class CombinedPersonListCreator {
 
     private static final String TAG = CombinedPersonListCreator.class.getSimpleName();
 
+    //TODO: change "person" to "contact"
+
+    /**
+     * Determine the mode for the correspondent ListView.
+     * PERSONS_OPTIONS_MODE : Creates a person contacts ListView and shows options button for every item, which, when clicked opens the options menu for the appropriate item.
+     * PERSONS_CHOOSE_MODE : Creates a person contacts ListView and makes the items selectable. Only one item is selectable at a time. If an item got selected,
+     * it shows a check-sign and the appropriate DataClass-Object stores the selected state
+     * GROUPS_OPTIONS_MODE : Creates a group contacts ListView and shows options button for every item, which, when clicked opens the options menu for the appropriate item.
+     * GROUPS_CHOOSE_MODE : Creates a group contacts ListView and makes the items selectable. Only one item is selectable at a time. If an item got selected,
+     * it shows a check-sign and the appropriate DataClass-Object stores the selected state
+     */
     public static final int PERSONS_OPTIONS_MODE = 0;
     public static final int PERSONS_CHOOSE_MODE = 1;
     public static final int GROUPS_OPTIONS_MODE = 2;
     public static final int GROUPS_CHOOSE_MODE = 3;
 
+    //Stores the mode for the correspontent ListView.
     private int mMode = PERSONS_OPTIONS_MODE;
 
     private Activity mContext;
 
-    //own user data
+    //Own user information
     private LocalUserData mOwnUserData;
 
-    //the combined ListView, that is shown on the screen
+    //The combined ListView, that is shown on the screen
     private ListView mCombinedListView;
 
-    //the combined data list
+    //The combined data list
     private ArrayList<LocalPersonData> mCombinedList;
 
-    // a list of single data lists, that are going to be combined
+    //A list of single data lists, that are going to be combined
     private ArrayList<ArrayList<LocalPersonData>> mSingleLists;
 
-    // Firebase classes
-    private FirebaseDatabase mDatabase;
+    //Firebase classes
     private FirebaseStorage mStorage;
-    private DatabaseReference mDatabaseRef;
     private StorageReference mStorageRef;
-    //list of Firebase querys
+
+    //List of Firebase querys
     private ArrayList<Query> mDatabaseQuerys;
-    //list of Firebase storage references
-    private ArrayList<StorageReference> mStorageReferences;
 
     //Data-View-Adapter for the ListView
     private ArrayAdapter<LocalPersonData> mAdapter;
-    private LocalPersonDataChooseAdapter mAdapter_;
 
-    //necessary to prevent multiple additions of "add guest"-item
+    //Necessary to prevent multiple additions of "add guest"-item
     private boolean addGuestAdded = false;
 
-    // stores the item id, if an item was selected
+    //Stores the item id, when an item is selected
     private int mSelectedItemID;
 
-    //constructors
+    //Constructors
+
+    /**
+     * Constructor for ListView modes PERSON_OPTION_MODE & GROUP_OPTION_MODE.
+     * @param context calling Activity
+     * @param combinedlistView combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
+     */
     public CombinedPersonListCreator(Activity context, ListView combinedlistView) {
         this(context, -1, null, combinedlistView);
     }
 
+    /**
+     * Constructor for ListView modes PERSON_CHOOSE_MODE & GROUP_CHOOSE_MODE.
+     * @param context Calling Activity
+     * @param combinedlistView Combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
+     * @param selectedItemID The selected ListView item. If none item is selected, the value is -1
+     * @param ownUserData LocalUserData object, which holdes the own user information, obtained from Firebase Database
+     */
     public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData ownUserData, ListView combinedlistView) {
 
         mContext = context;
@@ -96,24 +115,16 @@ public class CombinedPersonListCreator {
 
         mDatabaseQuerys = new ArrayList<>();
         mSingleLists = new ArrayList<>();
-        mStorageReferences = new ArrayList<>();
 
-        mDatabase = FirebaseDatabase.getInstance();
         mStorage = FirebaseStorage.getInstance();
-
-        //mDatabaseQuerys.add(mDatabase.getReference().child("guests"));      //TODO genauer spezifizieren
-        //mSingleLists.add(new ArrayList<LocalPersonData>());
-
-        //mDatabaseQuerys.add(mDatabase.getReference().child("users"));     //TODO genauer spezifizieren
-        //mSingleLists.add(new ArrayList<LocalPersonData>());
 
         mSelectedItemID = selectedItemID;
     }
 
 
     /*
-     * Adds a database query from where the data will be read and puts it in a list container.
-     * A correspondent single data list is created and stored in a list container for data lists.
+     * Adds a database query from where the data will be obtained and puts it in an ArrayList.
+     * A correspondent single data list is created and stored in another ArrayList for data lists.
      * The methods returns a this-reference, so that several calls can be concaternated
      * @param query A database query, from which the data will be obtained.
      * @return A this-reference
@@ -136,16 +147,19 @@ public class CombinedPersonListCreator {
     public ArrayAdapter<LocalPersonData> getAdapter() { return mAdapter; }
 
     /**
-     * Set the mode for the ListView. Posibile values are OPTIONS_MODE (0) and CHOOSE_MODE (1).
-     * OPTIONS_MODE shows options button for every item, which, when clicked opens the options menu for the appropriate item.
-     * CHOOSE_MODE makes the items selectable. Only one item is selectable at a time.
-     * If an item got selected, it shows a check-sign and the appropriate DataClass-Object stores the selected state
+     * Set the mode for the ListView. Posibile values are PERSONS_OPTIONS_MODE (0), PERSONS_CHOOSE_MODE (1), GROUPS_OPTIONS_MODE (2) and GROUPS_CHOOSE_MODE (3)
+     * PERSONS_OPTIONS_MODE : Creates a person contacts ListView and shows options button for every item, which, when clicked opens the options menu for the appropriate item.
+     * PERSONS_CHOOSE_MODE : Creates a person contacts ListView and makes the items selectable. Only one item is selectable at a time. If an item got selected,
+     * it shows a check-sign and the appropriate DataClass-Object stores the selected state
+     * GROUPS_OPTIONS_MODE : Creates a group contacts ListView and shows options button for every item, which, when clicked opens the options menu for the appropriate item.
+     * GROUPS_CHOOSE_MODE : Creates a group contacts ListView and makes the items selectable. Only one item is selectable at a time. If an item got selected,
+     * it shows a check-sign and the appropriate DataClass-Object stores the selected state
      * @param mode  Mode for the ListView
      */
     public void setMode(int mode) { mMode = ((mode>3) ? PERSONS_OPTIONS_MODE : mode); }
 
     /**
-     * Adds a ValueEventListener for a single valueEvent (reads just once) to each database query in the query list.
+     * Adds a ValueEventListener for a single valueEvent (reads just once) to each Firebase database query in the query list.
      * The listener will be returned from getDatabaseValueEventListener()
      */
     public void loadData() {
@@ -157,9 +171,9 @@ public class CombinedPersonListCreator {
     }
 
     /**
-     * Creates a ValueEventListener which adds the obtained data lists from Firebase to a data list
-     * container, sets a headline for the first entry in the list identical to the database-node,
-     * where the data comes from and calls combineList
+     * Creates a ValueEventListener which adds the obtained data lists from Firebase to an ArrayList,
+     * sets a headline for the first entry in the list identical to the database-node,
+     * where the data comes from and calls combineList()
      * @param list The list container, where the database data will be stored
      * @param query The database query, from which the data will be obtained.
      * @return The created ValueEventListener
@@ -189,7 +203,7 @@ public class CombinedPersonListCreator {
                     }
                 }
 
-                combineList();      // TODO: evt. nicht an der richtigen Stelle. Liste funktioniert aber einwandfrei
+                combineList();      // TODO: may be the wrong place, but ListView works as expected
 
                 for ( int i=0 ; i<list.size() ; i++ ) {
                     final int index = i;

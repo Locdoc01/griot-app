@@ -21,9 +21,10 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 
 /**
- * Created by marcel on 08.08.17.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
+ * This version uses the ViewHolder-pattern.
  */
-
+//TODO: ViewHolder-pattern is buggy and doesn't work properly
 public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPersonData> {
 
     private static final String TAG = LocalPersonDataAdapterWithViewHolder.class.getSimpleName();

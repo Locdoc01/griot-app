@@ -7,6 +7,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,21 +30,21 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 
 /**
- * Created by marcel on 08.08.17.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of LocalInterviewData-objects into ListView items.
  */
-
 public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> {
 
     private static final String TAG = LocalInterviewDataAdapter.class.getSimpleName();
 
     private final Context mContext;
 
+    //The ArrayList containing the LocalInterviewData-objects
     private ArrayList<LocalInterviewData> mListData;
 
+    //Views, which are shown in every ListView item
     private TextView tvTitle;
     private TextView tvDate;
     private TextView tvLength;
-    //private ImageView ivMediaCoverPlaceholder;
     private ImageView ivMediaCover;
     private ImageView ivMediaCoverForeground;
     private ImageView btnOptions;
@@ -58,22 +59,24 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
 
     private View.OnClickListener clickListener;
 
+    //constructor
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> data) {
         super(context, R.layout.listitem_interview, data);
         mContext = context;
         mListData = new ArrayList<>(data);
     }
 
+    //inflates the layout for every ListView item and initializes its views
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.listitem_interview, null);
 
+        // get references to the objects, which are created during the intflation of the layout xml-file
         tvTitle = (TextView) v.findViewById(R.id.tv_headline);
         tvDate = (TextView) v.findViewById(R.id.tv_date);
         tvLength = (TextView) v.findViewById(R.id.tv_length);
-        //ivMediaCoverPlaceholder = (ImageView) v.findViewById(R.id.iv_mediaCover_placeholder);
         ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
         ivMediaCoverForeground = (ImageView) v.findViewById(R.id.iv_mediaCover_foreground);
         btnOptions = (ImageView) v.findViewById(R.id.button_options);
@@ -85,6 +88,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         btnNarrator = (FrameLayout) v.findViewById(R.id.button_narrator);
         btnComments = (TextView) v.findViewById(R.id.button_comments);
 
+        //initialize the views with the data from the correspondent ArrayList
         tvTitle.setText(mListData.get(position).getTitle());
         tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
         tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
@@ -95,6 +99,7 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                 test.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                 if (test.getDrawable() != null) {
                     ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
                     if (mListData.get(position).getMedium().equals("audio")) {
                         ivMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -104,8 +109,6 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                         ivMediaCover.setColorFilter(filter);
                         ivMediaCoverForeground.setVisibility(View.VISIBLE);
                     }
-                    //ivMediaCoverPlaceholder.setVisibility(View.GONE);
-                    //ivMediaCover.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -118,12 +121,15 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         int n = mListData.get(position).getNumberComments();
         btnComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
+        //set an OnClickListener for clickable views
         final int pos = position;
         clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.button_interviewer:
+                        Log.d(TAG, "interviewer clicked: ");
+                        //If interviewer is the current user, own user profile gets opened, otherwise the interviewers user profile
                         Intent intent;
                         if (mListData.get(pos).getInterviewerID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
@@ -134,6 +140,9 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                         mContext.startActivity(intent);
                         break;
                     case R.id.button_narrator:
+                        Log.d(TAG, "narrator clicked: ");
+                        //If narrator is the current user, own user profile gets opened.
+                        //Otherwise the narrators user profile or guest profile gets opened, depending if narrator is user or guest
                         if (mListData.get(pos).getNarratorID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                             intent = new Intent(mContext, OwnProfileInputActivity.class);
                         } else if (mListData.get(pos).getNarratorIsUser()) {
@@ -146,10 +155,14 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
                         mContext.startActivity(intent);
                         break;
                     case R.id.button_comments:
+                        Log.d(TAG, "comments clicked: ");
                         Toast.makeText(mContext, "Show Comments", Toast.LENGTH_SHORT).show();
+                        //TODO
                         break;
                     case R.id.button_options:
+                        Log.d(TAG, "options clicked: ");
                         Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
+                        //TODO
                         break;
                 }
             }
