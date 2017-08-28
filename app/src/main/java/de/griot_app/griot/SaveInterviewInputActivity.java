@@ -635,6 +635,11 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                 //add interview to user in Database
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsAll").child(interviewID);
                 mDatabaseRef.setValue(true);
+                //add interview to narrator in Database, if narrator and interviewer aren't the same person and if narrator is a user
+                if (!narratorID.equals(mUserID) && narratorIsUser) {
+                    mDatabaseRef = mDatabaseRootReference.child("users").child(narratorID).child("interviewsAll").child(interviewID);
+                    mDatabaseRef.setValue(true);
+                }
                 showProgressBarFinishMessage(getString(R.string.progress_upload_success));
                 new Timer().schedule(new TimerTask() {
                     @Override
