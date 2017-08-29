@@ -17,7 +17,7 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 import de.griot_app.griot.mainactivities.MainNotificationsActivity;
 import de.griot_app.griot.mainactivities.MainOverviewActivity;
-import de.griot_app.griot.mainactivities.MainProfileOverviewActivity;
+import de.griot_app.griot.mainactivities.MainPersonalPageActivity;
 import de.griot_app.griot.mainactivities.MainQuestionmailActivity;
 import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
 
@@ -178,8 +178,8 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
             case R.id.button_profile:
                 // if button is pressed, apropriate Activity will be started, except it isn't already the current one
                 // if current Activity wasn't MainOverview, it will be closed, otherwise it will be hold on the backstack
-                if (!getSubClassTAG().equals(MainProfileOverviewActivity.class.getSimpleName())) {
-                    startActivity(new Intent(this, MainProfileOverviewActivity.class));
+                if (!getSubClassTAG().equals(MainPersonalPageActivity.class.getSimpleName())) {
+                    startActivity(new Intent(this, MainPersonalPageActivity.class));
                     if (!getSubClassTAG().equals(MainOverviewActivity.class.getSimpleName())) {
                         finish();
                     }
