@@ -26,16 +26,20 @@ import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
 
 /**
- * This Activity allows the user to choose a topic and its questions from the topic catalog for an interview. It's the second step of the "prepare-interview"-dialog.
+ * This Activity allows the user to choose a topic and its questions from the topic catalog for an interview.
+ * It's the second step of the "prepare-interview"-dialog.
+ * It also shows the selection of narrator and allow to cancel it,
+ * which would lead the user back to the narrator selection page.
+ * Apart from that this page provides the same functionality as the topic catalog page.
  */
 public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ChooseTopicInputActivity.class.getSimpleName();
 
-    //holds the topic item id, if a topic was selected. It's used on this activity for managing the selection. It's also used as intent-data
+    //holds the topic item id, if a topic was selected. It's used on this activity for managing the selection and as intent-data
     private int topicSelectedItemID = -1;
 
-    //intent-data
+    //Intent-data
     private int narratorSelectedItemID;
     private String narratorID;
     private String narratorName;
@@ -62,7 +66,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     //Data-View-Adapter for TopicCatalog
     TopicCatalogAdapter mAdapter;
 
-    //store the individual TopicCatalog of the current user
+    //Hold the individual TopicCatalog of the current user
     ArrayList<Boolean> mUserTopicStates;
     HashMap<String, Long> mUserQuestionStates;
 
@@ -70,7 +74,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //stores topic item id, if selected so far (that can be the case, if this activity got startet by another part of "prepare interview"-dialog)
+        //Holds topic item id, if selected so far (that can be the case, if the user went back from a later part of "prepare interview"-dialog))
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
 
         mTitle.setText(R.string.title_record_interview);
@@ -79,13 +83,13 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
 
-        //Next-Button is disabled at start, if no topic was selected so far
+        //Next-Button is disabled at start, until a topic gets selected
         if (topicSelectedItemID < 0) {
             mButtonRight.setEnabled(false);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
         }
 
-        // gets intent-data about previous selection of narrator
+        //Get intent-data
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -100,10 +104,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonCancelPerson = (ImageView) findViewById(R.id.button_cancel_person);
         mButtonAddTopic = (ImageView) findViewById(R.id.button_add_topic);
 
-        //shows the selected narrator
+        //Shows the selected narrator
         mTextViewPerson.setText(getString(R.string.text_choosed_person) + ":  " + narratorName);
 
-        //cancel-person-button (if button is pressed, the selection of narrator is canceled and the user got back to person selection
+        //Cancel-person-button (if button is pressed, the selection of narrator is canceled and the user got back to narrator selection page
         mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,20 +116,20 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        //adds a topic to topic catalog
+        //Adds a topic to topic catalog
         mButtonAddTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implementieren
                 Toast.makeText(ChooseTopicInputActivity.this, "Thema hinzufügen", Toast.LENGTH_SHORT).show();
+                //TODO implementieren
             }
         });
 
         mExpandListView = (ExpandableListView) findViewById(R.id.expandListView_input_choose_topic);
 
 
-        // If a Topic-ListItem is clicked, the topic gets expanded or collapsed
-        // comment out, if this is not wanted
+        //If a topic list item is clicked, the topic gets expanded or collapsed
+        //TODO: comment out, if this is not wanted
         mExpandListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -140,17 +144,17 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        // If a Question-ListItem is clicked, the question gets activated or deactivated
+        //If a question list item is clicked, the question gets activated or deactivated
         mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 if (childPosition != 0) {
-                    //get a reference to the appropriate DataClass-object for the clicked Question-ListItem
+                    //Get a reference to the appropriate DataClass-object for the clicked question list item
                     LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
                     if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
-                        //change the toggle-button
+                        //Change the toggle-button
                         ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
-                        //and change the QuestionState in die DataClass-object
+                        //Change the question state in die DataClass-object
                         data.setQuestionState(LocalQuestionData.QuestionState.ON);
                     } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
                         ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
@@ -162,22 +166,22 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             }
         });
 
-
-        // obtain the individual topic states for standard topics of the current user
+        //Obtain the individual topic catalog of the current user from Firebase database
+        //Obtain the individual topic states for standard topics
         mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardTopics");
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mUserTopicStates = (ArrayList<Boolean>) dataSnapshot.getValue();
 
-                // obtain the indidual question states for standard questions of the current user
+                //Obtain the indidual question states for standard questions
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mAuth.getCurrentUser().getUid()).child("standardQuestions");
                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         mUserQuestionStates = (HashMap<String, Long>) dataSnapshot.getValue();
 
-                        // obtains standard topics for topic catalog from Firebase
+                        //Obtains standard topics for topic catalog
                         mDatabaseRef = mDatabaseRootReference.child("standardTopics");
                         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -186,11 +190,11 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
 
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                     LocalTopicData localTopicData = ds.getValue(LocalTopicData.class);
-                                    //adds a new LocalTopicData for the current topic to the TopicCatalog
+                                    //Adds a new LocalTopicData for the current topic to the topic catalog
                                     localTopicData.setTopicState(mUserTopicStates.get(localTopicData.getTopicKey()));
                                     mTopicCatalog.getTopics().put(localTopicData.getTopicKey(), localTopicData);
 
-                                    //adds a headItem to the question list for the current topic in the TopicCatalog
+                                    //Adds a head list item to the question list for the current topic in the topic catalog
                                     LocalQuestionData headItem = new LocalQuestionData();
                                     headItem.setQuestion(getString(R.string.title_questions));
                                     headItem.setQuestionState(LocalQuestionData.QuestionState.OFF);
@@ -198,9 +202,8 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                     mTopicCatalog.getTopics().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
                                 }
 
-                                //obtain standard questions for topic catalog from Firebase
+                                //Obtain standard questions for topic catalog from Firebase
                                 mDatabaseRef = mDatabaseRootReference.child("standardQuestions");
-                                //listener for question data
                                 mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -217,7 +220,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                             mTopicCatalog.getTopics().get(topicSelectedItemID).setSelected(true);
                                         }
 
-                                        //set the adapter
+                                        //Set the adapter
                                         mAdapter = new TopicCatalogAdapter(ChooseTopicInputActivity.this, mTopicCatalog, true);
                                         mExpandListView.setAdapter(mAdapter);
                                     }
@@ -305,26 +308,26 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         finish();
     }
 
+    //Navigates back to previous page of "prepare interview"-dialog
+    //selection of narrator gets sent to previous page by intent
     @Override
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
 
-        // navigates back to previous page of "prepare interview"-dialog
-        // selection of narrator gets sent to previous page.
         Intent intent = new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         startActivity(intent);
         finish();
     }
 
+    //Navigates to next page of "prepare interview"-dialog
+    //All relevant data for the interview or the dialog-pages get sent to the next page by intent.
     @Override
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
-        //TODO schreibe QuestionStates nach Firebase
+        //TODO save current question states to Firebase
 
-        // Navigates to next page of "prepare interview"-dialog
-        // All relevant data for the interview or the dialog-pages get sent to the next page.
         Intent intent = new Intent(this, ChooseMediumInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", narratorID);
@@ -361,9 +364,9 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     }
 
 
+    //Save the current state of topics and questions to Firebase database, when leaving the this activity
     @Override
     protected void onStop() {
-
         LocalQuestionData question;
         String questionKey;
         long questionState;

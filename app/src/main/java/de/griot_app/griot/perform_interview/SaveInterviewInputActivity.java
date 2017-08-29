@@ -64,15 +64,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     private String topic;
 
     private String title;
-
     private int medium;
-
     private String dateYear;
     private String dateMonth;
     private String dateDay;
 
     private String[] allQuestions;
-
     private String[] allMediaSingleFilePaths;
 
     private String[] recordedMediaSingleFilePaths;
@@ -81,14 +78,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     private int[] recordedQuestionIndices;
     private String[] recordedQuestionLengths;
 
-    private String interviewDir;
-
     private int recordedQuestionsCount;
-
+    private String interviewDir;
     private String[][] tags;
-
     private boolean mTitleChosen = false;
 
+    //Necessary to determine, if all uploads are finished (either succefully or not)
     private int mUploadMediaSuccessCount = 0;
     private int mUploadMediaFailureCount = 0;
     private int mUploadMediaCoverSuccessCount = 0;
@@ -96,6 +91,11 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
 
     private String interviewID;
 
+    //Necessary to determine, if a new push-key has to be obtained from Firebase for storing the interview, or not.
+    //A new push-key is only obtained on first attempt, so that in case of a faliure or interruption the interview
+    //gets saved to the same database-location at further upload attempts. The incomplete data from the failed attempt
+    //will be overwritten in that way. Otherwise there would pile up dead data entrys in the database, which can never
+    //be accessed.
     private boolean firstSaveAttempt = true;
 
     //Views
@@ -112,11 +112,10 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     //ListView, that holds the contact list
     private ListView mListViewPersons;
 
-    //Creates the PersonlistView as a combination of own user data, guest list data, friend list data and approriate headings
+    //Creates a ListView of person contacts as a combination of own user data, guest list data, friend list data and approriate category headings
     private CombinedPersonListCreator mCombinedListCreator;
 
-    //firebase-queries for the CombinedListCreator
-    private Query mQueryYou;
+    //Firebase queries for the CombinedPersonListCreator
     private Query mQueryGuests;
     private Query mQueryFriends;
 
@@ -134,7 +133,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mButtonRight.setEnabled(false);
         mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
-        // gets intent-data about previous selections
+        //Get intent-data
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -150,9 +149,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         topic = getIntent().getStringExtra("topic");
 
         title = getIntent().getStringExtra("title");
-
         medium = getIntent().getIntExtra("medium", -1);
-
         dateYear = getIntent().getStringExtra("dateYear");
         dateMonth = getIntent().getStringExtra("dateMonth");
         dateDay = getIntent().getStringExtra("dateDay");
@@ -167,15 +164,15 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         recordedMediaSingleFilePaths = getIntent().getStringArrayExtra("recordedMediaSingleFilePaths");
         recordedCoverFilePaths = getIntent().getStringArrayExtra("recordedCoverFilePaths");
 
-        interviewDir = getIntent().getStringExtra("interviewDir");
-
         recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
+        interviewDir = getIntent().getStringExtra("interviewDir");
 
         tags = new String[recordedQuestionsCount][];
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
             tags[i] = getIntent().getStringArrayExtra("tags" + i);
         }
 
+        //Get references to layout objects
         mEditTextTitle = (EditText) findViewById(R.id.editText_title);
         mTextViewTitle = (TextView) findViewById(R.id.textView_title);
         mButtonCheckTitle = (ImageView) findViewById(R.id.button_check_title);
@@ -188,7 +185,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mListViewPersons = (ListView) findViewById(R.id.listView_persons);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-
+        //Get the profile image for the narrator
         File file = null;
         try { file = File.createTempFile("narrator" + "_", ".jpg"); } catch (Exception e) {}
         final String path = file.getPath();
@@ -208,11 +205,15 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         } catch (Exception e) {}
         mTextViewPerson.setText(narratorName);
 
+        //Set the OnClickListener for clickable views
         mClicklistener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+                    //If check title is clicked, the title will be validated. If valid, the EditText will be exchanged with a TextView, which shows the title,
+                    // and check title button will be exchanged with a cancel title button. If the title is not valid, an error message is shown at the EditText
                     case R.id.button_check_title:
+                        Log.e(TAG, "check title clicked");
                         if (validateTitle()) {
                             try { ((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0); } catch (Exception e){}
                             mTextViewTitle.setText(mEditTextTitle.getText().toString().trim());
@@ -228,7 +229,9 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                             }
                         }
                         break;
+                    //If cancel title is clicked, the title will be deleted and the TextView will be exchanged with the EditText again. Also the buttons are exchanged again.
                     case R.id.button_cancel_title:
+                        Log.e(TAG, "cancel title clicked");
                         mEditTextTitle.setText("");
                         mEditTextTitle.setVisibility(View.VISIBLE);
                         mTextViewTitle.setVisibility(View.GONE);
@@ -241,7 +244,9 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
                             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                         }
                         break;
+                    //If cancel person is clicked, the narrator will be canceled. A ListView will show up, which allows the user to choose another person, just like in MainChoosePersonInputActivity
                     case R.id.button_cancel_person:
+                        Log.e(TAG, "cancel person clicked");
                         mTextViewPersonTop.setText(getString(R.string.question_which_person_recorded));
                         mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID).setSelected(false);
                         mCombinedListCreator.getAdapter().notifyDataSetChanged();
@@ -265,6 +270,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mButtonCancelTitle.setOnClickListener(mClicklistener);
         mButtonCancelPerson.setOnClickListener(mClicklistener);
 
+        //If the "done" button on the keyboard is clicked, a click to check title button is performed, so that the EditText for the title will be exchanged with a TextView
         mEditTextTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -276,7 +282,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        // manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
+        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -309,6 +315,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         });
     }
 
+    //checks, if the EditText for the title is not empty
     private boolean validateTitle() {
         Log.d(TAG, "validateTitle: ");
 
@@ -322,6 +329,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         return valid;
     }
 
+    //If a title is already given on start, it will be shown
     @Override
     protected void onStart() {
         super.onStart();
@@ -345,7 +353,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     protected void doOnStartAfterLoadingUserInformation() {
         mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
         mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
-        //create the Combined ListView
+        //Create the combined ListView of person contacts
         mCombinedListCreator = new CombinedPersonListCreator(SaveInterviewInputActivity.this, -1, mOwnUserData, mListViewPersons);
         mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
         mCombinedListCreator.add(mQueryGuests);
@@ -355,6 +363,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     }
 
 
+    //Button cancels the interview, after a security inquiry. The interview data will be lost, but the recorded media files will be kept on the device
     @Override
     protected void buttonLeftPressed() {
         Log.d(TAG, "buttonLeftPressed: ");
@@ -389,6 +398,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         alertDialogBuilder.create().show();
     }
 
+    //Button brings the user one step back to ReviewINterviewActivity. The interview data get sent by intent
     @Override
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
@@ -410,9 +420,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("topic", topic);
 
         intent.putExtra("title", title);
-
-        intent.putExtra("medium", medium);      // TODO evt. überflüssig
-
+        intent.putExtra("medium", medium);
         intent.putExtra("dateYear", dateYear);
         intent.putExtra("dateMonth", dateMonth);
         intent.putExtra("dateDay", dateDay);
@@ -426,9 +434,8 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
 
-        intent.putExtra("interviewDir", interviewDir);
-
         intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
+        intent.putExtra("interviewDir", interviewDir);
 
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
             intent.putExtra("tags" + i, tags[i]);
@@ -436,8 +443,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
 
         startActivity(intent);
         finish();
-
     }
+
+    //Button has two different functions, depending on the state of narrator selection.
+    //If the selection of narrator was cancelled and the contact list is visible, then the button serves as a next-button to accept a new selection.
+    //In that state it is disabled, until a new person got selected.
+    //If a narrator is selected, the button serves as save-button, which uploads the interview data to Firebase Database and the media files to Firebase Storage.
 
     @Override
     protected void buttonRightPressed() {
@@ -472,17 +483,22 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         }
     }
 
-    private void saveInterview() {
+    //saves the interview to Firebase. The interview data & interview question data are uploaded to Firebase Database.
+    // The media files are uploaded to Firebase Storage. During that process a progress bar is shown
 
+    private void saveInterview() {
+        Log.d(TAG, "saveInterview: ");
         showProgressBar(getString(R.string.progress_uploading_interview));
 
         final DatabaseReference interviewsReference = mDatabaseRootReference.child("interviews");
-        // the boolean firstSaveAttempt ensures, that in case of an interrupted upload the interview will be saved to the same key at further attempts.
+
+        // the boolean firstSaveAttempt ensures, that in case of an interrupted upload the interview will be saved to the same push-key at further attempts.
         // Thus the potentially incomplete upload will be overwritten by the complete one.
         // Otherwise there could pile up dead interview fragments in the database, which cannot be accessed.
         if (firstSaveAttempt) {
             interviewID = interviewsReference.push().getKey();
         }
+
 
         final ArrayList<String> interviewQuestionIDs = new ArrayList<>();
         final DatabaseReference interviewQuestionsReference = mDatabaseRootReference.child("interviewQuestions");
@@ -493,6 +509,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         }
         firstSaveAttempt = false;
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
+            //Creates an data-object for every interview question and fills it with the collected data
             final String interviewQuestionID = interviewQuestionIDs.get(i);
             final InterviewQuestionData interviewQuestionData = new InterviewQuestionData();
             interviewQuestionData.setInterviewID(interviewID);
@@ -505,6 +522,9 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             for (int j=0 ; j<tags[i].length ; j++) {
                 interviewQuestionData.getTags().put(tags[i][j], true);
             }
+            //Uploads the media file and media cover picture to Firebase Storage. After the upload is completed
+            //the data-object is uploaded to Firebase Database. After that doAfterUpload() is called.
+            //Count-variables measure the success of the upload process.
             final int index = i;
             mStorageRef = mStorageRootReference
                     .child("interviews")
@@ -559,6 +579,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             });
         }
 
+        //Create a data-object for the interview itself and fill it with the collected data.
         final InterviewData interviewData = new InterviewData();
         interviewData.setTitle(title);
         interviewData.setDateYear(dateYear);
@@ -586,6 +607,8 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         }
         interviewData.setInterviewQuestionIDs(interviewQuestionIDs);
 
+        //Uploads the media cover picture for the interview. After the upload is completed
+        //the data-object is uploaded to Firebase Database. After that doAfterUpload() is called.
         if (medium==RecordActivity.MEDIUM_VIDEO) {
             mStorageRef = mStorageRootReference
                     .child("interviews")
@@ -621,20 +644,25 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         }
     }
 
+
     private void doAfterUpload() {
-        // number of media cover files is one larger than recordedQuestionsCount, because one cover file is uploaded extra for the interview itself
+        Log.d(TAG, "doAfterUpload: ");
+        //These count-variables measure the success of the upload processes. Only, if all uploads were successfull, the interview is references in the interviewers and narrators
+        //user-node and the app returns to MainOverviewActivity.
+        //In case of a failure the progress bar just hides, so that the user can try to upload again.
         boolean allMediaCoverUploadsAttempted = mUploadMediaCoverSuccessCount+mUploadMediaCoverFailureCount>recordedQuestionsCount;
+        //Number of media cover files is one larger than recordedQuestionsCount, because one cover file is uploaded extra for the interview itself
         boolean allMediaUploadsAttempted = mUploadMediaSuccessCount+mUploadMediaFailureCount>=recordedQuestionsCount;
         boolean allUploadsAttempted = allMediaCoverUploadsAttempted && allMediaUploadsAttempted;
         boolean allUploadsSuccessful = mUploadMediaCoverFailureCount+mUploadMediaFailureCount==0;
         if (allUploadsAttempted) {
             if (allUploadsSuccessful) {
-                //add interview to userID/interviewsOwn & userID/interviewsAll in Database
+                //Add interview to userID/interviewsOwn & userID/interviewsAll in Database
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsOwn").child(interviewID);
                 mDatabaseRef.setValue(true);
                 mDatabaseRef = mDatabaseRootReference.child("users").child(mUserID).child("interviewsAll").child(interviewID);
                 mDatabaseRef.setValue(true);
-                //add interview to narratorID/interviewsOwn & narratorID/interviewsAll in Database, if narrator and interviewer aren't the same person and if narrator is a user
+                //Add interview to narratorID/interviewsOwn & narratorID/interviewsAll in Database, if narrator and interviewer aren't the same person and if narrator is a user
                 if (!narratorID.equals(mUserID) && narratorIsUser) {
                     mDatabaseRef = mDatabaseRootReference.child("users").child(narratorID).child("interviewsOwn").child(interviewID);
                     mDatabaseRef.setValue(true);

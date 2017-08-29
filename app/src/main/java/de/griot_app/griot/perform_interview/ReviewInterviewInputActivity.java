@@ -23,11 +23,17 @@ import de.griot_app.griot.recordfunctions.RecordActivity;
 import de.griot_app.griot.recordfunctions.RecordAudioActivity;
 import de.griot_app.griot.recordfunctions.RecordVideoActivity;
 
+/**
+ * This activity allows the user to review the currently recorded interview.
+ * The user gets an overview about the recorded media files, can add (and remove) tags for every interview question
+ * There is an options menue available for every file, where the has acess to further editing functions.
+ * Also the user can go back to the record funktion and take more records or he can add additional questions to the interview
+ */
 public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ReviewInterviewInputActivity.class.getSimpleName();
 
-    //intent-data
+    //Intent-data
     private int narratorSelectedItemID;
     private String narratorID;
     private String narratorName;
@@ -43,15 +49,12 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     private String topic;
 
     private String title;
-
     private int medium;
-
     private String dateYear;
     private String dateMonth;
     private String dateDay;
 
     private String[] allQuestions;
-
     private String[] allMediaSingleFilePaths;
 
     private String[] recordedMediaSingleFilePaths;
@@ -60,16 +63,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     private int[] recordedQuestionIndices;
     private String[] recordedQuestionLengths;
 
-    private String interviewDir;
-
     private int recordedQuestionsCount;
-
+    private String interviewDir;
     private String tags[][];
 
     // ListView, that holds the interview questions
     private ListView mListViewInterviewQuestions;
 
-    // data list
+    // ArrayList, that holds the data of the interview questions
     private ArrayList<LocalInterviewQuestionData> mListInterviewQuestionData;
 
     //Data-View-Adapter for the ListView
@@ -89,7 +90,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
 
-        // gets intent-data about previous selections
+        //Gets intent-data
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -105,9 +106,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         topic = getIntent().getStringExtra("topic");
 
         title = getIntent().getStringExtra("title");
-
         medium = getIntent().getIntExtra("medium", -1);
-
         dateYear = getIntent().getStringExtra("dateYear");
         dateMonth = getIntent().getStringExtra("dateMonth");
         dateDay = getIntent().getStringExtra("dateDay");
@@ -118,13 +117,11 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         recordedQuestions = getIntent().getStringArrayExtra("recordedQuestions");
         recordedQuestionIndices = getIntent().getIntArrayExtra("recordedQuestionIndices");
         recordedQuestionLengths = getIntent().getStringArrayExtra("recordedQuestionLengths");
-
         recordedMediaSingleFilePaths = getIntent().getStringArrayExtra("recordedMediaSingleFilePaths");
         recordedCoverFilePaths = getIntent().getStringArrayExtra("recordedCoverFilePaths");
 
-        interviewDir = getIntent().getStringExtra("interviewDir");
-
         recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
+        interviewDir = getIntent().getStringExtra("interviewDir");
 
         tags = new String[recordedQuestionsCount][];
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
@@ -135,6 +132,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
 
         mListInterviewQuestionData = new ArrayList<>();
 
+        //Fill the ArrayList with interview question data
         for ( int i=0 ; i<recordedQuestions.length ; i++ ) {
             //DataClass-object here serves only as a holder for the ListView data (NOT for Firebase)
             LocalInterviewQuestionData data = new LocalInterviewQuestionData();
@@ -155,7 +153,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             mListInterviewQuestionData.add(data);
         }
 
-        // set the adapter
+        //Set the adapter
         mLocalInterviewQuestionDataAdapter = new LocalInterviewQuestionDataAdapter(ReviewInterviewInputActivity.this, mListInterviewQuestionData);
         mListViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataAdapter);
 
@@ -173,6 +171,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     protected void doOnStartAfterLoadingUserInformation() {}
 
 
+    //Button cancels the interview, after a security inquiry. The interview data will be lost, but the recorded media files will be kept on the device
     @Override
     protected void buttonLeftPressed() {
         Log.d(TAG, "buttonLeftPressed: ");
@@ -184,10 +183,9 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         textViewInputDialog.setText(getString(R.string.dialog_title_cancel_interview));
         editTextInputDialog.setVisibility(View.GONE);
 
+        //Security inquiry
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomDialogTheme));
-        // set dialog view
         alertDialogBuilder.setView(dialogView);
-        // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.button_yes),
@@ -203,10 +201,11 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
                             }
                         });
 
-        // create and show alert dialog
         alertDialogBuilder.create().show();
     }
 
+
+    //Button brings the user back to the record function, where he can record further media files to the given questions
     @Override
     protected void buttonCenterPressed() {
         Log.d(TAG, "buttonCenterPressed: ");
@@ -217,8 +216,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         } else if (medium==RecordActivity.MEDIUM_VIDEO) {
             intent.setClass(this, RecordVideoActivity.class);
         }
-        // Navigates to next page of "prepare interview"-dialog
-        // All relevant data for the interview or the dialog-pages get sent to the next page.
+        // All relevant data for the interview are sent to the record activity
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", narratorID);
         intent.putExtra("narratorName", narratorName);
@@ -247,7 +245,6 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
 
         intent.putExtra("interviewDir", interviewDir);
-
         intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
 
         for (int i=0 ; i<recordedQuestions.length ; i++) {
@@ -264,14 +261,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
 
     }
 
+    //Button brings the user to SaveInterviewActivity, where the interview can be saved and uploaded to Firebase
     @Override
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
 
         Intent intent = new Intent(this, SaveInterviewInputActivity.class);
 
-        // Navigates to next page of "prepare interview"-dialog
-        // All relevant data for the interview or the dialog-pages get sent to the next page.
+        // All relevant data for the interview get send by intent
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", narratorID);
         intent.putExtra("narratorName", narratorName);
@@ -287,9 +284,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("topic", topic);
 
         intent.putExtra("title", title);
-
-        intent.putExtra("medium", medium);      // TODO evt. überflüssig
-
+        intent.putExtra("medium", medium);
         intent.putExtra("dateYear", dateYear);
         intent.putExtra("dateMonth", dateMonth);
         intent.putExtra("dateDay", dateDay);
@@ -303,9 +298,8 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
 
-        intent.putExtra("interviewDir", interviewDir);
-
         intent.putExtra("recordedQuestionsCount", recordedQuestions.length);
+        intent.putExtra("interviewDir", interviewDir);
 
         for (int i=0 ; i<recordedQuestions.length ; i++) {
             String[] tags = new String[mListInterviewQuestionData.get(i).getTags().size()];

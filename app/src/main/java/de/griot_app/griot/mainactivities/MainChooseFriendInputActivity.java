@@ -49,7 +49,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     //ListView, that holds the contact list
     private ListView mListViewPersons;
 
-    //Creates the PersonlistView as a combination of own user data, guest list data, friend list data and approriate category headings
+    //Creates a ListView of person contacts as a combination of own user data, guest list data, friend list data and approriate category headings
     private CombinedPersonListCreator mCombinedListCreator;
 
     //Firebase queries for obtaining information for all person contacts
