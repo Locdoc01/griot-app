@@ -265,19 +265,19 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     public void buttonCheckClicked(int groupPosition) {
         if (topicSelectedItemID <0) {
             topicSelectedItemID = groupPosition;
-            ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(true);
+            ((LocalTopicData) mAdapter.getGroup(topicSelectedItemID)).setSelected(true);
             mButtonRight.setEnabled(true);
             mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
         } else {
             if (topicSelectedItemID ==groupPosition) {
-                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(false);
+                ((LocalTopicData) mAdapter.getGroup(topicSelectedItemID)).setSelected(false);
                 topicSelectedItemID = -1;
                 mButtonRight.setEnabled(false);
                 mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
             } else {
-                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(false);
+                ((LocalTopicData) mAdapter.getGroup(topicSelectedItemID)).setSelected(false);
                 topicSelectedItemID = groupPosition;
-                ((LocalTopicData) mAdapter.getGroup(groupPosition)).setSelected(true);
+                ((LocalTopicData) mAdapter.getGroup(topicSelectedItemID)).setSelected(true);
                 mButtonRight.setEnabled(true);
                 mButtonRight.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotDarkgrey, null));
             }
