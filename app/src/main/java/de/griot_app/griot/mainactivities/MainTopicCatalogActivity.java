@@ -26,9 +26,6 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
 
     private static final String TAG = MainTopicCatalogActivity.class.getSimpleName();
 
-    //holds the topic item id, if a topic was selected. It's used on this activity for managing the selection. It's also used as intent-data
-    private int topicSelectedItemID = -1;
-
     //Views
     ImageView mButtonAddTopic;
 
@@ -83,15 +80,18 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
         mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
-                if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
-                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
-                    data.setQuestionState(LocalQuestionData.QuestionState.ON);
-                } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
-                    ((ImageView)v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
-                    data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                if (childPosition != 0) {
+                    LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
+                    if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                        ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
+                        data.setQuestionState(LocalQuestionData.QuestionState.ON);
+                    } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
+                        ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
+                        data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
         });
 
@@ -144,10 +144,6 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                                         }
 
                                         //TODO: ExtraTopics und ExtraQuestions laden
-
-                                        if(topicSelectedItemID >=0) {
-                                            mTopicCatalog.getTopics().get(topicSelectedItemID).setSelected(true);
-                                        }
 
                                         //set the adapter
                                         mAdapter = new TopicCatalogAdapter(MainTopicCatalogActivity.this, mTopicCatalog);
