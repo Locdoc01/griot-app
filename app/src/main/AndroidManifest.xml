@@ -35,7 +35,7 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".mainactivities.MainProfileOverviewActivity"
+            android:name=".mainactivities.MainPersonalPageActivity"
             android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity
             android:name=".mainactivities.MainChooseFriendInputActivity"

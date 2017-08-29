@@ -34,10 +34,21 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
 import de.griot_app.griot.views.ProfileImageView;
 
-public class MainProfileOverviewActivity extends GriotBaseActivity implements View.OnTouchListener {
+/**
+ * This activity shows the personal page of the user. It provides the following functionalities:
+ * - profile image and name of the user, which can be clicked an lead to the users profile
+ * - A button to options about the user
+ * - A button to the contact managment page
+ * - A button to the questionmail
+ * - A button to create a new guest profile
+ * - An overview about all interviews, where the user was either interviewer or narrator
+ */
+//TODO: Notification icons for new question mail incommings or notifications about important social media events
+public class MainPersonalPageActivity extends GriotBaseActivity implements View.OnTouchListener {
 
-    private static final String TAG = MainProfileOverviewActivity.class.getSimpleName();
+    private static final String TAG = MainPersonalPageActivity.class.getSimpleName();
 
+    //Views
     private ImageView mButtonAddGuest;
     private ProfileImageView mPivUser;
     private TextView mTextViewUser;
@@ -53,7 +64,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
     // ListView, that holds the interview items
     private ListView mListViewInterviews;
 
-    // data list
+    //ArrayList containing the data of interviews
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
 
     //Data-View-Adapter for the ListView
@@ -63,6 +74,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Hide the app bar and the floating action button for questionmail
         mAppBar.setVisibility(View.GONE);
         super.mButtonQuestionmail.setVisibility(View.GONE);
 
@@ -70,6 +82,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         mLineAppBar.setVisibility(View.GONE);
         mButtonProfile.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
+        //Get references to layout objects
         mButtonAddGuest = (ImageView) findViewById(R.id.button_add_guest);
         mPivUser = (ProfileImageView) findViewById(R.id.piv_user);
         mTextViewUser = (TextView) findViewById(R.id.textView_user);
@@ -87,32 +100,28 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
         mTextViewUser.setOnTouchListener(this);
         mButtonOptions.setOnTouchListener(this);
         mButtonFriendsGroups.setOnTouchListener(this);
-        //mImageViewFriendsGroups.setOnTouchListener(this);
-        //mTextViewFriendsGroups.setOnTouchListener(this);
         mButtonQuestionmail.setOnTouchListener(this);
-        //mImageViewQuestionmail.setOnTouchListener(this);
-        //mTextViewQuestionmail.setOnTouchListener(this);
 
         mListLocalInterviewData = new ArrayList<>();
 
         mListViewInterviews = (ListView) findViewById(R.id.listView_main_profile_overview);
 
 
-        // Obtains all necessary data from Firebase
+        //Set the ValieEventListener to obtains all necessary data from Firebase
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mListLocalInterviewData.clear();
-                //obtain interview data
+                //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
                     mListLocalInterviewData.add(localInterviewData);
                 }
-                // set the adapter
-                mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainProfileOverviewActivity.this, mListLocalInterviewData);
+                //Set the adapter
+                mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainPersonalPageActivity.this, mListLocalInterviewData);
                 mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
 
-                //create temporary files to store the pictures from Firebase Storage
+                //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
@@ -128,7 +137,6 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
                     final String pathInterviewer = fileInterviewer.getPath();
                     final String pathNarrator = fileNarrator.getPath();
 
-                    //TODO: try-catch wahrscheinlich nötig, wenn beim Upload der Bilder was schief gelaufen ist.
                     //Obtain pictures for interview media covers from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getPictureURL());
@@ -195,17 +203,19 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
 
     @Override
     protected int getSubClassLayoutId() {
-        return R.layout.activity_main_profile_overview;
+        return R.layout.activity_main_personal_page;
     }
 
     @Override
     protected String getSubClassTAG() { return TAG; }
 
+    //Called on super.onStart after own user information was obtained from Firebase
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
         mTextViewUser.setText(mOwnUserData.getFirstname() + " " + mOwnUserData.getLastname());
         mPivUser.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -213,51 +223,56 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
             case MotionEvent.ACTION_DOWN:
                 switch (v.getId()) {
                     case R.id.button_add_guest:
-                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
                         return true;
                     case R.id.piv_user:
                         return true;
                     case R.id.textView_user:
-                        mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mTextViewUser.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
                         return true;
                     case R.id.button_options:
-                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
                         return true;
                     case R.id.button_friends_groups:
-                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
+                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
                         return true;
                     case R.id.button_questionmail:
-                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
-                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotBlue));
+                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
+                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotBlue));
                         return true;
                 }
                 return false;
             case MotionEvent.ACTION_UP:
                 switch (v.getId()) {
                     case R.id.button_add_guest:
-                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        Intent intent = new Intent(MainProfileOverviewActivity.this, GuestProfileInputActivity.class);
+                        Log.d(TAG, "add guest clicked: ");
+                        mButtonAddGuest.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        Intent intent = new Intent(MainPersonalPageActivity.this, GuestProfileInputActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.piv_user:
                     case R.id.textView_user:
-                        mTextViewUser.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        startActivity(new Intent(MainProfileOverviewActivity.this, OwnProfileInputActivity.class));
+                        Log.d(TAG, "own user profile image or name clicked: ");
+                        mTextViewUser.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        startActivity(new Intent(MainPersonalPageActivity.this, OwnProfileInputActivity.class));
                         return true;
                     case R.id.button_options:
-                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        Toast.makeText(MainProfileOverviewActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "options clicked: ");
+                        mButtonOptions.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        Toast.makeText(MainPersonalPageActivity.this, "Optionen anzeigen", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.button_friends_groups:
-                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        startActivity(new Intent(MainProfileOverviewActivity.this, ContactManagmentActivity.class));
+                        Log.d(TAG, "contactmanagment clicked: ");
+                        mImageViewFriendsGroups.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        mTextViewFriendsGroups.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        startActivity(new Intent(MainPersonalPageActivity.this, ContactManagmentActivity.class));
                         finish();
                         return true;
                     case R.id.button_questionmail:
-                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
-                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainProfileOverviewActivity.this, R.color.colorGriotDarkgrey));
+                        Log.d(TAG, "questionmail clicked: ");
+                        mImageViewQuestionmail.setColorFilter(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
+                        mTextViewQuestionmail.setTextColor(ContextCompat.getColor(MainPersonalPageActivity.this, R.color.colorGriotDarkgrey));
                         startActivity(new Intent(this, MainQuestionmailActivity.class));
                         finish();
                         return true;
@@ -270,6 +285,7 @@ public class MainProfileOverviewActivity extends GriotBaseActivity implements Vi
     @Override
     protected void onStart() {
         super.onStart();
+        //Obtains all necessary data from Firebase
         mDatabaseRef = mDatabaseRootReference.child("interviews");
         mDatabaseRef.addValueEventListener(mValueEventListener);
 
