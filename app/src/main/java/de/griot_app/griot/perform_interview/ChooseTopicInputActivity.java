@@ -144,18 +144,21 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mExpandListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                //get a reference to the appropriate DataClass-object for the clicked Question-ListItem
-                LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
-                if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
-                    //change the toggle-button
-                    ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
-                    //and change the QuestionState in die DataClass-object
-                    data.setQuestionState(LocalQuestionData.QuestionState.ON);
-                } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
-                    ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
-                    data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                if (childPosition != 0) {
+                    //get a reference to the appropriate DataClass-object for the clicked Question-ListItem
+                    LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
+                    if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                        //change the toggle-button
+                        ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
+                        //and change the QuestionState in die DataClass-object
+                        data.setQuestionState(LocalQuestionData.QuestionState.ON);
+                    } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
+                        ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
+                        data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
         });
 
