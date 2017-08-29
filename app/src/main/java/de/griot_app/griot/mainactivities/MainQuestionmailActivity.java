@@ -5,6 +5,10 @@ import android.os.Bundle;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 
+/**
+ * This activity provides an overview about the questionmail
+ */
+//TODO
 public class MainQuestionmailActivity extends GriotBaseActivity {
 
     private static final String TAG = MainQuestionmailActivity.class.getSimpleName();

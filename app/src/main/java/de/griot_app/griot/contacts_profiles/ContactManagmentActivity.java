@@ -17,7 +17,7 @@ import de.griot_app.griot.baseactivities.GriotBaseActivity;
 
 
 /**
- * Activity provides the contact managmant, which holds one ListView for person contacts and one for group contacts in to tifferent tabs
+ * This activity provides the contact managmant, which holds one ListView for person contacts and one for group contacts in two different tabs
  * By clicking on a list item the appropriate profile for the contact gets opened.
  * By clicking on add guest the add-guest-form gets opened
  */
@@ -42,12 +42,12 @@ public class ContactManagmentActivity extends GriotBaseActivity {
     private ListView mListViewPersons;
     private ListView mListViewGroups;
 
-    //Queries for obtaining information for all person contacts
+    //Firebase queries for obtaining information for all person contacts
     private Query mQueryGuests;
     private Query mQueryFriends;
     //TODO: add queries for groups
 
-    //Creates the PersonlistView as a combination of guest list data, friend list data and approriate headings
+    //Creates the PersonlistView as a combination of guest list data, friend list data and approriate category headings
     private CombinedPersonListCreator mCombinedListCreator;
     //TODO: check, if CombinePersonListCreator works for groups as well
 

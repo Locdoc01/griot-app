@@ -30,16 +30,16 @@ import de.griot_app.griot.dataclasses.LocalInterviewData;
 
 
 /**
- * Main activity that provides an overview over all interviews, the user got access to.
+ * Main activity that provides an overview over all interviews, where the user is either interviewer, narrator or shareholder.
  */
 public class MainOverviewActivity extends GriotBaseActivity {
 
     private static final String TAG = MainOverviewActivity.class.getSimpleName();
 
-    // ListView, that holds the interview items
+    //ListView, that holds the interview items
     private ListView mListViewInterviews;
 
-    // data list
+    //ArrayList containing the data of interviews
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
 
     //Data-View-Adapter for the ListView
@@ -56,6 +56,8 @@ public class MainOverviewActivity extends GriotBaseActivity {
 
         mListViewInterviews = (ListView) findViewById(R.id.listView_main_overview);
 
+        //When a ListView item was clicked, a new intent is created to start DetailsInterviewActivity for the appropriate interview.
+        // All relevant data is put to it as extra data.
         mListViewInterviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,28 +101,26 @@ public class MainOverviewActivity extends GriotBaseActivity {
                 intent.putExtra("tags", tags);
 
                 intent.putExtra("numberComments", mLocalInterviewDataAdapter.getItem(position).getNumberComments());
-                //Comments erst in DetailsActivity laden
-                //interviewQuestionIDs per Query in DetailsActivity erfragen
                 startActivity(intent);
             }
         });
 
-        // Obtains all necessary data from Firebase
+        //Set the ValueEventListener to obtains all necessary data from Firebase
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mListLocalInterviewData.clear();
-                //obtain interview data
+                //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
                     localInterviewData.setContentID(ds.getKey());
                     mListLocalInterviewData.add(localInterviewData);
                 }
-                // set the adapter
+                //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainOverviewActivity.this, mListLocalInterviewData);
                 mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
 
-                //create temporary files to store the pictures from Firebase Storage
+                //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
@@ -136,7 +136,6 @@ public class MainOverviewActivity extends GriotBaseActivity {
                     final String pathInterviewer = fileInterviewer.getPath();
                     final String pathNarrator = fileNarrator.getPath();
 
-                    //TODO: try-catch wahrscheinlich nötig, wenn beim Upload der Bilder was schief gelaufen ist.
                     //Obtain pictures for interview media covers from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getPictureURL());
@@ -219,9 +218,11 @@ public class MainOverviewActivity extends GriotBaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
+        //Obtains all necessary data from Firebase
         mDatabaseRef = mDatabaseRootReference.child("interviews");
         mDatabaseRef.addValueEventListener(mValueEventListener);
     }

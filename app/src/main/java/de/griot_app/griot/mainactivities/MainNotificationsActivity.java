@@ -16,6 +16,10 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.startactivities.LoginActivity;
 import de.griot_app.griot.views.TagView;
 
+/**
+ * This activity provides an overview about the system notifications to user
+ */
+//TODO
 public class MainNotificationsActivity extends GriotBaseActivity {
 
     private static final String TAG = MainNotificationsActivity.class.getSimpleName();
@@ -36,44 +40,6 @@ public class MainNotificationsActivity extends GriotBaseActivity {
                 finish();
             }
         });
-
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_input, null);
-
-        final TextView textViewInputDialog = (TextView) dialogView.findViewById(R.id.textView_inputDialog);
-        final EditText editTextInputDialog = (EditText) dialogView.findViewById(R.id.editText_inputDialog);
-
-        textViewInputDialog.setText(getString(R.string.dialog_add_tag));
-        editTextInputDialog.setHint(getString(R.string.hint_add_tag));
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomDialogTheme));
-        // set dialog view
-        alertDialogBuilder.setView(dialogView);
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton(MainNotificationsActivity.this.getString(R.string.button_next),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                final TagView tagView = new TagView(MainNotificationsActivity.this);
-                                final String tag = editTextInputDialog.getText().toString().trim();
-                                tagView.setTag(tag);
-                                tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                    }
-                                });
-
-                            }
-                        })
-                .setNegativeButton(MainNotificationsActivity.this.getString(R.string.button_cancel),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create and show alert dialog
-        alertDialogBuilder.create().show();
 
     }
 
