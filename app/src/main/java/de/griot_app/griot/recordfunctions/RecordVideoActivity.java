@@ -21,9 +21,8 @@ import java.util.List;
 import de.griot_app.griot.R;
 
 /**
- * Created by marcel on 14.07.17.
+ * This activity provides the video recording functionality for Griot-App.
  */
-
 public class RecordVideoActivity extends RecordActivity implements View.OnClickListener {
 
     private static final String TAG = RecordVideoActivity.class.getSimpleName();
@@ -41,11 +40,8 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     private Camera mCamera;
     private Camera.Parameters mParameters;
     private boolean mFlashModeTorchSupported;
-    //    private boolean mIsFlashOn = false;
-    //private String mFocusMode;
     private Camera.Size mOptimalVideoSize;
     private CameraPreview mCameraPreview;
-
 
 
     @Override
@@ -64,11 +60,10 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         mButtonFlash.setOnClickListener(this);
         mButtonChangeCamera.setOnClickListener(this);
 
-        // Wenn weniger als 2 Kameras vorhanden sind, wird der CameraChangeButton aus dem Layout entfernt
+        // If there is only one camera available, the change camera button is hidden
         if (Camera.getNumberOfCameras() < 2) {
             mButtonChangeCamera.setVisibility(View.GONE);
         }
-
 
         mCamcorderProfile = CamcorderProfile.get(mCurrentCamera, mCurrentVideoQuality);
         mChronometers.setBitRate(mCamcorderProfile.videoBitRate);
@@ -79,13 +74,20 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         return R.layout.activity_record_video;
     }
 
+    @Override
+    protected String getSubClassTAG() { return TAG; }
 
+
+    //TODO: entfernen
     @Override
     protected void onResume() {
         super.onResume();
-
-        //TODO: entfernen
         ViewServer.get(this).setFocusedWindow(this);
+    }
+    //TODO: entfernen
+    public void onDestroy() {
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
 
@@ -93,14 +95,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     protected void onPause() {
         super.onPause();
         releaseCamera();
-    }
-
-
-    public void onDestroy() {
-        super.onDestroy();
-
-        //TODO: entfernen
-        ViewServer.get(this).removeWindow(this);
     }
 
 
@@ -116,6 +110,9 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         }
     }
 
+    /**
+     * Opens the camera, set optimal camera parameters and initalizes the camera preview
+     */
     @Override
     protected void setup() {
         Log.d(TAG, "setup: cameraId: " + mCurrentCamera);
@@ -134,8 +131,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
                             // these two methods are called after the camera got opened
                             setOptimalCameraParameters();
                             initiateCameraPreview();
-
-
                         }
                     });
                 } catch (Exception e) {
@@ -145,8 +140,9 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         }).start();
     }
 
-
-
+    /**
+     * determine the optimal camera parameters and set the appropriate attributes
+     */
     private void setOptimalCameraParameters() {
         Log.d(TAG, "getCameraParameters: ");
         if (mCamera != null) {
@@ -156,7 +152,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             // Optimal Video Size
             mOptimalVideoSize = mParameters.getPreferredPreviewSizeForVideo();
             Log.d(TAG, "getCameraParameters: preferred video preview size: width: " + mParameters.getPreferredPreviewSizeForVideo().width + " , height: " + mParameters.getPreferredPreviewSizeForVideo().height);
-
 
             //Flash Mode
             stringList = mParameters.getSupportedFlashModes();
@@ -174,7 +169,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             }
             Log.d(TAG, "getCameraParameters: flash mode torch available:" + mFlashModeTorchSupported);
 
-
             // Focus Mode
             // TODO: implementation of autofocus functionality (which will be used in case, that continuous focus mode is not availabe)
             // since minimum SDK Level is 16, it's not likely that there will be a supported device which has no autofocus mode at all
@@ -186,9 +180,8 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             }
             Log.d(TAG, "getCameraParameters: focus mode: " + mParameters.getFocusMode());
 
-            //Recording Hint
-            // makes sure, that recording a video will start faster
-            // has to be set BEFOR starting the preview
+            //Recording Hint makes sure, that recording a video will start faster
+            //has to be set BEFOR starting the preview
             mParameters.setRecordingHint(true);
 
             mCamera.setParameters(mParameters);
@@ -199,46 +192,25 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     private void initiateCameraPreview() {
         Log.d(TAG, "initiateCameraPreview: ");
 
-/*
-        Point point = new Point();
-        if (android.os.Build.VERSION.SDK_INT >= 17 ) { //android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            //Display.getRealSize() gibt die tatsächliche Bildschirmgröße zurück, also inklusive system decoration (verfügbar seit API 17)
-            getWindowManager().getDefaultDisplay().getRealSize(point);
-        } else {
-            //Display.getSize() gibt die Bildschirmgröße zurück, die Applicationen zur Verfügung stehen (physical size - system decoration)
-            getWindowManager().getDefaultDisplay().getSize(point);
-        }
-*/
-
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         int displayWidth = point.x;
         int displayHeight = point.y;
-        Log.d(TAG, "initiateCameraPreview: display: width: " + displayWidth + " , height: " + displayHeight);
 
         int videoSizeWidth = mOptimalVideoSize.width;
         int videoSizeHeight = mOptimalVideoSize.height;
 
-        Log.d(TAG, "initiateCameraPreview: videoSize: width: " + videoSizeWidth + " , height: " + videoSizeHeight);
-        Log.d(TAG, "initiateCameraPreview: videoFrameRate: " + mCamcorderProfile.videoFrameRate);
-
         double displayRatio = (double) displayWidth / displayHeight;
         double videoSizeRatio = (double) videoSizeWidth / videoSizeHeight;
-        Log.d(TAG, "initiateCameraPreview: displayRatio: " + displayRatio);
-        Log.d(TAG, "initiateCameraPreview: videoSizeRatio: " + videoSizeRatio);
-
 
         //TODO:
         //TODO das zugrunde liegende FrameLayout im Layout von mBackground ist als Wrap_content eingestellt. Eigentlich müsste hier die Dimension der CameraPreview
         // TODO über deren LayoutParameter wie folgt eingestellt werden. Das FrameLayout müsste sich dann an diese Größe anpassen.
         // TODO: PRÜFEN
 
+        //Changes here have generel effect to the preview, during recording and not. The settings here should be optimal for DURING recording!!
 
-
-        //Änderungen hier haben generelle Auswirkungen auf die Preview, also während aufgenommen wird und während nicht. Die Einstellung hier sollte die optimale für WÄHREND
-        //der Aufnahme sein !!
-
-        // folgende Abfrage sorgt dafür, dass die Größe des FrameLayouts, welches die Preview zeigt, optimal auf den Bildschirm passt, ohne beschnitten zu werden.
+        //Makes sure, that the FrameLayout, which holds the preview is optimally fit to the screen without cropping
         if (displayRatio > videoSizeRatio) {
             mBackground.getLayoutParams().width = (int) ((double) displayHeight * videoSizeWidth / videoSizeHeight);
             mBackground.getLayoutParams().height = displayHeight;
@@ -250,7 +222,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mBackground.getLayoutParams().height = displayHeight;
         }
 
-        // Fängt einen gerätespezifischen Bug ab
+        // catch a device specific bug
         if (Build.MANUFACTURER.equals("asus") && Build.MODEL.equals("K015")) {
             Log.e(TAG, "Model: " + Build.MANUFACTURER + " " + Build.MODEL);
             mBackground.getLayoutParams().height++;
@@ -268,6 +240,9 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     }
 
 
+    /**
+     * Switches the flash mode between flash torch mode and flash off.
+     */
     private void changeFlashMode() {
         Log.d(TAG, "changeFlashMode: ");
         Camera.Parameters params = mCamera.getParameters();
@@ -278,11 +253,13 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
             mButtonFlash.setImageResource(R.drawable.flash_off2);
         }
-        Log.d(TAG, "changeFlashMode: " + params.getFlashMode());
         mCamera.setParameters(params);
     }
 
 
+    /**
+     * Switches the cameras
+     */
     private void changeCamera() {
         Log.d(TAG, "changeCamera: ");
         mCurrentCamera = (mCurrentCamera == CAMERA_BACK ? CAMERA_FRONT : CAMERA_BACK);
@@ -293,6 +270,10 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     }
 
 
+    /**
+     * Initializes the MediaRecorder and starts the recording.
+     * @return true, if recording started successfully, false, else.
+     */
     //TODO alle Aufnahmeattribute als Objectattribute rausziehen und in Model einpflegen (so wie bei Audio)
     @Override
     protected boolean startRecording() {
@@ -372,23 +353,26 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     }
 
 
+    /**
+     * stops the recording
+     */
     @Override
     protected void stopRecording() {
         Log.d(TAG, "stopRecording: ");
+
         try {
             mMediaRecorder.stop();
-
         } catch (Exception e) {
             Log.e(TAG, "Error stopping record: " + e.getMessage());
         }
         mChronometers.stop();
 
-        // if current question wasn't recorded so far
+        //If current question wasn't recorded so far
         if (allMediaMultiFilePaths.get(mCurrentRecordingIndex).isEmpty()) {
             recordedQuestionsCount++;
         }
 
-        // add the (next) file path of the current questions media file.
+        //Add the (next) file path of the current questions media file.
         allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(Uri.fromFile(mMediaFile).toString());
 
         mCurrentRecordingIndex = -1;
@@ -397,10 +381,11 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         mButtonChangeCamera.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
     }
 
+
     private void releaseCamera() {
         Log.d(TAG, "releaseCamera: ");
         if (mCamera != null) {
-            // not necessary on Android > 4.0, UNLESS mMediaRecorder.prepare() didn't throw an exception
+            //Not necessary on Android > 4.0, UNLESS mMediaRecorder.prepare() didn't throw an exception
             mCamera.lock();
             mCamera.stopPreview();
             mCamera.release();

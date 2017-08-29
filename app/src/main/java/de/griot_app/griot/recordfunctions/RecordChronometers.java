@@ -17,9 +17,10 @@ import java.io.File;
 import de.griot_app.griot.R;
 
 /**
- * Created by marcel on 13.07.17.
+ * This View provides an up-counting chronometer, which shows the duration of the currently running recording,
+ * and a down-counting chronometer, which shows the availabe remaining recording time, which is calculated
+ * based on the remaining free device storage space.
  */
-
 public class RecordChronometers extends FrameLayout {
 
     private static final String TAG = RecordChronometers.class.getSimpleName();
@@ -28,9 +29,11 @@ public class RecordChronometers extends FrameLayout {
     private Chronometer mChronometerRecord;
     private TextView mChronometerRemain;
     private long mInitSeconds;
+
+    //The Recording bitrate is necessary to calculate the available remaining recording time.
     private int mBitRate = -1;
 
-    // All three constructors are necessary in order to create an object of this class from a layout, so that it could be found by findViewbyid()
+    // All three constructors are necessary in order to create an object of this class from a layout, so that it could be inflated
     public RecordChronometers(Context context) {
         super(context);
         mContext = context;
@@ -49,7 +52,7 @@ public class RecordChronometers extends FrameLayout {
         init();
     }
 
-
+    //Called from constructors
     private void init() {
         View v =  LayoutInflater.from(mContext).inflate(R.layout.class_record_chronometers, this);
 
@@ -58,12 +61,19 @@ public class RecordChronometers extends FrameLayout {
     }
 
 
+    /**
+     * Set-method for the bitrate
+     */
     public void setBitRate(int bitRate) {
         mBitRate = bitRate;
         updateChronometerRemain(getAvailableSeconds());
     }
 
 
+    /**
+     * Starts the chronometers
+     * @throws Exception, if BitRate is not set
+     */
     public void start() throws Exception {
         if (mBitRate == -1) {
             throw new Exception("Error: BitRate not set");
@@ -75,13 +85,15 @@ public class RecordChronometers extends FrameLayout {
         mChronometerRecord.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                Log.d(TAG, "onChronometerTick: ");
                 updateChronometerRemain(--mInitSeconds);
             }
         });
     }
 
 
+    /**
+     * Stops the chronometers
+     */
     public void stop() {
         mChronometerRecord.stop();
         mInitSeconds = getAvailableSeconds();
@@ -90,6 +102,10 @@ public class RecordChronometers extends FrameLayout {
     }
 
 
+    /**
+     * Calculates the available remaining record time in seconds from recording bitrate and availbale device storage space
+     * @return remaining record time in seconds
+     */
     private long getAvailableSeconds() {
         File path = Environment.getExternalStorageDirectory();
         StatFs stat = new StatFs(path.getPath());
@@ -105,6 +121,11 @@ public class RecordChronometers extends FrameLayout {
     }
 
 
+    /**
+     * Gets the available remaining record time in seconds, turns that into a form with seconds, minutes and hours and updates the remain chronometer every second.
+     * (The record chronometer updates itself).
+     * @param seconds available remaining record time
+     */
     private void updateChronometerRemain(long seconds) {
         int hours, minutes;
         hours = (int)((double)seconds/(60*60));
@@ -115,7 +136,6 @@ public class RecordChronometers extends FrameLayout {
         seconds = seconds - minutes * 60;
 
         mChronometerRemain.setText("" + (hours==0 ? "" : hours + ":") + (minutes<10 ? "0" + minutes : minutes) + ":" + (seconds<10 ? "0" + seconds : seconds));
-
     }
 
 }

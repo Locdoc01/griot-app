@@ -19,12 +19,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.griot_app.griot.R;
 
 /**
  * QuestionCarousel is a View that shows an animated and scrollable carousel of TextViews based on a given List of Strings
+ * It can be shown in two different layouts, the normal layout, which is used in RecordVideoActivity, and the inverted Layout,
+ * which is used in RecordAudioActivity.
+ * If the record function starts, the question in the middle position will be recorded and a record sign is attached to the question.
+ * After the recording of a question stops, the record symbol disappear and the question turned blue to mark it as already recorded.
  */
 public class QuestionCarousel extends FrameLayout implements View.OnTouchListener{
 
@@ -32,18 +35,21 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     private Context mContext;
 
+    //Array of Strings to be shown in the carousel
     private String[] mListStrings;
+
+    //ArrayList if CarouselTextViews, which hold the Strings from above
     private ArrayList<CarouselTextView> mListCarousel;
     private int mQuestionCount;
 
+    //ImageViews to create the layout
     private ImageView mShadowTop;
     private ImageView mShadowTopLine;
     private ImageView getmShadowMiddle;
     private ImageView mShadowBottom;
     private ImageView mShadowBottomLine;
 
-    //private FrameLayout mlayoutQuestions;
-
+    //measure, switch and control variables
     private float mRegularHeightMiddle;
     private float mRegularHeightTopBottom;
     private int mCurrentQuestion;
@@ -51,7 +57,12 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private boolean mAnimationInProgress;
     private float mTouchStart;
     private float mDensity;
+    private long mAnimationDuration;
+    private int mFirstShownQuestion = 0;
+    private int mRecordIndex;
+    private boolean mInvertedLayout;
 
+    //ObjectAnimators, which are responbsible for the TextView animations
     private ObjectAnimator mAnimatorFadeOutTop;
     private ObjectAnimator mAnimatorFadeOutBottom;
     private ObjectAnimator mAnimatorFadeInTop;
@@ -67,6 +78,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private ObjectAnimator mAnimatorYTopToMiddle;
     private ObjectAnimator mAnimatorYBottomToMiddle;
 
+    //AnimatorSets, which combine and synchronizs several animations
     private AnimatorSet mAnimatorSetMiddleToTop;
     private AnimatorSet mAnimatorSetMiddleToBottom;
     private AnimatorSet mAnimatorSetTopToMiddle;
@@ -75,22 +87,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private AnimatorSet mAnimatorSetNextQuestion;
     private AnimatorSet mAnimatorSetLastQuestion;
 
-    private long mDuration;
-
-    private int mFirstShownQuestion = 0;
-
-    private int mRecordIndex;
-
-    private boolean mInvertedLayout;
-
 
     /**
-     * Constructor
-     * @param context   The holding activity
-    //* @param list      A List of Strings. This will be the data model for the view
+     * Constructors
+     * All three of them are necessary in order to create an object of this class from a layout, so that it could be inflated
      */
-
-    // All three constructors are necessary in order to create an object of this class from a layout, so that it could be found by findViewbyid()
     public QuestionCarousel(Context context) {
         super(context);
         mContext = context;
@@ -110,14 +111,13 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     }
 
 
-
     /**
-     * Initializations to be performed in constructurs. Therfore this method has to be called from constructors.
+     * Initializations to be performed in constructurs.
      */
     private void init() {
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_question_carousel, this);
-        //mlayoutQuestions = (FrameLayout) v.findViewById(R.id.layout_questions);
 
+        //Get references to layout objects
         mShadowTop = (ImageView) v.findViewById(R.id.question_shadow_top);
         mShadowTopLine = (ImageView) v.findViewById(R.id.question_shadow_top_line);
         getmShadowMiddle = (ImageView) v.findViewById(R.id.question_shadow_middle);
@@ -127,14 +127,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         //TODO: Fall abfangen, dass keine Liste hinzugefügt wurde
         mCurrentQuestion = -1;
         mDensity = getResources().getDisplayMetrics().density;
-        mDuration = 200;
+        mAnimationDuration = 200;
         mRecordIndex = -1;
         mInvertedLayout = false;
 
-        Log.d(TAG, "setQuestionList: getChildCount: " + getChildCount());
-
-        // Since setting coordinates only takes effect after the layout was created, this has to be done by the onPreDraw() method from onPreDrawListener
-
+        //Since setting coordinates only takes effect after the layout was created, this has to be done by the onPreDraw() method from onPreDrawListener
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             // called when layout is created. The measurements of the view and layout dimensions are available by then
             @Override
@@ -148,11 +145,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 getmShadowMiddle.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight));
                 mShadowBottom.setY(getResources().getDimension(R.dimen.carouselLayoutHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight));
                 mShadowBottomLine.setY(mShadowBottom.getY());
-
                 return true;
             }
         });
-
     }
 
 
@@ -164,10 +159,15 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mListStrings = list;
         mQuestionCount = mListStrings.length;
         mCurrentQuestion = 0;
-
         initiateCarousel();
     }
 
+
+    /**
+     * Sets the first shown question, when the holding activity starts. This could be used, if the user returnes to the recording activity after he already
+     * recorded some questions, to show the first question which haven't been recorded so far.
+     * @param index Index of the first question to be shown
+     */
     public void setFirstShownQuestion(int index) {
         mFirstShownQuestion = index;
         for ( int i=0 ; i<index ; i++) {
@@ -175,8 +175,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         }
     }
 
+
     /**
-     * Sets only the middle background shadow visible.
+     * Sets the inverted layout, where only the middle background shadow is visible.
      */
     public void setInvertedLayout() {
         mInvertedLayout = true;
@@ -186,8 +187,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mListCarousel.get(mCurrentQuestion).setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
     }
 
+
     /**
-     * Sets the top and bottom background shadow visible.
+     * Sets the normal layout, where the top and bottom background shadows are visible.
      */
     public void setNormalLayout() {
         mInvertedLayout = false;
@@ -197,8 +199,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mListCarousel.get(mCurrentQuestion).setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
     }
 
+
     /**
-     * Sets a record symbol next to the currently recorded question.
+     * Attaches a record symbol to the currently recorded question.
      * @param index     Index of the currently recorded question
      */
     public void setRecordOn(int index) {
@@ -218,9 +221,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     }
 
+
     /**
-     * Removes the record symbol from the question that was just recorded and sign that question as recordet.
-     * The appearance of the recorded sign is dependant on the finished mode.
+     * Removes the record symbol from the question that was just recorded and turn that question blue to sign it as recorded.
      */
     public void setRecordOff() {
         if (mRecordIndex >= 0) {
@@ -232,6 +235,12 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         }
     }
 
+
+    /**
+     * Marks the CarouselTextViews in mListCarousel, if they have been recorded already or not. This is necessary to determine
+     * the recorded state, after the user returns from ReviewInterviewInputActivity to the record activity.
+     * @param recordedQuestionIndices
+     */
     public void setRecordedQuestions(int[] recordedQuestionIndices) {
         for (int i=0 ; i<recordedQuestionIndices.length ; i++) {
             mListCarousel.get(recordedQuestionIndices[i]).setRecorded(true);
@@ -239,30 +248,35 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         initiateCarousel();
     }
 
-    public boolean questionWasRecorded(int questionIndex) { return mListCarousel.get(questionIndex).wasRecorded(); }
+
+    //get-method for the recorded state of a specific question
+    public boolean wasQuestionRecorded(int questionIndex) { return mListCarousel.get(questionIndex).wasRecorded(); }
+
 
     /**
-     * Returns the index of the current middle TextView.
+     * Returns the index of the current middle CarouselTextView.
      * @return index of current middle TextView
      */
     public int getCurrentIndex() { return mCurrentQuestion; }
 
+
+    //Triggers an animation
     @Override
     public boolean onTouch(View view, MotionEvent event){
+
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Log.d(TAG, "onTouch: " + event.getAction() + " , mTouchStart: " + mTouchStart + " , getY: " + event.getY() + " , mTouchInProgress: " + mTouchInProgress);
+            //Holds the initial vertical position of a touch
             mTouchStart = event.getY();
             return true;
         }
-
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            //If there is a vertical movement on a touch event greater than an offset, an animation is triggered,
+            //but only, if there isn't already an animation in progress, which is determined by mAnimationinProgress.
             if (!mTouchInProgress && !mAnimationInProgress) {
                 if (mTouchStart +15.0f* mDensity < event.getY()) {
-                    Log.d(TAG, "onTouch: Move Down!: " + event.getAction() + " , mTouchStart: " + mTouchStart + " , getY: " + event.getY() + " , mTouchInProgress: " + mTouchInProgress);
                     mTouchInProgress = true;
                     animateDownward();
                 } else if (mTouchStart -15.0f* mDensity > event.getY()) {
-                    Log.d(TAG, "onTouch: Move Up!: " + event.getAction() + " , mTouchStart: " + mTouchStart + " , getY: " + event.getY() + " , mTouchInProgress: " + mTouchInProgress);
                     mTouchInProgress = true;
                     animateUpward();
                 } else {
@@ -271,26 +285,21 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 return true;
             }
         }
-
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            Log.d(TAG, "onTouch: " + event.getAction() + " , mTouchStart: " + mTouchStart + " , getY: " + event.getY() + ", mTouchInProgress: " + mTouchInProgress);
             mTouchInProgress = false;
             return true;
         }
-
         return false;
     }
 
 
     /**
      * Returns the top y-position in the carousel for the given TextView.
-     * Usually that is the TextView, that will next be moved to the top.
+     * Usually that is the TextView, that is going to be moved to the top next.
      * @param ctv   The CarouselTextView which is to be placed at the top
      * @return      y-position in pixels
      */
     private float getTopPosition(final CarouselTextView ctv) {
-        Log.d(TAG, "getTopPosition: ctv.getTextSize: " + ctv.getTextSize()/mDensity + " , textSizeCurrentQuestion: " + (int)getResources().getDimension(R.dimen.textSizeCurrentQuestion));
-
         float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
         float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
 
@@ -304,13 +313,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     /**
      * Returns the middle y-position in the carousel for the given TextView.
-     * Usually that is the TextView, that will next be moved to the middle or the one, that is placed at the middle initially.
+     * Usually that is the TextView, that is going to be moved to the middle next, or the one, that is placed at the middle initially.
      * @param ctv   The CarouselTextView which is to be placed at the middle
      * @return      y-position in pixels
      */
     private float getMiddlePosition(CarouselTextView ctv) {
-        Log.d(TAG, "getMiddlePosition: ctv.getTextSize: " + ctv.getTextSize()/mDensity + " , textSizeLastNextQuestion: " + (int)getResources().getDimension(R.dimen.textSizeLastNextQuestion));
-
         float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
         float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
 
@@ -324,14 +331,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
     /**
      * Returns the bottom y-position in the carousel for the given TextView.
-     * Usually that is the TextView, that will next be moved to the bottom or the one, that is placed at the bottom initially.
+     * Usually that is the TextView, that is going to be moved to the bottom next, or the one, that is placed at the bottom initially.
      * @param ctv   The CarouselTextView which is to be placed at the bottom
      * @return      y-position in pixels
      */
     private float getBottomPosition(CarouselTextView ctv) {
-        Log.e(TAG, "getBottomPosition: ctv.getTextSize: " + ctv.getTextSize()/mDensity + " , textSizeCurrentQuestion: " + (int)getResources().getDimension(R.dimen.textSizeCurrentQuestion));
-        Log.e(TAG, "getLines: " + ctv.getLines() + " , ctv.getHeight: " + ctv.getHeight());
-
         float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
         float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
 
@@ -344,7 +348,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
 
     /**
-     * Returns the current index for the three shown TextViews respectively for the next invisible TextViews
+     * Returns the current index for the three shown TextViews and the next invisible TextViews
      * @return index of the TextView
      */
     private int getNextTopIndex() { return mCurrentQuestion-2; }
@@ -373,30 +377,25 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     private void initiateCarousel() {
         Log.d(TAG, "initiateCarousel: ");
 
+
         ArrayList<CarouselTextView> oldListCarousel = mListCarousel;
         mListCarousel = new ArrayList<>();
-
-        //mlayoutQuestions.removeAllViews();
 
         // if a new QuestionList was set, the old TextViews will be removed before the new ones are added.
         // since the first child of the layout is the layout itself, the childs beginning from
         // index 1 will be removed)
-        Log.d(TAG, "getChildCount: " + getChildCount());
         if (getChildCount()>1) {
             removeViews(1, getChildCount()-1);
         }
-//        removeAllViews();
 
         for ( int i=0 ; i<mQuestionCount ; i++ ) {
-            //creates CarouselTextViews based on the Strings in mListStrings and add them to mListCarousel as well as to mLayoutQuestions
+            //Creates CarouselTextViews based on the Strings in mListStrings and add them to mListCarousel and to the layout
             CarouselTextView tv = new CarouselTextView(mContext);
             tv.setText(mListStrings[i]);
             mListCarousel.add(tv);
-
-            //mlayoutQuestions.addView(tv);
             addView(tv);
 
-            // sets TextView dimension and layout-alignment preferences
+            //Sets TextView dimension and layout-alignment preferences
             LayoutParams params = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT );
             params.gravity = Gravity.CENTER;
             tv.setLayoutParams(params);
@@ -406,7 +405,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             }
 
             if (i == getMiddleIndex()) {
-                // sets initial attributes to first TextView
+                //Sets initial attributes to first TextView
                 tv.setAlpha(1.0f);
                 if (tv.wasRecorded()) {
                     tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
@@ -416,18 +415,18 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 tv.setTextSize(getResources().getDimension(R.dimen.textSizeCurrentQuestion));
                 tv.setTypeface(Typeface.DEFAULT_BOLD);
                 if (!mInvertedLayout && !tv.wasRecorded()) {
-                    // set shadow for better readability
+                    //Set shadow for better readability
                     tv.setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
                 }
             } else {
                 if (i == getBottomIndex()) {
-                    // sets second TextView initially visible
+                    //Sets second TextView initially visible
                     tv.setAlpha(1.0f);
                 } else {
-                    // sets all other TextViews initially invisible
+                    //Sets all other TextViews initially invisible
                     tv.setAlpha(0.0f);
                 }
-                //sets initial attribtes to all other TextViews except first one
+                //Sets initial attribtes to all other TextViews except first one
                 if (tv.wasRecorded()) {
                     tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
                 } else {
@@ -441,17 +440,15 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         // Because this heights are unknown (since TextViews add an unpredictable vertical padding) until the layout was created
         // it's necessary to put the calculations for the initial positions into an OnPreDrawListener.
 
-        //mlayoutQuestions.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             // called when the layout is created. The measurements of TextView dimensions are available by then
             @Override
             public boolean onPreDraw() {
                 Log.d(TAG, "initiateCarousel: OnPreDrawListener: OnPreDraw: ");
-                // removes the Listener again
-                //mlayoutQuestions.getViewTreeObserver().removeOnPreDrawListener(this);
+                //Removes the Listener again
                 getViewTreeObserver().removeOnPreDrawListener(this);
 
-                //asigns initial positions to TextViews
+                //Assigns initial positions to TextViews
                 for (int i=0 ; i<mQuestionCount ; i++) {
 
                     if (i==getMiddleIndex()) {
@@ -465,7 +462,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                     }
                 }
                 setAnimators();
-                //mlayoutQuestions.setOnTouchListener(QuestionCarousel.this);
                 setOnTouchListener(QuestionCarousel.this);
                 return true;
             }
@@ -480,13 +476,13 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      */
     private void setAnimators() {
         Log.d(TAG, "setAnimators: ");
-        // there is only a question at the top, if current question index is > 0
+        //There is only a question at the top, if current question index is > 0
         if (mCurrentQuestion > 0) {
             mAnimatorFadeOutTop = ObjectAnimator.ofFloat(getTopTextView(), "alpha", 1.0f, 0.0f);
 
             mAnimatorSetTopToMiddle = new AnimatorSet();
             mAnimatorYTopToMiddle = ObjectAnimator.ofFloat(getTopTextView(), "y", getMiddlePosition(getTopTextView()));
-            //if the textSize of the TextView has been resized to fit the TextView into the carousel its size will be fixed so that the animator for textSize is not needed
+            //If the textSize of the TextView has been resized to fit the TextView into the carousel its size will be fixed so that the animator for textSize is not needed
             if (!getTopTextView().wasResized()) {
                 mAnimatorTextSizeTopToMiddle = ObjectAnimator.ofFloat(
                         getTopTextView(), "textSize",
@@ -501,13 +497,12 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                         .play(mAnimatorYTopToMiddle);
             }
         }
-        // there is only a question at the bottom, if currend question index is < mListCarousel.size();
+        //There is only a question at the bottom, if currend question index is < mListCarousel.size();
         if (mCurrentQuestion < mQuestionCount-1) {
             mAnimatorFadeOutBottom = ObjectAnimator.ofFloat(getBottomTextView(), "alpha", 1.0f, 0.0f);
 
             mAnimatorSetBottomToMiddle = new AnimatorSet();
             mAnimatorYBottomToMiddle = ObjectAnimator.ofFloat(getBottomTextView(), "y", getMiddlePosition(getBottomTextView()));
-            // see comment above
             if (!getBottomTextView().wasResized()) {
                 mAnimatorTextSizeBottomToMiddle = ObjectAnimator.ofFloat(
                         getBottomTextView(), "textSize",
@@ -523,19 +518,18 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             }
         }
 
-        // there is only a invisible question to fade in at the top, if current question index is > 1
+        //There is only a invisible question to fade in at the top, if current question index is > 1
         if (mCurrentQuestion > 1) {
             mAnimatorFadeInTop = ObjectAnimator.ofFloat(getNextTopTextView(), "alpha", 0.0f, 1.0f);
         }
 
-        // there is only a invisible question to fade in at the bottom, if current question index is < mListCarousel.size()
+        //There is only a invisible question to fade in at the bottom, if current question index is < mListCarousel.size()
         if (mCurrentQuestion < mQuestionCount-2) {
             mAnimatorFadeInBottom = ObjectAnimator.ofFloat(getNextBottomTextView(), "alpha", 0.0f, 1.0f);
         }
 
         mAnimatorSetMiddleToTop = new AnimatorSet();
         mAnimatorYMiddleToTop = ObjectAnimator.ofFloat(getMiddleTextView(), "y", getTopPosition(getMiddleTextView()));
-        //see comment above
         if (!getMiddleTextView().wasResized()) {
             mAnimatorTextSizeMiddleToTop = ObjectAnimator.ofFloat(
                     getMiddleTextView(), "textSize",
@@ -552,7 +546,6 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
         mAnimatorSetMiddleToBottom = new AnimatorSet();
         mAnimatorYMiddleToBottom = ObjectAnimator.ofFloat(getMiddleTextView(), "y", getBottomPosition(getMiddleTextView()));
-        //see comment above
         if (!getMiddleTextView().wasResized()) {
             mAnimatorTextSizeMiddleToBottom = ObjectAnimator.ofFloat(
                     getMiddleTextView(), "textSize",
@@ -568,10 +561,10 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         }
 
         mAnimatorSetNextQuestion = new AnimatorSet();
-        mAnimatorSetNextQuestion.setDuration(mDuration);
+        mAnimatorSetNextQuestion.setDuration(mAnimationDuration);
 
         mAnimatorSetLastQuestion = new AnimatorSet();
-        mAnimatorSetLastQuestion.setDuration(mDuration);
+        mAnimatorSetLastQuestion.setDuration(mAnimationDuration);
     }
 
 
@@ -637,9 +630,14 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                         .with(mAnimatorSetBottomToMiddle)
                         .with(mAnimatorFadeInBottom);
             }
+            //Add a Listener to the animation, to get callbacks onAnimationStart and onAnimationEnd
             mAnimatorSetNextQuestion.addListener(new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animation) { mAnimationInProgress = true; }
 
+                @Override public void onAnimationStart(Animator animation) {
+                    mAnimationInProgress = true;
+                }
+
+                //After an animation the animators and the unanimated attributes has to be set again
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mCurrentQuestion++;
@@ -651,6 +649,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 @Override public void onAnimationCancel(Animator animation) {}
                 @Override public void onAnimationRepeat(Animator animation) {}
             });
+
             mAnimatorSetNextQuestion.start();
         }
     }
@@ -680,10 +679,14 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                         .with(mAnimatorSetTopToMiddle)
                         .with(mAnimatorFadeInTop);
             }
-
+            //Add a Listener to the animation, to get callbacks onAnimationStart and onAnimationEnd
             mAnimatorSetLastQuestion.addListener(new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animation) { mAnimationInProgress = true; }
 
+                @Override public void onAnimationStart(Animator animation) {
+                    mAnimationInProgress = true;
+                }
+
+                //After an animation the animators and the unanimated attributes has to be set again
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     mCurrentQuestion--;
@@ -695,6 +698,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 @Override public void onAnimationCancel(Animator animation) {}
                 @Override public void onAnimationRepeat(Animator animation) {}
             });
+
             mAnimatorSetLastQuestion.start();
         }
     }

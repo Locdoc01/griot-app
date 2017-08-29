@@ -11,9 +11,8 @@ import android.view.SurfaceView;
 import java.util.List;
 
 /**
- * Created by marcel on 30.06.17.
+ * TODO erläutern
  */
-
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = CameraPreview.class.getSimpleName();

@@ -7,6 +7,10 @@ import android.util.Log;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 
+/**
+ * Activity that allows the user to compose a question request through the questionmail
+ */
+//TODO
 public class ComposeQuestionRequestInputActivity extends GriotBaseInputActivity {
 
     private static final String TAG = ComposeQuestionRequestInputActivity.class.getSimpleName();

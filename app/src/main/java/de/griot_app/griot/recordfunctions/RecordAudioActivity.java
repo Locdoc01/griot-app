@@ -21,23 +21,25 @@ import java.util.TimerTask;
 import de.griot_app.griot.R;
 
 /**
- * Created by marcel on 14.07.17.
+ * This activity provides the audio recording functionality for Griot-App.
  */
-
 public class RecordAudioActivity extends RecordActivity {
 
     private static final String TAG = RecordVideoActivity.class.getSimpleName();
 
+    //default audio settings
+    //TODO: optionale Alternativen
     private int mOutputFormat = MediaRecorder.OutputFormat.MPEG_4;
     private int mAudioEncoder = MediaRecorder.AudioEncoder.AAC;     //TODO: alternativ AAC_ELD testen
     private int mAudioSamplingRate = 44100;                         //TODO: alternativ 48000 testen
     private int mAudioBitRate = 96000;                              //TODO: alternativ 128000 testen
 
+    //necessary for the waveline visualizaton
     private Timer mTimerAmplitude;
     private int mAmplitude;
 
 
-    //TODO: prüfen auf Optimierung
+    //TODO: check for optimization
     private class AmplitudeTask extends TimerTask {
         public void run() {
             mAmplitude = mMediaRecorder.getMaxAmplitude();
@@ -53,7 +55,6 @@ public class RecordAudioActivity extends RecordActivity {
 
         mChronometers.setBitRate( mAudioBitRate );
         mCarousel.setInvertedLayout();
-
     }
 
     @Override
@@ -61,16 +62,12 @@ public class RecordAudioActivity extends RecordActivity {
         return R.layout.activity_record_audio;
     }
 
-    /*
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id....:
-                break;
-        }
-    }
-*/
+    protected String getSubClassTAG() { return TAG; }
 
+    /**
+     * Initializes the bachground, which shows the darkened narrators profile image in black & white and a waveline visualization
+     */
     @Override
     protected void setup() {
         Log.d(TAG, "setup: ");
@@ -113,7 +110,10 @@ public class RecordAudioActivity extends RecordActivity {
     }
 
 
-
+    /**
+     * Initializes the MediaRecorder and starts the recording.
+     * @return true, if recording started successfully, false, else.
+     */
     @Override
     protected boolean startRecording() {
         Log.d(TAG, "startRecordingNewVideo: ");
@@ -124,28 +124,22 @@ public class RecordAudioActivity extends RecordActivity {
         try {
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mMediaRecorder.setOutputFormat(mOutputFormat);
-
             mMediaFile = getOutputFile();
-
             mCurrentRecordingIndex = mCarousel.getCurrentIndex();
-
             mMediaRecorder.setOutputFile(mMediaFile.getPath());
 
-            //TODO evt verschiedene Qualitäten als Option anbieten
+            //TODO provide optional audio settings
             mMediaRecorder.setAudioEncoder(mAudioEncoder);
             mMediaRecorder.setAudioSamplingRate(mAudioSamplingRate);
             mMediaRecorder.setAudioEncodingBitRate(mAudioBitRate);
 
-
-            //TODO: prüfen auf Optimierung
+            //TODO: check for optimization
             mTimerAmplitude = new Timer();
 
             mMediaRecorder.prepare();
-
             mMediaRecorder.start();
             mChronometers.start();
             mTimerAmplitude.scheduleAtFixedRate(new AmplitudeTask(), 0, 100);
-
         } catch (Exception e) {
             Log.e(TAG, "Error starting MediaRecorder: " + e.getMessage());
 
@@ -155,6 +149,9 @@ public class RecordAudioActivity extends RecordActivity {
     }
 
 
+    /**
+     * Stops recording
+     */
     @Override
     protected void stopRecording() {
         Log.d(TAG, "stopRecording: ");
@@ -168,12 +165,12 @@ public class RecordAudioActivity extends RecordActivity {
         mChronometers.stop();
         mTimerAmplitude.cancel();
 
-        // if current question wasn't recorded so far
+        //If current question wasn't recorded so far
         if (allMediaMultiFilePaths.get(mCurrentRecordingIndex).isEmpty()) {
             recordedQuestionsCount++;
         }
 
-        // add the (next) file path of the current questions media file.
+        //Add the (next) file path of the current questions media file.
         allMediaMultiFilePaths.get(mCurrentRecordingIndex).add(Uri.fromFile(mMediaFile).toString());
 
         mCurrentRecordingIndex = -1;

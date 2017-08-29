@@ -48,13 +48,11 @@ public abstract class RecordActivity extends AppCompatActivity {
 
     protected int mMedium = -1;
 
-    private static final String TAG = RecordActivity.class.getSimpleName();
-
     private static final int PERMISSION_REQUEST = 6353;
 
     private static final String APP_DIR_NAME = "Griot";
 
-    //intent-data
+    //Intent-data
     protected int narratorSelectedItemID;
     protected String narratorID;
     protected String narratorName;
@@ -70,30 +68,54 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected String topic;
 
     protected String title;
-
     protected String dateYear;
     protected String dateMonth;
     protected String dateDay;
 
+    /**
+     * allQuestions holds all questions, which were selected before the interview started
+     */
     protected String[] allQuestions;
 
+    /**
+     * addedQuestions holds questions, which were added, when reviewing the interview
+     */
     protected String[] addedQuestions;
 
     protected int mAllQuestionsCount;
+
     /**
-     * mListFiles stores the filenames of the created media files.
-     * Outer list index correspond with index from mListAllQuestions, thus one element is equivalent to one interview question.
+     * allMediaMultiFilePaths holds the file paths of the created media files.
+     * Outer ArrayList index correspond with allQuestions index, thus one element is equivalent to one interview question.
      * One inner list holds all filenames of files, that were recorded for one specific question.
      * regularly there will be just one filename in one list, unless a question was recorded more than once.
      */
     protected ArrayList<ArrayList<String>> allMediaMultiFilePaths;
+
+    /**
+     * allMediaSingleFilePaths holds the file paths of the media files, after all files of one question were combined to one file.
+     * Thus the index corresponds with allQestions index.
+     */
     protected String[] allMediaSingleFilePaths;
 
+    /**
+     * recordedMediaSingleFilePaths also holds combined files, but only for those questions, which were actually recorded.
+     * Thus the index does not correspond with allQuestions index.
+     */
     protected String[] recordedMediaSingleFilePaths;
+
+    /**
+     * The following Arrays refer only to the recorded Files. Their index corresponds with the index of recordedMediaSingleFilePaths
+     */
     protected String[] recordedCoverFilePaths;
     protected String[] recordedQuestions;
     protected String[] recordedQuestionLengths;
+
+    /**
+     * recordedQuestionIndices maps the indices from recordedMediaSingleFilePaths to the indices of allQuestions
+     */
     protected int[] recordedQuestionIndices;
+
     protected int recordedQuestionsCount;
 
     protected View.OnClickListener mClickListener;
@@ -101,28 +123,21 @@ public abstract class RecordActivity extends AppCompatActivity {
     /** The screen-filling placeholder for e.g. camera preview or other background content. */
     protected FrameLayout mBackground;
 
+    //Views
     protected QuestionCarousel mCarousel;
     protected RecordChronometers mChronometers;
     protected MediaRecorder mMediaRecorder;
-    //protected MediaRecorder.OutputFormat mOutputFormat;
-
-
-    protected String mInterviewDir;
-    protected File mMediaFile;
-
-    protected File mCoverFile;
-
-    protected float mDensity;
-
-    protected FrameLayout mLayoutChronometers;
-    protected FrameLayout mLayoutCarousel;
     protected ImageView mButtonRecord;
     protected Button mButtonFinished;
 
+    protected String mInterviewDir;
+    protected File mMediaFile;
+    protected File mCoverFile;
+
+    //switch and control variables
+    protected float mDensity;
     private int mFirstShownQuestion = 0;
-
     private boolean mIsRecording = false;
-
     protected int mCurrentRecordingIndex = -1;
 
     /**
@@ -133,11 +148,19 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected abstract int getSubClassLayoutId();
 
     /**
+     * Abstract method, which returns the TAG of the extending subclass.
+     * This method can be used, when the TAG of the concrete subclass is needed.
+     * Note, that RecordActivity itself doesn't provide a TAG field.
+     * @return  TAG of the extending subclass
+     */
+    protected abstract String getSubClassTAG();
+
+    /**
      * Abstract method for setting up the chosen recording device and the screen background filling.
      * All steps, that are necessary to be done BEFORE recording starts have to be performed in this method.
-     * Since these steps are dependant on the chosen medium, it has to implemented by the specific subclass.
+     * Since these steps are dependant on the chosen medium, it has to be implemented by the specific subclass.
      * Background filling would usually be a camera preview for video recording. In case of audio recording
-     * it could be a picture, some kind of animation or anything else, that could be hold by a FrameLayout.
+     * it could be a picture, some kind of animation or anything else.
      */
     protected abstract void setup();
 
@@ -159,13 +182,13 @@ public abstract class RecordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //the layout for the appropriate subclass of RecordActivity has to be inflated here, because some views has to be initialized yet.
-        //thus RecordActivity.onCreate() has to know, which layout for which subclass has to be inflated.
-        //This is achieved through the abstract method getSubClassLayoutId(), which has to be implemented in the subclasses to return there
+        //The layout for the appropriate subclass of RecordActivity has to be inflated here, because some views has to be initialized yet.
+        //Thus onCreate() has to know, which layout for which subclass has to be inflated.
+        //This is achieved by the abstract method getSubClassLayoutId(), which has to be implemented in the subclasses to return there
         //appropriate layout ids
         setContentView(getSubClassLayoutId());
 
-        // gets intent-data about previous selections
+        //Get intent-data
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -181,12 +204,12 @@ public abstract class RecordActivity extends AppCompatActivity {
         topic = getIntent().getStringExtra("topic");
 
         title = getIntent().getStringExtra("title");
-
         dateYear = getIntent().getStringExtra("dateYear");
         dateMonth = getIntent().getStringExtra("dateMonth");
         dateDay = getIntent().getStringExtra("dateDay");
 
         allQuestions = getIntent().getStringArrayExtra("allQuestions");
+        addedQuestions = getIntent().getStringArrayExtra("addedQuestions");
         allMediaSingleFilePaths = getIntent().getStringArrayExtra("allMediaSingleFilePaths");
 
         recordedQuestionsCount = getIntent().getIntExtra("recordedQuestionsCount", 0);
@@ -194,8 +217,10 @@ public abstract class RecordActivity extends AppCompatActivity {
 
         mInterviewDir = getIntent().getStringExtra("interviewDir");
 
-        addedQuestions = getIntent().getStringArrayExtra("addedQuestions");
-
+        //If questions were added in ReviewInterviewInputActivity, a new Array is created, which holds
+        //the previous questions and the added questions. mFirstShownQuestion is set to the first question,
+        //that has been added
+        //TODO: not testet. Add-function has to be implemented yet.
         if (addedQuestions != null) {
             mFirstShownQuestion = allQuestions.length;
             String[] tmp = new String[allQuestions.length + addedQuestions.length];
@@ -212,9 +237,10 @@ public abstract class RecordActivity extends AppCompatActivity {
 
         allMediaMultiFilePaths = new ArrayList<>();
 
+        //initializes allMediaMultiFilePaths
         for (int i = 0; i < mAllQuestionsCount; i++) {
             allMediaMultiFilePaths.add(new ArrayList<String>());
-            // if there were some recordings done before, getting from the Intent, add them
+            //If there were some recordings done before, getting from the Intent, they get added
             if (allMediaSingleFilePaths != null) {
                 if (allMediaSingleFilePaths[i] != null) {
                     allMediaMultiFilePaths.get(i).add(allMediaSingleFilePaths[i]);
@@ -222,22 +248,25 @@ public abstract class RecordActivity extends AppCompatActivity {
             }
         }
 
+        //initializes the question carousel
         mCarousel = (QuestionCarousel) findViewById(R.id.layout_carousel);
         mCarousel.setQuestionList(allQuestions);
 
+        //Set information about previously recorded questions to question carousel
         if (recordedQuestionIndices != null) {
             mCarousel.setRecordedQuestions(recordedQuestionIndices);
         }
 
-        //TODO: setze firstshownquestion auf die erste Frage, die noch nicht beantwortet wurde
+        //TODO: set mFirstShownQuestion to the first question, that hasn't been answered yet
         mCarousel.setFirstShownQuestion(mFirstShownQuestion);
 
+        //Get references to other layout objects
         mBackground = (FrameLayout) findViewById(R.id.record_background);
-        mButtonRecord = (ImageView) findViewById(R.id.button_record);
-
         mChronometers = (RecordChronometers) findViewById(R.id.layout_chronometers);
+        mButtonRecord = (ImageView) findViewById(R.id.button_record);
         mButtonFinished = (Button) findViewById(R.id.button_finished);
 
+        //set OnClickListener for the controls
         mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,12 +274,14 @@ public abstract class RecordActivity extends AppCompatActivity {
                     case R.id.button_record:
                         if (!mIsRecording) {
                             if (startRecording()) {
+                                Log.d(getSubClassTAG(), "record clicked: ");
                                 mIsRecording = true;
                                 mCarousel.setRecordOn(mCarousel.getCurrentIndex());
                                 mButtonFinished.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
                                 mButtonRecord.setImageResource(R.drawable.record_stop);
                             }
                         } else {
+                            Log.d(getSubClassTAG(), "stop clicked: ");
                             stopRecording();
                             mIsRecording = false;
                             mCarousel.setRecordOff();
@@ -260,6 +291,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.button_finished:
+                        Log.d(getSubClassTAG(), "finished clicked: ");
                         finishInterview();
                         break;
                 }
@@ -269,7 +301,6 @@ public abstract class RecordActivity extends AppCompatActivity {
         mButtonRecord.setOnClickListener(mClickListener);
         mButtonFinished.setOnClickListener(mClickListener);
 
-
         // Makes sure on Android API level < 19 that the status bar will be fade out after 2 seconds, if it got visible by the user
         // (since API level 19 this is obsolete, thanks to the immersive layout functionality (see hideStatusBar() for more details)
         if (android.os.Build.VERSION.SDK_INT < 19) {
@@ -277,10 +308,10 @@ public abstract class RecordActivity extends AppCompatActivity {
             decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
                 @Override
                 public void onSystemUiVisibilityChange(int visibility) {
-                    Log.d(TAG, "onSystemUIVisibilityChange: visibility: " + visibility);
+                    Log.d(getSubClassTAG(), "onSystemUIVisibilityChange: visibility: " + visibility);
                     int vis = visibility & (View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                     if (vis == 0) {
-                        Log.d(TAG, "Visibility: status bar visible");
+                        Log.d(getSubClassTAG(), "Visibility: status bar visible");
                         Handler h = decorView.getHandler();
                         if (h != null) {
                             h.postDelayed(new Runnable() {
@@ -291,7 +322,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                             }, 2000);
                         }
                     } else {
-                        Log.d(TAG, "Visibility: status bar hidden");
+                        Log.d(getSubClassTAG(), "Visibility: status bar hidden");
                     }
                 }
             });
@@ -329,11 +360,12 @@ public abstract class RecordActivity extends AppCompatActivity {
      * the given permissions. If permissions for CAMERA are denied but for RECORD_AUDIO and WRITE_EXTERNAL_STORAGE are allowed then
      * at least audio recording can be used. In that case the app redirects automatically from RecordVideoActivity to RecordAudioActivity.
      * If one of RECORD_AUDIO or WRITE_EXTERNAL_STORAGE are denied, recording functionality can not be used at all.
-     * In that case the app will return to the MainActivity. All other Functions of the app will be usable.
+     * In that case the app will return to MainOverviewActivity. All other Functions of the app will be usable.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionResult: ");
+        Log.d(getSubClassTAG(), "onRequestPermissionResult: ");
+
         boolean grantedVideo = true;
         boolean grantedAudio = true;
 
@@ -342,11 +374,11 @@ public abstract class RecordActivity extends AppCompatActivity {
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     if (permissions[i].equals("android.permission.CAMERA")) {
                         grantedVideo = false;
-                        Log.w(TAG, "onRequestPermissionResult: " + permissions[i] + ": Permission denied !!");
+                        Log.w(getSubClassTAG(), "onRequestPermissionResult: " + permissions[i] + ": Permission denied !!");
                     } else {
                         grantedVideo = false;
                         grantedAudio = false;
-                        Log.e(TAG, "onRequestPermissionResult: " + permissions[i] + ": Permission denied !!");
+                        Log.e(getSubClassTAG(), "onRequestPermissionResult: " + permissions[i] + ": Permission denied !!");
                     }
                 }
             }
@@ -359,18 +391,18 @@ public abstract class RecordActivity extends AppCompatActivity {
             finish();
         } else if (!grantedVideo) {
             Toast.makeText(RecordActivity.this, getString(R.string.text_permission_camera), Toast.LENGTH_SHORT).show();
-            // TODO: Intent zu RecordAudioActivity
+            // TODO: Intent to RecordAudioActivity
         } else {
-            Log.d(TAG, "onRequestPermissionResult: All permissions granted");
+            Log.d(getSubClassTAG(), "onRequestPermissionResult: All permissions granted");
 
             setup();
         }
     }
 
 
-    // since Android 6.0 it's necessary to check for Permissons during run-time.
+    // since Android 6.0 it's necessary to check for permissons during run-time.
     private void checkForPermissions() {
-        Log.d(TAG, "checkForPermissions: ");
+        Log.d(getSubClassTAG(), "checkForPermissions: ");
 
         ArrayList<String> manifestPermissons = new ArrayList<>();
         manifestPermissons.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -384,7 +416,6 @@ public abstract class RecordActivity extends AppCompatActivity {
         for (Integer i : permissionList) {
             if (i == PackageManager.PERMISSION_DENIED) {
                 ActivityCompat.requestPermissions(RecordActivity.this, manifestPermissons.toArray(new String[manifestPermissons.size()]), PERMISSION_REQUEST);
-                // dialog-Abfrage ob wirklich fertig
                 return;
             }
         }
@@ -399,8 +430,8 @@ public abstract class RecordActivity extends AppCompatActivity {
      * the status bar automatically after it got visible.
      */
     private void hideStatusBar() {
-        Log.d(TAG, "hideStatusBar: SDK: " + android.os.Build.VERSION.SDK_INT);
-        // sorgt für Ausblendung der StatusBar.
+        Log.d(getSubClassTAG(), "hideStatusBar: SDK: " + android.os.Build.VERSION.SDK_INT);
+
         View decorView = getWindow().getDecorView();
         if (android.os.Build.VERSION.SDK_INT < 19) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -419,14 +450,15 @@ public abstract class RecordActivity extends AppCompatActivity {
 
     /**
      * Creates and returns a File object, which holds a filename for the next recorded file. The filename includes the record date and time and
-     * has the format "AUD_yyyy-MM-dd_HHmmss.mp3" for audio files or "VID_yyyy-MM-dd_HHmmss.mp4" for video files.
-     * If not existant, a subdirectory for the specific interview will also be created into the Movies-directory of external storages public directory,
+     * has the format "AUD_yyyy-MM-dd_HHmmss.m4a" for audio files or "VID_yyyy-MM-dd_HHmmss.mp4" for video files.
+     * If not existant, a subdirectory for the specific interview will also be created into the Movies-directory of external storage public directory,
      * so that the recorded files will be available to other apps including the systems gallery app.
      *
      * @return          File object holding the filename for the next recorded file.
      */
     protected File getOutputFile() throws Exception {
-        Log.d(TAG, "getOutputFile: ");
+        Log.d(getSubClassTAG(), "getOutputFile: ");
+
         String fileBeginning;
         String fileEnding;
         if (mMedium == MEDIUM_AUDIO) {
@@ -438,7 +470,6 @@ public abstract class RecordActivity extends AppCompatActivity {
         } else {
             throw new Exception("unexpected media type");
         }
-//        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String dateTime = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
         File dir;
         if (recordedQuestionsCount ==0) {
@@ -449,12 +480,11 @@ public abstract class RecordActivity extends AppCompatActivity {
             mInterviewDir = dir.getPath();
             if (!dir.exists()) {
                 if (!dir.mkdirs()) {
-                    Log.e(TAG, "Error creating interview directory");
+                    Log.e(getSubClassTAG(), "Error creating interview directory");
                     return null;
                 }
             }
         }
-
         return new File(mInterviewDir + File.separator + fileBeginning + dateTime + fileEnding);
     }
 
@@ -463,21 +493,28 @@ public abstract class RecordActivity extends AppCompatActivity {
      * Makes sure, that the recorded files will be scanned by MediaScanner, so that they will be available from other apps like the systems gallery.
      */
     private void scanMedia() {
-        //makes sure, that the file will be shown in gallery
+        Log.d(getSubClassTAG(), "scanMedia: ");
+
         Intent mediaScannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         mediaScannerIntent.setData(Uri.fromFile(mMediaFile));
         sendBroadcast(mediaScannerIntent);
     }
 
-
+    /**
+     * Creates arrays, which holds only the recorded questions, their media files paths, cover file paths, length and indices (refering to all questions).
+     * Also puts all media files for one question together to one file, obtains the lengths of the files, and a thumb picture as cover file (in case of video)
+     * Finally creates an Intent to start ReviewInterviewActivity and put all collected data to it.
+     */
     protected void finishInterview() {
-        Log.d(TAG, "finishedInterview: ");
+        Log.d(getSubClassTAG(), "finishedInterview: ");
 
+        //arrays to hold data of recorded questions
         recordedQuestions = new String[recordedQuestionsCount];
         recordedMediaSingleFilePaths = new String[recordedQuestionsCount];
         recordedCoverFilePaths = new String[recordedQuestionsCount];
         recordedQuestionLengths = new String[recordedQuestionsCount];
         recordedQuestionIndices = new int[recordedQuestionsCount];
+
 
         allMediaSingleFilePaths = new String[allMediaMultiFilePaths.size()];
         int recordedIndex=0;
@@ -492,16 +529,19 @@ public abstract class RecordActivity extends AppCompatActivity {
                 MediaMetadataRetriever media = new MediaMetadataRetriever();
                 media.setDataSource(Uri.parse(videoPath).getPath());
 
+                //Get Length of a media file
                 String length = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                /*
                 if (Integer.parseInt(length)<2000) {    // TODO: geht nur, wenn mit ArrayLists statt arrays gearbeitet wird
                     continue;
                 }
                 */
+
                 recordedQuestionLengths[recordedIndex] = length;
                 if (mMedium==MEDIUM_AUDIO) {
                     recordedCoverFilePaths[recordedIndex] = Uri.fromFile(mCoverFile).toString();
                 } else {
+                    //Get a thumb bitmap of the video at a specific frame and store it to a file
                     Bitmap cover = media.getFrameAtTime((Integer.parseInt(length) < 2000) ? Integer.parseInt(length) : 2000);
                     if (cover != null) {
                         File coverFile = new File(mInterviewDir, "thumb_" + i + ".jpg");
@@ -521,6 +561,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                         recordedCoverFilePaths[recordedIndex] = null;
                     }
                 }
+
                 recordedQuestions[recordedIndex] = allQuestions[i];
                 recordedQuestionIndices[recordedIndex] = i;
                 recordedMediaSingleFilePaths[recordedIndex] = allMediaMultiFilePaths.get(i).get(0);
@@ -528,10 +569,8 @@ public abstract class RecordActivity extends AppCompatActivity {
             }
         }
 
+        //Create an Intent to start ReviewInterviewActivity and put all collected data of the interview to it
         Intent intent = new Intent(this, ReviewInterviewInputActivity.class);
-
-        // Navigates to next page of "prepare interview"-dialog
-        // All relevant data for the interview or the dialog-pages get sent to the next page.
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", narratorID);
         intent.putExtra("narratorName", narratorName);
@@ -547,19 +586,13 @@ public abstract class RecordActivity extends AppCompatActivity {
         intent.putExtra("topic", topic);
 
         intent.putExtra("title", title);
-
         intent.putExtra("medium", mMedium);
-
-
         intent.putExtra("dateYear", dateYear);
         intent.putExtra("dateMonth", dateMonth);
         intent.putExtra("dateDay", dateDay);
 
-       // intent.putExtra("interviewDir", mInterviewDir.toString());
-
         intent.putExtra("allQuestions", allQuestions);
         intent.putExtra("allMediaSingleFilePaths", allMediaSingleFilePaths);
-
 
         intent.putExtra("recordedQuestions", recordedQuestions);
         intent.putExtra("recordedQuestionIndices", recordedQuestionIndices);
@@ -567,9 +600,8 @@ public abstract class RecordActivity extends AppCompatActivity {
         intent.putExtra("recordedMediaSingleFilePaths", recordedMediaSingleFilePaths);
         intent.putExtra("recordedCoverFilePaths", recordedCoverFilePaths);
 
-        intent.putExtra("interviewDir", mInterviewDir);
-
         intent.putExtra("recordedQuestionsCount", recordedQuestionsCount);
+        intent.putExtra("interviewDir", mInterviewDir);
 
         startActivity(intent);
         finish();
