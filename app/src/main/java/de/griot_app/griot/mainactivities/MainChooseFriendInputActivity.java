@@ -42,9 +42,9 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     private String topic;
 
     //Views
-    TextView mTextViewTopic;
-    ImageView mButtonCancelTopic;
-    ImageView mLineTopic;
+    private TextView mTextViewTopic;
+    private ImageView mButtonCancelTopic;
+    private ImageView mLineTopic;
 
     //ListView, that holds the contact list
     private ListView mListViewPersons;

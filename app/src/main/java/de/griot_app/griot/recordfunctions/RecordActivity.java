@@ -46,11 +46,11 @@ public abstract class RecordActivity extends AppCompatActivity {
     public static final int MEDIUM_VIDEO = 0;
     public static final int MEDIUM_AUDIO = 1;
 
-    protected int mMedium = -1;
-
     private static final int PERMISSION_REQUEST = 6353;
 
     private static final String APP_DIR_NAME = "Griot";
+
+    protected int mMedium = -1;
 
     //Intent-data
     protected int narratorSelectedItemID;
@@ -59,9 +59,9 @@ public abstract class RecordActivity extends AppCompatActivity {
     protected String narratorPictureURL;
     protected Boolean narratorIsUser;
 
-    private String interviewerID;
-    private String interviewerName;
-    private String interviewerPictureURL;
+    protected String interviewerID;
+    protected String interviewerName;
+    protected String interviewerPictureURL;
 
     protected int topicSelectedItemID;
     protected int topicKey;
@@ -82,7 +82,7 @@ public abstract class RecordActivity extends AppCompatActivity {
      */
     protected String[] addedQuestions;
 
-    protected int mAllQuestionsCount;
+    protected int allQuestionsCount;
 
     /**
      * allMediaMultiFilePaths holds the file paths of the created media files.
@@ -136,8 +136,8 @@ public abstract class RecordActivity extends AppCompatActivity {
 
     //switch and control variables
     protected float mDensity;
-    private int mFirstShownQuestion = 0;
-    private boolean mIsRecording = false;
+    protected int mFirstShownQuestion = 0;
+    protected boolean mIsRecording = false;
     protected int mCurrentRecordingIndex = -1;
 
     /**
@@ -233,12 +233,12 @@ public abstract class RecordActivity extends AppCompatActivity {
             }
             allQuestions = tmp;
         }
-        mAllQuestionsCount = allQuestions.length;
+        allQuestionsCount = allQuestions.length;
 
         allMediaMultiFilePaths = new ArrayList<>();
 
         //initializes allMediaMultiFilePaths
-        for (int i = 0; i < mAllQuestionsCount; i++) {
+        for (int i = 0; i < allQuestionsCount; i++) {
             allMediaMultiFilePaths.add(new ArrayList<String>());
             //If there were some recordings done before, getting from the Intent, they get added
             if (allMediaSingleFilePaths != null) {

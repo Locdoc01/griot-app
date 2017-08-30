@@ -83,20 +83,20 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     private String[][] tags;
     private boolean mTitleChosen = false;
 
+    private String interviewID;
+
     //Necessary to determine, if all uploads are finished (either succefully or not)
     private int mUploadMediaSuccessCount = 0;
     private int mUploadMediaFailureCount = 0;
     private int mUploadMediaCoverSuccessCount = 0;
     private int mUploadMediaCoverFailureCount = 0;
 
-    private String interviewID;
-
     //Necessary to determine, if a new push-key has to be obtained from Firebase for storing the interview, or not.
     //A new push-key is only obtained on first attempt, so that in case of a faliure or interruption the interview
     //gets saved to the same database-location at further upload attempts. The incomplete data from the failed attempt
     //will be overwritten in that way. Otherwise there would pile up dead data entrys in the database, which can never
     //be accessed.
-    private boolean firstSaveAttempt = true;
+    private boolean mFirstSaveAttempt = true;
 
     //Views
     private EditText mEditTextTitle;
@@ -492,22 +492,22 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
 
         final DatabaseReference interviewsReference = mDatabaseRootReference.child("interviews");
 
-        // the boolean firstSaveAttempt ensures, that in case of an interrupted upload the interview will be saved to the same push-key at further attempts.
+        // the boolean mFirstSaveAttempt ensures, that in case of an interrupted upload the interview will be saved to the same push-key at further attempts.
         // Thus the potentially incomplete upload will be overwritten by the complete one.
         // Otherwise there could pile up dead interview fragments in the database, which cannot be accessed.
-        if (firstSaveAttempt) {
+        if (mFirstSaveAttempt) {
             interviewID = interviewsReference.push().getKey();
         }
 
 
         final ArrayList<String> interviewQuestionIDs = new ArrayList<>();
         final DatabaseReference interviewQuestionsReference = mDatabaseRootReference.child("interviewQuestions");
-        if (firstSaveAttempt) {
+        if (mFirstSaveAttempt) {
             for (int i = 0; i < recordedQuestionsCount; i++) {
                 interviewQuestionIDs.add(interviewQuestionsReference.push().getKey());
             }
         }
-        firstSaveAttempt = false;
+        mFirstSaveAttempt = false;
         for (int i=0 ; i<recordedQuestionsCount ; i++) {
             //Creates an data-object for every interview question and fills it with the collected data
             final String interviewQuestionID = interviewQuestionIDs.get(i);

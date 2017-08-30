@@ -81,7 +81,7 @@ public class CombinedPersonListCreator {
     private ArrayAdapter<LocalPersonData> mAdapter;
 
     //Necessary to prevent multiple additions of "add guest"-item
-    private boolean addGuestAdded = false;
+    private boolean mAddGuestAdded = false;
 
     //Stores the item id, when an item is selected
     private int mSelectedItemID;
@@ -257,7 +257,7 @@ public class CombinedPersonListCreator {
         }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
             if (!mSingleLists.get(i).isEmpty()) {
-                if (!addGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
+                if (!mAddGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
                     LocalGuestData localGuestData = new LocalGuestData();
                     localGuestData.setFirstname(mContext.getString(R.string.text_add_guest));
                     localGuestData.setLastname("");
@@ -265,7 +265,7 @@ public class CombinedPersonListCreator {
                     mSingleLists.get(i).add(0, localGuestData);
                     mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));
                     mSingleLists.get(i).get(1).setCategory(null);
-                    addGuestAdded = true;
+                    mAddGuestAdded = true;
                 }
             }
             mCombinedList.addAll(mSingleLists.get(i));

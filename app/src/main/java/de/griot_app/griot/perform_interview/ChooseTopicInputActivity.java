@@ -50,25 +50,25 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     private String interviewerName;
     private String interviewerPictureURL;
 
-    String[] interviewQuestions;
+    private String[] interviewQuestions;
 
     //Views
-    TextView mTextViewPerson;
-    ImageView mButtonCancelPerson;
-    ImageView mButtonAddTopic;
+    private TextView mTextViewPerson;
+    private ImageView mButtonCancelPerson;
+    private ImageView mButtonAddTopic;
 
     //DataClass for topic catalog
-    TopicCatalog mTopicCatalog;
+    private TopicCatalog mTopicCatalog;
 
     //Expandable ListView, that holds the topic catalog
-    ExpandableListView mExpandListView;
+    private ExpandableListView mExpandListView;
 
     //Data-View-Adapter for TopicCatalog
-    TopicCatalogAdapter mAdapter;
+    private TopicCatalogAdapter mAdapter;
 
     //Hold the individual TopicCatalog of the current user
-    ArrayList<Boolean> mUserTopicStates;
-    HashMap<String, Long> mUserQuestionStates;
+    private ArrayList<Boolean> mUserTopicStates;
+    private HashMap<String, Long> mUserQuestionStates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,7 +45,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     //ImageViews to create the layout
     private ImageView mShadowTop;
     private ImageView mShadowTopLine;
-    private ImageView getmShadowMiddle;
+    private ImageView mShadowMiddle;
     private ImageView mShadowBottom;
     private ImageView mShadowBottomLine;
 
@@ -120,7 +120,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         //Get references to layout objects
         mShadowTop = (ImageView) v.findViewById(R.id.question_shadow_top);
         mShadowTopLine = (ImageView) v.findViewById(R.id.question_shadow_top_line);
-        getmShadowMiddle = (ImageView) v.findViewById(R.id.question_shadow_middle);
+        mShadowMiddle = (ImageView) v.findViewById(R.id.question_shadow_middle);
         mShadowBottom = (ImageView) v.findViewById(R.id.question_shadow_bottom);
         mShadowBottomLine = (ImageView) v.findViewById(R.id.question_shadow_bottom_line);
 
@@ -142,7 +142,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
 
                 mShadowTop.setY(0);
                 mShadowTopLine.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight) - 1);
-                getmShadowMiddle.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight));
+                mShadowMiddle.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight));
                 mShadowBottom.setY(getResources().getDimension(R.dimen.carouselLayoutHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight));
                 mShadowBottomLine.setY(mShadowBottom.getY());
                 return true;
@@ -182,7 +182,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     public void setInvertedLayout() {
         mInvertedLayout = true;
         mShadowTop.setVisibility(GONE);
-        getmShadowMiddle.setVisibility(VISIBLE);
+        mShadowMiddle.setVisibility(VISIBLE);
         mShadowBottom.setVisibility(GONE);
         mListCarousel.get(mCurrentQuestion).setShadowLayer(0.0f, 0.0f, 0.0f, Color.BLACK);
     }
@@ -194,7 +194,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
     public void setNormalLayout() {
         mInvertedLayout = false;
         mShadowTop.setVisibility(VISIBLE);
-        getmShadowMiddle.setVisibility(GONE);
+        mShadowMiddle.setVisibility(GONE);
         mShadowBottom.setVisibility(VISIBLE);
         mListCarousel.get(mCurrentQuestion).setShadowLayer(1.6f, 1.5f, 1.3f, Color.BLACK);
     }
