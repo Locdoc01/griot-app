@@ -9,7 +9,7 @@ import java.util.List;
 
 public class LocalTopicData {
 
-    private int topicKey;
+    private Integer topicKey;
     private String topic;
     private Boolean topicState;
     private ArrayList<LocalQuestionData> questions;
