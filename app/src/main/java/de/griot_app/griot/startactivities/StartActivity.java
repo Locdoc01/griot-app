@@ -16,9 +16,9 @@ import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainOverviewActivity;
 
 /**
- * Created by marcel on 09.08.17.
+ * This activity allways launches, if Griot-app got started new. It shows a splash-Screen with Griot logo and checks the authentication state.
+ * After a time out, it starts either MainOverviewActivity, if a user is already signed in, or LoginActivity, if no user is signed in.
  */
-
 public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -31,6 +31,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        //Setup the AuthStateListener, which checks the authentication state, when added
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -38,9 +39,11 @@ public class StartActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 Intent intent;
                 if (user != null) {
+                    //If a user is signed in, start MainOverviewActivity
                     Log.d(TAG, "onAuthStateChanged: signed in: " + user.getUid());
                     intent = new Intent(StartActivity.this, MainOverviewActivity.class);
                 } else {
+                    //If no user is signed in, start LoginActivity
                     Log.d(TAG, "onAuthStateChanged: signed out: ");
                     intent = new Intent(StartActivity.this, LoginActivity.class);
                 }
@@ -50,6 +53,7 @@ public class StartActivity extends AppCompatActivity {
         };
     }
 
+    //start a Timer for display duration of StartActivity. After time out the AuthStateListener from above is added
     //TODO change Time to 2000
     @Override
     protected void onStart() {
