@@ -16,7 +16,7 @@ import android.util.AttributeSet;
 import de.griot_app.griot.R;
 
 
-//TODO: Funktioniert nicht und wird nicht verwendet. Evt. später eine Lösung finden.
+//TODO: Alternative implementation of ProfileImageView, which doesn't work. Maybe it can be found a solution later
 /**
  * Custom ImageView, which shows a round profile image, surrounded by a lightgrey circle.
  * If there is no valid image path set throupg setImagePath(), a plus-sign on the backgroundcolor will be visible instead of the image.

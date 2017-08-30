@@ -11,9 +11,8 @@ import android.widget.TextView;
 import de.griot_app.griot.R;
 
 /**
- * Created by marcel on 13.07.17.
+ * TagView shows a white tag in a blue box. It provides an optional delete button, which is visible by default and can be hidden.
  */
-
 public class TagView extends ConstraintLayout {
 
     private static final String TAG = TagView.class.getSimpleName();
@@ -24,7 +23,10 @@ public class TagView extends ConstraintLayout {
     private ImageView mButtonDeleteTag;
     private ImageView mImageViewSpacer;
 
-    // All three constructors are necessary in order to create an object of this class from a layout, so that it could be found by findViewbyid()
+    /**
+     * Constructors
+     * All three of them are necessary in order to create an object of this class from a layout, so that it could be inflated
+     */
     public TagView(Context context) {
         super(context);
         mContext = context;
@@ -43,6 +45,9 @@ public class TagView extends ConstraintLayout {
         init();
     }
 
+    /**
+     * Initializations to be performed in constructurs.
+     */
     private void init() {
         View v =  LayoutInflater.from(mContext).inflate(R.layout.class_tag_view, this);
 
@@ -51,17 +56,28 @@ public class TagView extends ConstraintLayout {
         mImageViewSpacer = (ImageView) v.findViewById(R.id.imageView_spacer);
     }
 
+    /**
+     * Returns a reference to the TextView, which holds the tag
+     * @return Reference to the tag-holding TextView
+     */
     public TextView getTextViewTag() { return mTextViewTag; }
 
+    /**
+     * Returns a reference to the detete button. An Eventlistener for the button has to be added and implemented in the using activity
+     * @return Reference to the delete button
+     */
     public ImageView getButtonDeleteTag() { return mButtonDeleteTag; }
 
-    public ImageView getImageViewSpacer() { return mImageViewSpacer; }
-
-
+    /**
+     * Sets the tag
+     * @param tag
+     */
     public void setTag(String tag) { mTextViewTag.setText(tag); }
 
+    /**
+     * Sets the visibility of the delete button.
+     * @param visibility
+     */
     public void setVisibilityDeleteButton(boolean visibility) { mButtonDeleteTag.setVisibility(visibility ? VISIBLE : GONE); }
-
-    public void setVisibilitySpacer(boolean visibility) { mImageViewSpacer.setVisibility(visibility ? VISIBLE : GONE); }
 }
 

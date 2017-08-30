@@ -14,8 +14,8 @@ import de.griot_app.griot.R;
 /**
  * ProfileImageView provides a round profile image with a thin lightgrey Border. If no image resource is set, it will show a plus-sign over background color.
  * The background color around the circle is Griot-white by default and can be changed to Griot-blue.
- * To set a profile image resource, use getProfileImage() to get a reference to the ImageView, that is supposed to hold the image. With that reference the image recource
- * can be set by one of of its own ImageView-class-methods.
+ * To set a profile image resource, use getProfileImage() to get a reference to the ImageView, that holds the image. With that reference the image recource
+ * can be set by one of its own ImageView-class-methods.
  *
  * Example:
  * ProfileImageView piv = findViewById(R.contactID.profile_image);
@@ -27,10 +27,15 @@ public class ProfileImageView extends ConstraintLayout {
 
     private Context mContext;
 
+    //Views
     private ImageView mProfileImage;
     private ImageView mProfileImageCircle;
     private ImageView mProfileImagePlus;
 
+    /**
+     * Constructors
+     * All three of them are necessary in order to create an object of this class from a layout, so that it could be inflated
+     */
     public ProfileImageView(Context context) {
         super(context);
         mContext = context;
@@ -49,9 +54,13 @@ public class ProfileImageView extends ConstraintLayout {
         init();
     }
 
+    /**
+     * Initializations to be performed in constructurs.
+     */
     private void init() {
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_profile_image, this);
 
+        //Get references to layout objects
         mProfileImage = (ImageView) v.findViewById(R.id.profile_image);
         mProfileImageCircle = (ImageView) v.findViewById(R.id.profile_image_circle);
         mProfileImagePlus = (ImageView) v.findViewById(R.id.profile_image_plus);
