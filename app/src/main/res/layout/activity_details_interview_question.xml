@@ -13,9 +13,6 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         app:srcCompat="@drawable/empty_16_9"
-        android:background="@color/colorGriotLightgrey"
-        android:padding="@dimen/dimen_height_lines"
-        android:cropToPadding="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -28,7 +25,8 @@
         app:layout_constraintTop_toTopOf="@id/mediaPlayer"
         app:layout_constraintLeft_toLeftOf="@id/mediaPlayer"
         app:layout_constraintRight_toRightOf="@id/mediaPlayer"
-        app:layout_constraintBottom_toBottomOf="@id/mediaPlayer"/>
+        app:layout_constraintBottom_toBottomOf="@id/mediaPlayer"
+        android:visibility="gone"/>
 
     <!--
     <FrameLayout
