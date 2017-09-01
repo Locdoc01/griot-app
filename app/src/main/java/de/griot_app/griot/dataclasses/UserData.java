@@ -45,7 +45,6 @@ public class UserData extends PersonData {
             String email,
             String pictureURL,
             String pictureLocalURI,
-            String category,
             HashMap<String, Boolean> interviewsOwn,
             HashMap<String, Boolean> interviewsAll,
             HashMap<String, String> guests,
@@ -56,7 +55,7 @@ public class UserData extends PersonData {
             HashMap<String, Integer> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
-        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
+        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
         isUser = true;
         this.interviewsOwn = interviewsOwn;
         this.interviewsAll = interviewsAll;

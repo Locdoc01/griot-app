@@ -29,11 +29,10 @@ public class GuestData extends PersonData {
             String email,
             String pictureURL,
             String pictureLocalURI,
-            String category,
             String hostID,
             String relationship
     ) {
-        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI, category);
+        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
         this.hostID = hostID;
         this.relationship = relationship;
     }

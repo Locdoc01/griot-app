@@ -24,10 +24,9 @@ public class GroupData extends ContactData {
             String pictureURL,
             String pictureLocalURI,
             String visibility,
-            HashMap<String, String> members,
-            String category
+            HashMap<String, String> members
     ) {
-        super(firstname, pictureURL, pictureLocalURI, category);
+        super(firstname, pictureURL, pictureLocalURI);
         this.visibility = visibility;
         this.members = members;
     }
