@@ -91,7 +91,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     private TextView mTextViewComments;
     private EditText mEditTextPostComment;
     private ImageView mButtonPostComment;
-    private View.OnClickListener clickListener;
+    private View.OnClickListener mClickListener;
 
     //ListView, that holds the interview question items
     private ListView mListViewInterviewQuestions;
@@ -218,7 +218,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
         mTextViewComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
 
         // set OnClickListener to button views
-        clickListener = new View.OnClickListener() {
+        mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -258,10 +258,10 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
             }
         };
 
-        mButtonInterviewer.setOnClickListener(clickListener);
-        mButtonNarrator.setOnClickListener(clickListener);
-        mButtonComments.setOnClickListener(clickListener);
-        mButtonOptions.setOnClickListener(clickListener);
+        mButtonInterviewer.setOnClickListener(mClickListener);
+        mButtonNarrator.setOnClickListener(mClickListener);
+        mButtonComments.setOnClickListener(mClickListener);
+        mButtonOptions.setOnClickListener(mClickListener);
 
 
         mListLocalInterviewQuestionData = new ArrayList<>();

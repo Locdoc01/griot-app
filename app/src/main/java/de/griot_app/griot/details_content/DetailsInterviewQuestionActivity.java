@@ -68,7 +68,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private LinearLayout mLayoutScrollViewTags;
     private TextView mTextViewTopic;
     private LinearLayout mLayoutScrollViewVisibility;
-    private View.OnClickListener clickListener;
+    private View.OnClickListener mClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +176,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         //TODO: associated users & guests zur ScrollView hinzufügen
 
         // set OnClickListener to button views
-        clickListener = new View.OnClickListener() {
+        mClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
@@ -216,10 +216,10 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
             }
         };
 
-        mButtonInterviewer.setOnClickListener(clickListener);
-        mButtonNarrator.setOnClickListener(clickListener);
-        mButtonComments.setOnClickListener(clickListener);
-        mButtonOptions.setOnClickListener(clickListener);
+        mButtonInterviewer.setOnClickListener(mClickListener);
+        mButtonNarrator.setOnClickListener(mClickListener);
+        mButtonComments.setOnClickListener(mClickListener);
+        mButtonOptions.setOnClickListener(mClickListener);
 
     }
 
