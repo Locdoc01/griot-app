@@ -312,8 +312,8 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         mGuestData.setEmail(mEditEmail.getText().toString().trim());
         mGuestData.setRelationship(mTextViewRelationship.getText().toString());
 
-            //Set storage reference to /guests/contactID/profilePicture
-            mStorageRef = mStorageRootReference.child("guests").child(contactID).child("profilePicture.jpg");
+        //Set storage reference to /guests/contactID/profilePicture
+        mStorageRef = mStorageRootReference.child("guests").child(contactID).child("profilePicture.jpg");
 
         //If a profile image was chosen, it will be uploaded to cloud-Storage
         if (mUriLocalProfileImage != null) {
@@ -339,31 +339,31 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         doAfterUpload();
                     }
                 });
+        } else if (mLocalGuestData == null) {
             //If a profile image already exists
-            } else if (mLocalGuestData == null) {
-                mStorageRootReference.child("guests").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        mGuestData.setPictureURL(uri.toString());
-                        // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
-                        mDatabaseRef.setValue(mGuestData);
-                        doAfterUpload();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // on failure mLocalUserData.pictureURL will remain empty.
-                        Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
-                        mDatabaseRef.setValue(mGuestData);
-                        doAfterUpload();
-                    }
-                });
+            mStorageRootReference.child("guests").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    mGuestData.setPictureURL(uri.toString());
+                    // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
+                    mDatabaseRef.setValue(mGuestData);
+                    doAfterUpload();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // on failure mLocalUserData.pictureURL will remain empty.
+                    Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
+                    mDatabaseRef.setValue(mGuestData);
+                    doAfterUpload();
+                }
+            });
             //If no profile Image extists or was chosen
-            } else {
-                mGuestData.setPictureURL(mLocalGuestData.getPictureURL());
-                mDatabaseRef.setValue(mGuestData);
-                doAfterUpload();
-            }
+        } else {
+            mGuestData.setPictureURL(mLocalGuestData.getPictureURL());
+            mDatabaseRef.setValue(mGuestData);
+            doAfterUpload();
+        }
     }
 
     /**
