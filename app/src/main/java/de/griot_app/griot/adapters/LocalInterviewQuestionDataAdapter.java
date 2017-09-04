@@ -40,20 +40,20 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     //The ArrayList containing the LocalInterviewQuestionData-objects
     private ArrayList<LocalInterviewQuestionData> mListData;
 
-    //If showTags is true, tags for interviewQuestions are visible, can be added and deleted
-    private boolean showTags = true;
+    //If mShowTags is true, tags for interviewQuestions are visible, can be added and deleted
+    private boolean mShowTags = true;
 
     //Views, which are shown in every ListView item
-    private TextView tvQuestion;
-    private TextView tvDate;
-    private TextView tvLength;
-    private ImageView ivMediaCover;
-    private ImageView ivMediaCoverForeground;
-    private ImageView btnOptions;
-    private TextView tvTags;
-    private ImageView btnAddTag;
-    private HorizontalScrollView scrollViewTags;
-    private LinearLayout layoutScrollViewTags;
+    private TextView mTextViewQuestion;
+    private TextView mTextViewDate;
+    private TextView mTextViewLength;
+    private ImageView mImageViewMediaCover;
+    private ImageView mImageViewMediaCoverForeground;
+    private ImageView mButtonOptions;
+    private TextView mTextViewTags;
+    private ImageView mButtonAddTag;
+    private HorizontalScrollView mScrollViewTags;
+    private LinearLayout mLayoutScrollViewTags;
 
     //Constructor
     public LocalInterviewQuestionDataAdapter(Context context, ArrayList<LocalInterviewQuestionData> data) {
@@ -63,10 +63,10 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     }
 
     /**
-     * Sets showTags. If showTags is true, tags for interviewQuestions are visible, can be added and deleted.
-     * @param showTags
+     * Sets mShowTags. If mShowTags is true, tags for interviewQuestions are visible, can be added and deleted.
+     * @param mShowTags
      */
-    public void setShowTags(boolean showTags) { this.showTags = showTags; }
+    public void setShowTags(boolean mShowTags) { this.mShowTags = mShowTags; }
 
     //inflates the layout for every ListView item and initializes its views
     @NonNull
@@ -76,46 +76,46 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         View v = inflater.inflate(R.layout.listitem_interview_question, null);
 
         // get references to the objects, which are created during the intflation of the layout xml-file
-        tvQuestion = (TextView) v.findViewById(R.id.tv_headline);
-        tvDate = (TextView) v.findViewById(R.id.tv_date);
-        tvLength = (TextView) v.findViewById(R.id.tv_length);
-        ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
-        ivMediaCoverForeground = (ImageView) v.findViewById(R.id.iv_mediaCover_foreground);
-        btnOptions = (ImageView) v.findViewById(R.id.button_options);
-        tvTags = (TextView) v.findViewById(R.id.textView_tags);
-        btnAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
-        scrollViewTags = (HorizontalScrollView) v.findViewById(R.id.scrollView_tags);
-        layoutScrollViewTags = (LinearLayout) v.findViewById(R.id.layout_scrollView_tags);
+        mTextViewQuestion = (TextView) v.findViewById(R.id.textView_headline);
+        mTextViewDate = (TextView) v.findViewById(R.id.textView_date);
+        mTextViewLength = (TextView) v.findViewById(R.id.textView_length);
+        mImageViewMediaCover = (ImageView) v.findViewById(R.id.imageView_mediaCover);
+        mImageViewMediaCoverForeground = (ImageView) v.findViewById(R.id.imageView_mediaCover_foreground);
+        mButtonOptions = (ImageView) v.findViewById(R.id.button_options);
+        mTextViewTags = (TextView) v.findViewById(R.id.textView_tags);
+        mButtonAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
+        mScrollViewTags = (HorizontalScrollView) v.findViewById(R.id.scrollView_tags);
+        mLayoutScrollViewTags = (LinearLayout) v.findViewById(R.id.layout_scrollView_tags);
 
         //initialize the views with the data from the correspondent ArrayList
         final int pos = position;
-        tvQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
-        tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
+        mTextViewQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
+        mTextViewDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
+        mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
 
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
-                ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                mImageViewMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                 //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
                 if (mListData.get(position).getMedium().equals("audio")) {
-                    ivMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(0);
                     ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    ivMediaCover.setColorFilter(filter);
-                    ivMediaCoverForeground.setVisibility(View.VISIBLE);
+                    mImageViewMediaCover.setColorFilter(filter);
+                    mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
                 }
             }
         }
 
-        if (!showTags) {
-            tvTags.setVisibility(View.GONE);
-            btnAddTag.setVisibility(View.GONE);
-            layoutScrollViewTags.setVisibility(View.GONE);
+        if (!mShowTags) {
+            mTextViewTags.setVisibility(View.GONE);
+            mButtonAddTag.setVisibility(View.GONE);
+            mLayoutScrollViewTags.setVisibility(View.GONE);
         } else {
             //show Tags, allow to add and delete them
             int n = mListData.get(position).getTags().size();
-            tvTags.setText("" + (n == 0 ? mContext.getString(R.string.text_none) : n) + " " + (n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
+            mTextViewTags.setText("" + (n == 0 ? mContext.getString(R.string.text_none) : n) + " " + (n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
 
             Iterator iterator = mListData.get(position).getTags().keySet().iterator();
             for (int i = 0; i < mListData.get(position).getTags().size(); i++) {
@@ -131,11 +131,11 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
                     }
                 });
 
-                layoutScrollViewTags.addView(tagView);
+                mLayoutScrollViewTags.addView(tagView);
             }
 
             //set an OnClickListener for add tag button
-            btnAddTag.setOnClickListener(new View.OnClickListener() {
+            mButtonAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
@@ -171,7 +171,7 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         }
 
         //set an OnClickListener for add tag button
-        btnOptions.setOnClickListener(new View.OnClickListener() {
+        mButtonOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();

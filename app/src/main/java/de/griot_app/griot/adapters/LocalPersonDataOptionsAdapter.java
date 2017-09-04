@@ -44,12 +44,12 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     private ArrayList<LocalPersonData> mListData;
 
     //Views, which are shown in every ListView item
-    private FrameLayout itemBackground;
-    private TextView tvCategory;
-    private FrameLayout listSeperator;
-    private ProfileImageView pivPerson;
-    private TextView tvPerson;
-    private ImageView btnOptions;
+    private FrameLayout mItemBackground;
+    private TextView mTextViewCategory;
+    private FrameLayout mListSeperator;
+    private ProfileImageView mPivPerson;
+    private TextView mTextViewPerson;
+    private ImageView mButtonOptions;
 
     //constructor
     public LocalPersonDataOptionsAdapter(Context context, ArrayList<LocalPersonData> data) {
@@ -66,36 +66,36 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
         View v = inflater.inflate(R.layout.listitem_contact, null);
 
         // get references to the objects, which are created during the intflation of the layout xml-file
-        itemBackground = (FrameLayout) v.findViewById(R.id.item_background);
-        tvCategory = (TextView) v.findViewById(R.id.category);
-        listSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
-        pivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
-        tvPerson = (TextView) v.findViewById(R.id.textView_person);
-        btnOptions = (ImageView) v.findViewById(R.id.button_item);
-        btnOptions.setImageResource(R.drawable.options);
-        btnOptions.setVisibility(View.VISIBLE);
+        mItemBackground = (FrameLayout) v.findViewById(R.id.item_background);
+        mTextViewCategory = (TextView) v.findViewById(R.id.category);
+        mListSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
+        mPivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
+        mTextViewPerson = (TextView) v.findViewById(R.id.textView_person);
+        mButtonOptions = (ImageView) v.findViewById(R.id.button_item);
+        mButtonOptions.setImageResource(R.drawable.options);
+        mButtonOptions.setVisibility(View.VISIBLE);
 
         //show List category
         if (mListData.get(position).getCategory()!=null) {
-            listSeperator.setVisibility(View.VISIBLE);
-            tvCategory.setText(mListData.get(position).getCategory());
+            mListSeperator.setVisibility(View.VISIBLE);
+            mTextViewCategory.setText(mListData.get(position).getCategory());
         } else {
-            listSeperator.setVisibility(View.GONE);
+            mListSeperator.setVisibility(View.GONE);
         }
 
         //show profile pictures, if available, otherwise show placeholder
         if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
-            pivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            pivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            pivPerson.getProfileImageCircle().setVisibility(View.GONE);
+            mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
+            mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
+            mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
         } else {
             try {
-                pivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                mPivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
             } catch (Exception e) {
             }
         }
 
-        tvPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
+        mTextViewPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
 
         //Set an OnTouchListener for clickable views
         View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -142,8 +142,8 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
             }
         };
 
-        itemBackground.setOnTouchListener(touchListener);
-        btnOptions.setOnTouchListener(touchListener);
+        mItemBackground.setOnTouchListener(touchListener);
+        mButtonOptions.setOnTouchListener(touchListener);
         parent.setOnTouchListener(touchListener);
 
         return v;

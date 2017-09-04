@@ -35,13 +35,13 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
     private SparseArray<LocalTopicData> mTopics;
 
     //Views, which are shown in every ListView item
-    private TextView tvTopic;
-    private ImageView btnCheck;
-    private ImageView btnExpand;
-    private TextView tvTitleQuestions;
-    private ImageView btnAddQuestion;
-    private TextView tvQuestion;
-    private ImageView btnToggle;
+    private TextView mTextViewTopic;
+    private ImageView mButtonCheck;
+    private ImageView mButtonExpand;
+    private TextView mTextViewTitleQuestions;
+    private ImageView mButtonAddQuestion;
+    private TextView mTextViewQuestion;
+    private ImageView mButtonToggle;
 
     //Needed to distinguish between functionality of ChooseTopicInputActivity and MainTopicCatalogActivity
     private boolean topicsCheckable;
@@ -79,15 +79,15 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         View v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_topic, null);
 
         // get references to the objects, which are created during the intflation of the layout xml-file
-        tvTopic = (TextView) v.findViewById(R.id.textView_topic);
-        btnCheck = (ImageView) v.findViewById(R.id.button_check);
-        btnExpand = (ImageView) v.findViewById(R.id.button_expand);
+        mTextViewTopic = (TextView) v.findViewById(R.id.textView_topic);
+        mButtonCheck = (ImageView) v.findViewById(R.id.button_check);
+        mButtonExpand = (ImageView) v.findViewById(R.id.button_expand);
 
-        tvTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
+        mTextViewTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
 
         //if the button is clicked, the appropriate topic gets expanded or collaped
         final ExpandableListView listview = (ExpandableListView) parent;
-        btnExpand.setOnClickListener(new View.OnClickListener() {
+        mButtonExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listview.isGroupExpanded(groupPosition)) {
@@ -102,19 +102,19 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         });
 
         if (!topicsCheckable) {
-            btnCheck.setVisibility(View.GONE);
+            mButtonCheck.setVisibility(View.GONE);
         } else {
             // if the button is clicked, the appropriate topic gets selected (or unselected)
-            btnCheck.setOnClickListener(new View.OnClickListener() {
+            mButtonCheck.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((ChooseTopicInputActivity) mContext).buttonCheckClicked(groupPosition);     //TODO works only for ChooseTopicInputActivity
                 }
             });
             if (mTopics.get(groupPosition).getSelected()) {
-                btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_on, null));
+                mButtonCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_on, null));
             } else {
-                btnCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_off, null));
+                mButtonCheck.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.checkbox_off, null));
             }
         }
 
@@ -154,9 +154,9 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             // head item for question group.
             v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_title_questions, null);
 
-            btnAddQuestion = (ImageView) v.findViewById(R.id.button_add_question);
+            mButtonAddQuestion = (ImageView) v.findViewById(R.id.button_add_question);
 
-            btnAddQuestion.setOnClickListener(new View.OnClickListener() {
+            mButtonAddQuestion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext, "Frage hinzufügen", Toast.LENGTH_SHORT).show();
@@ -166,17 +166,17 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             //other items in question group
             v = LayoutInflater.from(mContext).inflate(R.layout.listitem_topic_catalog_question, null);
 
-            tvTitleQuestions = (TextView) v.findViewById(R.id.textView_title_questions);
-            tvQuestion = (TextView) v.findViewById(R.id.textView_question);
-            btnToggle = (ImageView) v.findViewById(R.id.button_toggle);
+            mTextViewTitleQuestions = (TextView) v.findViewById(R.id.textView_title_questions);
+            mTextViewQuestion = (TextView) v.findViewById(R.id.textView_question);
+            mButtonToggle = (ImageView) v.findViewById(R.id.button_toggle);
 
             LocalQuestionData child = (LocalQuestionData) getChild(groupPosition, childPosition);
 
-            tvQuestion.setText(child.getQuestion());
+            mTextViewQuestion.setText(child.getQuestion());
             if (child.getQuestionState()==LocalQuestionData.QuestionState.OFF) {
-                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
+                mButtonToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
             } else if (child.getQuestionState()==LocalQuestionData.QuestionState.ON) {
-                btnToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
+                mButtonToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
             } else {
                  //TODO: ability to delete questions
             }

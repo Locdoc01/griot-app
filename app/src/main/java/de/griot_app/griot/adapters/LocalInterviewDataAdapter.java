@@ -42,20 +42,20 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
     private ArrayList<LocalInterviewData> mListData;
 
     //Views, which are shown in every ListView item
-    private TextView tvTitle;
-    private TextView tvDate;
-    private TextView tvLength;
-    private ImageView ivMediaCover;
-    private ImageView ivMediaCoverForeground;
-    private ImageView btnOptions;
-    private ProfileImageView pivInterviewer;
-    private ProfileImageView pivNarrator;
-    private TextView tvInterviewer;
-    private TextView tvNarrator;
-    private FrameLayout btnInterviewer;
-    private FrameLayout btnNarrator;
-    private TextView btnComments;
-    private TextView tvComments;
+    private TextView mTextViewTitle;
+    private TextView mTextViewDate;
+    private TextView mTextViewLength;
+    private ImageView mImageViewMediaCover;
+    private ImageView mImageViewMediaCoverForeground;
+    private ImageView mButtonOptions;
+    private ProfileImageView mPivInterviewer;
+    private ProfileImageView mPivNarrator;
+    private TextView mTextViewInterviewer;
+    private TextView mTextViewNarrator;
+    private FrameLayout mButtonInterviewer;
+    private FrameLayout mButtonNarrator;
+    private TextView mButtonComments;
+    private TextView mTextViewComments;
 
     private View.OnClickListener clickListener;
 
@@ -74,52 +74,52 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
         View v = inflater.inflate(R.layout.listitem_interview, null);
 
         // get references to the objects, which are created during the intflation of the layout xml-file
-        tvTitle = (TextView) v.findViewById(R.id.tv_headline);
-        tvDate = (TextView) v.findViewById(R.id.tv_date);
-        tvLength = (TextView) v.findViewById(R.id.tv_length);
-        ivMediaCover = (ImageView) v.findViewById(R.id.iv_mediaCover);
-        ivMediaCoverForeground = (ImageView) v.findViewById(R.id.iv_mediaCover_foreground);
-        btnOptions = (ImageView) v.findViewById(R.id.button_options);
-        pivInterviewer = (ProfileImageView) v.findViewById(R.id.piv_interviewer);
-        pivNarrator = (ProfileImageView) v.findViewById(R.id.piv_narrator);
-        tvInterviewer = (TextView) v.findViewById(R.id.textView_interviewer);
-        tvNarrator = (TextView) v.findViewById(R.id.textView_narrator);
-        btnInterviewer = (FrameLayout) v.findViewById(R.id.button_interviewer);
-        btnNarrator = (FrameLayout) v.findViewById(R.id.button_narrator);
-        btnComments = (TextView) v.findViewById(R.id.button_comments);
+        mTextViewTitle = (TextView) v.findViewById(R.id.textView_headline);
+        mTextViewDate = (TextView) v.findViewById(R.id.textView_date);
+        mTextViewLength = (TextView) v.findViewById(R.id.textView_length);
+        mImageViewMediaCover = (ImageView) v.findViewById(R.id.imageView_mediaCover);
+        mImageViewMediaCoverForeground = (ImageView) v.findViewById(R.id.imageView_mediaCover_foreground);
+        mButtonOptions = (ImageView) v.findViewById(R.id.button_options);
+        mPivInterviewer = (ProfileImageView) v.findViewById(R.id.piv_interviewer);
+        mPivNarrator = (ProfileImageView) v.findViewById(R.id.piv_narrator);
+        mTextViewInterviewer = (TextView) v.findViewById(R.id.textView_interviewer);
+        mTextViewNarrator = (TextView) v.findViewById(R.id.textView_narrator);
+        mButtonInterviewer = (FrameLayout) v.findViewById(R.id.button_interviewer);
+        mButtonNarrator = (FrameLayout) v.findViewById(R.id.button_narrator);
+        mButtonComments = (TextView) v.findViewById(R.id.button_comments);
 
         //initialize the views with the data from the correspondent ArrayList
-        tvTitle.setText(mListData.get(position).getTitle());
-        tvDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        tvLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
+        mTextViewTitle.setText(mListData.get(position).getTitle());
+        mTextViewDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
+        mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
 
         if (mListData.get(position).getPictureLocalURI() != null) {
             if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
                 ImageView test = new ImageView(mContext);
                 test.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                 if (test.getDrawable() != null) {
-                    ivMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                    mImageViewMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
                     //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
                     if (mListData.get(position).getMedium().equals("audio")) {
-                        ivMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                         ColorMatrix matrix = new ColorMatrix();
                         matrix.setSaturation(0);
                         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                        ivMediaCover.setColorFilter(filter);
-                        ivMediaCoverForeground.setVisibility(View.VISIBLE);
+                        mImageViewMediaCover.setColorFilter(filter);
+                        mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
                     }
                 }
             }
         }
 
-        try { pivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
-        try { pivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
+        try { mPivInterviewer.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getInterviewerPictureLocalURI())); } catch (Exception e) {}
+        try { mPivNarrator.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getNarratorPictureLocalURI())); } catch (Exception e) {}
 
-        tvInterviewer.setText(mListData.get(position).getInterviewerName());
-        tvNarrator.setText(mListData.get(position).getNarratorName());
+        mTextViewInterviewer.setText(mListData.get(position).getInterviewerName());
+        mTextViewNarrator.setText(mListData.get(position).getNarratorName());
         int n = mListData.get(position).getNumberComments();
-        btnComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
+        mButtonComments.setText("" + (n==0 ? mContext.getString(R.string.text_none) : n) + " " + ( n == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
 
         //set an OnClickListener for clickable views
         final int pos = position;
@@ -168,10 +168,10 @@ public class LocalInterviewDataAdapter extends ArrayAdapter<LocalInterviewData> 
             }
         };
 
-        btnInterviewer.setOnClickListener(clickListener);
-        btnNarrator.setOnClickListener(clickListener);
-        btnComments.setOnClickListener(clickListener);
-        btnOptions.setOnClickListener(clickListener);
+        mButtonInterviewer.setOnClickListener(clickListener);
+        mButtonNarrator.setOnClickListener(clickListener);
+        mButtonComments.setOnClickListener(clickListener);
+        mButtonOptions.setOnClickListener(clickListener);
         return v;
     }
 }

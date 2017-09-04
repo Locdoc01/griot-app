@@ -33,7 +33,7 @@
         android:src="@drawable/options"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/iv_mediaCover"
+        app:layout_constraintTop_toBottomOf="@id/imageView_mediaCover"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right" /><!---->
 
