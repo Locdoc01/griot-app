@@ -220,7 +220,7 @@ public abstract class RecordActivity extends AppCompatActivity {
         //If questions were added in ReviewInterviewInputActivity, a new Array is created, which holds
         //the previous questions and the added questions. mFirstShownQuestion is set to the first question,
         //that has been added
-        //TODO: not testet. Add-function has to be implemented yet.
+        //TODO: not testet. Add-function is not implemented yet.
         if (addedQuestions != null) {
             mFirstShownQuestion = allQuestions.length;
             String[] tmp = new String[allQuestions.length + addedQuestions.length];
