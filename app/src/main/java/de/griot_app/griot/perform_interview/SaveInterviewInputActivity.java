@@ -351,15 +351,15 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
 
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
-        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO: specify to get only guests of the current user
+        mQueryFriends = mDatabaseRootReference.child("users");  //TODO: specify to get only users who are in a friendship with the current user
+
         //Create the combined ListView of person contacts
         mCombinedListCreator = new CombinedPersonListCreator(SaveInterviewInputActivity.this, -1, mOwnUserData, mListViewPersons);
         mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
         mCombinedListCreator.add(mQueryGuests);
         mCombinedListCreator.add(mQueryFriends);
         mCombinedListCreator.loadData();
-
     }
 
 

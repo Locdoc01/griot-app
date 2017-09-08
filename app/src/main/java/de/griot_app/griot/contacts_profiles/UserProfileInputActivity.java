@@ -108,7 +108,6 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
         // hides the keyboard, even if EditText gets focus on startup
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
         // Obtain user data from Firebase, if the profile of an existing user was selected
         mDatabaseRootReference.child("users").orderByKey().equalTo(contactID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -158,7 +157,6 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
 
             }
         });
-
     }
 
     @Override

@@ -31,7 +31,7 @@ public class MainNotificationsActivity extends GriotBaseActivity {
         mTitle.setText(R.string.title_notifications);
         mButtonNotifications.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
-        //TODO: löschen
+        //TODO: move to main menu
         findViewById(R.id.signout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

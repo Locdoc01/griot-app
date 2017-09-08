@@ -199,7 +199,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             case MotionEvent.ACTION_DOWN:
                 switch (v.getId()) {
                     case R.id.piv_profile_image:
-                        //TODO: Farbwechsel für quatratischen Rand um ProfileImageView realisieren
+                        //TODO: realize a colorchange for the quadratic border around the round image. (Makes adaptions in class ProfileImageView necessary)
                         //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorTabSelectedLogin));
                         return true;
                     case R.id.button_datepicker:
@@ -243,7 +243,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     case R.id.button_forgotten:
                         Log.d(TAG, "password forgotten clicked: ");
                         ((TextView)v).setTextColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotDarkgrey));
-                        //TODO implementieren
+                        //TODO
                         return true;
                     case R.id.button_signin:
                         Log.d(TAG, "sign in clicked: ");
@@ -375,7 +375,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
 
     }
 
-    //TODO: check functionality
+    //TODO: check functionality eventually
     /**
      * validates the input data for create-account-tab. Checks for the following:
      * - are all fields filled? (except profile image, which can be empty)
@@ -505,7 +505,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         return valid;
     }
 
-    //TODO: check functionality
+    //TODO: check functionality eventually
     /**
      * validates the input data for sign-in-tab. Checks for the following:
      * - are both fields filled?
@@ -571,7 +571,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                 //If the account creation failed
                 if (!task.isSuccessful()) {
                     hideProgressBar();
-                    //TODO: Progressbar-Steuerung in AsynkTask verlagern
+                    //TODO: Use AsynkTask for registration process
                     Log.w(TAG, "createUserWithEmailAndPassword: failed ", task.getException());
                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     mEditCreateAccountPassword.setText("");
@@ -626,7 +626,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                             @Override
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                                 //On success the remote downloadURL will be stored to mLocalUserData.pictureURL
-                                                //TODO: Alternative finden
+                                                //TODO: find alternative
                                                 mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                                                 //Send data to database (must be here, after profile picture was send to Firebase Storage, otherwise pictureURL will be empty in database)
                                                 mDatabaseRef.setValue(mUserData);
@@ -713,7 +713,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     Log.w(TAG, "signInWithEmailAndPassword: failed ", task.getException());
                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     // TODO: if email was unknown to Firebase, empty email field
-                    // TODO: mögliche Fehlerfälle ermitteln und System-Meldungen in deutsche Meldungen umwandeln
                     // TODO: determine possible error and system messages and add german string resources for them to the project
                 } else {
                     //If user is successfully signed in, start MainOverviewActivity

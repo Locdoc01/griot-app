@@ -124,7 +124,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         mShadowBottom = (ImageView) v.findViewById(R.id.question_shadow_bottom);
         mShadowBottomLine = (ImageView) v.findViewById(R.id.question_shadow_bottom_line);
 
-        //TODO: Fall abfangen, dass keine Liste hinzugefügt wurde
+        //TODO: catch case, that no list was added
         mCurrentQuestion = -1;
         mDensity = getResources().getDisplayMetrics().density;
         mAnimationDuration = 200;

@@ -71,7 +71,7 @@ public class ProfileImageViewOld extends AppCompatImageView {
     private void set() {
         if (BitmapFactory.decodeFile(mImagePath)==null) {
 
-            //TODO: Nur Zwischenlösung. Allgemeine Lösung finden
+            //TODO: just a workaround. Find proper solution later
             mBitmapSource = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empty_16_9);
             //Bitmap plus = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.plus);
             //mBitmapSourceScaled = Bitmap.createScaledBitmap(plus, getHeight() / 236 * 72, getHeight() / 236 * 72, false);
@@ -175,7 +175,7 @@ public class ProfileImageViewOld extends AppCompatImageView {
         // if mImagePath is invalid, a bitmap with a plus-sign is created and scaled to proportions based on the screen-designs
         if (BitmapFactory.decodeFile(mImagePath)==null) {
 
-            //TODO: Nur Zwischenlösung. Allgemeine Lösung finden
+            //TODO: just a workaround. Find proper solution later
             mBitmapSource = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empty_16_9);
             //Bitmap plus = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.plus);
             //mBitmapSourceScaled = Bitmap.createScaledBitmap(plus, getHeight() / 236 * 72, getHeight() / 236 * 72, false);
@@ -225,7 +225,7 @@ public class ProfileImageViewOld extends AppCompatImageView {
 
         mPaint.setStyle(Paint.Style.FILL);
 
-        //TODO: finde alternative Position für set(). getWidth() und getHeight() müssen Werte > 0 zurückliefern
+        //TODO: find alternative code-position for set(). getWidth() and getHeight() must return values > 0
         set();
         // if mImagePath is not valid, draw a circle in backgroundcolor
         if (BitmapFactory.decodeFile(mImagePath)==null) {

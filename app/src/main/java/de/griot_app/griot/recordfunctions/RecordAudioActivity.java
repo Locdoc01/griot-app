@@ -28,11 +28,11 @@ public class RecordAudioActivity extends RecordActivity {
     private static final String TAG = RecordVideoActivity.class.getSimpleName();
 
     //default audio settings
-    //TODO: optionale Alternativen
+    //TODO: offer optional alternatives
     private int mOutputFormat = MediaRecorder.OutputFormat.MPEG_4;
-    private int mAudioEncoder = MediaRecorder.AudioEncoder.AAC;     //TODO: alternativ AAC_ELD testen
-    private int mAudioSamplingRate = 44100;                         //TODO: alternativ 48000 testen
-    private int mAudioBitRate = 96000;                              //TODO: alternativ 128000 testen
+    private int mAudioEncoder = MediaRecorder.AudioEncoder.AAC;     //TODO: test AAC_ELD as alternative
+    private int mAudioSamplingRate = 44100;                         //TODO: test 48000 as alternative
+    private int mAudioBitRate = 96000;                              //TODO: test 128000 as alternative
 
     //necessary for the waveline visualizaton
     private Timer mTimerAmplitude;
@@ -128,7 +128,7 @@ public class RecordAudioActivity extends RecordActivity {
             mCurrentRecordingIndex = mCarousel.getCurrentIndex();
             mMediaRecorder.setOutputFile(mMediaFile.getPath());
 
-            //TODO provide optional audio settings
+            //TODO: provide optional audio settings
             mMediaRecorder.setAudioEncoder(mAudioEncoder);
             mMediaRecorder.setAudioSamplingRate(mAudioSamplingRate);
             mMediaRecorder.setAudioEncodingBitRate(mAudioBitRate);

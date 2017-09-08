@@ -55,15 +55,6 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected ValueEventListener mValueEventListener;
     protected ChildEventListener mChildEventListener;
 
-    /*
-    //procected LocalData mLocalData;
-    protected HashMap<String, LocalUserData> mLocalUserData;
-    protected HashMap<String, LocalGuestData> mLocalGuestData;
-    protected HashMap<String, LocalGroupData> mLocalGroupData;
-    protected HashMap<String, LocalInterviewData> mLocalInterviewData;
-    protected HashMap<String, LocalInterviewQuestionData> mLocalInterviewQuestionData;
-    protected HashMap<String, LocalCommentData> mLocalCommentData;
-*/
 
     /**
      * Abstract method, which returns the TAG of the extending subclass.
@@ -104,26 +95,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance();
         mStorageRootReference = mStorage.getReference();
-
-        /*
-        //mLocalData = new LocalData();
-        mLocalUserData = new HashMap<>();
-        mLocalGuestData = new HashMap<>();
-        mLocalGroupData = new HashMap<>();
-        mLocalInterviewData = new HashMap<>();
-        mLocalInterviewQuestionData = new HashMap<>();
-        mLocalCommentData = new HashMap<>();
-        */
     }
-
-    /*
-    public HashMap<String, LocalUserData> getUserData() { return mLocalUserData; }
-    public HashMap<String, LocalGuestData> getGuestData() { return mLocalGuestData; }
-    public HashMap<String, LocalGroupData> getGroupData() { return mLocalGroupData; }
-    public HashMap<String, LocalInterviewData> getInterviewData() { return mLocalInterviewData; }
-    public HashMap<String, LocalInterviewQuestionData> getInterviewQuestionData() { return mLocalInterviewQuestionData; }
-    public HashMap<String, LocalCommentData> getCommentData() { return mLocalCommentData; }
-*/
 
     //Set the AuthStateListener
     @Override
@@ -178,7 +150,6 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
                             //Gets specified in subclasses
                             doOnStartAfterLoadingUserInformation();
-                            //TODO: Falls Fehler auftreten, nach "hier" verschieben
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -189,18 +160,14 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
                             //Gets specified in subclasses
                             doOnStartAfterLoadingUserInformation();
-                            //TODO: Falls Fehler auftreten, nach "hier" verschieben
 
                         }
                     });
                 } catch (Exception e) {}
 
-                //hier
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //TODO
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 

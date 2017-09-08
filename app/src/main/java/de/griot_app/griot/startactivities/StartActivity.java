@@ -54,7 +54,6 @@ public class StartActivity extends AppCompatActivity {
     }
 
     //start a Timer for display duration of StartActivity. After time out the AuthStateListener from above is added
-    //TODO change Time to 2000
     @Override
     protected void onStart() {
         super.onStart();
@@ -63,7 +62,7 @@ public class StartActivity extends AppCompatActivity {
             public void run() {
                 mAuth.addAuthStateListener(mAuthListener);
             }
-        }, 20);
+        }, 2000);
     }
 
     @Override

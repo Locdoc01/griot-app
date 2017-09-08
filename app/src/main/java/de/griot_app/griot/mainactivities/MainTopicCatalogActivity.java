@@ -152,7 +152,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                                             mTopicCatalog.getTopics().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
                                         }
 
-                                        //TODO: ExtraTopics und ExtraQuestions laden
+                                        //TODO: obtain ExtraTopics and ExtraQuestions
 
                                         //Set the adapter
                                         mAdapter = new TopicCatalogAdapter(MainTopicCatalogActivity.this, mTopicCatalog);
@@ -162,7 +162,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
                                         Log.e(TAG, "Error loading Questions");
-                                        //TODO: implementieren, falls erforderlich
+                                        //TODO: implement if necessary
                                     }
                                 });
 
@@ -171,7 +171,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 Log.e(TAG, "Error loading Topics");
-                                //TODO: implementieren, falls erforderlich
+                                //TODO: implement if necessary
                             }
                         });
                     }
@@ -179,7 +179,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.e(TAG, "Error loading Topics");
-                        //TODO: implementieren, falls erforderlich
+                        //TODO: implement if necessary
                     }
                 });
             }
@@ -187,7 +187,7 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "Error loading Topics");
-                //TODO: implementieren, falls erforderlich
+                //TODO: implement if necessary
             }
         });
     }

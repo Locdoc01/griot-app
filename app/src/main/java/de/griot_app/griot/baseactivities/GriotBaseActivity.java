@@ -151,20 +151,24 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
 
 
     /**
-     * TODO: Beschreibung ändern:
-     * Funktionsweise der Button in Diagramm beschreiben
-     * Bei App-Start wird MainOverview geöffnet
+     * Functionality of the main button bar, floating action button and device back-button depending on the running activity
      * In MainOverView:
-     *      Druck auf Home: Keine Änderung
-     *      Druck auf andere Taste: öffnet neue Activity
-     *      Druck auf Zurück: Beendet Programm
-     * In RecordActivity:
-     *      Druck auf Zurück: Beendet aktuelle Activity
-     * In anderer Activity:
-     *      Druck auf eigenen Button: Keine Änderung
-     *      Druck auf andere Taste: öffnet andere Activity und schließt aktuelle
-     *      Druck auf Home: Beendet aktuelle Activity
-     *      Druck auf Zurück: Beendet aktuelle Activity
+     *      Press on home-button: No change
+     *      Press on Floating Action Button: opens ComposeQuestionRequestInputActivity
+     *      Press on the device back-button: stopps the app
+     *      Press on other button: opens the appropriate activity
+     * In MainChooseFriendInputActivity (has no main-buttonbar):
+     *      Press on the device back-button: finishes the currently running activity and returns to MainOverviewActivity
+     * In QuestionMail:
+     *      Press on home-button: finishes the currently running activity and returns to MainOverviewActivity
+     *      Press on Floating Action Button: opens ComposeQuestionRequestInputActivity and finishes currently running activity
+     *      Press on the device back-button: finihses the currently running activity and returns to MainOverviewActivity
+     *      Press on other button: opens the appropriate activity and finishes the currently running one
+     * In other activity:
+     *      Press on appropriate button for that activity: No change
+     *      Press on home-button: finishes the currently running activity and returns to MainOverviewActivity
+     *      Press on the device back-button: finihses the currently running activity and returns to MainOverviewActivity
+     *      Press on other button (including Floating Action Button): opens the appropriate activity and finishes the currently running activity
      */
     @Override
     public void onClick(View v) {

@@ -241,8 +241,10 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
     private boolean validateForm() {
         Log.d(TAG, "validateForm: ");
 
-        boolean valid = true;   //Set to false, if one of the inputfields is not valid
-        View focus = null;      //Set to the first invalid inputfield, if there is any
+        //Set to false, if one of the inputfields is not valid
+        boolean valid = true;
+        //Set to the first invalid inputfield, if there is any
+        View focus = null;
 
 
         //If surname field is empty
@@ -322,7 +324,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //On success the remote downloadURL will be stored to mGuestData.pictureURL
-                        //TODO: Alternative finden
+                        //TODO: find alternative
                         mGuestData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                         //Send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mGuestData);
@@ -407,7 +409,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
         // Obtain guest data from Firebase, if the profile of an existing guest was selected
         if (contactID!=null && !mImageChanged) {
-            //TODO: Auslagern, ober überarbeiten oder vereinheitlichen
 
             mDatabaseRootReference.child("guests").orderByKey().equalTo(contactID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -444,7 +445,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
                     if (mLocalGuestData.getBDay()!=null) {
-                        //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: anpassen
+                        //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: delete
                         int day = mLocalGuestData.getBDay();
                         int month = mLocalGuestData.getBMonth();
                         int year = mLocalGuestData.getBYear();

@@ -24,7 +24,7 @@ import de.griot_app.griot.dataclasses.LocalPersonData;
  * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
  * This version uses the ViewHolder-pattern.
  */
-//TODO: ViewHolder-pattern is buggy and doesn't work properly
+//TODO: This version is not actually used, because ViewHolder-pattern is buggy and doesn't work properly
 public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPersonData> {
 
     private static final String TAG = LocalPersonDataAdapterWithViewHolder.class.getSimpleName();
@@ -79,7 +79,7 @@ public class LocalPersonDataAdapterWithViewHolder extends ArrayAdapter<LocalPers
             holder.listSeperator.setVisibility(View.GONE);
         }
 
-        //TODO: finde korrekte Position for den ClickListener
+        //TODO: find correct position for ClickListener
         ListView lv = (ListView) parent;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

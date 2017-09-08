@@ -158,8 +158,8 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
         Log.d(TAG, "doOnStartAfterLoadingUserInformation: ");
-        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO genauer spezifizieren
-        mQueryFriends = mDatabaseRootReference.child("users");  //TODO genauer spezifizieren
+        mQueryGuests = mDatabaseRootReference.child("guests");   //TODO: specify to get only guests of current user
+        mQueryFriends = mDatabaseRootReference.child("users");  //TODO: specify to get only users, who are in a friendship to the current user
         //create the Combined ListView
         mCombinedListCreator = new CombinedPersonListCreator(MainChooseFriendInputActivity.this, narratorSelectedItemID, mOwnUserData, mListViewPersons);
         mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);

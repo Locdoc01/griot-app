@@ -121,7 +121,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ChooseTopicInputActivity.this, "Thema hinzufügen", Toast.LENGTH_SHORT).show();
-                //TODO implementieren
+                //TODO
             }
         });
 
@@ -214,7 +214,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                             mTopicCatalog.getTopics().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
                                         }
 
-                                        //TODO: ExtraTopics und ExtraQuestions laden
+                                        //TODO: obtain ExtraTopics & ExtraQuestions
 
                                         if(topicSelectedItemID >=0) {
                                             mTopicCatalog.getTopics().get(topicSelectedItemID).setSelected(true);
@@ -228,7 +228,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
                                         Log.e(TAG, "Error loading Questions");
-                                        //TODO: implementieren, falls erforderlich
+                                        //TODO: implement if necessary
                                     }
                                 });
 
@@ -237,7 +237,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 Log.e(TAG, "Error loading Topics");
-                                //TODO: implementieren, falls erforderlich
+                                //TODO: implement if necessary
                             }
                         });
                     }
@@ -245,7 +245,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.e(TAG, "Error loading Topics");
-                        //TODO: implementieren, falls erforderlich
+                        //TODO: implement if necessary
                     }
                 });
             }
@@ -253,7 +253,7 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "Error loading Topics");
-                //TODO: implementieren, falls erforderlich
+                //TODO: implement if necessary
             }
         });
     }
@@ -325,8 +325,6 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
     @Override
     protected void buttonRightPressed() {
         Log.d(TAG, "buttonRightPressed: ");
-
-        //TODO save current question states to Firebase
 
         Intent intent = new Intent(this, ChooseMediumInputActivity.class);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);

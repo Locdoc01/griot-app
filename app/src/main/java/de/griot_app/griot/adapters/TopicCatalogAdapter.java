@@ -23,7 +23,7 @@ import de.griot_app.griot.dataclasses.TopicCatalog;
  * The LocalTopicData-objects holds ArrayLists of LocalQuestionData-objects, which are converted into ExpandableListView child items.
  * Thus the result is a two-dimensional ListView, which is used fot the topic catalog
  */
-//TODO: hide deleted standardTopics and standardFragen (find out, how to delete ListView items depending on the data)
+//TODO: hide deleted standardTopics and standardQuestions (find out, how to delete ListView items depending on the data)
 
 public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 

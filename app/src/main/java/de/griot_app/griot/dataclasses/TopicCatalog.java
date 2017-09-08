@@ -3,7 +3,7 @@ package de.griot_app.griot.dataclasses;
 import android.util.SparseArray;
 
 /**
- * Data holding class for local topic catalog
+ * Data holding class for the users topic catalog
  */
 
 public class TopicCatalog {

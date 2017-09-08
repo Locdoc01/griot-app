@@ -85,7 +85,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
 
 
         mEditEmail.setEnabled(false);
-        //TODO: Passwort soll änderbar sein. Herausfinden, wie
+        //TODO: Find out how to change password in Firebase
         mEditPassword.setEnabled(false);
         mEditPassword2.setEnabled(false);
 
@@ -153,7 +153,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mEditLastname.setOnClickListener(mClickListener);
         //mEditEmail.setOnClickListener(this);
 
-        //TODO: Find out how to change passwort in Firebase
+        //TODO: Find out how to change password in Firebase
         //mEditPassword.setOnClickListener(this);
         //mEditPassword2.setOnClickListener(this);
 
@@ -183,7 +183,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
 
         mEditFirstname.setText(mOwnUserData.getFirstname());
         mEditLastname.setText((mOwnUserData.getLastname()));
-        //   mCalendar.setTime(mOwnUserData.getBirthday());  //TODO: anpassen
+        //   mCalendar.setTime(mOwnUserData.getBirthday());  //TODO: delete
         int day = mOwnUserData.getBDay();
         int month = mOwnUserData.getBMonth();
         int year = mOwnUserData.getBYear();
@@ -236,8 +236,10 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     private boolean validateForm() {
         Log.d(TAG, "validateForm: ");
 
-        boolean valid = true;   //Set to false, if one of the inputfields is not valid
-        View focus = null;      //Set to the first invalid inputfield, if there is any
+        //Set to false, if one of the inputfields is not valid
+        boolean valid = true;
+        //Set to the first invalid inputfield, if there is any
+        View focus = null;
 
 
         //If surname field is empty
@@ -321,7 +323,6 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
 */
             return valid;
         }
-
 /*
         // if password fields are not equal
         if (!mEditPassword.getText().toString().equals(mEditPassword2.getText().toString())) {
@@ -372,6 +373,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
         mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
         mUserData.setEmail(mEditEmail.getText().toString().trim());
+
         //User details, which have to be taken from original, otherwise they would be deleted in database, when overriding the data set
         //TODO: find other spots, where this is necessary (e.g. guest profile)
         mUserData.setInterviewsOwn(mOwnUserData.getInterviewsOwn());
@@ -395,7 +397,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //On success the remote downloadURL will be stored to mUserData.pictureURL
-                        //TODO: Alternative finden
+                        //TODO: find alternative
                         mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                         //Send data to database (must be here, after profile picture was send to Storage, otherwise pictureURL will be empty in database)
                         mDatabaseRef.setValue(mUserData);
@@ -430,8 +432,6 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             mUserData.setPictureURL(mOwnUserData.getPictureURL());
             mDatabaseRef.setValue(mUserData);
         }
-
-
     }
 
 
@@ -456,7 +456,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         Log.d(TAG, "buttonRightPressed: ");
 
         Toast.makeText(OwnProfileInputActivity.this, "Sicherheitsabfrage", Toast.LENGTH_SHORT).show();
-        //TODO: implementieren
+        //TODO:
     }
 
 }

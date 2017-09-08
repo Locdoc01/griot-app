@@ -213,7 +213,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
             mLayoutScrollViewVisibility.addView(pivNarrator);
             pivNarrator.setLayoutParams(params);
         }
-        //TODO: associated users & guests zur ScrollView hinzufügen
+        //TODO: add associated users & guests to the ScrollView
 
         mTextViewComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments));
 
@@ -354,7 +354,6 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
                     }
                     final String pathMediaCover = fileMediaCover.getPath();
 
-                    //TODO: try-catch wahrscheinlich nötig, wenn beim Upload der Bilder was schief gelaufen ist.
                     //Obtain pictures for interview media covers from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewQuestionData.get(index).getPictureURL());
@@ -405,8 +404,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO: muss mDatabaseRef hier gesetzt werden?
-        //TODO: kann man auf einen Schlag alle Listener entfernen?
+        //TODO: necessary here?
         mQuery.removeEventListener(mValueEventListener);
     }
 }

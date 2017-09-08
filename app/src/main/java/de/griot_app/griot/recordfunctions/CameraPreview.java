@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 import java.util.List;
 
 /**
- * TODO erläutern
+ * Provides a surface for showing the live preview of the camera, which is rendered in a secondary thread
  */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -33,9 +33,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "surfaceCreated: ");
-
-//        requestLayout();
-//        Log.d(TAG, "requestLayout: ");
 
         try {
             mCamera.setPreviewDisplay(holder);
@@ -60,6 +57,22 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.e(TAG, "surfaceChanged: Error stopping Preview (Ignore):" + e.getMessage());
         }
 
+        // Changes here just have an effect to the preview, when the camera is NOT recording
+
+        /*
+        Camera.Size optimalVideoSize = null;
+        List<Camera.Size> supportedVideoSizes = mCamera.getParameters().getSupportedVideoSizes();
+        long videoResolution = 0;
+        for (Camera.Size s : supportedVideoSizes) {
+            Log.d(TAG, "surfaceChanged: supportedVideoSizes: width: " + s.width + ", height: " + s.height);
+            if ( s.width * s.height > videoResolution ) {
+                videoResolution = s.width * s.height;
+                optimalVideoSize = s;
+            }
+        }
+        Log.d(TAG, "surfaceChanged: optimalVideoSize: width: " + optimalVideoSize.width + ", height: " + optimalVideoSize.height);
+*/
+
         Camera.Size optimalPreviewSize = null;
         List<Camera.Size> supportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
         long previewResolution = 0;
@@ -73,47 +86,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Log.d(TAG, "surfaceChanged: optimalPreviewSize: width: " + optimalPreviewSize.width + ", height: " + optimalPreviewSize.height);
 
 
-        Camera.Size optimalVideoSize = null;
-        List<Camera.Size> supportedVideoSizes = mCamera.getParameters().getSupportedVideoSizes();
-        long videoResolution = 0;
-        for (Camera.Size s : supportedVideoSizes) {
-            Log.d(TAG, "surfaceChanged: supportedVideoSizes: width: " + s.width + ", height: " + s.height);
-            if ( s.width * s.height > videoResolution ) {
-                videoResolution = s.width * s.height;
-                optimalVideoSize = s;
-            }
-        }
-        Log.d(TAG, "surfaceChanged: optimalVideoSize: width: " + optimalVideoSize.width + ", height: " + optimalVideoSize.height);
-
-        /*
-        requestLayout();
-        Log.d(TAG, "requestLayout: ");
-*/
-/*
-        double surfaceRatio = (double)surfaceWidth/surfaceHeight;
-        double optimalSizeRatio = (double)optimalPreviewSize.width/optimalPreviewSize.height;
-        Log.d(TAG, "surfaceChanged: surfaceRatio: " + surfaceRatio);
-        Log.d(TAG, "surfaceChanged: optimalSizeRatio: " + optimalSizeRatio);
-*/
-
-
-        /*
         Camera.Parameters parameters = mCamera.getParameters();
-        if (surfaceRatio > optimalSizeRatio) {
-            parameters.setPreviewSize((int)((double)surfaceHeight*optimalPreviewSize.width/optimalPreviewSize.height), surfaceHeight);
-            Log.d(TAG, "setPreviewSize: surfaceRatio > optimalSizeRatio: width: " + (int)((double)surfaceHeight*optimalPreviewSize.width/optimalPreviewSize.height) + " , height: " + surfaceHeight);
-
-        } else {
-            parameters.setPreviewSize(surfaceWidth, (int)((double)surfaceWidth*optimalPreviewSize.height/optimalPreviewSize.width));
-            Log.d(TAG, "setPreviewSize: optimalSizeRatio < surfaceRatio: width: " + surfaceWidth + " , height: " + (int)((double)surfaceWidth*optimalPreviewSize.height/optimalPreviewSize.width));
-        }
-*/
-        // Änderungen hier haben nur Auswirkungen auf die Preview während NICHT aufgenommen wird
-        Camera.Parameters parameters = mCamera.getParameters();
-        Log.e(TAG, "surfaceChanged: !!!!!!!!!!!!!!!!!getPreviewSize: width: " + parameters.getPreviewSize().width + " , height: " + parameters.getPreviewSize().height);
         parameters.setPreviewSize(optimalPreviewSize.width, optimalPreviewSize.height);
-        Log.e(TAG, "surfaceChanged: !!!!!!!!!!!!!!!!!getPreviewSize: width: " + parameters.getPreviewSize().width + " , height: " + parameters.getPreviewSize().height);
-
         try {
             mCamera.setParameters(parameters);
         } catch (Exception e) {

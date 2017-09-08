@@ -294,8 +294,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO: muss mDatabaseRef hier gesetzt werden?
-        //TODO: kann man auf einen Schlag alle Listener entfernen?
+        //TODO: necessary here?
         mDatabaseRef = mDatabaseRootReference.child("interviews");
         mDatabaseRef.removeEventListener(mValueEventListener);
     }

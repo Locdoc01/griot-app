@@ -521,7 +521,7 @@ public abstract class RecordActivity extends AppCompatActivity {
         for (int i = 0; i< allMediaMultiFilePaths.size() ; i++) {
             if (!allMediaMultiFilePaths.get(i).isEmpty()) {
 
-                //TODO: EInzelvideos verbinden zu einem und diese in allMediaMuiltiFilePaths.get(i).get(0) speichern
+                //TODO: combine all single media files which belong to one question to one file and put it in allMediaMuiltiFilePaths.get(i).get(0)
 
                 allMediaSingleFilePaths[i] = allMediaMultiFilePaths.get(i).get(0);
                 String videoPath = allMediaSingleFilePaths[i];
@@ -532,7 +532,7 @@ public abstract class RecordActivity extends AppCompatActivity {
                 //Get Length of a media file
                 String length = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                /*
-                if (Integer.parseInt(length)<2000) {    // TODO: geht nur, wenn mit ArrayLists statt arrays gearbeitet wird
+                if (Integer.parseInt(length)<2000) {    // TODO: works only, if ArrayLists are used instead of arrays
                     continue;
                 }
                 */

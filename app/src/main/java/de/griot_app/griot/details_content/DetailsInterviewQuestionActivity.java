@@ -173,7 +173,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
             mLayoutScrollViewVisibility.addView(pivNarrator);
             pivNarrator.setLayoutParams(params);
         }
-        //TODO: associated users & guests zur ScrollView hinzufügen
+        //TODO: add associated users & guests to the ScrollView
 
         // set OnClickListener to button views
         mClickListener = new View.OnClickListener() {

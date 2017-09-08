@@ -50,8 +50,9 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
 
         mMedium = MEDIUM_VIDEO;
 
-        //TODO: entfernen
+        //TODO: remove later (only used for optimizing the view hierarchy)
         ViewServer.get(this).addWindow(this);
+        //
 
         mButtonFlash = (ImageView) findViewById(R.id.button_flash);
         mButtonChangeCamera = (ImageView) findViewById(R.id.button_change_camera);
@@ -78,17 +79,20 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
     protected String getSubClassTAG() { return TAG; }
 
 
-    //TODO: entfernen
+    //TODO: remove later (only used for optimizing the view hierarchy)
     @Override
     protected void onResume() {
         super.onResume();
         ViewServer.get(this).setFocusedWindow(this);
     }
-    //TODO: entfernen
+    //
+
+    //TODO: remove later (only used for optimizing the view hierarchy)
     public void onDestroy() {
         super.onDestroy();
         ViewServer.get(this).removeWindow(this);
     }
+    //
 
 
     @Override
@@ -204,9 +208,10 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
         double videoSizeRatio = (double) videoSizeWidth / videoSizeHeight;
 
         //TODO:
-        //TODO das zugrunde liegende FrameLayout im Layout von mBackground ist als Wrap_content eingestellt. Eigentlich müsste hier die Dimension der CameraPreview
-        // TODO über deren LayoutParameter wie folgt eingestellt werden. Das FrameLayout müsste sich dann an diese Größe anpassen.
-        // TODO: PRÜFEN
+        //TODO: The underlying FrameLayout in the layout of mBackground is set to wrap_content.
+        //TODO: Actually the dimensions of the CameraPreview has to be set here by its LayoutParameters as in the folloing code.
+        //TODO: The FrameLayout should then adapt its size to that dimensions.
+        //TODO: Check this!
 
         //Changes here have generel effect to the preview, during recording and not. The settings here should be optimal for DURING recording!!
 
@@ -274,7 +279,6 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
      * Initializes the MediaRecorder and starts the recording.
      * @return true, if recording started successfully, false, else.
      */
-    //TODO alle Aufnahmeattribute als Objectattribute rausziehen und in Model einpflegen (so wie bei Audio)
     @Override
     protected boolean startRecording() {
         Log.d(TAG, "startRecordingNewVideo: ");
@@ -283,7 +287,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mMediaRecorder = new MediaRecorder();
         }
         try {
-            // mCamera.getParameters() darf nicht NACH mCamera.unlock() erfolgen
+            // mCamera.getParameters() may not be called AFTER a call of mCamera.unlock()
             mMediaRecorder.reset();
             mCamera.unlock();
             mMediaRecorder.setCamera(mCamera);
@@ -293,7 +297,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             // values in a MediaRecorder cannot be set without calling reset()
             // alternative: creation of a custom CamcorderProfile, make the changes there and set the
             // profile on the MediaRecorder using mMediaRecorder.setProfile like this:
-            //TODO: Unterstützung und Definition verschiedener CamcorderProfile (auch abhängig von der Kamera (vorne/hinten))
+            //TODO: support and definition of alternative CamcorderProfiles (also depending on the camera (front/back))
             //   mCamcorderProfile = CamcorderProfile.get(mCurrentCamera, mCurrentVideoQuality);
 /*
             Log.e(TAG, "fileFormat: " + mCamcorderProfile.fileFormat);
@@ -325,10 +329,10 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             Log.d(TAG, "Uri.fromFile(mMediaFile).toString: " + Uri.fromFile(mMediaFile).toString());
             Log.d(TAG, "mMediaFile.getName: " + mMediaFile.getName());
 */
-            //TODO Fehler wenn Carousel leer ist. (Nur relevant, wenn Fall wirklich auftreten kann)
+            //TODO: Catch error, if carousel is empty. (Only relevant, if this case really can occur)
             mCurrentRecordingIndex = mCarousel.getCurrentIndex();
 
-            // hat keinen Effekt:
+            //Recommended, bat has no effect:
             mMediaRecorder.setPreviewDisplay(mCameraPreview.getHolder().getSurface());
 
             mMediaRecorder.setOutputFile(mMediaFile.getPath());
@@ -338,8 +342,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mMediaRecorder.start();
             mChronometers.start();
 
-            // da ein KameraWechsel während der Aufnahme zu einem Fehler führen würde
-            // muss der ChangeCamera-Button solange deaktiviert werden
+            //The change-camera-button has to be disabled during recording, since a camera change would cause an error then
             mButtonChangeCamera.setEnabled(false);
             mButtonChangeCamera.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotLightgrey, null));
 
@@ -354,7 +357,7 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
 
 
     /**
-     * stops the recording
+     * Stops the recording
      */
     @Override
     protected void stopRecording() {
