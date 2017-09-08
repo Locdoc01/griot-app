@@ -271,7 +271,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         }
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             //If there is a vertical movement on a touch event greater than an offset, an animation is triggered,
-            //but only, if there isn't already an animation in progress, which is determined by mAnimationinProgress.
+            //but only, if there isn't already an animation in progress, which is determined by mAnimationInProgress.
             if (!mTouchInProgress && !mAnimationInProgress) {
                 if (mTouchStart +15.0f* mDensity < event.getY()) {
                     mTouchInProgress = true;
