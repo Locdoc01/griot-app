@@ -372,6 +372,17 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
         mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
         mUserData.setEmail(mEditEmail.getText().toString().trim());
+        //User details, which have to be taken from original, otherwise they would be deleted in database, when overriding the data set
+        //TODO: find other spots, where this is necessary (e.g. guest profile)
+        mUserData.setInterviewsOwn(mOwnUserData.getInterviewsOwn());
+        mUserData.setInterviewsAll(mOwnUserData.getInterviewsAll());
+        mUserData.setGuests(mOwnUserData.getGuests());
+        mUserData.setFriends(mOwnUserData.getFriends());
+        mUserData.setGroups(mOwnUserData.getGroups());
+        mUserData.setStandardTopics(mOwnUserData.getStandardTopics());
+        mUserData.setExtraTopics(mOwnUserData.getExtraTopics());
+        mUserData.setStandardQuestions(mOwnUserData.getStandardQuestions());
+        mUserData.setExtraQuestions(mOwnUserData.getExtraQuestions());
 
         if (mImageChanged) {
             //Set storage reference to /users/mUserID/profilePicture
@@ -416,7 +427,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
                 });
             }
         } else {
-            mUserData.setPictureURL(mLocalUserData.getPictureURL());
+            mUserData.setPictureURL(mOwnUserData.getPictureURL());
             mDatabaseRef.setValue(mUserData);
         }
 
