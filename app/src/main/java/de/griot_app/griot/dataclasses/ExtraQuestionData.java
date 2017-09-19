@@ -20,13 +20,6 @@ public class ExtraQuestionData {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "ExtraQuestionData{" +
-                "topic=" + topic +
-                ", question='" + question + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getTopic() { return topic; }

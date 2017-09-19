@@ -37,13 +37,6 @@ public class GuestData extends PersonData {
         this.relationship = relationship;
     }
 
-    @Override
-    public String toString() {
-        return "GuestData{" +
-                "hostID=" + hostID +
-                ", relationship='" + relationship + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getHostID() { return hostID; }

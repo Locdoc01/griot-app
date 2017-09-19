@@ -26,14 +26,6 @@ public class ContactData {
         this.pictureLocalURI = pictureLocalURI;
     }
 
-    @Override
-    public String toString() {
-        return "ContactData{" +
-                "firstname='" + firstname + '\'' +
-                ", pictureURL='" + pictureURL + '\'' +
-                ", pictureLocalURI='" + pictureLocalURI + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getFirstname() { return firstname; }

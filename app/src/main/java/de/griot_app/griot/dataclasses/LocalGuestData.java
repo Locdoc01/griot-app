@@ -38,13 +38,6 @@ public class LocalGuestData extends LocalPersonData {
         this.relationship = relationship;
     }
 
-    @Override
-    public String toString() {
-        return "LocalGuestData{" +
-                "hostID=" + hostID +
-                ", relationship='" + relationship + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getHostID() { return hostID; }

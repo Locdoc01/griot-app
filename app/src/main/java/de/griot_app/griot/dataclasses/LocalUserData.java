@@ -135,20 +135,6 @@ public class LocalUserData extends LocalPersonData /*implements Parcelable*/ {
     }
     */
 
-    @Override
-    public String toString() {
-        return "LocalUserData{" +
-                "interviewsOwn=" + interviewsOwn +
-                ", interviewsAll=" + interviewsAll +
-                ", guests=" + guests +
-                ", friends=" + friends +
-                ", groups=" + groups +
-                ", standardTopics=" + standardTopics +
-                ", extraTopics=" + extraTopics +
-                ", standardQuestions=" + standardQuestions +
-                ", extraQuestions=" + extraQuestions +
-                '}';
-    }
 
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }

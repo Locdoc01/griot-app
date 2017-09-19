@@ -16,12 +16,6 @@ public class ExtraTopicData {
         this.extraTopic = extraTopic;
     }
 
-    @Override
-    public String toString() {
-        return "ExtraTopicData{" +
-                "extraTopic='" + extraTopic + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getExtraTopic() { return extraTopic; }

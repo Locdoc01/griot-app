@@ -41,18 +41,6 @@ public class PersonData extends ContactData {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "PersonData{" +
-                "lastname='" + lastname + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", bYear='" + bYear + '\'' +
-                ", bMonth='" + bMonth + '\'' +
-                ", bDay='" + bDay + '\'' +
-                ", email='" + email + '\'' +
-                ", isUser='" + isUser + '\'' +
-                '}';
-    }
 
     //get-methods
     public String getLastname() { return lastname; }

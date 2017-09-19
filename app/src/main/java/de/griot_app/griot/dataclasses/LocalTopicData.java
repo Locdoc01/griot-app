@@ -21,17 +21,6 @@ public class LocalTopicData {
         questions = new ArrayList<>();
     }
 
-    @Override
-    public String toString() {
-        return "LocalTopicData{" +
-                ", topicKey=" + topicKey + '\'' +
-                ", topic=" + topic + '\'' +
-                ", topicState=" + topicState + '\'' +
-                ", questions=" + questions +
-                ", selected=" + selected +
-                ", expanded=" + expanded +
-                '}';
-    }
 
     //get-methods
     public int getTopicKey() { return topicKey; }

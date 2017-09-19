@@ -68,21 +68,6 @@ public class UserData extends PersonData {
         this.extraQuestions = extraQuestions;
     }
 
-    //TODO toString-methods korrigieren  (super.toString nicht berücksichtigt und HashMaps wahrscheinlich nur oberflächlich)
-    @Override
-    public String toString() {
-        return "UserData{" +
-                "interviewsOwn=" + interviewsOwn +
-                ", interviewsAll=" + interviewsAll +
-                ", guests=" + guests +
-                ", friends=" + friends +
-                ", groups=" + groups +
-                ", standardTopics=" + standardTopics +
-                ", extraTopics=" + extraTopics +
-                ", standardQuestions=" + standardQuestions +
-                ", extraQuestions=" + extraQuestions +
-                '}';
-    }
 
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }

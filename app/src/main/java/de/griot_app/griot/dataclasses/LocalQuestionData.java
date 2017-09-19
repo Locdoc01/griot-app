@@ -21,15 +21,6 @@ public class LocalQuestionData {
         questionState = QuestionState.ON;
     }
 
-    @Override
-    public String toString() {
-        return "QuestionData{" +
-                "topicKey='" + topicKey + '\'' +
-                ", questionKey=" + questionKey +
-                ", question=" + question +
-                ", questionState=" + questionState +
-                '}';
-    }
 
     //get-methods
     public int getTopicKey() { return topicKey; }

@@ -33,13 +33,6 @@ public class LocalGroupData extends LocalContactData {
         this.members = members;
     }
 
-    @Override
-    public String toString() {
-        return "LocalGroupData{" +
-                "visibility='" + visibility + '\'' +
-                ", members=" + members +
-                '}';
-    }
 
     //get-methods
     public String getVisibility() { return visibility; }

@@ -34,17 +34,6 @@ public class LocalContactData {
     }
 
 
-    @Override
-    public String toString() {
-        return "LocalContactData{" +
-                "contactID='" + contactID + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", pictureURL='" + pictureURL + '\'' +
-                ", pictureLocalURI='" + pictureLocalURI + '\'' +
-                ", category='" + category + '\'' +
-                '}';
-    }
-
     //get-methods
     public String getContactID() { return contactID; }
 

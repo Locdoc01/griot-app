@@ -31,13 +31,6 @@ public class GroupData extends ContactData {
         this.members = members;
     }
 
-    @Override
-    public String toString() {
-        return "GroupData{" +
-                "visibility='" + visibility + '\'' +
-                ", members=" + members +
-                '}';
-    }
 
     //get-methods
     public String getVisibility() { return visibility; }

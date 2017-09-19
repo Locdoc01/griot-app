@@ -71,23 +71,6 @@ public class InterviewData extends ContentData {
         this.interviewQuestionIDs = interviewQuestionIDs;
     }
 
-    @Override
-    public String toString() {
-        return "InterviewData{" +
-                "title='" + title + '\'' +
-                ", topic='" + topic + '\'' +
-                ", interviewerID=" + interviewerID +
-                ", interviewerName='" + interviewerName + '\'' +
-                ", interviewerPictureURL='" + interviewerPictureURL + '\'' +
-                ", narratorID=" + narratorID +
-                ", narratorName='" + narratorName + '\'' +
-                ", narratorPictureURL='" + narratorPictureURL + '\'' +
-                ", narratorIsUser=" + narratorIsUser +
-                ", numberComments=" + numberComments +
-                ", comments=" + comments +
-                ", interviewQuestionIDs=" + interviewQuestionIDs +
-                '}';
-    }
 
     //get-methods
     public String getTitle() { return title; }

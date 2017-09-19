@@ -13,13 +13,6 @@ public class QuestionData {
 
     }
 
-    @Override
-    public String toString() {
-        return "QuestionData{" +
-                "topicKey='" + topicKey + '\'' +
-                ", question=" + question +
-                '}';
-    }
 
     //get-methods
     public int getTopicKey() { return topicKey; }
