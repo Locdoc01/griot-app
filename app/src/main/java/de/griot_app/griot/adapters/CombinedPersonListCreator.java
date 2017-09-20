@@ -187,9 +187,12 @@ public class CombinedPersonListCreator {
                 Log.d(TAG, "getDatabaseValueEventListener: onDataChange:");
                 list.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
-                    localPersonData.setContactID(ds.getKey());
-                    list.add(localPersonData);
+                    //Ignore the item, if it represents the user itself
+                    if (!ds.getKey().equals(mOwnUserData.getContactID())) {
+                        LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
+                        localPersonData.setContactID(ds.getKey());
+                        list.add(localPersonData);
+                    }
                 }
 
                 //If list is empty, a placeholder item for the category is added
