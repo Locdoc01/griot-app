@@ -1,5 +1,6 @@
 package de.griot_app.griot.mainactivities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -76,11 +77,12 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (parent.isGroupExpanded(groupPosition)) {
                     parent.collapseGroup(groupPosition);
-                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.up, null));
+                    ((LocalTopicData)mAdapter.getGroup(groupPosition)).setExpanded(false);
                 } else {
                     parent.expandGroup(groupPosition);
-                    ((ImageView)v.findViewById(R.id.button_expand)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.down, null));
+                    ((LocalTopicData)mAdapter.getGroup(groupPosition)).setExpanded(true);
                 }
+                mAdapter.notifyDataSetChanged();
                 return true;
             }
         });

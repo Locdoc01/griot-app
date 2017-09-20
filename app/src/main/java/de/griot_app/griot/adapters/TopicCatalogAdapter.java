@@ -2,6 +2,7 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,9 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         mButtonExpand = (ImageView) v.findViewById(R.id.button_expand);
 
         mTextViewTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
-
+        if (mTopics.get(groupPosition).getExpanded()) {
+            mButtonExpand.setImageResource(R.drawable.down);
+        }
         //if the button is clicked, the appropriate topic gets expanded or collaped
         final ExpandableListView listview = (ExpandableListView) parent;
         mButtonExpand.setOnClickListener(new View.OnClickListener() {
@@ -92,10 +95,10 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 if (listview.isGroupExpanded(groupPosition)) {
                     listview.collapseGroup(groupPosition);
-                    ((ImageView)v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.up, null));
+                    mTopics.get(groupPosition).setExpanded(false);
                 } else {
                     listview.expandGroup(groupPosition);
-                    ((ImageView)v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.down, null));
+                    mTopics.get(groupPosition).setExpanded(true);
                 }
                 notifyDataSetChanged();
             }
