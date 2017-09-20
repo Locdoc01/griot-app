@@ -188,7 +188,7 @@ public class CombinedPersonListCreator {
                 list.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //Ignore the item, if it represents the user itself
-                    if (!ds.getKey().equals(mOwnUserData.getContactID())) {
+                    if ((mOwnUserData != null && !ds.getKey().equals(mOwnUserData.getContactID())) || mOwnUserData == null) { //TODO: make ownUserData also available, if called from the ContactManagmendActivity (constructors has to be changed)
                         LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
                         localPersonData.setContactID(ds.getKey());
                         list.add(localPersonData);
