@@ -192,15 +192,18 @@ public class CombinedPersonListCreator {
                     list.add(localPersonData);
                 }
 
-                if (!list.isEmpty()) {
-                    switch (query.getRef().getKey()) {
-                        case "guests":
-                            list.get(0).setCategory(mContext.getString(R.string.text_your_guests));
-                            break;
-                        case "users":
-                            list.get(0).setCategory(mContext.getString(R.string.text_your_friends));
-                            break;
-                    }
+                //If list is empty, a placeholder item for the category is added
+                if (list.isEmpty()) {
+                    list.add(new LocalPersonData());
+                }
+
+                switch (query.getRef().getKey()) {
+                    case "guests":
+                        list.get(0).setCategory(mContext.getString(R.string.text_your_guests));
+                        break;
+                    case "users":
+                        list.get(0).setCategory(mContext.getString(R.string.text_your_friends));
+                        break;
                 }
 
                 combineList();      // TODO: may be the wrong place, but ListView works as expected
@@ -256,17 +259,21 @@ public class CombinedPersonListCreator {
             mCombinedList.add(mOwnUserData);
         }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
-            if (!mSingleLists.get(i).isEmpty()) {
-                if (!mAddGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
-                    LocalGuestData localGuestData = new LocalGuestData();
-                    localGuestData.setFirstname(mContext.getString(R.string.text_add_guest));
-                    localGuestData.setLastname("");
-                    localGuestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
-                    mSingleLists.get(i).add(0, localGuestData);
-                    mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));
+            if (!mAddGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
+                LocalGuestData localGuestData = new LocalGuestData();
+                localGuestData.setFirstname(mContext.getString(R.string.text_add_guest));
+                localGuestData.setLastname("");
+                localGuestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
+                if (mSingleLists.get(i).get(0).getFirstname() == null ) {
+                    //Remove possible placeholder item, if list was empty
+                    mSingleLists.get(i).remove(0);
+                } else {
+                    //Remove category from first proper guest item, if list was not empty
                     mSingleLists.get(i).get(1).setCategory(null);
-                    mAddGuestAdded = true;
                 }
+                mSingleLists.get(i).add(0, localGuestData);
+                mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));
+                mAddGuestAdded = true;
             }
             mCombinedList.addAll(mSingleLists.get(i));
         }
