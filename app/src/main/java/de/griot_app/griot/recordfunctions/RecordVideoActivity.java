@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -322,6 +323,13 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             mMediaRecorder.setProfile(mCamcorderProfile);
             //    mMediaRecorder.setVideoEncodingBitRate(mCamcorderProfile.videoBitRate);
 
+            //TODO: Catch error, if carousel is empty. (Only relevant, if this case really can occur)
+            mCurrentRecordingIndex = mCarousel.getCurrentIndex();
+
+            //Recommended, but has no effect:
+            Surface surface = mCameraPreview.getHolder().getSurface();
+            mMediaRecorder.setPreviewDisplay(surface);
+
             mMediaFile = getOutputFile();
 /*
             Log.d(TAG, "mMediaFile.toString: " + mMediaFile.toString());
@@ -329,13 +337,8 @@ public class RecordVideoActivity extends RecordActivity implements View.OnClickL
             Log.d(TAG, "Uri.fromFile(mMediaFile).toString: " + Uri.fromFile(mMediaFile).toString());
             Log.d(TAG, "mMediaFile.getName: " + mMediaFile.getName());
 */
-            //TODO: Catch error, if carousel is empty. (Only relevant, if this case really can occur)
-            mCurrentRecordingIndex = mCarousel.getCurrentIndex();
-
-            //Recommended, bat has no effect:
-            mMediaRecorder.setPreviewDisplay(mCameraPreview.getHolder().getSurface());
-
-            mMediaRecorder.setOutputFile(mMediaFile.getPath());
+            String mediaFilePath = mMediaFile.getPath();
+            mMediaRecorder.setOutputFile(mediaFilePath);
             mMediaRecorder.setVideoSize(mOptimalVideoSize.width, mOptimalVideoSize.height);
 
             mMediaRecorder.prepare();
