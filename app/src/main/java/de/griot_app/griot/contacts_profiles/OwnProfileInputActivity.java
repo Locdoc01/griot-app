@@ -32,6 +32,15 @@ import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.views.ProfileImageView;
 
 /**
+ * **************************************************************************************
+ *  This class uses the Android Image Cropper library, which is under following licence:
+ * Originally forked from edmodo/cropper.
+ * Copyright 2016, Arthur Teplitzki, 2013, Edmodo, Inc.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ * **************************************************************************************
+ *
  * Input activity, which shows the own user profile and allows to alter and save it
  */
 public class OwnProfileInputActivity extends GriotBaseInputActivity implements DatePickerDialog.OnDateSetListener {
@@ -184,9 +193,9 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mEditFirstname.setText(mOwnUserData.getFirstname());
         mEditLastname.setText((mOwnUserData.getLastname()));
         //   mCalendar.setTime(mOwnUserData.getBirthday());  //TODO: delete
-        int day = mOwnUserData.getBDay();
-        int month = mOwnUserData.getBMonth();
-        int year = mOwnUserData.getBYear();
+        int day = mOwnUserData.getBday();
+        int month = mOwnUserData.getBmonth();
+        int year = mOwnUserData.getByear();
         mDatePickerDialog = new DatePickerDialog(OwnProfileInputActivity.this, OwnProfileInputActivity.this, year, month, day);
         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
         mEditEmail.setText((mOwnUserData.getEmail()));
@@ -369,9 +378,9 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mUserData.setFirstname(mEditFirstname.getText().toString().trim());
         mUserData.setLastname(mEditLastname.getText().toString().trim());
         mUserData.setBirthday(mCalendar.getTime().toString());
-        mUserData.setBYear(mCalendar.get(Calendar.YEAR));
-        mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
-        mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
+        mUserData.setByear(mCalendar.get(Calendar.YEAR));
+        mUserData.setBmonth(mCalendar.get(Calendar.MONTH));
+        mUserData.setBday(mCalendar.get(Calendar.DAY_OF_MONTH));
         mUserData.setEmail(mEditEmail.getText().toString().trim());
 
         //User details, which have to be taken from original, otherwise they would be deleted in database, when overriding the data set

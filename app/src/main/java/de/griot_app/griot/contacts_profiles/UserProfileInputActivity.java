@@ -145,9 +145,9 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                 //initialize the views with the obtained data
                 mEditFirstname.setText(mLocalUserData.getFirstname());
                 mEditLastname.setText((mLocalUserData.getLastname()));
-                int day = mLocalUserData.getBDay();
-                int month = mLocalUserData.getBMonth();
-                int year = mLocalUserData.getBYear();
+                int day = mLocalUserData.getBday();
+                int month = mLocalUserData.getBmonth();
+                int year = mLocalUserData.getByear();
                 mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
                 mEditEmail.setText((mLocalUserData.getEmail()));
 //                    mTextViewRelationship.setText(((mLocalUserData).getRelationship()));  //TODO
