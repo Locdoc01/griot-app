@@ -307,9 +307,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         mGuestData.setHostID(mUserID);
         if (mDateSet) {
             mGuestData.setBirthday(mCalendar.getTime().toString());
-            mGuestData.setBYear(mCalendar.get(Calendar.YEAR));
-            mGuestData.setBMonth(mCalendar.get(Calendar.MONTH));
-            mGuestData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
+            mGuestData.setByear(mCalendar.get(Calendar.YEAR));
+            mGuestData.setBmonth(mCalendar.get(Calendar.MONTH));
+            mGuestData.setBday(mCalendar.get(Calendar.DAY_OF_MONTH));
         }
         mGuestData.setEmail(mEditEmail.getText().toString().trim());
         mGuestData.setRelationship(mTextViewRelationship.getText().toString());
@@ -444,11 +444,11 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     //initialize the views with the obtained data
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
-                    if (mLocalGuestData.getBDay()!=null) {
+                    if (mLocalGuestData.getBday()!=null) {
                         //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: delete
-                        int day = mLocalGuestData.getBDay();
-                        int month = mLocalGuestData.getBMonth();
-                        int year = mLocalGuestData.getBYear();
+                        int day = mLocalGuestData.getBday();
+                        int month = mLocalGuestData.getBmonth();
+                        int year = mLocalGuestData.getByear();
                         mDatePickerDialog = new DatePickerDialog(GuestProfileInputActivity.this, GuestProfileInputActivity.this, year, month, day);
                         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
                         mDateSet = true;

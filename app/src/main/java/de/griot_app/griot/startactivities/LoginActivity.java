@@ -591,9 +591,9 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                     mUserData.setFirstname(mEditFirstname.getText().toString().trim());
                     mUserData.setLastname(mEditLastname.getText().toString().trim());
                     mUserData.setBirthday(mCalendar.getTime().toString());
-                    mUserData.setBYear(mCalendar.get(Calendar.YEAR));
-                    mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
-                    mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
+                    mUserData.setByear(mCalendar.get(Calendar.YEAR));
+                    mUserData.setBmonth(mCalendar.get(Calendar.MONTH));
+                    mUserData.setBday(mCalendar.get(Calendar.DAY_OF_MONTH));
                     mUserData.setEmail(mEditCreateAccountEmail.getText().toString().trim());
 
                     //Obtain standard topics from Firebase database

@@ -184,9 +184,9 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mEditFirstname.setText(mOwnUserData.getFirstname());
         mEditLastname.setText((mOwnUserData.getLastname()));
         //   mCalendar.setTime(mOwnUserData.getBirthday());  //TODO: delete
-        int day = mOwnUserData.getBDay();
-        int month = mOwnUserData.getBMonth();
-        int year = mOwnUserData.getBYear();
+        int day = mOwnUserData.getBday();
+        int month = mOwnUserData.getBmonth();
+        int year = mOwnUserData.getByear();
         mDatePickerDialog = new DatePickerDialog(OwnProfileInputActivity.this, OwnProfileInputActivity.this, year, month, day);
         mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
         mEditEmail.setText((mOwnUserData.getEmail()));
@@ -369,9 +369,9 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         mUserData.setFirstname(mEditFirstname.getText().toString().trim());
         mUserData.setLastname(mEditLastname.getText().toString().trim());
         mUserData.setBirthday(mCalendar.getTime().toString());
-        mUserData.setBYear(mCalendar.get(Calendar.YEAR));
-        mUserData.setBMonth(mCalendar.get(Calendar.MONTH));
-        mUserData.setBDay(mCalendar.get(Calendar.DAY_OF_MONTH));
+        mUserData.setByear(mCalendar.get(Calendar.YEAR));
+        mUserData.setBmonth(mCalendar.get(Calendar.MONTH));
+        mUserData.setBday(mCalendar.get(Calendar.DAY_OF_MONTH));
         mUserData.setEmail(mEditEmail.getText().toString().trim());
 
         //User details, which have to be taken from original, otherwise they would be deleted in database, when overriding the data set
