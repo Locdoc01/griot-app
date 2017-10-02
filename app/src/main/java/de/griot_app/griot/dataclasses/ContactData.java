@@ -8,44 +8,36 @@ public class ContactData {
 
     protected String firstname;
     protected String pictureURL;
-    protected String category;
+    protected String pictureLocalURI;
 
     //default-constructor
     public ContactData() {
-        firstname = "";
-        pictureURL = "";
-        category = "";
     }
 
-    //TODO: evt nicht benötigt
-    public ContactData(String category) {
-        firstname = "";
-        pictureURL = "";
-        this.category = category;
-    }
 
     //constructor
     public ContactData(
             String firstname,
             String pictureURL,
-            String category
+            String pictureLocalURI
     ) {
         this.firstname = firstname;
         this.pictureURL = pictureURL;
-        this.category = category;
+        this.pictureLocalURI = pictureLocalURI;
     }
+
 
     //get-methods
     public String getFirstname() { return firstname; }
 
     public String getPictureURL() { return pictureURL; }
 
-    public String getCategory() { return category; }
+    public String getPictureLocalURI() { return pictureLocalURI; }
 
     //set-methods
     public void setFirstname(String firstname) { this.firstname = firstname; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setPictureLocalURI(String pictureLocalURI) { this.pictureLocalURI = pictureLocalURI; }
 }

@@ -2,20 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.griot_app.griot">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/griot_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".StartActivity"
+            android:name=".startactivities.StartActivity"
             android:theme="@style/NoTitleBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,46 +27,49 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/NoTitleBarTheme" >
-        </activity>
-
+            android:name=".startactivities.LoginActivity"
+            android:theme="@style/NoTitleBarTheme" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat">
-        </activity>
-
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".MainOverviewActivity">
-        </activity>
-
+            android:name=".mainactivities.MainPersonalPageActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".MainProfileOverviewActivity"
-            android:parentActivityName=".MainOverviewActivity">
-        </activity>
-
+            android:name=".mainactivities.MainChooseFriendInputActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".MainChooseFriendInputActivity"
-            android:parentActivityName=".MainOverviewActivity">
-        </activity>
-
+            android:name=".mainactivities.MainQuestionmailActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".MainQuestionmailActivity"
-            android:parentActivityName=".MainOverviewActivity">
-        </activity>
-
+            android:name=".mainactivities.MainNotificationsActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity" />
         <activity
-            android:name=".MainNotificationsActivity"
-            android:parentActivityName=".MainOverviewActivity">
-        </activity>
-
+            android:name=".mainactivities.MainTopicCatalogActivity"
+            android:parentActivityName=".mainactivities.MainOverviewActivity" />
+        <activity android:name=".questionmail.ComposeQuestionRequestInputActivity" />
         <activity
-            android:name=".MainTopicCatalogActivity"
-            android:parentActivityName=".MainOverviewActivity">
-        </activity>
-
+            android:name=".perform_interview.ChooseTopicInputActivity"
+            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity" />
+        <activity
+            android:name=".perform_interview.ChooseMediumInputActivity"
+            android:parentActivityName=".perform_interview.ChooseTopicInputActivity" />
+        <activity android:name=".perform_interview.ReviewInterviewInputActivity" />
+        <activity android:name=".perform_interview.SaveInterviewInputActivity" />
+        <activity android:name=".contacts_profiles.OwnProfileInputActivity" />
+        <activity android:name=".contacts_profiles.GuestProfileInputActivity" />
+        <activity android:name=".contacts_profiles.UserProfileInputActivity" />
+        <activity android:name=".contacts_profiles.ContactManagmentActivity" />
+        <activity
+            android:name=".recordfunctions.RecordVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".recordfunctions.RecordAudioActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".details_content.DetailsInterviewActivity" />
+        <activity android:name=".details_content.DetailsInterviewQuestionActivity"></activity>
     </application>
 
 </manifest>

@@ -7,44 +7,47 @@ import java.util.HashMap;
  */
 public class InterviewQuestionData extends ContentData {
 
-    private HashMap<String, Boolean> interviewID;
+    private String interviewID;
     private String question;
     private String recordURL;
 
     //default-constructor
     public InterviewQuestionData() {
         super();
-        interviewID = new HashMap<>();
-        question = "";
-        recordURL = "";
     }
 
     //constructor
     public InterviewQuestionData(
-            HashMap<String, Boolean> interviewID,
+            String interviewID,
             String question,
             String length,
+            String dateYear,
+            String dateMonth,
+            String dateDay,
+            String medium,
             String pictureURL,
+            String pictureLocalURI,
             String recordURL,
             HashMap<String, Boolean> associatedUsers,
             HashMap<String, Boolean> associatedGuests,
             HashMap<String, Boolean> tags
     ) {
-        super(length, pictureURL, associatedUsers, associatedGuests, tags);
+        super(length, dateYear, dateMonth, medium, dateDay, pictureURL, associatedUsers, associatedGuests, tags);
         this.interviewID = interviewID;
         this.question = question;
         this.recordURL = recordURL;
     }
 
+
     //get-methods
-    public HashMap<String, Boolean> getInterviewID() { return interviewID; }
+    public String getInterviewID() { return interviewID; }
 
     public String getQuestion() { return question; }
 
     public String getRecordURL() { return recordURL; }
 
     //set-methods
-    public void setInterviewID(HashMap<String, Boolean> interviewID) { this.interviewID = interviewID; }
+    public void setInterviewID(String interviewID) { this.interviewID = interviewID; }
 
     public void setQuestion(String question) { this.question = question; }
 

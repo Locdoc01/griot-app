@@ -1,5 +1,6 @@
 package de.griot_app.griot.dataclasses;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -8,38 +9,26 @@ import java.util.HashMap;
 public class UserData extends PersonData {
 
     private HashMap<String, Boolean> interviewsOwn;
-    private HashMap<String, Boolean> interviewsAssociated;
+    private HashMap<String, Boolean> interviewsAll;
     private HashMap<String, String> guests;
     private HashMap<String, String> friends;
     private HashMap<String, String> groups;
-    private HashMap<String, Boolean> standardTopics;
+    private ArrayList<Boolean> standardTopics;
     private HashMap<String, Boolean> extraTopics;
-    private HashMap<String, String> standardQuestions;
+    private HashMap<String, Integer> standardQuestions;
     private HashMap<String, String> extraQuestions;
+
 
     //default-constructor
     public UserData() {
         super();
+        isUser = true;
         interviewsOwn = new HashMap<>();
-        interviewsAssociated = new HashMap<>();
+        interviewsAll = new HashMap<>();
         guests = new HashMap<>();
         friends = new HashMap<>();
         groups = new HashMap<>();
-        standardTopics = new HashMap<>();
-        extraTopics = new HashMap<>();
-        standardQuestions = new HashMap<>();
-        extraQuestions = new HashMap<>();
-    }
-
-    //TODO: evt nicht benötigt
-    public UserData(String category) {
-        super(category);
-        interviewsOwn = new HashMap<>();
-        interviewsAssociated = new HashMap<>();
-        guests = new HashMap<>();
-        friends = new HashMap<>();
-        groups = new HashMap<>();
-        standardTopics = new HashMap<>();
+        standardTopics = new ArrayList<>();
         extraTopics = new HashMap<>();
         standardQuestions = new HashMap<>();
         extraQuestions = new HashMap<>();
@@ -50,22 +39,26 @@ public class UserData extends PersonData {
             String firstname,
             String lastname,
             String birthday,
+            Integer bYear,
+            Integer bMonth,
+            Integer bDay,
             String email,
             String pictureURL,
-            String category,
+            String pictureLocalURI,
             HashMap<String, Boolean> interviewsOwn,
-            HashMap<String, Boolean> interviewsAssociated,
+            HashMap<String, Boolean> interviewsAll,
             HashMap<String, String> guests,
             HashMap<String, String> friends,
             HashMap<String, String> groups,
-            HashMap<String, Boolean> standardTopics,
+            ArrayList<Boolean> standardTopics,
             HashMap<String, Boolean> extraTopics,
-            HashMap<String, String> standardQuestions,
+            HashMap<String, Integer> standardQuestions,
             HashMap<String, String> extraQuestions
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, category);
+        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
+        isUser = true;
         this.interviewsOwn = interviewsOwn;
-        this.interviewsAssociated = interviewsAssociated;
+        this.interviewsAll = interviewsAll;
         this.guests = guests;
         this.friends = friends;
         this.groups = groups;
@@ -75,10 +68,11 @@ public class UserData extends PersonData {
         this.extraQuestions = extraQuestions;
     }
 
+
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }
 
-    public HashMap<String, Boolean> getInterviewsAssociated() { return interviewsAssociated; }
+    public HashMap<String, Boolean> getInterviewsAll() { return interviewsAll; }
 
     public HashMap<String, String> getGuests() { return guests; }
 
@@ -86,18 +80,18 @@ public class UserData extends PersonData {
 
     public HashMap<String, String> getGroups() { return groups; }
 
-    public HashMap<String, Boolean> getStandardTopics() { return standardTopics; }
+    public ArrayList<Boolean> getStandardTopics() { return standardTopics; }
 
     public HashMap<String, Boolean> getExtraTopics() { return extraTopics; }
 
-    public HashMap<String, String> getStandardQuestions() { return standardQuestions; }
+    public HashMap<String, Integer> getStandardQuestions() { return standardQuestions; }
 
     public HashMap<String, String> getExtraQuestions() { return extraQuestions; }
 
     //set-methods
     public void setInterviewsOwn(HashMap<String, Boolean> interviewsOwn) { this.interviewsOwn = interviewsOwn; }
 
-    public void setInterviewsAssociated(HashMap<String, Boolean> interviewsAssociated) { this.interviewsAssociated = interviewsAssociated; }
+    public void setInterviewsAll(HashMap<String, Boolean> interviewsAll) { this.interviewsAll = interviewsAll; }
 
     public void setGuests(HashMap<String, String> guests) { this.guests = guests; }
 
@@ -105,11 +99,11 @@ public class UserData extends PersonData {
 
     public void setGroups(HashMap<String, String> groups) { this.groups = groups; }
 
-    public void setStandardTopics(HashMap<String, Boolean> standardTopics) { this.standardTopics = standardTopics; }
+    public void setStandardTopics(ArrayList<Boolean> standardTopics) { this.standardTopics = standardTopics; }
 
     public void setExtraTopics(HashMap<String, Boolean> extraTopics) { this.extraTopics = extraTopics; }
 
-    public void setStandardQuestions(HashMap<String, String> standardQuestions) { this.standardQuestions = standardQuestions; }
+    public void setStandardQuestions(HashMap<String, Integer> standardQuestions) { this.standardQuestions = standardQuestions; }
 
     public void setExtraQuestions(HashMap<String, String> extraQuestions) { this.extraQuestions = extraQuestions; }
 }

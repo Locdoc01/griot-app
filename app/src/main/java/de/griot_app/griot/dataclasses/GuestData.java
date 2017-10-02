@@ -8,46 +8,44 @@ import java.util.HashMap;
  */
 public class GuestData extends PersonData {
 
-    private String visibility;
-    private HashMap<String, String> members;
+    private String hostID;
+    private String relationship;
+
 
     //default-constructor
     public GuestData() {
         super();
-        visibility = "";
-        members = new HashMap<>();
     }
 
-    //TODO: evt nicht benötigt
-    public GuestData(String category) {
-        super(category);
-        visibility = "";
-        members = new HashMap<>();
-    }
 
     //constructor
     public GuestData(
             String firstname,
             String lastname,
             String birthday,
+            Integer bYear,
+            Integer bMonth,
+            Integer bDay,
             String email,
             String pictureURL,
-            String category,
-            String visibility,
-            HashMap<String, String> members
+            String pictureLocalURI,
+            String hostID,
+            String relationship
     ) {
-        super(firstname, lastname, birthday, email, pictureURL, category);
-        this.visibility = visibility;
-        this.members = members;
+        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
+        this.hostID = hostID;
+        this.relationship = relationship;
     }
 
-    //get-methods
-    public String getVisibility() { return visibility; }
 
-    public HashMap<String, String> getMembers() { return members; }
+    //get-methods
+    public String getHostID() { return hostID; }
+
+    public String getRelationship() { return relationship; }
+
 
     //set-methods
-    public void setVisibility(String visibility) { this.visibility = visibility; }
+    public void setHostID(String hostID) { this.hostID = hostID; }
 
-    public void setMembers(HashMap<String, String> members) { this.members = members; }
+    public void setRelationship(String relationship) { this.relationship = relationship; }
 }

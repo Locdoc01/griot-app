@@ -14,29 +14,23 @@ public class GroupData extends ContactData {
     //default-constructor
     public GroupData() {
         super();
-        visibility = "";
         members = new HashMap<>();
     }
 
-    //TODO: evt nicht benötigt
-    public GroupData(String category) {
-        super(category);
-        visibility = "";
-        members = new HashMap<>();
-    }
 
     //constructor
     public GroupData(
             String firstname,
             String pictureURL,
+            String pictureLocalURI,
             String visibility,
-            HashMap<String, String> members,
-            String category
-            ) {
-        super(firstname, pictureURL, category);
+            HashMap<String, String> members
+    ) {
+        super(firstname, pictureURL, pictureLocalURI);
         this.visibility = visibility;
         this.members = members;
     }
+
 
     //get-methods
     public String getVisibility() { return visibility; }

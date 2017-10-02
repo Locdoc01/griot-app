@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +13,29 @@
         app:layout_constraintGuide_percent="0.105"
         android:orientation="horizontal" />
 
-    <de.griot_app.griot.ProfileImageView
+    <de.griot_app.griot.views.ProfileImageView
+        android:id="@+id/piv_profile_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@id/guideline_profile_image_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_profile_image_bottom"/>
+
+    <!--
+    <include layout="@layout/class_profile_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="@id/guideline_profile_image_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_profile_image_bottom"/>
+        -->
+
+<!--
+    <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -22,6 +45,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline_profile_image_bottom" />
+-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_profile_image_bottom"
@@ -55,7 +79,8 @@
         android:id="@+id/editText_firstname"
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_firstname"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
+        android:imeOptions="actionNext"
         app:layout_constraintTop_toTopOf="@+id/guideline_create_account_top"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
         app:layout_constraintRight_toRightOf="@id/guideline_create_account_right"
@@ -66,7 +91,8 @@
         android:id="@+id/editText_lastname"
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_lastname"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
+        android:imeOptions="actionDone"
         android:layout_marginBottom="10dp"
         app:layout_constraintTop_toBottomOf="@+id/editText_firstname"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
@@ -111,6 +137,7 @@
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
+        android:imeOptions="actionNext"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/textView_birthday"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
@@ -122,6 +149,7 @@
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
+        android:imeOptions="actionNext"
         app:layout_constraintTop_toBottomOf="@+id/editText_create_account_email"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
         app:layout_constraintRight_toRightOf="@id/guideline_create_account_right"
@@ -132,6 +160,7 @@
         style="@style/AppTheme.EditTextStyle"
         android:hint="@string/hint_password_repeat"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         app:layout_constraintTop_toBottomOf="@+id/editText_create_account_password"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
         app:layout_constraintRight_toRightOf="@id/guideline_create_account_right"
@@ -149,7 +178,10 @@
         android:id="@+id/button_create_account"
         style="@style/AppTheme.TextButtons"
         android:text="@string/button_create_account"
-        android:layout_marginTop="10dp"
+        android:paddingTop="15dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingBottom="15dp"
         app:layout_constraintTop_toTopOf="@+id/guideline_create_account_bottom"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
