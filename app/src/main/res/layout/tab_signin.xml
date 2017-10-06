@@ -23,7 +23,7 @@
         android:id="@+id/guideline_signin_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.31"
+        app:layout_constraintGuide_percent="0.26"
         android:orientation="horizontal" />
 
     <!--TODO: Email-Adresse und Passwort entfernen !!!!!!!!!!!!!-->
