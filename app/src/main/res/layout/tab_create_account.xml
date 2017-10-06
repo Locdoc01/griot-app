@@ -78,6 +78,7 @@
     <EditText
         android:id="@+id/editText_firstname"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_firstname"
         android:inputType="textCapWords"
         android:imeOptions="actionNext"
@@ -90,6 +91,7 @@
     <EditText
         android:id="@+id/editText_lastname"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_lastname"
         android:inputType="textCapWords"
         android:imeOptions="actionDone"
@@ -135,6 +137,7 @@
     <EditText
         android:id="@+id/editText_create_account_email"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         android:imeOptions="actionNext"
@@ -147,6 +150,7 @@
     <EditText
         android:id="@+id/editText_create_account_password"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
         android:imeOptions="actionNext"
@@ -158,6 +162,7 @@
     <EditText
         android:id="@+id/editText_create_account_password2"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password_repeat"
         android:inputType="textPassword"
         android:imeOptions="actionDone"
