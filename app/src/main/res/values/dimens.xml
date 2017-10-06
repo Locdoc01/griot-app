@@ -5,7 +5,7 @@
     <dimen name="dimen_bottom_button_record">50dp</dimen>
     <dimen name="dimen_height_tabwidget">50dp</dimen>
 
-    <dimen name="dimen_padding_edittext">6dp</dimen>
+    <dimen name="dimen_padding_edittext">5dp</dimen>
     <dimen name="dimen_corner_radius_edittext">3dp</dimen>
 
     <dimen name="dimen_piv_visibility">60dp</dimen>
