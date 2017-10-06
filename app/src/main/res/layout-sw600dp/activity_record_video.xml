@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+android:id="@+id/layout_record_video"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#000000"
+tools:context="de.griot_app.griot.recordfunctions.RecordActivity">
+<!-- android:fitsSystemWindows="true" sorgt dafür, dass um das Layout ein Rand gesetzt wird, so dass Views nicht verdeckt werden, wenn System Bars eingeblendet werden-->
+
+    <FrameLayout
+        android:id="@+id/record_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="32dp">
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/button_record"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/record_start" />
+
+    <ImageView
+        android:id="@+id/button_change_camera"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/change_camera2"
+        android:layout_margin="16dp"
+        app:layout_constraintLeft_toLeftOf="@id/record_background"
+        app:layout_constraintTop_toTopOf="@id/record_background"/>
+
+    <ImageView
+        android:id="@+id/button_flash"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:srcCompat="@drawable/flash_off2"
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        app:layout_constraintLeft_toRightOf="@id/button_change_camera"
+        app:layout_constraintTop_toTopOf="@id/record_background"/>
+
+    <Button
+        android:id="@+id/button_finished"
+        style="@style/AppTheme.TextButtons"
+        android:text="@string/button_finish"
+        android:textColor="@color/colorGriotWhite"
+        android:padding="16dp"
+        app:layout_constraintRight_toRightOf="@id/record_background"
+        app:layout_constraintTop_toTopOf="@id/record_background"/>
+
+    <de.griot_app.griot.recordfunctions.RecordChronometers
+        android:id="@+id/layout_chronometers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/record_background"/>
+
+    <de.griot_app.griot.recordfunctions.QuestionCarousel
+        android:id="@+id/layout_carousel"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/carouselLayoutHeight"
+        app:layout_constraintBottom_toBottomOf="@+id/record_background"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>
