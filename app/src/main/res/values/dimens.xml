@@ -13,14 +13,14 @@
     <dimen name="carouselLayoutHeight">180dp</dimen>
     <dimen name="carouselShadowTopHeight">80dp</dimen>
     <dimen name="carouselTextViewSpaceHeight">50dp</dimen>
-    <dimen name="textSizeCurrentQuestion">7.2sp</dimen>
-    <dimen name="textSizeLastNextQuestion">5.4sp</dimen>
+    <dimen name="textSizeCurrentQuestion">8.64sp</dimen>
+    <dimen name="textSizeLastNextQuestion">6.48sp</dimen>
     <dimen name="wavelineLayoutHeight">270dp</dimen>
 
     <!--TextSizes-->
-    <dimen name="dimen_textSize_large">15sp</dimen>
-    <dimen name="dimen_textSize_normal">12sp</dimen>
-    <dimen name="dimen_textSize_medium">10.5sp</dimen>
-    <dimen name="dimen_textSize_small">9sp</dimen>
-    <dimen name="dimen_textSize_tiny">6.75sp</dimen>
+    <dimen name="dimen_textSize_large">18sp</dimen>
+    <dimen name="dimen_textSize_normal">14.4sp</dimen>
+    <dimen name="dimen_textSize_medium">12.6sp</dimen>
+    <dimen name="dimen_textSize_small">10.8sp</dimen>
+    <dimen name="dimen_textSize_tiny">8.1sp</dimen>
 </resources>
