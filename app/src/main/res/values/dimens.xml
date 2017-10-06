@@ -8,7 +8,7 @@
     <dimen name="dimen_padding_edittext">5dp</dimen>
     <dimen name="dimen_corner_radius_edittext">3dp</dimen>
 
-    <dimen name="dimen_piv_visibility">60dp</dimen>
+    <dimen name="dimen_piv">60dp</dimen>
 
     <!--dimensions record functions-->
     <dimen name="carouselHeight">150dp</dimen>
