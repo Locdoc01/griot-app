@@ -30,6 +30,7 @@
     <EditText
         android:id="@+id/editText_signin_email"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_email"
         android:text="aa@aa.aa"
         android:inputType="textEmailAddress"
@@ -43,6 +44,7 @@
     <EditText
         android:id="@+id/editText_signin_password"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password"
         android:text="890iop"
         android:inputType="textPassword"
@@ -68,6 +70,7 @@
     <EditText
         android:id="@+id/placeholder1"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/button_forgotten"
@@ -78,6 +81,7 @@
     <EditText
         android:id="@+id/placeholder2"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
         app:layout_constraintTop_toBottomOf="@id/placeholder1"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
@@ -87,6 +91,7 @@
     <EditText
         android:id="@+id/placeholder3"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
         app:layout_constraintTop_toBottomOf="@id/placeholder2"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
