@@ -3,7 +3,6 @@
     <dimen name="dimen_height_lines">0.25dp</dimen>
     <dimen name="dimen_bottom_buttons">40dp</dimen>
     <dimen name="dimen_bottom_button_record">50dp</dimen>
-    <dimen name="dimen_height_editText">40dp</dimen>
     <dimen name="dimen_height_tabwidget">50dp</dimen>
 
     <dimen name="dimen_piv_visibility">60dp</dimen>
