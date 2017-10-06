@@ -16,7 +16,7 @@
     <EditText
         android:id="@+id/editText_inputDialog"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_height_editText"
+        android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:imeOptions="actionDone"
         android:padding="5dp"
