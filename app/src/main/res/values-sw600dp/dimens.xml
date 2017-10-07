@@ -10,7 +10,7 @@
     <dimen name="dimen_button_audio">100dp</dimen>
 
     <!--SaveInterviewInputActivity-->
-    <dimen name="dimen_marginTop_line">88dp</dimen>
+    <dimen name="dimen_marginTop_line">90dp</dimen>
     
     <dimen name="dimen_padding_edittext">8dp</dimen>
     <dimen name="dimen_corner_radius_edittext">5dp</dimen>
