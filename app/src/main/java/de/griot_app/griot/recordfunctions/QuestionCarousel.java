@@ -141,9 +141,9 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 getViewTreeObserver().removeOnPreDrawListener(this);
 
                 mShadowTop.setY(0);
-                mShadowTopLine.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight) - 1);
-                mShadowMiddle.setY(getResources().getDimension(R.dimen.carouselShadowTopHeight));
-                mShadowBottom.setY(getResources().getDimension(R.dimen.carouselLayoutHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight));
+                mShadowTopLine.setY(getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top) - 1);
+                mShadowMiddle.setY(getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top));
+                mShadowBottom.setY(getResources().getDimension(R.dimen.dimen_height_carousel_layout) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space));
                 mShadowBottomLine.setY(mShadowBottom.getY());
                 return true;
             }
@@ -213,7 +213,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             mRecordIndex = index;
 
             Drawable draw = getResources().getDrawable(R.drawable.circle_red);
-            int size = (int) (getResources().getDimension(R.dimen.textSizeLastNextQuestion) * mDensity);
+            int size = (int) (getResources().getDimension(R.dimen.dimen_textSize_lastNext_question) * mDensity);
             draw.setBounds(0, 0, size, size);
             mListCarousel.get(mRecordIndex).setCompoundDrawables(draw, null, null, null);
             mListCarousel.get(mRecordIndex).setCompoundDrawablePadding(size / 2);
@@ -300,8 +300,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * @return      y-position in pixels
      */
     private float getTopPosition(final CarouselTextView ctv) {
-        float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
-        float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
+        float carouselHeight = getResources().getDimension(R.dimen.dimen_height_carousel_textView_space) * 3;
+        float topShadowHeightOffset = getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space);
 
         if (ctv.getLines() == 1) {
             return topShadowHeightOffset + carouselHeight / 3 - mRegularHeightTopBottom / 2 * 3;
@@ -318,8 +318,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * @return      y-position in pixels
      */
     private float getMiddlePosition(CarouselTextView ctv) {
-        float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
-        float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
+        float carouselHeight = getResources().getDimension(R.dimen.dimen_height_carousel_textView_space) * 3;
+        float topShadowHeightOffset = getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space);
 
         if (!ctv.wasResized()) {
             return topShadowHeightOffset + carouselHeight / 2 - mRegularHeightMiddle / 2;
@@ -336,8 +336,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
      * @return      y-position in pixels
      */
     private float getBottomPosition(CarouselTextView ctv) {
-        float carouselHeight = getResources().getDimension(R.dimen.carouselTextViewSpaceHeight) * 3;
-        float topShadowHeightOffset = getResources().getDimension(R.dimen.carouselShadowTopHeight) - getResources().getDimension(R.dimen.carouselTextViewSpaceHeight);
+        float carouselHeight = getResources().getDimension(R.dimen.dimen_height_carousel_textView_space) * 3;
+        float topShadowHeightOffset = getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space);
 
         if (ctv.getLines() == 1) {
             return topShadowHeightOffset + carouselHeight / 3 * 2 + mRegularHeightTopBottom / 2;
@@ -412,7 +412,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 } else {
                     tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotWhite));
                 }
-                tv.setTextSize(getResources().getDimension(R.dimen.textSizeCurrentQuestion));
+                tv.setTextSize(getResources().getDimension(R.dimen.dimen_textSize_current_question));
                 tv.setTypeface(Typeface.DEFAULT_BOLD);
                 if (!mInvertedLayout && !tv.wasRecorded()) {
                     //Set shadow for better readability
@@ -432,7 +432,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 } else {
                     tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorLastNextQuestion));
                 }
-                tv.setTextSize(getResources().getDimension(R.dimen.textSizeLastNextQuestion));
+                tv.setTextSize(getResources().getDimension(R.dimen.dimen_textSize_lastNext_question));
                 tv.setTypeface(Typeface.DEFAULT);
             }
         }
@@ -486,8 +486,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             if (!getTopTextView().wasResized()) {
                 mAnimatorTextSizeTopToMiddle = ObjectAnimator.ofFloat(
                         getTopTextView(), "textSize",
-                        getResources().getDimension(R.dimen.textSizeLastNextQuestion),
-                        getResources().getDimension(R.dimen.textSizeCurrentQuestion)
+                        getResources().getDimension(R.dimen.dimen_textSize_lastNext_question),
+                        getResources().getDimension(R.dimen.dimen_textSize_current_question)
                 );
                 mAnimatorSetTopToMiddle
                         .play(mAnimatorTextSizeTopToMiddle)
@@ -506,8 +506,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
             if (!getBottomTextView().wasResized()) {
                 mAnimatorTextSizeBottomToMiddle = ObjectAnimator.ofFloat(
                         getBottomTextView(), "textSize",
-                        getResources().getDimension(R.dimen.textSizeLastNextQuestion),
-                        getResources().getDimension(R.dimen.textSizeCurrentQuestion)
+                        getResources().getDimension(R.dimen.dimen_textSize_lastNext_question),
+                        getResources().getDimension(R.dimen.dimen_textSize_current_question)
                 );
                 mAnimatorSetBottomToMiddle
                         .play(mAnimatorTextSizeBottomToMiddle)
@@ -533,8 +533,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (!getMiddleTextView().wasResized()) {
             mAnimatorTextSizeMiddleToTop = ObjectAnimator.ofFloat(
                     getMiddleTextView(), "textSize",
-                    getResources().getDimension(R.dimen.textSizeCurrentQuestion),
-                    getResources().getDimension(R.dimen.textSizeLastNextQuestion)
+                    getResources().getDimension(R.dimen.dimen_textSize_current_question),
+                    getResources().getDimension(R.dimen.dimen_textSize_lastNext_question)
             );
             mAnimatorSetMiddleToTop
                     .play(mAnimatorTextSizeMiddleToTop)
@@ -549,8 +549,8 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         if (!getMiddleTextView().wasResized()) {
             mAnimatorTextSizeMiddleToBottom = ObjectAnimator.ofFloat(
                     getMiddleTextView(), "textSize",
-                    getResources().getDimension(R.dimen.textSizeCurrentQuestion),
-                    getResources().getDimension(R.dimen.textSizeLastNextQuestion)
+                    getResources().getDimension(R.dimen.dimen_textSize_current_question),
+                    getResources().getDimension(R.dimen.dimen_textSize_lastNext_question)
             );
             mAnimatorSetMiddleToBottom
                     .play(mAnimatorTextSizeMiddleToBottom)
