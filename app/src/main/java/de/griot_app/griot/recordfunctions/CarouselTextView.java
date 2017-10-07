@@ -17,6 +17,7 @@ public class CarouselTextView extends AppCompatTextView {
     public static final String TAG = CarouselTextView.class.getSimpleName();
 
     private float mDensity;
+    private float mScreenWidthDp;
 
     //Determines, if the TextView has been resized
     private boolean mResized = false;
@@ -34,6 +35,7 @@ public class CarouselTextView extends AppCompatTextView {
     public CarouselTextView(Context context) {
         super(context);
         mDensity = context.getResources().getDisplayMetrics().density;
+        mScreenWidthDp = getResources().getConfiguration().screenWidthDp;
         setIncludeFontPadding(false);
 //            setMaxLines(1);
         if (Build.VERSION.SDK_INT > 16) {
@@ -57,7 +59,7 @@ public class CarouselTextView extends AppCompatTextView {
         // Therefore the resizement of the textView only will be performed, if getLineCount() < getText.length()
         if (getLineCount() > 1 && getLineCount() < getText().length()) {
             if (getLineCount() == 2) {
-                if (getTextSize() - 5 > 15 * mDensity) {
+                if (getTextSize() - 5 > 15 / 600 * mScreenWidthDp * mDensity) {
                     mResized = true;
                     //setTextSize() needs unit along with textsize in px (getTextSize returns size in px)
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, getTextSize() - 5);
