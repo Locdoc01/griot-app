@@ -73,7 +73,7 @@ tools:context="de.griot_app.griot.recordfunctions.RecordActivity">
     <de.griot_app.griot.recordfunctions.QuestionCarousel
         android:id="@+id/layout_carousel"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_height_carousel_layout"
+        android:layout_height="@dimen/dimen_height_layout_carousel"
         app:layout_constraintBottom_toBottomOf="@+id/record_background"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>

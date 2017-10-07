@@ -143,7 +143,7 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
                 mShadowTop.setY(0);
                 mShadowTopLine.setY(getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top) - 1);
                 mShadowMiddle.setY(getResources().getDimension(R.dimen.dimen_height_carousel_shadow_top));
-                mShadowBottom.setY(getResources().getDimension(R.dimen.dimen_height_carousel_layout) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space));
+                mShadowBottom.setY(getResources().getDimension(R.dimen.dimen_height_layout_carousel) - getResources().getDimension(R.dimen.dimen_height_carousel_textView_space));
                 mShadowBottomLine.setY(mShadowBottom.getY());
                 return true;
             }
