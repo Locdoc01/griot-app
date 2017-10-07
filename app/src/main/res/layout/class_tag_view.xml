@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="38dp"
+    android:layout_height="@dimen/dimen_height_tagView"
     android:background="@color/colorGriotBlue">
 
     <TextView
@@ -14,10 +14,10 @@
         style="@style/AppTheme.Text_Normal"
         android:textColor="@color/colorGriotWhite"
         android:text=""
-        android:layout_marginLeft="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginLeft="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginRight="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/button_delete_tag"
@@ -25,14 +25,14 @@
 
     <ImageView
         android:id="@+id/button_delete_tag"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="@dimen/dimen_16"
+        android:layout_height="@dimen/dimen_16"
         android:src="@drawable/cancel"
         android:tint="@color/colorGriotWhite"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        android:layout_marginRight="6dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginRight="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/textView_tag"
         app:layout_constraintRight_toLeftOf="@+id/imageView_spacer"
@@ -41,7 +41,7 @@
 
     <ImageView
         android:id="@+id/imageView_spacer"
-        android:layout_width="4dp"
+        android:layout_width="@dimen/dimen_4"
         android:layout_height="0dp"
         android:background="@color/colorGriotWhite"
         app:layout_constraintTop_toTopOf="parent"

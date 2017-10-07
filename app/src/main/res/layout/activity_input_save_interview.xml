@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         style="@style/AppTheme.Text_Large"
         android:text="@string/order_choose_title"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="@id/base_guideline_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -29,10 +29,10 @@
         android:hint="@string/hint_enter_title"
         android:inputType="textCapWords"
         android:imeOptions="actionDone"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
         app:layout_constraintTop_toBottomOf="@id/textView_title_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/frame_buttons_title"
@@ -58,18 +58,18 @@
 
     <FrameLayout
         android:id="@+id/frame_buttons_title"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="@dimen/dimen_32"
+        android:layout_height="@dimen/dimen_32"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
         app:layout_constraintTop_toTopOf="@id/frame_title"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/frame_title">
 
         <ImageView
             android:id="@+id/button_check_title"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dimen_32"
+            android:layout_height="@dimen/dimen_32"
             android:src="@drawable/check"
             app:layout_constraintDimensionRatio="1:1"
             android:adjustViewBounds="true"
@@ -77,8 +77,8 @@
 
         <ImageView
             android:id="@+id/button_cancel_title"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/dimen_24"
+            android:layout_height="@dimen/dimen_24"
             android:src="@drawable/cancel"
             app:layout_constraintDimensionRatio="1:1"
             android:adjustViewBounds="true"
@@ -90,7 +90,7 @@
     <ImageView
         android:id="@+id/line_title"
         style="@style/AppTheme.Lines"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="@dimen/dimen_marginTop_line"
         app:layout_constraintTop_toBottomOf="@id/textView_title_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -101,11 +101,11 @@
         android:layout_height="wrap_content"
         style="@style/AppTheme.Text_Large"
         android:text="@string/text_recorded_person"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="@id/line_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -113,11 +113,11 @@
     <de.griot_app.griot.views.ProfileImageView
         android:id="@+id/piv_person"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/dimen_64"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginLeft="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_24"
         app:layout_constraintTop_toBottomOf="@id/textView_person_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/line_person"/>
@@ -125,7 +125,7 @@
     <TextView
         android:id="@+id/textView_person"
         style="@style/AppTheme.Text_Normal"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="@dimen/dimen_8"
         android:text="Batman"
         app:layout_constraintTop_toTopOf="@id/piv_person"
         app:layout_constraintLeft_toRightOf="@id/piv_person"
@@ -135,20 +135,20 @@
     <ImageView
         android:id="@+id/line_person"
         style="@style/AppTheme.Lines"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="@dimen/dimen_marginTop_line"
         app:layout_constraintTop_toBottomOf="@id/textView_person_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageView
         android:id="@+id/button_cancel_person"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/dimen_24"
+        android:layout_height="@dimen/dimen_24"
         android:src="@drawable/cancel"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
         app:layout_constraintTop_toTopOf="@id/piv_person"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/piv_person"/>

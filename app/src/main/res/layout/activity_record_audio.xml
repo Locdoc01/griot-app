@@ -32,7 +32,7 @@ tools:context="de.griot_app.griot.recordfunctions.RecordAudioActivity">
     <FrameLayout
         android:id="@+id/waveline"
         android:layout_width="0dp"
-        android:layout_height="@dimen/wavelineLayoutHeight"
+        android:layout_height="@dimen/dimen_height_waveline_layout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/button_record"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -71,7 +71,7 @@ tools:context="de.griot_app.griot.recordfunctions.RecordAudioActivity">
     <ImageView
         android:id="@+id/waveline_line"
         android:layout_width="1dp"
-        android:layout_height="@dimen/wavelineLayoutHeight"
+        android:layout_height="@dimen/dimen_height_waveline_layout"
         android:background="@color/colorQuestionCarouselShadow"
         app:layout_constraintTop_toTopOf="@+id/waveline"
         app:layout_constraintBottom_toBottomOf="@+id/waveline"
@@ -80,9 +80,9 @@ tools:context="de.griot_app.griot.recordfunctions.RecordAudioActivity">
 
     <ImageView
         android:id="@+id/button_record"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="32dp"
+        android:layout_width="@dimen/dimen_button_record"
+        android:layout_height="@dimen/dimen_button_record"
+        android:layout_margin="@dimen/dimen_32"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -93,7 +93,7 @@ tools:context="de.griot_app.griot.recordfunctions.RecordAudioActivity">
         android:id="@+id/layout_chronometers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
+        android:layout_margin="@dimen/dimen_24"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/waveline"/>
@@ -103,18 +103,18 @@ tools:context="de.griot_app.griot.recordfunctions.RecordAudioActivity">
         style="@style/AppTheme.TextButtons"
         android:text="@string/button_finish"
         android:textColor="@color/colorGriotWhite"
-        android:paddingTop="10dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/dimen_8"
+        android:paddingLeft="@dimen/dimen_16"
+        android:paddingRight="@dimen/dimen_16"
+        android:paddingBottom="@dimen/dimen_8"
         app:layout_constraintRight_toRightOf="@id/record_background"
         app:layout_constraintTop_toTopOf="@id/record_background"/>
 
     <de.griot_app.griot.recordfunctions.QuestionCarousel
         android:id="@+id/layout_carousel"
         android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:paddingTop="-60dp"
+        android:layout_height="@dimen/dimen_height_layout_carousel"
+        android:paddingTop="@dimen/dimen_paddingTop_layout_carousel"
         app:layout_constraintTop_toBottomOf="@+id/waveline"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>

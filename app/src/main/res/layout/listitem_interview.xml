@@ -21,7 +21,7 @@
         android:id="@+id/piv_interviewer"
         android:layout_width="@dimen/dimen_piv"
         android:layout_height="@dimen/dimen_piv"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintTop_toBottomOf="@id/imageView_mediaCover"
         app:layout_constraintLeft_toLeftOf="@id/guideline_interviewer_left" /><!---->
 
@@ -29,8 +29,8 @@
         android:id="@+id/textView_interviewer"
         style="@style/AppTheme.Text_Normal"
         android:text="Ole Wunder"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="@dimen/dimen_16"
+        android:layout_marginStart="@dimen/dimen_16"
         app:layout_constraintLeft_toRightOf="@+id/piv_interviewer"
         app:layout_constraintTop_toTopOf="@+id/piv_interviewer"
         app:layout_constraintBottom_toBottomOf="@+id/piv_interviewer" />
@@ -72,8 +72,8 @@
         android:id="@+id/textView_narrator"
         style="@style/AppTheme.Text_Normal"
         android:text="Harry Vogt"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginRight="@dimen/dimen_16"
+        android:layout_marginEnd="@dimen/dimen_16"
         app:layout_constraintRight_toLeftOf="@+id/piv_narrator"
         app:layout_constraintTop_toTopOf="@+id/piv_narrator"
         app:layout_constraintBottom_toBottomOf="@+id/piv_narrator" />
@@ -89,7 +89,7 @@
         android:id="@+id/piv_narrator"
         android:layout_width="@dimen/dimen_piv"
         android:layout_height="@dimen/dimen_piv"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintTop_toBottomOf="@id/imageView_mediaCover"
         app:layout_constraintRight_toRightOf="@id/guideline_narrator_right"/><!---->
 
@@ -107,7 +107,7 @@
         style="@style/AppTheme.Text_Small"
         android:textStyle="bold"
         android:text="2 Kommentare"
-        android:padding="10dp"
+        android:padding="@dimen/dimen_8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/piv_interviewer" />
@@ -117,8 +117,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/options"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingTop="@dimen/dimen_8"
+        android:paddingBottom="@dimen/dimen_8"
         app:layout_constraintLeft_toLeftOf="@id/guideline_options_left"
         app:layout_constraintRight_toRightOf="@id/guideline_options_right"
         app:layout_constraintTop_toBottomOf="@+id/button_comments"

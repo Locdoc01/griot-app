@@ -5,20 +5,38 @@
     <dimen name="dimen_bottom_button_record">50dp</dimen>
     <dimen name="dimen_height_tabwidget">50dp</dimen>
 
+    <!--ChooseMediumInputActivity-->
+    <dimen name="dimen_button_video">110dp</dimen>
+    <dimen name="dimen_button_audio">100dp</dimen>
+
+    <!--SaveInterviewInputActivity-->
+    <dimen name="dimen_marginTop_line">88dp</dimen>
+    
     <dimen name="dimen_padding_edittext">8dp</dimen>
     <dimen name="dimen_corner_radius_edittext">5dp</dimen>
 
-    <dimen name="dimen_piv">60dp</dimen>
+    <dimen name="dimen_piv">55dp</dimen>
+    <dimen name="dimen_height_tagView">38dp</dimen>
+
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_48">48dp</dimen>
+    <dimen name="dimen_64">64dp</dimen>
 
     <!--dimensions record functions-->
     <dimen name="carouselHeight">150dp</dimen>
     <!--carouselLayoutHeight has to be carouselShadowTopHeight + 2*carouselTextViewSpaceHeight -->
-    <dimen name="carouselLayoutHeight">180dp</dimen>
-    <dimen name="carouselShadowTopHeight">80dp</dimen>
-    <dimen name="carouselTextViewSpaceHeight">50dp</dimen>
-    <dimen name="textSizeCurrentQuestion">12sp</dimen>
-    <dimen name="textSizeLastNextQuestion">9sp</dimen>
-    <dimen name="wavelineLayoutHeight">270dp</dimen>
+    <dimen name="dimen_height_layout_carousel">180dp</dimen>
+    <dimen name="dimen_paddingTop_layout_carousel">-60dp</dimen>
+    <dimen name="dimen_height_carousel_shadow_top">80dp</dimen>
+    <dimen name="dimen_height_carousel_textView_space">50dp</dimen>
+    <dimen name="dimen_height_waveline_layout">270dp</dimen>
+    <dimen name="dimen_button_record">70dp</dimen>
+    <dimen name="dimen_textSize_current_question">12sp</dimen>
+    <dimen name="dimen_textSize_lastNext_question">9sp</dimen>
 
     <!--TextSizes-->
     <dimen name="dimen_textSize_large">25sp</dimen>
