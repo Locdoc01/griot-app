@@ -86,7 +86,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
         mTextViewTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
         if (mTopics.get(groupPosition).getExpanded()) {
-            mButtonExpand.setImageResource(R.drawable.down);
+            mButtonExpand.setImageResource(R.drawable.up);
         }
         //if the button is clicked, the appropriate topic gets expanded or collaped
         final ExpandableListView listview = (ExpandableListView) parent;
