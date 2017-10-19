@@ -142,6 +142,10 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
             }
         });
 
+        if ( getIntent().getBooleanExtra("animation", true) == false) {
+            overridePendingTransition(0,0);
+        }
+
     }
 
 

@@ -111,7 +111,9 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
         mButtonCancelPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class));
+                Intent intent = new Intent(ChooseTopicInputActivity.this, MainChooseFriendInputActivity.class);
+                intent.putExtra("animation", false);
+                startActivity(intent);
                 finish();
             }
         });
@@ -256,6 +258,10 @@ public class ChooseTopicInputActivity extends GriotBaseInputActivity {
                 //TODO: implement if necessary
             }
         });
+
+        if ( getIntent().getBooleanExtra("animation", true) == false) {
+            overridePendingTransition(0,0);
+        }
     }
 
 

@@ -112,6 +112,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
                 intent.putExtra("topicSelectedItemID", topicSelectedItemID);
                 intent.putExtra("topicKey", topicKey);
                 intent.putExtra("topic", topic);
+                intent.putExtra("animation", false);
                 startActivity(intent);
                 finish();
             }
@@ -128,6 +129,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
                 intent.putExtra("narratorName", narratorName);
                 intent.putExtra("narratorPictureURL", narratorPictureURL);
                 intent.putExtra("narratorIsUser", narratorIsUser);
+                intent.putExtra("animation", false);
                 startActivity(intent);
                 finish();
             }
