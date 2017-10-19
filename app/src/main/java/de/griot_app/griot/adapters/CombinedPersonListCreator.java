@@ -259,7 +259,7 @@ public class CombinedPersonListCreator {
 
         mCombinedList.clear();
         //add ownUserData, if available
-        if (mOwnUserData!=null) {
+        if (mMode==PERSONS_CHOOSE_MODE) {
             mCombinedList.add(mOwnUserData);
         }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
