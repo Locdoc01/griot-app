@@ -16,8 +16,8 @@
 
     <!--Dialogs-->
     <string name="dialog_finish_record">Möchtest du deine Aufzeichnung wirklich beenden?</string>
-    <string name="dialog_title_cancel_interview">Möchtest du wirklich abbrechen und das Interview löschen?</string>
-    <string name="dialog_note_cancel_interview">(Die aufgenommenen Media-Dateien werden nicht gelöscht!)</string>
+    <string name="dialog_title_cancel_interview">Möchtest du wirklich das Interview abbrechen?</string>
+    <string name="dialog_note_cancel_interview">Bisher aufgenommene Media-Dateien bleiben lokal gespeichert!</string>
     <string name="hint_add_tag">Gib ein Schlagwort ein</string>
     <string name="dialog_add_tag">Schlagwort hinzufügen:</string>
     <string name="button_yes">Ja</string>
