@@ -166,7 +166,7 @@ public class CombinedPersonListCreator {
         Log.d(TAG, "loadData:");
 
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
-            mDatabaseQuerys.get(i).addListenerForSingleValueEvent(getDatabaseValueEventListener(mSingleLists.get(i), mDatabaseQuerys.get(i)));
+            mDatabaseQuerys.get(i).addValueEventListener(getDatabaseValueEventListener(mSingleLists.get(i), mDatabaseQuerys.get(i)));
         }
     }
 
