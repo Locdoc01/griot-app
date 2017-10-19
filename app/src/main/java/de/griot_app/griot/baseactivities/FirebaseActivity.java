@@ -185,6 +185,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         });
     }
 
+    public LocalUserData getOwnUserData() { return mOwnUserData; }
+
 }
 
 
