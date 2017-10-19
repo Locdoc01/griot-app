@@ -194,7 +194,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/AppTheme.Text_Small"
-        android:text="3 Videos / 1 Audio"
+        android:text="textview_medias"
         android:textStyle="italic"
         android:layout_marginTop="@dimen/dimen_8"
         android:layout_marginLeft="@dimen/dimen_16"

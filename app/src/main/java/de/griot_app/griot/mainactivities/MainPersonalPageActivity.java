@@ -61,6 +61,9 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     private FrameLayout mButtonQuestionmail;
     private TextView mTextViewMedias;
 
+    private int mVideoCount;
+    private int mAudioCount;
+
     // ListView, that holds the interview items
     private ListView mListViewInterviews;
 
@@ -115,11 +118,24 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                 //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
+
+                    //Count the medias
+                    if (localInterviewData.getMedium().equals("video")) {
+                        mVideoCount++;
+                    } else if (localInterviewData.getMedium().equals("audio")) {
+                        mAudioCount++;
+                    }
                     mListLocalInterviewData.add(localInterviewData);
                 }
                 //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainPersonalPageActivity.this, mListLocalInterviewData);
                 mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+
+                //Update the textView_medias
+                mTextViewMedias.setText("" + (mVideoCount==0 ? getString(R.string.text_none) : mVideoCount) + " "
+                        + (mVideoCount==1 ? getString(R.string.text_video) : getString(R.string.text_videos)) + " / "
+                        + (mAudioCount==0 ? getString(R.string.text_none) : mAudioCount) + " "
+                        + (mAudioCount==1 ? getString(R.string.text_audio) : getString(R.string.text_audios)));
 
                 //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
