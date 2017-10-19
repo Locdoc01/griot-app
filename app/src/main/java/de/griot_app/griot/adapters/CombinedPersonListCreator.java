@@ -203,6 +203,7 @@ public class CombinedPersonListCreator {
                 switch (query.getRef().getKey()) {
                     case "guests":
                         list.get(0).setCategory(mContext.getString(R.string.text_your_guests));
+                        mAddGuestAdded = false;
                         break;
                     case "users":
                         list.get(0).setCategory(mContext.getString(R.string.text_your_friends));
