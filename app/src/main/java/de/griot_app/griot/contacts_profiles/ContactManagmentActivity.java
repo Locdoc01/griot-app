@@ -128,13 +128,13 @@ public class ContactManagmentActivity extends GriotBaseActivity {
     protected String getSubClassTAG() { return TAG; }
 
     @Override
-    protected void doOnStartAfterLoadingUserInformation() {}
+    protected void doOnStartAfterLoadingUserInformation() {
+        mCombinedListCreator.loadData();
+        //TODO same for groups
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mCombinedListCreator.loadData();
-        //TODO same for groups
-
     }
 }
