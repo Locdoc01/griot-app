@@ -69,6 +69,7 @@
     <string name="option_edit_interview">Bearbeiten</string>
     <string name="option_delete_interview">Löschen</string>
     <string name="option_share_interview">Teilen</string>
+    <string name="option_cancel">Abbrechen</string>
 
     <!--Option menu interview question-->
     <string name="option_edit_question">Frage bearbeiten</string>
