@@ -40,6 +40,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
     private int topicSelectedItemID;
     private int topicKey;
     private String topic;
+    private String[] interviewQuestions;
 
     //Views
     private TextView mTextViewTopic;
@@ -79,6 +80,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         topicSelectedItemID = getIntent().getIntExtra("topicSelectedItemID", -1);
         topicKey = getIntent().getIntExtra("topicKey", -1);
         topic = getIntent().getStringExtra("topic");
+        interviewQuestions = getIntent().getStringArrayExtra("allQuestions");
 
         //If a topic was selected so far, the selection will be shown and can be canceled
         if (topicSelectedItemID>=0) {
@@ -211,6 +213,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
             intent.putExtra("topicSelectedItemID", topicSelectedItemID);
             intent.putExtra("topicKey", topicKey);
             intent.putExtra("topic", topic);
+            intent.putExtra("allQuestions", interviewQuestions);
             intent.setClass(MainChooseFriendInputActivity.this, ChooseMediumInputActivity.class);
         } else {
             intent.setClass(MainChooseFriendInputActivity.this, ChooseTopicInputActivity.class);

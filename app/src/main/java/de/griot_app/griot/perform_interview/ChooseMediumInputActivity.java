@@ -112,6 +112,7 @@ public class ChooseMediumInputActivity extends GriotBaseInputActivity {
                 intent.putExtra("topicSelectedItemID", topicSelectedItemID);
                 intent.putExtra("topicKey", topicKey);
                 intent.putExtra("topic", topic);
+                intent.putExtra("allQuestions", interviewQuestions);
                 intent.putExtra("animation", false);
                 startActivity(intent);
                 finish();
