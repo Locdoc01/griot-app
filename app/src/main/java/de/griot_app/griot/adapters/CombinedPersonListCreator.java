@@ -272,7 +272,7 @@ public class CombinedPersonListCreator {
                     mSingleLists.get(i).remove(0);
                 } else {
                     //Remove category from first proper guest item, if list was not empty
-                    mSingleLists.get(i).get(1).setCategory(null);
+                    mSingleLists.get(i).get(0).setCategory(null);
                 }
                 mSingleLists.get(i).add(0, localGuestData);
                 mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));
