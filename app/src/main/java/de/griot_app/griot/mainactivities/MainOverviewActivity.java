@@ -198,6 +198,9 @@ public class MainOverviewActivity extends GriotBaseActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         };
+
+        mDatabaseRef = mDatabaseRootReference.child("interviews");
+        mDatabaseRef.addValueEventListener(mValueEventListener);
     }
 
     @Override
@@ -218,20 +221,4 @@ public class MainOverviewActivity extends GriotBaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Obtains all necessary data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.addValueEventListener(mValueEventListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //TODO: necessary here?
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.removeEventListener(mValueEventListener);
-    }
 }

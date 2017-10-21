@@ -215,6 +215,8 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
             public void onCancelled(DatabaseError databaseError) {
             }
         };
+        mDatabaseRef = mDatabaseRootReference.child("interviews");
+        mDatabaseRef.addValueEventListener(mValueEventListener);
     }
 
     @Override
@@ -298,20 +300,4 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
         return false;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Obtains all necessary data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.addValueEventListener(mValueEventListener);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //TODO: necessary here?
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.removeEventListener(mValueEventListener);
-    }
 }
