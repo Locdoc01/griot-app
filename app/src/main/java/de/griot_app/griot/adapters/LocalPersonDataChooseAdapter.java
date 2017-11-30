@@ -40,71 +40,78 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
 
     private static final String TAG = LocalPersonDataChooseAdapter.class.getSimpleName();
 
-    private final Context mContext;
-
-    //The ArrayList containing the LocalPersonData-objects
-    private ArrayList<LocalPersonData> mListData;
-
-    //Views, which are shown in every ListView item
-    private TextView mTextViewCategory;
-    private FrameLayout mListItemSeperator;
-    private ProfileImageView mPivPerson;
-    private TextView mTextViewPerson;
-    private ImageView mButtonCheck;
+    private static class ViewHolder {
+        //Views, which are shown in every ListView item
+        private TextView mTextViewCategory;
+        private FrameLayout mListItemSeperator;
+        private ProfileImageView mPivPerson;
+        private TextView mTextViewPerson;
+        private ImageView mButtonCheck;
+    }
 
     //necessary for OnTouchListener
     private ConstraintLayout mTouchedParent = null;
 
     //constructor
     public LocalPersonDataChooseAdapter(Context context, ArrayList<LocalPersonData> data) {
-        super(context, R.layout.listitem_contact, data);
-        mContext = context;
-        mListData = new ArrayList<>(data);
+        super(context, 0, data);
     }
 
     //inflates the layout for every ListView item and initializes its views
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.listitem_contact, null);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // get the data item for the position
+        final LocalPersonData data = getItem(position);
 
-        // get references to the objects, which are created during the intflation of the layout xml-file
-        mTextViewCategory = (TextView) v.findViewById(R.id.category);
-        mListItemSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
-        mPivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
-        mTextViewPerson = (TextView) v.findViewById(R.id.textView_person);
-        mButtonCheck = (ImageView) v.findViewById(R.id.button_item);
-        mButtonCheck.setImageResource(R.drawable.check);
+        ViewHolder holder;
+        if (convertView==null) {
+            holder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.listitem_contact, parent, false);
+
+            // get references to the objects, which are created during the intflation of the layout xml-file
+            holder.mTextViewCategory = (TextView) convertView.findViewById(R.id.category);
+            holder.mListItemSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
+            holder.mPivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
+            holder.mTextViewPerson = (TextView) convertView.findViewById(R.id.textView_person);
+            holder.mButtonCheck = (ImageView) convertView.findViewById(R.id.button_item);
+            holder.mButtonCheck.setImageResource(R.drawable.check);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         //show List category
-        if (mListData.get(position).getCategory()!=null) {
-            mListItemSeperator.setVisibility(View.VISIBLE);
-            mTextViewCategory.setText(mListData.get(position).getCategory());
+        if (data.getCategory()!=null) {
+            holder.mListItemSeperator.setVisibility(View.VISIBLE);
+            holder.mTextViewCategory.setText(data.getCategory());
         } else {
-            mListItemSeperator.setVisibility(View.GONE);
+            holder.mListItemSeperator.setVisibility(View.GONE);
         }
 
         //show check mark, if item got selected
-        if (mListData.get(position).getSelected()) {
-            mButtonCheck.setVisibility(View.VISIBLE);
+        if (data.getSelected()) {
+            holder.mButtonCheck.setVisibility(View.VISIBLE);
         } else {
-            mButtonCheck.setVisibility(View.GONE);
+            holder.mButtonCheck.setVisibility(View.GONE);
         }
 
         //show profile pictures, if available, otherwise show placeholder
-        if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
-            mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
+        if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
+            holder.mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
+            holder.mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
+            holder.mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
         } else {
             try {
-                mPivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                holder.mPivPerson.getProfileImage().setImageURI(Uri.parse(data.getPictureLocalURI()));
+                holder.mPivPerson.getProfileImagePlus().setVisibility(View.VISIBLE);
+                holder.mPivPerson.getProfileImageCircle().setVisibility(View.VISIBLE);
             } catch (Exception e) {
             }
         }
 
-        mTextViewPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
+        holder.mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));
 
         //Set an OnTouchListener for clickable views
         View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -116,17 +123,17 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
                         switch (v.getId()) {
                             case R.id.piv_person:
                             case R.id.textView_person:
-                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
+                                if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
                                     return false;
                                 }
-                                ((TextView)mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotBlue));
+                                ((TextView)mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(getContext(), R.color.colorGriotBlue));
                                 // If profile image or name was touched, it gets blue, and after 0.3s darkgrey again. This prevents color issue if movement occurs during action_down
                                 Handler h = mTouchedParent.getHandler();
                                 if (h != null) {
                                     h.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            ((TextView) mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(mContext, R.color.colorGriotDarkgrey));
+                                            ((TextView) mTouchedParent.findViewById(R.id.textView_person)).setTextColor(ContextCompat.getColor(getContext(), R.color.colorGriotDarkgrey));
                                         }
                                     }, 300);
                                 }
@@ -140,21 +147,21 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
                                 Log.d(TAG, "person clicked: ");
                                 Intent intent;
                                 //If first guest item was clicked, nothing happens. (First item is for adding a guest, which gets triggered through OnListItemClickListener)
-                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
+                                if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
                                     return false;
                                 }
                                 //If clicked person was the user himself, his own user profile gets opened
                                 //Otherwise the persons user profile or guest profile gets opened, depending if person is user or guest
-                                if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    intent = new Intent(mContext, OwnProfileInputActivity.class);
-                                } else if (getItem(position).getIsUser()) {
-                                    intent = new Intent(mContext, UserProfileInputActivity.class);
-                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                if (data.getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    intent = new Intent(getContext(), OwnProfileInputActivity.class);
+                                } else if (data.getIsUser()) {
+                                    intent = new Intent(getContext(), UserProfileInputActivity.class);
+                                    intent.putExtra("contactID", data.getContactID());
                                 } else {
-                                    intent = new Intent(mContext, GuestProfileInputActivity.class);
-                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                    intent = new Intent(getContext(), GuestProfileInputActivity.class);
+                                    intent.putExtra("contactID", data.getContactID());
                                 }
-                                mContext.startActivity(intent);
+                                getContext().startActivity(intent);
                                 return true;
                         }
                         return false;
@@ -163,9 +170,9 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
             }
         };
 
-        mPivPerson.setOnTouchListener(touchListener);
-        mTextViewPerson.setOnTouchListener(touchListener);
+        holder.mPivPerson.setOnTouchListener(touchListener);
+        holder.mTextViewPerson.setOnTouchListener(touchListener);
 
-        return v;
+        return convertView;
     }
 }

@@ -37,12 +37,7 @@ import de.griot_app.griot.dataclasses.LocalPersonData;
 public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData> {
 
     private static final String TAG = LocalPersonDataOptionsAdapter.class.getSimpleName();
-
-    private final Context mContext;
-
-    //The ArrayList containing the LocalPersonData-objects
-    private ArrayList<LocalPersonData> mListData;
-
+    
     //Views, which are shown in every ListView item
     private FrameLayout mItemBackground;
     private TextView mTextViewCategory;
@@ -53,49 +48,51 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
 
     //constructor
     public LocalPersonDataOptionsAdapter(Context context, ArrayList<LocalPersonData> data) {
-        super(context, R.layout.listitem_contact, data);
-        mContext = context;
-        mListData = new ArrayList<>(data);
+        super(context, 0, data);
     }
 
     //inflates the layout for every ListView item and initializes its views
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.listitem_contact, null);
-
+        final LocalPersonData data = getItem(position);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        if (convertView==null) {
+            convertView = inflater.inflate(R.layout.listitem_contact, parent, false);
+        }
         // get references to the objects, which are created during the intflation of the layout xml-file
-        mItemBackground = (FrameLayout) v.findViewById(R.id.item_background);
-        mTextViewCategory = (TextView) v.findViewById(R.id.category);
-        mListSeperator = (FrameLayout) v.findViewById(R.id.list_seperator);
-        mPivPerson = (ProfileImageView) v.findViewById(R.id.piv_person);
-        mTextViewPerson = (TextView) v.findViewById(R.id.textView_person);
-        mButtonOptions = (ImageView) v.findViewById(R.id.button_item);
+        mItemBackground = (FrameLayout) convertView.findViewById(R.id.item_background);
+        mTextViewCategory = (TextView) convertView.findViewById(R.id.category);
+        mListSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
+        mPivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
+        mTextViewPerson = (TextView) convertView.findViewById(R.id.textView_person);
+        mButtonOptions = (ImageView) convertView.findViewById(R.id.button_item);
         mButtonOptions.setImageResource(R.drawable.options);
         mButtonOptions.setVisibility(View.VISIBLE);
 
         //show List category
-        if (mListData.get(position).getCategory()!=null) {
+        if (data.getCategory()!=null) {
             mListSeperator.setVisibility(View.VISIBLE);
-            mTextViewCategory.setText(mListData.get(position).getCategory());
+            mTextViewCategory.setText(data.getCategory());
         } else {
             mListSeperator.setVisibility(View.GONE);
         }
 
         //show profile pictures, if available, otherwise show placeholder
-        if (mListData.get(position).getPictureLocalURI() != null && mListData.get(position).getPictureLocalURI().equals(mContext.getString(R.string.text_add_guest))) {
+        if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
             mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
             mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
             mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
         } else {
             try {
-                mPivPerson.getProfileImage().setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+                mPivPerson.getProfileImage().setImageURI(Uri.parse(data.getPictureLocalURI()));
+                mPivPerson.getProfileImagePlus().setVisibility(View.VISIBLE);
+                mPivPerson.getProfileImageCircle().setVisibility(View.VISIBLE);
             } catch (Exception e) {
             }
         }
 
-        mTextViewPerson.setText(mListData.get(position).getFirstname() + (mListData.get(position).getLastname()==null ? "" : " " + mListData.get(position).getLastname()));
+        mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));
 
         //Set an OnTouchListener for clickable views
         View.OnTouchListener touchListener = new View.OnTouchListener() {
@@ -117,22 +114,22 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
                                 //If first guest item was clicked, nothing happens. (First item is for adding a guest, which gets triggered through OnListItemClickListener)
                                 //Else If clicked person was the user himself, his own user profile gets opened
                                 //Otherwise the persons user profile or guest profile gets opened, depending if person is user or guest
-                                if (getItem(position).getFirstname().equals(mContext.getString(R.string.text_add_guest))) {
-                                    intent = new Intent(mContext, GuestProfileInputActivity.class);
-                                } else if (getItem(position).getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                                    intent = new Intent(mContext, OwnProfileInputActivity.class);
-                                } else if (getItem(position).getIsUser()) {
-                                    intent = new Intent(mContext, UserProfileInputActivity.class);
-                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
+                                    intent = new Intent(getContext(), GuestProfileInputActivity.class);
+                                } else if (data.getContactID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                    intent = new Intent(getContext(), OwnProfileInputActivity.class);
+                                } else if (data.getIsUser()) {
+                                    intent = new Intent(getContext(), UserProfileInputActivity.class);
+                                    intent.putExtra("contactID", data.getContactID());
                                 } else {
-                                    intent = new Intent(mContext, GuestProfileInputActivity.class);
-                                    intent.putExtra("contactID", getItem(position).getContactID());
+                                    intent = new Intent(getContext(), GuestProfileInputActivity.class);
+                                    intent.putExtra("contactID", data.getContactID());
                                 }
-                                mContext.startActivity(intent);
+                                getContext().startActivity(intent);
                                 return true;
                             case R.id.button_item:
                                 Log.d(TAG, "options clicked: ");
-                                Toast.makeText(mContext, "Öffne Optionsmenü " + position, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Öffne Optionsmenü " + position, Toast.LENGTH_SHORT).show();
                                 //TODO
                                 return true;
                         }
@@ -146,6 +143,6 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
         mButtonOptions.setOnTouchListener(touchListener);
         parent.setOnTouchListener(touchListener);
 
-        return v;
+        return convertView;
     }
 }
