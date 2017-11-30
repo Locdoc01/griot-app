@@ -35,31 +35,26 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
 
     private static final String TAG = LocalInterviewQuestionDataAdapter.class.getSimpleName();
 
-    private final Context mContext;
-
-    //The ArrayList containing the LocalInterviewQuestionData-objects
-    private ArrayList<LocalInterviewQuestionData> mListData;
+    private static class ViewHolder {
+        //Views, which are shown in every ListView item
+        private TextView mTextViewQuestion;
+        private TextView mTextViewDate;
+        private TextView mTextViewLength;
+        private ImageView mImageViewMediaCover;
+        private ImageView mImageViewMediaCoverForeground;
+        private ImageView mButtonOptions;
+        private TextView mTextViewTags;
+        private ImageView mButtonAddTag;
+        private HorizontalScrollView mScrollViewTags;
+        private LinearLayout mLayoutScrollViewTags;
+    }
 
     //If mShowTags is true, tags for interviewQuestions are visible, can be added and deleted
     private boolean mShowTags = true;
 
-    //Views, which are shown in every ListView item
-    private TextView mTextViewQuestion;
-    private TextView mTextViewDate;
-    private TextView mTextViewLength;
-    private ImageView mImageViewMediaCover;
-    private ImageView mImageViewMediaCoverForeground;
-    private ImageView mButtonOptions;
-    private TextView mTextViewTags;
-    private ImageView mButtonAddTag;
-    private HorizontalScrollView mScrollViewTags;
-    private LinearLayout mLayoutScrollViewTags;
-
     //Constructor
     public LocalInterviewQuestionDataAdapter(Context context, ArrayList<LocalInterviewQuestionData> data) {
-        super(context, R.layout.listitem_interview_question, data);
-        mContext = context;
-        mListData = new ArrayList<>(data);
+        super(context, 0, data);
     }
 
     /**
@@ -72,94 +67,101 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View v = inflater.inflate(R.layout.listitem_interview_question, null);
+        final LocalInterviewQuestionData data = getItem(position);
 
-        // get references to the objects, which are created during the intflation of the layout xml-file
-        mTextViewQuestion = (TextView) v.findViewById(R.id.textView_headline);
-        mTextViewDate = (TextView) v.findViewById(R.id.textView_date);
-        mTextViewLength = (TextView) v.findViewById(R.id.textView_length);
-        mImageViewMediaCover = (ImageView) v.findViewById(R.id.imageView_mediaCover);
-        mImageViewMediaCoverForeground = (ImageView) v.findViewById(R.id.imageView_mediaCover_foreground);
-        mButtonOptions = (ImageView) v.findViewById(R.id.button_options);
-        mTextViewTags = (TextView) v.findViewById(R.id.textView_tags);
-        mButtonAddTag = (ImageView) v.findViewById(R.id.button_add_tag);
-        mScrollViewTags = (HorizontalScrollView) v.findViewById(R.id.scrollView_tags);
-        mLayoutScrollViewTags = (LinearLayout) v.findViewById(R.id.layout_scrollView_tags);
+        ViewHolder holder;
+        if (convertView==null) {
+            holder = new ViewHolder();
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            convertView = inflater.inflate(R.layout.listitem_interview_question, parent, false);
 
+            // get references to the objects, which are created during the intflation of the layout xml-file
+            holder.mTextViewQuestion = (TextView) convertView.findViewById(R.id.textView_headline);
+            holder.mTextViewDate = (TextView) convertView.findViewById(R.id.textView_date);
+            holder.mTextViewLength = (TextView) convertView.findViewById(R.id.textView_length);
+            holder.mImageViewMediaCover = (ImageView) convertView.findViewById(R.id.imageView_mediaCover);
+            holder.mImageViewMediaCoverForeground = (ImageView) convertView.findViewById(R.id.imageView_mediaCover_foreground);
+            holder.mButtonOptions = (ImageView) convertView.findViewById(R.id.button_options);
+            holder.mTextViewTags = (TextView) convertView.findViewById(R.id.textView_tags);
+            holder.mButtonAddTag = (ImageView) convertView.findViewById(R.id.button_add_tag);
+            holder.mScrollViewTags = (HorizontalScrollView) convertView.findViewById(R.id.scrollView_tags);
+            holder.mLayoutScrollViewTags = (LinearLayout) convertView.findViewById(R.id.layout_scrollView_tags);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
         //initialize the views with the data from the correspondent ArrayList
-        final int pos = position;
-        mTextViewQuestion.setText("" + (position+1) + ". " + mListData.get(position).getQuestion());
-        mTextViewDate.setText(mListData.get(position).getDateDay() + "." + mListData.get(position).getDateMonth() + "." + mListData.get(position).getDateYear());
-        mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(mListData.get(position).getLength())));
+        holder.mTextViewQuestion.setText("" + (position+1) + ". " + data.getQuestion());
+        holder.mTextViewDate.setText(data.getDateDay() + "." + data.getDateMonth() + "." + data.getDateYear());
+        holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(data.getLength())));
 
-        if (mListData.get(position).getPictureLocalURI() != null) {
-            if (Uri.parse(mListData.get(position).getPictureLocalURI()) != null) {
-                mImageViewMediaCover.setImageURI(Uri.parse(mListData.get(position).getPictureLocalURI()));
+        if (data.getPictureLocalURI() != null) {
+            if (Uri.parse(data.getPictureLocalURI()) != null) {
+                holder.mImageViewMediaCover.setImageURI(Uri.parse(data.getPictureLocalURI()));
                 //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                if (mListData.get(position).getMedium().equals("audio")) {
-                    mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                if (data.getMedium().equals("audio")) {
+                    holder.mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(0);
                     ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    mImageViewMediaCover.setColorFilter(filter);
-                    mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+                    holder.mImageViewMediaCover.setColorFilter(filter);
+                    holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
                 }
             }
         }
 
         if (!mShowTags) {
-            mTextViewTags.setVisibility(View.GONE);
-            mButtonAddTag.setVisibility(View.GONE);
-            mLayoutScrollViewTags.setVisibility(View.GONE);
+            holder.mTextViewTags.setVisibility(View.GONE);
+            holder.mButtonAddTag.setVisibility(View.GONE);
+            holder.mLayoutScrollViewTags.setVisibility(View.GONE);
         } else {
             //show Tags, allow to add and delete them
-            int n = mListData.get(position).getTags().size();
-            mTextViewTags.setText("" + (n == 0 ? mContext.getString(R.string.text_none) : n) + " " + (n == 1 ? mContext.getString(R.string.text_tag) : mContext.getString(R.string.text_tags)));
+            int n = data.getTags().size();
+            holder.mTextViewTags.setText("" + (n == 0 ? getContext().getString(R.string.text_none) : n) + " " + (n == 1 ? getContext().getString(R.string.text_tag) : getContext().getString(R.string.text_tags)));
 
-            Iterator iterator = mListData.get(position).getTags().keySet().iterator();
-            for (int i = 0; i < mListData.get(position).getTags().size(); i++) {
+            Iterator iterator = data.getTags().keySet().iterator();
+            for (int i = 0; i < data.getTags().size(); i++) {
                 //create new TagView, set the tag, set an OnClickListener to Delete-Button and add TagView to scrollView
-                final TagView tagView = new TagView(mContext);
+                final TagView tagView = new TagView(getContext());
                 tagView.setTag((String) iterator.next());
 
                 tagView.getButtonDeleteTag().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListData.get(pos).getTags().remove(tagView.getTextViewTag().getText().toString());
+                        data.getTags().remove(tagView.getTextViewTag().getText().toString());
                         notifyDataSetChanged();
                     }
                 });
 
-                mLayoutScrollViewTags.addView(tagView);
+                holder.mLayoutScrollViewTags.addView(tagView);
             }
 
             //set an OnClickListener for add tag button
-            mButtonAddTag.setOnClickListener(new View.OnClickListener() {
+            holder.mButtonAddTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_input, null);
+                    View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_input, null);
 
                     final TextView textViewInputDialog = (TextView) dialogView.findViewById(R.id.textView_inputDialog);
                     final EditText editTextInputDialog = (EditText) dialogView.findViewById(R.id.editText_inputDialog);
 
-                    textViewInputDialog.setText(mContext.getString(R.string.dialog_add_tag));
-                    editTextInputDialog.setHint(mContext.getString(R.string.hint_add_tag));
+                    textViewInputDialog.setText(getContext().getString(R.string.dialog_add_tag));
+                    editTextInputDialog.setHint(getContext().getString(R.string.hint_add_tag));
 
                     //Dialog for tag input
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.CustomDialogTheme));
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), R.style.CustomDialogTheme));
                     alertDialogBuilder.setView(dialogView);
                     alertDialogBuilder
                             .setCancelable(false)
-                            .setPositiveButton(mContext.getString(R.string.button_next),
+                            .setPositiveButton(getContext().getString(R.string.button_next),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             final String tag = editTextInputDialog.getText().toString().trim();
-                                            mListData.get(pos).getTags().put(tag, true);
+                                            data.getTags().put(tag, true);
                                             notifyDataSetChanged();
                                         }
                                     })
-                            .setNegativeButton(mContext.getString(R.string.button_cancel),
+                            .setNegativeButton(getContext().getString(R.string.button_cancel),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();
@@ -171,13 +173,13 @@ public class LocalInterviewQuestionDataAdapter extends ArrayAdapter<LocalIntervi
         }
 
         //set an OnClickListener for add tag button
-        mButtonOptions.setOnClickListener(new View.OnClickListener() {
+        holder.mButtonOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Show Options", Toast.LENGTH_SHORT).show();
             }
         });
 
-        return v;
+        return convertView;
     }
 }
