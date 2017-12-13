@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,13 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.Helper;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
 import de.griot_app.griot.interfaces.OnItemClickListener;
-import de.griot_app.griot.optionmenus.InterviewOptions;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
@@ -84,7 +79,7 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
                 @Override
                 public void onClick(View v) {
                     switch (v.getId()) {
-                        case R.id.listItem_interview:
+                        case R.id.listitem_interview:
                             mListener.onItemClick(dataItem);
                             break;
                         case R.id.button_interviewer:
