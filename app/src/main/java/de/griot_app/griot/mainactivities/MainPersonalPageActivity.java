@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,7 +67,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     private int mAudioCount;
 
     // ListView, that holds the interview items
-    private ListView mListViewInterviews;
+    private RecyclerView mRecyclerViewInterviews;
 
     //ArrayList containing the data of interviews
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
@@ -107,7 +109,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
 
         mListLocalInterviewData = new ArrayList<>();
 
-        mListViewInterviews = (ListView) findViewById(R.id.listView_main_profile_overview);
+        mRecyclerViewInterviews = (RecyclerView) findViewById(R.id.recyclerView_main_profile_overview);
 
 
         //Set the ValieEventListener to obtains all necessary data from Firebase
@@ -129,7 +131,8 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                 }
                 //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainPersonalPageActivity.this, mListLocalInterviewData);
-                mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+                mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainPersonalPageActivity.this));
+                mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
 
                 //Update the textView_medias
                 mTextViewMedias.setText("" + (mVideoCount==0 ? getString(R.string.text_none) : mVideoCount) + " "
