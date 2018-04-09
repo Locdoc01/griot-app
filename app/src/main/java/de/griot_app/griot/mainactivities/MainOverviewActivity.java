@@ -72,8 +72,6 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                 }
                 //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainOverviewActivity.this, mListLocalInterviewData);
-                //When a RecyclerView item was clicked, a new intent is created to start DetailsInterviewActivity for the appropriate interview.
-                // All relevant data is put to it as extra data.
                 mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainOverviewActivity.this));
                 mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
                 mLocalInterviewDataAdapter.setOnItemClickListener(MainOverviewActivity.this);

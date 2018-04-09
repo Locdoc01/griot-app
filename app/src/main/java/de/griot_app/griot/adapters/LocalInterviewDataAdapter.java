@@ -129,8 +129,6 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
             mButtonNarrator.setOnClickListener(clickListener);
             mButtonComments.setOnClickListener(clickListener);
             mButtonOptions.setOnClickListener(clickListener);
-
-
         }
     }
 
