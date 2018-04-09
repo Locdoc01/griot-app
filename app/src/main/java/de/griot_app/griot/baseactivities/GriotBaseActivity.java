@@ -1,16 +1,34 @@
 package de.griot_app.griot.baseactivities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Point;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
+import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.griot_app.griot.questionmail.ComposeQuestionRequestInputActivity;
 import de.griot_app.griot.R;
@@ -20,6 +38,7 @@ import de.griot_app.griot.mainactivities.MainOverviewActivity;
 import de.griot_app.griot.mainactivities.MainPersonalPageActivity;
 import de.griot_app.griot.mainactivities.MainQuestionmailActivity;
 import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
+import de.griot_app.griot.recordfunctions.QuestionCarousel;
 
 /**
  * Abstract base activity for usual activities of griot-app.
@@ -41,6 +60,17 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
     protected ImageView mButtonNotifications;
     protected ImageView mButtonTopicCatalog;
     protected FloatingActionButton mButtonQuestionmail;
+
+/*
+    protected ImageView mBackgroundOptionsMenu;
+    protected boolean mOptionsMenuVisible;
+    protected ListView mListViewOptionsMenu;
+    protected ArrayList<OptionsMenuItem> mListOptions;
+    protected OptionsMenuAdapter mOptionsMenuAdapter;
+    protected ObjectAnimator mAnimatorBackgroundOptionsMenu;
+    protected ObjectAnimator mAnimatorOptionsMenu;
+    protected AnimatorSet mAnimatorSetOptionsMenu;
+*/
 
     private ImageView mBackgroundProgress;
     private ProgressBar mProgressBar;
@@ -78,9 +108,15 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
         mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
         mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
+//        mBackgroundOptionsMenu = (ImageView) findViewById(R.id.background_options_menu);
+//        mListViewOptionsMenu = (ListView) findViewById(R.id.listView_options_menu);
         mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
         mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
         mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
+
+//        mOptionsMenuVisible = false;
+
+//        mBackgroundOptionsMenu.setOnClickListener(this);
 
         mButtonHome.setOnClickListener(this);
         mButtonProfile.setOnClickListener(this);
@@ -105,6 +141,17 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         overridePendingTransition(0, 0);
     }
 
+/*
+    @Override
+    public void onBackPressed() {
+        if (mOptionsMenuVisible) {
+            hideOptionsMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+*/
+
     /**
      * Shows the progress bar along with the given message
      * @param message
@@ -123,6 +170,67 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         mTextViewProgress.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
     }
+/*
+    public void showOptionsMenu(ArrayList<OptionsMenuItem> listOptions) {
+        Log.d(getSubClassTAG(), "showOptionsMenu: ");
+        mListOptions = listOptions;
+        mOptionsMenuAdapter = new OptionsMenuAdapter(GriotBaseActivity.this, mListOptions);
+        mListViewOptionsMenu.setAdapter(mOptionsMenuAdapter);
+
+        mListViewOptionsMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        // get height of activity without system bars height
+        final int height = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();
+
+        mListViewOptionsMenu.setY(height);
+        mBackgroundOptionsMenu.setVisibility(View.VISIBLE);
+        mListViewOptionsMenu.setVisibility(View.VISIBLE);
+
+        //the following code will be done AFTER the ListView was drawn, so that its height will be available
+        mListViewOptionsMenu.post(new Runnable() {
+            @Override
+            public void run() {
+                mAnimatorBackgroundOptionsMenu = ObjectAnimator.ofFloat(mBackgroundOptionsMenu, "alpha", 0.0f, 0.86f);
+                mAnimatorOptionsMenu = ObjectAnimator.ofFloat(mListViewOptionsMenu, "y", height, height - mListViewOptionsMenu.getHeight());
+                mAnimatorSetOptionsMenu = new AnimatorSet();
+                mAnimatorSetOptionsMenu.setDuration(500);
+                mAnimatorSetOptionsMenu.play(mAnimatorBackgroundOptionsMenu).with(mAnimatorOptionsMenu);
+                mAnimatorSetOptionsMenu.start();
+
+                mOptionsMenuVisible = true;
+            }
+        });
+    }
+
+    public void hideOptionsMenu() {
+        Log.d(getSubClassTAG(), "hideOptionsMenu: ");
+
+        // get height of activity without system bars height
+        int height = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getHeight();
+
+        mAnimatorBackgroundOptionsMenu = ObjectAnimator.ofFloat(mBackgroundOptionsMenu, "alpha", 0.86f, 0.0f);
+        mAnimatorOptionsMenu = ObjectAnimator.ofFloat(mListViewOptionsMenu, "y", height - mListViewOptionsMenu.getHeight(), height);
+        mAnimatorSetOptionsMenu = new AnimatorSet();
+        mAnimatorSetOptionsMenu.setDuration(500);
+        mAnimatorSetOptionsMenu.play(mAnimatorBackgroundOptionsMenu).with(mAnimatorOptionsMenu);
+
+        mAnimatorOptionsMenu.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mBackgroundOptionsMenu.setVisibility(View.GONE);
+                mListViewOptionsMenu.setVisibility(View.GONE);
+                mOptionsMenuVisible = false;
+            }
+        });
+
+        mAnimatorSetOptionsMenu.start();
+    }
+*/
 
     /**
      * Hides the progress bar and shows the given finish-message
@@ -229,6 +337,11 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
                     finish();
                 }
                 break;
+/*
+            case R.id.background_options_menu:
+                hideOptionsMenu();
+                break;
+*/
         }
     }
 }
