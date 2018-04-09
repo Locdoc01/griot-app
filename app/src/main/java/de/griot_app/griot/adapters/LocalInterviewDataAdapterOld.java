@@ -26,7 +26,6 @@ import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.Helper;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
-import de.griot_app.griot.optionmenus.InterviewOptions;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
