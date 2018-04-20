@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".startactivities.StartActivity"
-            android:theme="@style/NoTitleBarTheme">
+            android:theme="@style/NoTitleBarTheme"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,47 +30,76 @@
         </activity>
         <activity
             android:name=".startactivities.LoginActivity"
-            android:theme="@style/NoTitleBarTheme" />
+            android:theme="@style/NoTitleBarTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".mainactivities.MainOverviewActivity" />
+            android:theme="@style/Base.Theme.AppCompat"
+            android:screenOrientation="portrait" /> <!-- TODO: testen-->
+        <activity
+            android:name=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mainactivities.MainPersonalPageActivity"
-            android:parentActivityName=".mainactivities.MainOverviewActivity" />
+            android:parentActivityName=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mainactivities.MainChooseFriendInputActivity"
-            android:parentActivityName=".mainactivities.MainOverviewActivity" />
+            android:parentActivityName=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mainactivities.MainQuestionmailActivity"
-            android:parentActivityName=".mainactivities.MainOverviewActivity" />
+            android:parentActivityName=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mainactivities.MainNotificationsActivity"
-            android:parentActivityName=".mainactivities.MainOverviewActivity" />
+            android:parentActivityName=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mainactivities.MainTopicCatalogActivity"
-            android:parentActivityName=".mainactivities.MainOverviewActivity" />
-        <activity android:name=".questionmail.ComposeQuestionRequestInputActivity" />
+            android:parentActivityName=".mainactivities.MainOverviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".questionmail.ComposeQuestionRequestInputActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".perform_interview.ChooseTopicInputActivity"
-            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity" />
+            android:parentActivityName=".mainactivities.MainChooseFriendInputActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".perform_interview.ChooseMediumInputActivity"
-            android:parentActivityName=".perform_interview.ChooseTopicInputActivity" />
-        <activity android:name=".perform_interview.ReviewInterviewInputActivity" />
-        <activity android:name=".perform_interview.SaveInterviewInputActivity" />
-        <activity android:name=".contacts_profiles.OwnProfileInputActivity" />
-        <activity android:name=".contacts_profiles.GuestProfileInputActivity" />
-        <activity android:name=".contacts_profiles.UserProfileInputActivity" />
-        <activity android:name=".contacts_profiles.ContactManagmentActivity" />
+            android:parentActivityName=".perform_interview.ChooseTopicInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".perform_interview.ReviewInterviewInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".perform_interview.SaveInterviewInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contacts_profiles.OwnProfileInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contacts_profiles.GuestProfileInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contacts_profiles.UserProfileInputActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contacts_profiles.ContactManagmentActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".recordfunctions.RecordVideoActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".recordfunctions.RecordAudioActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".details_content.DetailsInterviewActivity" />
-        <activity android:name=".details_content.DetailsInterviewQuestionActivity"></activity>
+        <activity
+            android:name=".details_content.DetailsInterviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".details_content.DetailsInterviewQuestionActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

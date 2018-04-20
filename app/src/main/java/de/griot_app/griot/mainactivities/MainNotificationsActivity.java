@@ -36,7 +36,6 @@ public class MainNotificationsActivity extends GriotBaseActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                startActivity(new Intent(MainNotificationsActivity.this, LoginActivity.class));
                 finish();
             }
         });

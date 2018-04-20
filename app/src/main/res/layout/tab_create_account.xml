@@ -10,7 +10,7 @@
         android:id="@+id/guideline_profile_image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.105"
+        app:layout_constraintGuide_percent="0.04"
         android:orientation="horizontal" />
 
     <de.griot_app.griot.views.ProfileImageView
@@ -51,7 +51,7 @@
         android:id="@+id/guideline_profile_image_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.279"
+        app:layout_constraintGuide_percent="0.24"
         android:orientation="horizontal" />
 
     <android.support.constraint.Guideline
@@ -73,11 +73,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.31" />
+        app:layout_constraintGuide_percent="0.26" />
 
     <EditText
         android:id="@+id/editText_firstname"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_firstname"
         android:inputType="textCapWords"
         android:imeOptions="actionNext"
@@ -90,6 +91,7 @@
     <EditText
         android:id="@+id/editText_lastname"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_lastname"
         android:inputType="textCapWords"
         android:imeOptions="actionDone"
@@ -104,21 +106,21 @@
         android:id="@+id/textView_birthday"
         style="@style/AppTheme.Text_Normal"
         android:text="@string/text_birthday"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_marginLeft="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintTop_toBottomOf="@+id/editText_lastname"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
         app:layout_constraintBottom_toTopOf="@+id/editText_create_account_email"/>
 
     <ImageView
         android:id="@+id/button_datepicker"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/dimen_24"
+        android:layout_height="@dimen/dimen_24"
         app:srcCompat="@drawable/calendar"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_8"
         app:layout_constraintTop_toTopOf="@+id/textView_birthday"
         app:layout_constraintLeft_toRightOf="@+id/textView_birthday"
         app:layout_constraintBottom_toBottomOf="@id/textView_birthday"/>
@@ -127,18 +129,19 @@
         android:id="@+id/textView_date"
         style="@style/AppTheme.Text_Normal"
         android:text="@string/date_empty"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginRight="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_birthday"
         app:layout_constraintRight_toRightOf="@id/guideline_create_account_right" />
 
     <EditText
         android:id="@+id/editText_create_account_email"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         android:imeOptions="actionNext"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dimen_8"
         app:layout_constraintTop_toBottomOf="@+id/textView_birthday"
         app:layout_constraintLeft_toLeftOf="@id/guideline_create_account_left"
         app:layout_constraintRight_toRightOf="@id/guideline_create_account_right"
@@ -147,6 +150,7 @@
     <EditText
         android:id="@+id/editText_create_account_password"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
         android:imeOptions="actionNext"
@@ -158,6 +162,7 @@
     <EditText
         android:id="@+id/editText_create_account_password2"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password_repeat"
         android:inputType="textPassword"
         android:imeOptions="actionDone"
@@ -171,17 +176,17 @@
         android:id="@+id/guideline_create_account_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.673"
+        app:layout_constraintGuide_percent="0.67"
         android:orientation="horizontal" />
 
     <Button
         android:id="@+id/button_create_account"
         style="@style/AppTheme.TextButtons"
         android:text="@string/button_create_account"
-        android:paddingTop="15dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="@dimen/dimen_16"
+        android:paddingLeft="@dimen/dimen_32"
+        android:paddingRight="@dimen/dimen_32"
+        android:paddingBottom="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="@+id/guideline_create_account_bottom"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

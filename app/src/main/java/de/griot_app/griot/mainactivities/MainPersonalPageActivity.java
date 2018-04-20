@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,8 +63,11 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     private FrameLayout mButtonQuestionmail;
     private TextView mTextViewMedias;
 
+    private int mVideoCount;
+    private int mAudioCount;
+
     // ListView, that holds the interview items
-    private ListView mListViewInterviews;
+    private RecyclerView mRecyclerViewInterviews;
 
     //ArrayList containing the data of interviews
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
@@ -104,7 +109,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
 
         mListLocalInterviewData = new ArrayList<>();
 
-        mListViewInterviews = (ListView) findViewById(R.id.listView_main_profile_overview);
+        mRecyclerViewInterviews = (RecyclerView) findViewById(R.id.recyclerView_main_profile_overview);
 
 
         //Set the ValieEventListener to obtains all necessary data from Firebase
@@ -115,11 +120,25 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                 //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
+
+                    //Count the medias
+                    if (localInterviewData.getMedium().equals("video")) {
+                        mVideoCount++;
+                    } else if (localInterviewData.getMedium().equals("audio")) {
+                        mAudioCount++;
+                    }
                     mListLocalInterviewData.add(localInterviewData);
                 }
                 //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainPersonalPageActivity.this, mListLocalInterviewData);
-                mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+                mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainPersonalPageActivity.this));
+                mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+
+                //Update the textView_medias
+                mTextViewMedias.setText("" + (mVideoCount==0 ? getString(R.string.text_none) : mVideoCount) + " "
+                        + (mVideoCount==1 ? getString(R.string.text_video) : getString(R.string.text_videos)) + " / "
+                        + (mAudioCount==0 ? getString(R.string.text_none) : mAudioCount) + " "
+                        + (mAudioCount==1 ? getString(R.string.text_audio) : getString(R.string.text_audios)));
 
                 //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
@@ -199,6 +218,8 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
             public void onCancelled(DatabaseError databaseError) {
             }
         };
+        mDatabaseRef = mDatabaseRootReference.child("interviews");
+        mDatabaseRef.addValueEventListener(mValueEventListener);
     }
 
     @Override
@@ -282,20 +303,4 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
         return false;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Obtains all necessary data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.addValueEventListener(mValueEventListener);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //TODO: necessary here?
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.removeEventListener(mValueEventListener);
-    }
 }

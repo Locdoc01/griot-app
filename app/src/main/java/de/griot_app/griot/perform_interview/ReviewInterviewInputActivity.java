@@ -4,19 +4,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.LocalInterviewQuestionDataAdapter;
+import de.griot_app.griot.adapters.LocalInterviewQuestionDataDetailsAdapter;
+import de.griot_app.griot.adapters.LocalInterviewQuestionDataReviewAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
 import de.griot_app.griot.recordfunctions.RecordActivity;
@@ -67,17 +69,14 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     private String interviewDir;
     private String tags[][];
 
-    // ListView, that holds the interview questions
-    private ListView mListViewInterviewQuestions;
+    // RecyclerView, that holds the interview questions
+    private RecyclerView mRecyclerViewInterviewQuestions;
 
     // ArrayList, that holds the data of the interview questions
     private ArrayList<LocalInterviewQuestionData> mListInterviewQuestionData;
 
-    //Data-View-Adapter for the ListView
-    private LocalInterviewQuestionDataAdapter mLocalInterviewQuestionDataAdapter;
-
-
-
+    //Data-View-Adapter for the RecyclerView
+    private LocalInterviewQuestionDataReviewAdapter mLocalInterviewQuestionDataReviewAdapter;
 
 
     @Override
@@ -90,7 +89,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         mButtonCenter.setText(R.string.button_back);
         mButtonRight.setText(R.string.button_next);
 
-        //Gets intent-data
+        //get intent-data
         narratorSelectedItemID = getIntent().getIntExtra("narratorSelectedItemID", -1);
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
@@ -128,7 +127,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             tags[i] = getIntent().getStringArrayExtra("tags" + i);
         }
 
-        mListViewInterviewQuestions = (ListView) findViewById(R.id.listView_review_interviews);
+        mRecyclerViewInterviewQuestions = (RecyclerView) findViewById(R.id.recyclerView_review_interviews);
 
         mListInterviewQuestionData = new ArrayList<>();
 
@@ -154,8 +153,9 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         }
 
         //Set the adapter
-        mLocalInterviewQuestionDataAdapter = new LocalInterviewQuestionDataAdapter(ReviewInterviewInputActivity.this, mListInterviewQuestionData);
-        mListViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataAdapter);
+        mLocalInterviewQuestionDataReviewAdapter = new LocalInterviewQuestionDataReviewAdapter(ReviewInterviewInputActivity.this, mListInterviewQuestionData);
+        mRecyclerViewInterviewQuestions.setLayoutManager(new LinearLayoutManager(ReviewInterviewInputActivity.this));
+        mRecyclerViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataReviewAdapter);
 
     }
 

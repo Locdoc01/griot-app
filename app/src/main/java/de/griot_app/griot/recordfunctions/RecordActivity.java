@@ -1,6 +1,7 @@
 package de.griot_app.griot.recordfunctions;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,13 +14,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -292,7 +298,32 @@ public abstract class RecordActivity extends AppCompatActivity {
                         break;
                     case R.id.button_finished:
                         Log.d(getSubClassTAG(), "finished clicked: ");
-                        finishInterview();
+                        View dialogView = LayoutInflater.from(RecordActivity.this).inflate(R.layout.dialog_alert, null);
+
+                        final TextView textViewDialogTitle = (TextView) dialogView.findViewById(R.id.textView_dialog_title);
+                        final TextView textViewDialogNote = (TextView) dialogView.findViewById(R.id.textView_dialog_note);
+
+                        textViewDialogTitle.setText(getString(R.string.dialog_finish_record));
+                        textViewDialogNote.setText("");
+
+                        //Dialog for tag input
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(RecordActivity.this, R.style.CustomDialogTheme));
+                        alertDialogBuilder.setView(dialogView);
+                        alertDialogBuilder
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.button_yes),
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                finishInterview();
+                                            }
+                                        })
+                                .setNegativeButton(getString(R.string.button_no),
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        alertDialogBuilder.create().show();
                         break;
                 }
             }
@@ -354,6 +385,35 @@ public abstract class RecordActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null);
+
+        final TextView textViewDialogTitle = (TextView) dialogView.findViewById(R.id.textView_dialog_title);
+        final TextView textViewDialogNote = (TextView) dialogView.findViewById(R.id.textView_dialog_note);
+
+        textViewDialogTitle.setText(getString(R.string.dialog_title_cancel_interview));
+        textViewDialogNote.setText(getString(R.string.dialog_note_cancel_interview));
+
+        //Dialog for tag input
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomDialogTheme));
+        alertDialogBuilder.setView(dialogView);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.button_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.button_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alertDialogBuilder.create().show();
+    }
 
     /**
      * Will be called, when the user responds to permission requests. The functionality of the app will be dependant on

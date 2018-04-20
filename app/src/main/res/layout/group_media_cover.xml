@@ -15,7 +15,7 @@
         android:background="@color/colorGriotLightgrey"
         android:padding="@dimen/dimen_height_lines"
         android:cropToPadding="true"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -37,7 +37,7 @@
         android:id="@+id/frame_mediaCover"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="dimen_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/colorTextBackgroundMediaCover"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="@id/imageView_mediaCover"
         app:layout_constraintLeft_toLeftOf="@id/imageView_mediaCover"><!---->
 
@@ -77,11 +77,11 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorGriotWhite"
             android:textSize="@dimen/dimen_textSize_medium"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_marginLeft="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginRight="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_16"
             app:layout_constraintLeft_toLeftOf="@id/imageView_mediaCover"
             app:layout_constraintTop_toTopOf="@id/imageView_mediaCover"/><!---->
 
@@ -92,11 +92,11 @@
             android:textColor="@color/colorGriotWhite"
             android:textSize="@dimen/dimen_textSize_small"
             android:textStyle="italic"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginRight="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:layout_marginBottom="@dimen/dimen_8"
             app:layout_constraintLeft_toLeftOf="@id/textView_headline"
             app:layout_constraintTop_toBottomOf="@id/textView_headline"/>
 
@@ -109,15 +109,10 @@
         android:textColor="@color/colorGriotWhite"
         android:textSize="@dimen/dimen_textSize_medium"
         android:background="@color/colorTextBackgroundMediaCover"
-        android:paddingTop="3dp"
-        android:paddingLeft="5dp"
-        android:paddingStart="5dp"
-        android:paddingRight="5dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="3dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
+        android:padding="@dimen/dimen_4"
+        android:layout_marginBottom="@dimen/dimen_8"
+        android:layout_marginRight="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"
         app:layout_constraintRight_toRightOf="@id/imageView_mediaCover"
         app:layout_constraintBottom_toBottomOf="@id/imageView_mediaCover"/><!---->
 

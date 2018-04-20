@@ -1,5 +1,6 @@
 package de.griot_app.griot.baseactivities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.io.File;
 
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.startactivities.LoginActivity;
 
 /**
  *  Abstract base activity for all activities in griot-app.
@@ -103,6 +105,18 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
 
+        // if this is not LoginActiviy and if no user is signed in, start LoginActivity and finish this one
+        //TODO: checken, ob es bessere Lösungen gibt
+        if (!(this instanceof LoginActivity)) {
+            if (mAuth.getCurrentUser() == null) {
+                if (mAuth.getCurrentUser() == null) {
+                    Intent intent = new Intent(FirebaseActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
+
         // if the user is signed in, obtain user information
         if (mAuth.getCurrentUser() != null) {
             loadUserInformation();
@@ -170,6 +184,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+    public LocalUserData getOwnUserData() { return mOwnUserData; }
 
 }
 

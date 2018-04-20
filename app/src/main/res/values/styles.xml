@@ -20,13 +20,12 @@
 
     <style name="AppTheme.EditTextStyle">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/dimen_height_editText</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/dimen_8</item>
         <item name="android:textSize">@dimen/dimen_textSize_normal</item>
         <item name="android:background">@drawable/shape_rect_rounded_border</item>
-        <item name="android:ems">10</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">@dimen/dimen_4</item>
     </style>
 
     <style name="AppTheme.Text_Large">

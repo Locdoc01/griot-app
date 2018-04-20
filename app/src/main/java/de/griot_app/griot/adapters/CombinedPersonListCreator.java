@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.griot_app.griot.R;
+import de.griot_app.griot.baseactivities.FirebaseActivity;
 import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.dataclasses.LocalPersonData;
 import de.griot_app.griot.dataclasses.LocalUserData;
@@ -94,7 +95,7 @@ public class CombinedPersonListCreator {
      * @param combinedlistView combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
      */
     public CombinedPersonListCreator(Activity context, ListView combinedlistView) {
-        this(context, -1, null, combinedlistView);
+        this(context, -1, combinedlistView);
     }
 
     /**
@@ -102,13 +103,10 @@ public class CombinedPersonListCreator {
      * @param context Calling Activity
      * @param combinedlistView Combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
      * @param selectedItemID The selected ListView item. If none item is selected, the value is -1
-     * @param ownUserData LocalUserData object, which holdes the own user information, obtained from Firebase Database
      */
-    public CombinedPersonListCreator(Activity context, int selectedItemID, LocalUserData ownUserData, ListView combinedlistView) {
+    public CombinedPersonListCreator(Activity context, int selectedItemID, ListView combinedlistView) {
 
         mContext = context;
-
-        mOwnUserData = ownUserData;
 
         mCombinedListView = combinedlistView;
         mCombinedList = new ArrayList<>();
@@ -165,8 +163,10 @@ public class CombinedPersonListCreator {
     public void loadData() {
         Log.d(TAG, "loadData:");
 
+        mOwnUserData = ((FirebaseActivity)mContext).getOwnUserData();
+
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
-            mDatabaseQuerys.get(i).addListenerForSingleValueEvent(getDatabaseValueEventListener(mSingleLists.get(i), mDatabaseQuerys.get(i)));
+            mDatabaseQuerys.get(i).addValueEventListener(getDatabaseValueEventListener(mSingleLists.get(i), mDatabaseQuerys.get(i)));
         }
     }
 
@@ -188,7 +188,7 @@ public class CombinedPersonListCreator {
                 list.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //Ignore the item, if it represents the user itself
-                    if ((mOwnUserData != null && !ds.getKey().equals(mOwnUserData.getContactID())) || mOwnUserData == null) { //TODO: make ownUserData also available, if called from the ContactManagmendActivity (constructors has to be changed)
+                    if ((mOwnUserData != null && !ds.getKey().equals(mOwnUserData.getContactID())) || mOwnUserData == null) {
                         LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
                         localPersonData.setContactID(ds.getKey());
                         list.add(localPersonData);
@@ -203,6 +203,7 @@ public class CombinedPersonListCreator {
                 switch (query.getRef().getKey()) {
                     case "guests":
                         list.get(0).setCategory(mContext.getString(R.string.text_your_guests));
+                        mAddGuestAdded = false;
                         break;
                     case "users":
                         list.get(0).setCategory(mContext.getString(R.string.text_your_friends));
@@ -258,7 +259,7 @@ public class CombinedPersonListCreator {
 
         mCombinedList.clear();
         //add ownUserData, if available
-        if (mOwnUserData!=null) {
+        if (mMode==PERSONS_CHOOSE_MODE) {
             mCombinedList.add(mOwnUserData);
         }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
@@ -272,7 +273,7 @@ public class CombinedPersonListCreator {
                     mSingleLists.get(i).remove(0);
                 } else {
                     //Remove category from first proper guest item, if list was not empty
-                    mSingleLists.get(i).get(1).setCategory(null);
+                    mSingleLists.get(i).get(0).setCategory(null);
                 }
                 mSingleLists.get(i).add(0, localGuestData);
                 mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));

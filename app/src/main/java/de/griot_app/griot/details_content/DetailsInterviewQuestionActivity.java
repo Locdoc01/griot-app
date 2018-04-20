@@ -160,8 +160,8 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
         mTextViewTopic.setText(topic);
 
-        int width = getResources().getDimensionPixelSize(R.dimen.dimen_piv_visibility);
-        int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv_visibility);
+        int width = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+        int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
         ProfileImageView pivInterviewer = new ProfileImageView(this);
         pivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));

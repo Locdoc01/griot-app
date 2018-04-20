@@ -23,13 +23,14 @@
         android:id="@+id/guideline_signin_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.31"
+        app:layout_constraintGuide_percent="0.26"
         android:orientation="horizontal" />
 
     <!--TODO: Email-Adresse und Passwort entfernen !!!!!!!!!!!!!-->
     <EditText
         android:id="@+id/editText_signin_email"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_email"
         android:text="aa@aa.aa"
         android:inputType="textEmailAddress"
@@ -43,11 +44,12 @@
     <EditText
         android:id="@+id/editText_signin_password"
         style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:hint="@string/hint_password"
         android:text="890iop"
         android:inputType="textPassword"
         android:imeOptions="actionDone"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintTop_toBottomOf="@id/editText_signin_email"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
         app:layout_constraintRight_toRightOf="@id/guideline_signin_right"
@@ -57,58 +59,61 @@
         android:id="@+id/button_forgotten"
         style="@style/AppTheme.Text_Normal"
         android:text="@string/text_password_forgotton"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_marginLeft="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintTop_toBottomOf="@id/editText_signin_password"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
         app:layout_constraintBottom_toTopOf="@+id/placeholder1" />
 
-    <TextView
+    <EditText
         android:id="@+id/placeholder1"
-        android:layout_height="@dimen/dimen_height_editText"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dimen_8"
         app:layout_constraintTop_toBottomOf="@id/button_forgotten"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
-        app:layout_constraintBottom_toTopOf="@+id/placeholder2"/>
+        app:layout_constraintBottom_toTopOf="@+id/placeholder2"
+        android:visibility="invisible"/>
 
-    <TextView
+    <EditText
         android:id="@+id/placeholder2"
-        android:layout_height="@dimen/dimen_height_editText"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
         app:layout_constraintTop_toBottomOf="@id/placeholder1"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
-        app:layout_constraintBottom_toTopOf="@+id/placeholder3"/>
+        app:layout_constraintBottom_toTopOf="@+id/placeholder3"
+        android:visibility="invisible"/>
 
-    <TextView
+    <EditText
         android:id="@+id/placeholder3"
-        android:layout_height="@dimen/dimen_height_editText"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.EditTextStyle"
+        android:background="@drawable/shape_rect_rounded"
         android:text=""
         app:layout_constraintTop_toBottomOf="@id/placeholder2"
         app:layout_constraintLeft_toLeftOf="@id/guideline_signin_left"
         app:layout_constraintBottom_toTopOf="@+id/guideline_signin_bottom"
-        app:layout_constraintVertical_chainStyle="spread_inside"/>
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        android:visibility="invisible"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_signin_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.673"
+        app:layout_constraintGuide_percent="0.67"
         android:orientation="horizontal" />
 
     <Button
         android:id="@+id/button_signin"
         style="@style/AppTheme.TextButtons"
         android:text="@string/button_signin"
-        android:paddingTop="20dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="@dimen/dimen_24"
+        android:paddingLeft="@dimen/dimen_32"
+        android:paddingRight="@dimen/dimen_32"
+        android:paddingBottom="@dimen/dimen_24"
         app:layout_constraintTop_toBottomOf="@+id/button_forgotten"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="70dp">
+    android:minHeight="@dimen/dimen_64">
 
     <TextView
         android:id="@+id/textView_topic"
@@ -13,12 +13,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="tzut"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_marginLeft="@dimen/dimen_24"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:layout_marginRight="@dimen/dimen_24"
+        android:layout_marginEnd="@dimen/dimen_24"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/button_check"
@@ -27,12 +27,12 @@
     <ImageView
         android:id="@+id/button_check"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/dimen_32"
         app:srcCompat="@drawable/checkbox_off"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginRight="@dimen/dimen_32"
+        android:layout_marginEnd="@dimen/dimen_32"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/button_expand"
         app:layout_constraintBottom_toBottomOf="parent" />
@@ -40,12 +40,12 @@
     <ImageView
         android:id="@+id/button_expand"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/up"
+        android:layout_height="@dimen/dimen_24"
+        app:srcCompat="@drawable/down"
         app:layout_constraintDimensionRatio="1:1"
         android:adjustViewBounds="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginRight="@dimen/dimen_16"
+        android:layout_marginEnd="@dimen/dimen_16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

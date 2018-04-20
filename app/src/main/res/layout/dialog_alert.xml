@@ -6,24 +6,20 @@
     android:padding="@dimen/dimen_8" >
 
     <TextView
-        android:id="@+id/textView_inputDialog"
+        android:id="@+id/textView_dialog_title"
         style="@style/AppTheme.Text_Normal"
         android:textColor="@color/colorGriotBlue"
         android:layout_marginBottom="@dimen/dimen_16"
         android:layout_marginLeft="@dimen/dimen_8"
         android:layout_marginStart="@dimen/dimen_8"/>
 
-    <EditText
-        android:id="@+id/editText_inputDialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:imeOptions="actionDone"
-        android:padding="@dimen/dimen_8"
-        android:textSize="@dimen/dimen_textSize_normal"
-        android:fontFamily="sans-serif"
-        android:elevation="@dimen/dimen_4">
-        <requestFocus />
-    </EditText>
+    <TextView
+        android:id="@+id/textView_dialog_note"
+        style="@style/AppTheme.Text_Small"
+        android:textColor="@color/colorGriotLightgrey"
+        android:layout_marginLeft="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginRight="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"/>
 
 </LinearLayout>

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,22 +29,23 @@ import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.adapters.LocalInterviewDataAdapter;
 import de.griot_app.griot.dataclasses.LocalInterviewData;
+import de.griot_app.griot.interfaces.OnItemClickListener;
 
 
 /**
  * Main activity that provides an overview over all interviews, where the user is either interviewer, narrator or shareholder.
  */
-public class MainOverviewActivity extends GriotBaseActivity {
+public class MainOverviewActivity extends GriotBaseActivity implements OnItemClickListener<LocalInterviewData>{
 
     private static final String TAG = MainOverviewActivity.class.getSimpleName();
 
-    //ListView, that holds the interview items
-    private ListView mListViewInterviews;
+    //RecyclerView, that holds the interview items
+    private RecyclerView mRecyclerViewInterviews;
 
     //ArrayList containing the data of interviews
     private ArrayList<LocalInterviewData> mListLocalInterviewData;
 
-    //Data-View-Adapter for the ListView
+    //Data-View-Adapter for the RecyclerView
     private LocalInterviewDataAdapter mLocalInterviewDataAdapter;
 
     @Override
@@ -54,56 +57,7 @@ public class MainOverviewActivity extends GriotBaseActivity {
 
         mListLocalInterviewData = new ArrayList<>();
 
-        mListViewInterviews = (ListView) findViewById(R.id.listView_main_overview);
-
-        //When a ListView item was clicked, a new intent is created to start DetailsInterviewActivity for the appropriate interview.
-        // All relevant data is put to it as extra data.
-        mListViewInterviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainOverviewActivity.this, DetailsInterviewActivity.class);
-                intent.putExtra("selectedInterviewID", mLocalInterviewDataAdapter.getItem(position).getContentID());
-                intent.putExtra("interviewTitle", mLocalInterviewDataAdapter.getItem(position).getTitle());
-                intent.putExtra("dateYear", mLocalInterviewDataAdapter.getItem(position).getDateYear());
-                intent.putExtra("dateMonth", mLocalInterviewDataAdapter.getItem(position).getDateMonth());
-                intent.putExtra("dateDay", mLocalInterviewDataAdapter.getItem(position).getDateDay());
-                intent.putExtra("topic", mLocalInterviewDataAdapter.getItem(position).getTopic());
-                intent.putExtra("medium", mLocalInterviewDataAdapter.getItem(position).getMedium());
-                intent.putExtra("length", mLocalInterviewDataAdapter.getItem(position).getLength());
-                intent.putExtra("pictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getPictureLocalURI());
-                intent.putExtra("interviewerID", mLocalInterviewDataAdapter.getItem(position).getInterviewerID());
-                intent.putExtra("interviewerName", mLocalInterviewDataAdapter.getItem(position).getInterviewerName());
-                intent.putExtra("interviewerPictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getInterviewerPictureLocalURI());
-                intent.putExtra("narratorID", mLocalInterviewDataAdapter.getItem(position).getNarratorID());
-                intent.putExtra("narratorName", mLocalInterviewDataAdapter.getItem(position).getNarratorName());
-                intent.putExtra("narratorPictureLocalURI", mLocalInterviewDataAdapter.getItem(position).getNarratorPictureLocalURI());
-                intent.putExtra("narratorIsUser", mLocalInterviewDataAdapter.getItem(position).getNarratorIsUser());
-
-                String[] associatedUsers = new String[mLocalInterviewDataAdapter.getItem(position).getAssociatedUsers().size()];
-                Iterator<String> iterator = mLocalInterviewDataAdapter.getItem(position).getAssociatedUsers().keySet().iterator();
-                for (int i=0 ; i<associatedUsers.length ; i++) {
-                    associatedUsers[i] = iterator.next();
-                }
-                intent.putExtra("associatedUsers", associatedUsers);
-
-                String[] associatedGuests = new String[mLocalInterviewDataAdapter.getItem(position).getAssociatedGuests().size()];
-                iterator = mLocalInterviewDataAdapter.getItem(position).getAssociatedGuests().keySet().iterator();
-                for (int i=0 ; i<associatedGuests.length ; i++) {
-                    associatedGuests[i] = iterator.next();
-                }
-                intent.putExtra("associatedGuests", associatedGuests);
-
-                String[] tags = new String[mLocalInterviewDataAdapter.getItem(position).getTags().size()];
-                iterator = mLocalInterviewDataAdapter.getItem(position).getTags().keySet().iterator();
-                for (int i=0 ; i<tags.length ; i++) {
-                    tags[i] = iterator.next();
-                }
-                intent.putExtra("tags", tags);
-
-                intent.putExtra("numberComments", mLocalInterviewDataAdapter.getItem(position).getNumberComments());
-                startActivity(intent);
-            }
-        });
+        mRecyclerViewInterviews = (RecyclerView) findViewById(R.id.recyclerView_main_overview);
 
         //Set the ValueEventListener to obtains all necessary data from Firebase
         mValueEventListener = new ValueEventListener() {
@@ -118,7 +72,9 @@ public class MainOverviewActivity extends GriotBaseActivity {
                 }
                 //Set the adapter
                 mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainOverviewActivity.this, mListLocalInterviewData);
-                mListViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+                mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainOverviewActivity.this));
+                mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+                mLocalInterviewDataAdapter.setOnItemClickListener(MainOverviewActivity.this);
 
                 //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
@@ -198,7 +154,56 @@ public class MainOverviewActivity extends GriotBaseActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         };
+
+        mDatabaseRef = mDatabaseRootReference.child("interviews");
+        mDatabaseRef.addValueEventListener(mValueEventListener);
     }
+
+    @Override
+    public void onItemClick(LocalInterviewData dataItem) {
+        Intent intent = new Intent(MainOverviewActivity.this, DetailsInterviewActivity.class);
+        intent.putExtra("selectedInterviewID", dataItem.getContentID());
+        intent.putExtra("interviewTitle", dataItem.getTitle());
+        intent.putExtra("dateYear", dataItem.getDateYear());
+        intent.putExtra("dateMonth", dataItem.getDateMonth());
+        intent.putExtra("dateDay", dataItem.getDateDay());
+        intent.putExtra("topic", dataItem.getTopic());
+        intent.putExtra("medium", dataItem.getMedium());
+        intent.putExtra("length", dataItem.getLength());
+        intent.putExtra("pictureLocalURI", dataItem.getPictureLocalURI());
+        intent.putExtra("interviewerID", dataItem.getInterviewerID());
+        intent.putExtra("interviewerName", dataItem.getInterviewerName());
+        intent.putExtra("interviewerPictureLocalURI", dataItem.getInterviewerPictureLocalURI());
+        intent.putExtra("narratorID", dataItem.getNarratorID());
+        intent.putExtra("narratorName", dataItem.getNarratorName());
+        intent.putExtra("narratorPictureLocalURI", dataItem.getNarratorPictureLocalURI());
+        intent.putExtra("narratorIsUser", dataItem.getNarratorIsUser());
+
+        String[] associatedUsers = new String[dataItem.getAssociatedUsers().size()];
+        Iterator<String> iterator = dataItem.getAssociatedUsers().keySet().iterator();
+        for (int i=0 ; i<associatedUsers.length ; i++) {
+            associatedUsers[i] = iterator.next();
+        }
+        intent.putExtra("associatedUsers", associatedUsers);
+
+        String[] associatedGuests = new String[dataItem.getAssociatedGuests().size()];
+        iterator = dataItem.getAssociatedGuests().keySet().iterator();
+        for (int i=0 ; i<associatedGuests.length ; i++) {
+            associatedGuests[i] = iterator.next();
+        }
+        intent.putExtra("associatedGuests", associatedGuests);
+
+        String[] tags = new String[dataItem.getTags().size()];
+        iterator = dataItem.getTags().keySet().iterator();
+        for (int i=0 ; i<tags.length ; i++) {
+            tags[i] = iterator.next();
+        }
+        intent.putExtra("tags", tags);
+
+        intent.putExtra("numberComments", dataItem.getNumberComments());
+        startActivity(intent);
+    }
+
 
     @Override
     protected int getSubClassLayoutId() {
@@ -218,20 +223,4 @@ public class MainOverviewActivity extends GriotBaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Obtains all necessary data from Firebase
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.addValueEventListener(mValueEventListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //TODO: necessary here?
-        mDatabaseRef = mDatabaseRootReference.child("interviews");
-        mDatabaseRef.removeEventListener(mValueEventListener);
-    }
 }
