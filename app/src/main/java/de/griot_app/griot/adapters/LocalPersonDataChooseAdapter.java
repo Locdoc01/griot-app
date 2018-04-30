@@ -45,6 +45,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         private TextView mTextViewCategory;
         private FrameLayout mListItemSeperator;
         private ProfileImageView mPivPerson;
+        private ImageView mImageViewAddPerson;
         private TextView mTextViewPerson;
         private ImageView mButtonCheck;
     }
@@ -71,11 +72,12 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
             convertView = inflater.inflate(R.layout.listitem_contact, parent, false);
 
             // get references to the objects, which are created during the intflation of the layout xml-file
-            holder.mTextViewCategory = (TextView) convertView.findViewById(R.id.category);
-            holder.mListItemSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
-            holder.mPivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
-            holder.mTextViewPerson = (TextView) convertView.findViewById(R.id.textView_person);
-            holder.mButtonCheck = (ImageView) convertView.findViewById(R.id.button_item);
+            holder.mTextViewCategory = convertView.findViewById(R.id.category);
+            holder.mListItemSeperator = convertView.findViewById(R.id.list_seperator);
+            holder.mPivPerson = convertView.findViewById(R.id.piv_person);
+            holder.mImageViewAddPerson = convertView.findViewById(R.id.imageView_add_person);
+            holder.mTextViewPerson = convertView.findViewById(R.id.textView_person);
+            holder.mButtonCheck = convertView.findViewById(R.id.button_item);
             holder.mButtonCheck.setImageResource(R.drawable.check);
             convertView.setTag(holder);
         } else {
@@ -99,16 +101,12 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
 
         //show profile pictures, if available, otherwise show placeholder
         if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
-            holder.mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            holder.mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            holder.mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
+            holder.mPivPerson.setVisibility(View.GONE);
+            holder.mImageViewAddPerson.setVisibility(View.VISIBLE);
         } else {
-            try {
-                holder.mPivPerson.getProfileImage().setImageURI(Uri.parse(data.getPictureLocalURI()));
-                holder.mPivPerson.getProfileImagePlus().setVisibility(View.VISIBLE);
-                holder.mPivPerson.getProfileImageCircle().setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-            }
+            holder.mPivPerson.setVisibility(View.VISIBLE);
+            holder.mImageViewAddPerson.setVisibility(View.GONE);
+            holder.mPivPerson.loadImageFromSource(data.getPictureLocalURI());
         }
 
         holder.mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));
@@ -147,6 +145,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
                                 Log.d(TAG, "person clicked: ");
                                 Intent intent;
                                 //If first guest item was clicked, nothing happens. (First item is for adding a guest, which gets triggered through OnListItemClickListener)
+                                //TODO: propably unnecessary, since visibility of piv_person of the first item is set to View.GONE
                                 if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
                                     return false;
                                 }

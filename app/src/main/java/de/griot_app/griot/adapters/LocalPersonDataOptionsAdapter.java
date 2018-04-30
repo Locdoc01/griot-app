@@ -43,6 +43,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     private TextView mTextViewCategory;
     private FrameLayout mListSeperator;
     private ProfileImageView mPivPerson;
+    private ImageView mImageViewAddPerson;
     private TextView mTextViewPerson;
     private ImageView mButtonOptions;
 
@@ -61,12 +62,13 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
             convertView = inflater.inflate(R.layout.listitem_contact, parent, false);
         }
         // get references to the objects, which are created during the intflation of the layout xml-file
-        mItemBackground = (FrameLayout) convertView.findViewById(R.id.item_background);
-        mTextViewCategory = (TextView) convertView.findViewById(R.id.category);
-        mListSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
-        mPivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
-        mTextViewPerson = (TextView) convertView.findViewById(R.id.textView_person);
-        mButtonOptions = (ImageView) convertView.findViewById(R.id.button_item);
+        mItemBackground = convertView.findViewById(R.id.item_background);
+        mTextViewCategory = convertView.findViewById(R.id.category);
+        mListSeperator = convertView.findViewById(R.id.list_seperator);
+        mPivPerson = convertView.findViewById(R.id.piv_person);
+        mImageViewAddPerson = convertView.findViewById(R.id.imageView_add_person);
+        mTextViewPerson = convertView.findViewById(R.id.textView_person);
+        mButtonOptions = convertView.findViewById(R.id.button_item);
         mButtonOptions.setImageResource(R.drawable.options);
         mButtonOptions.setVisibility(View.VISIBLE);
 
@@ -80,16 +82,12 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
 
         //show profile pictures, if available, otherwise show placeholder
         if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
-            mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
+            mPivPerson.setVisibility(View.GONE);
+            mImageViewAddPerson.setVisibility(View.VISIBLE);
         } else {
-            try {
-                mPivPerson.getProfileImage().setImageURI(Uri.parse(data.getPictureLocalURI()));
-                mPivPerson.getProfileImagePlus().setVisibility(View.VISIBLE);
-                mPivPerson.getProfileImageCircle().setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-            }
+            mPivPerson.setVisibility(View.VISIBLE);
+            mImageViewAddPerson.setVisibility(View.GONE);
+            mPivPerson.loadImageFromSource(data.getPictureLocalURI());
         }
 
         mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));
