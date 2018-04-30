@@ -40,12 +40,15 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private String medium;
     private String length;
     private String pictureLocalURI;
+    private String pictureURL;
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureLocalURI;
+    private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
     private String narratorPictureLocalURI;
+    private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
     private String[] associatedGuests;
@@ -85,12 +88,15 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         medium = getIntent().getStringExtra("medium");
         length = getIntent().getStringExtra("lengthQuestion");
         pictureLocalURI = getIntent().getStringExtra("pictureLocalURIQuestion");
+        pictureURL = getIntent().getStringExtra("pictureURLQuestion");
         interviewerID = getIntent().getStringExtra("interviewerID");
         interviewerName = getIntent().getStringExtra("interviewerName");
         interviewerPictureLocalURI = getIntent().getStringExtra("interviewerPictureLocalURI");
+        interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
         narratorPictureLocalURI = getIntent().getStringExtra("narratorPictureLocalURI");
+        narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", false);
         associatedUsers = getIntent().getStringArrayExtra("associatedUsersQuestion");
         associatedGuests = getIntent().getStringArrayExtra("associatedGuestsQuestion");
@@ -142,8 +148,8 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         }
 
         //Initialize other views
-        mPivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
-        mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+        mPivInterviewer.loadImageFromSource(interviewerPictureURL);
+        mPivNarrator.loadImageFromSource(narratorPictureURL);
         mTextViewInterviewer.setText(interviewerName);
         mTextViewNarrator.setText(narratorName);
         mButtonComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
@@ -164,12 +170,12 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
         ProfileImageView pivInterviewer = new ProfileImageView(this);
-        pivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
+        pivInterviewer.loadImageFromSource(interviewerPictureURL);
         mLayoutScrollViewVisibility.addView(pivInterviewer);
         pivInterviewer.setLayoutParams(params);
         if (!interviewerID.equals(narratorID)) {
             ProfileImageView pivNarrator = new ProfileImageView(this);
-            pivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+            pivNarrator.loadImageFromSource(narratorPictureURL);
             mLayoutScrollViewVisibility.addView(pivNarrator);
             pivNarrator.setLayoutParams(params);
         }

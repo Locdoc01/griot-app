@@ -65,12 +65,15 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
     private String medium;
     private String length;
     private String pictureLocalURI;
+    private String pictureURL;
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureLocalURI;
+    private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
     private String narratorPictureLocalURI;
+    private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
     private String[] associatedGuests;
@@ -239,12 +242,15 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
         medium = intent.getStringExtra("medium");
         length = intent.getStringExtra("length");
         pictureLocalURI = intent.getStringExtra("pictureLocalURI");
+        pictureURL = intent.getStringExtra("pictureURL");
         interviewerID = intent.getStringExtra("interviewerID");
         interviewerName = intent.getStringExtra("interviewerName");
         interviewerPictureLocalURI = intent.getStringExtra("interviewerPictureLocalURI");
+        interviewerPictureURL = intent.getStringExtra("interviewerPictureURL");
         narratorID = intent.getStringExtra("narratorID");
         narratorName = intent.getStringExtra("narratorName");
         narratorPictureLocalURI = intent.getStringExtra("narratorPictureLocalURI");
+        narratorPictureURL = intent.getStringExtra("narratorPictureURL");
         narratorIsUser = intent.getBooleanExtra("narratorIsUser", false);
         associatedUsers = intent.getStringArrayExtra("associatedUsers");
         associatedGuests = intent.getStringArrayExtra("associatedGuests");
@@ -345,8 +351,8 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             }
 
             //initialize other header views
-            holderHeader.mPivInterviewer.loadImageFromSource(interviewerPictureLocalURI);
-            holderHeader.mPivNarrator.loadImageFromSource(narratorPictureLocalURI);
+            holderHeader.mPivInterviewer.loadImageFromSource(interviewerPictureURL);
+            holderHeader.mPivNarrator.loadImageFromSource(narratorPictureURL);
             holderHeader.mTextViewInterviewer.setText(interviewerName);
             holderHeader.mTextViewNarrator.setText(narratorName);
             holderHeader.mButtonComments.setText("" + (numberComments==0 ? mContext.getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
@@ -416,12 +422,12 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             int height = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
             ProfileImageView pivInterviewer = new ProfileImageView(mContext);
-            pivInterviewer.loadImageFromSource(interviewerPictureLocalURI);
+            pivInterviewer.loadImageFromSource(interviewerPictureURL);
             holderFooter.mLayoutScrollViewVisibility.addView(pivInterviewer);
             pivInterviewer.setLayoutParams(params);
             if (!interviewerID.equals(narratorID)) {
                 ProfileImageView pivNarrator = new ProfileImageView(mContext);
-                pivNarrator.loadImageFromSource(narratorPictureLocalURI);
+                pivNarrator.loadImageFromSource(narratorPictureURL);
                 holderFooter.mLayoutScrollViewVisibility.addView(pivNarrator);
                 pivNarrator.setLayoutParams(params);
             }
