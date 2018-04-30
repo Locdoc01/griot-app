@@ -100,13 +100,13 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         }
 
         //show profile pictures, if available, otherwise show placeholder
-        if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
+        if (data.getPictureURL() != null && data.getPictureURL().equals(getContext().getString(R.string.text_add_guest))) {
             holder.mPivPerson.setVisibility(View.GONE);
             holder.mImageViewAddPerson.setVisibility(View.VISIBLE);
         } else {
             holder.mPivPerson.setVisibility(View.VISIBLE);
             holder.mImageViewAddPerson.setVisibility(View.GONE);
-            holder.mPivPerson.loadImageFromSource(data.getPictureLocalURI());
+            holder.mPivPerson.loadImageFromSource(data.getPictureURL());
         }
 
         holder.mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));

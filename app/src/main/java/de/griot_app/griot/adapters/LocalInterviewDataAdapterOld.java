@@ -117,8 +117,8 @@ public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewDat
             }
         }
 
-        holder.mPivInterviewer.loadImageFromSource(data.getInterviewerPictureLocalURI());
-        holder.mPivNarrator.loadImageFromSource(data.getNarratorPictureLocalURI());
+        holder.mPivInterviewer.loadImageFromSource(data.getInterviewerPictureURL());
+        holder.mPivNarrator.loadImageFromSource(data.getNarratorPictureURL());
 
         holder.mTextViewInterviewer.setText(data.getInterviewerName());
         holder.mTextViewNarrator.setText(data.getNarratorName());
