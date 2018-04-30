@@ -120,7 +120,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mButtonCreateAccount = (Button) findViewById(R.id.button_create_account);
 
         //Some initializations
-        mProfileImage.setBlue();
         mUriLocalProfileImage = null;
 
         mCalendar = Calendar.getInstance();
@@ -285,8 +284,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mUriLocalProfileImage = result.getUri();
-                mProfileImage.getProfileImage().setImageURI(Uri.parse(mUriLocalProfileImage.getPath()));
-                mProfileImage.getProfileImage().setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mProfileImage.loadImageFromSource(mUriLocalProfileImage.getPath());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
