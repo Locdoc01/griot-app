@@ -44,12 +44,15 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
     private String medium;
     private String length;
     private String pictureLocalURI;
+    private String pictureURL;
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureLocalURI;
+    private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
     private String narratorPictureLocalURI;
+    private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
     private String[] associatedGuests;
@@ -82,12 +85,15 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         medium = mIntentReceived.getStringExtra("medium");
         length = mIntentReceived.getStringExtra("length");
         pictureLocalURI = mIntentReceived.getStringExtra("pictureLocalURI");
+        pictureURL = mIntentReceived.getStringExtra("pictureURL");
         interviewerID = mIntentReceived.getStringExtra("interviewerID");
         interviewerName = mIntentReceived.getStringExtra("interviewerName");
         interviewerPictureLocalURI = mIntentReceived.getStringExtra("interviewerPictureLocalURI");
+        interviewerPictureURL = mIntentReceived.getStringExtra("interviewerPictureURL");
         narratorID = mIntentReceived.getStringExtra("narratorID");
         narratorName = mIntentReceived.getStringExtra("narratorName");
         narratorPictureLocalURI = mIntentReceived.getStringExtra("narratorPictureLocalURI");
+        narratorPictureURL = mIntentReceived.getStringExtra("narratorPictureURL");
         narratorIsUser = mIntentReceived.getBooleanExtra("narratorIsUser", false);
         associatedUsers = mIntentReceived.getStringArrayExtra("associatedUsers");
         associatedGuests = mIntentReceived.getStringArrayExtra("associatedGuests");
@@ -179,12 +185,15 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         intent.putExtra("medium", medium);
         intent.putExtra("lengthQuestion", dataItem.getLength());
         intent.putExtra("pictureLocalURIQuestion", dataItem.getPictureLocalURI());
+        intent.putExtra("pictureURLQuestion", dataItem.getPictureURL());
         intent.putExtra("interviewerID", interviewerID);
         intent.putExtra("interviewerName", interviewerName);
         intent.putExtra("interviewerPictureLocalURI", interviewerPictureLocalURI);
+        intent.putExtra("interviewerPictureURL", interviewerPictureURL);
         intent.putExtra("narratorID", narratorID);
         intent.putExtra("narratorName", narratorName);
         intent.putExtra("narratorPictureLocalURI", narratorPictureLocalURI);
+        intent.putExtra("narratorPictureURL", narratorPictureURL);
         intent.putExtra("narratorIsUser", narratorIsUser);
 
         String[] associatedUsersQuestion = new String[dataItem.getAssociatedUsers().size()];
