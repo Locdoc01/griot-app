@@ -147,7 +147,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                     mOwnUserData.setContactID(ds.getKey());
                     mOwnUserData.setCategory(getString(R.string.text_yourself));
                 }
-
+/*
                 File file = null;
                 try {
                     file = File.createTempFile("profile_image" + "_", ".jpg");
@@ -178,6 +178,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                         }
                     });
                 } catch (Exception e) {}
+*/
+                doOnStartAfterLoadingUserInformation();
 
             }
             @Override
