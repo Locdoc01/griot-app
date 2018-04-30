@@ -117,8 +117,8 @@ public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewDat
             }
         }
 
-        try { holder.mPivInterviewer.getProfileImage().setImageURI(Uri.parse(data.getInterviewerPictureLocalURI())); } catch (Exception e) {}
-        try { holder.mPivNarrator.getProfileImage().setImageURI(Uri.parse(data.getNarratorPictureLocalURI())); } catch (Exception e) {}
+        holder.mPivInterviewer.loadImageFromSource(data.getInterviewerPictureLocalURI());
+        holder.mPivNarrator.loadImageFromSource(data.getNarratorPictureLocalURI());
 
         holder.mTextViewInterviewer.setText(data.getInterviewerName());
         holder.mTextViewNarrator.setText(data.getNarratorName());

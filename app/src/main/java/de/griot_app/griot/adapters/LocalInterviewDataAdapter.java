@@ -193,8 +193,8 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
             }
         }
 
-        try { holder.mPivInterviewer.getProfileImage().setImageURI(Uri.parse(dataItem.getInterviewerPictureLocalURI())); } catch (Exception e) {}
-        try { holder.mPivNarrator.getProfileImage().setImageURI(Uri.parse(dataItem.getNarratorPictureLocalURI())); } catch (Exception e) {}
+        holder.mPivInterviewer.loadImageFromSource(dataItem.getInterviewerPictureLocalURI());
+        holder.mPivNarrator.loadImageFromSource(dataItem.getNarratorPictureLocalURI());
 
         holder.mTextViewInterviewer.setText(dataItem.getInterviewerName());
         holder.mTextViewNarrator.setText(dataItem.getNarratorName());

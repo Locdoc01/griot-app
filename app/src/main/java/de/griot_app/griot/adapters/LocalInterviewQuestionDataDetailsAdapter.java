@@ -345,8 +345,8 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             }
 
             //initialize other header views
-            holderHeader.mPivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
-            holderHeader.mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+            holderHeader.mPivInterviewer.loadImageFromSource(interviewerPictureLocalURI);
+            holderHeader.mPivNarrator.loadImageFromSource(narratorPictureLocalURI);
             holderHeader.mTextViewInterviewer.setText(interviewerName);
             holderHeader.mTextViewNarrator.setText(narratorName);
             holderHeader.mButtonComments.setText("" + (numberComments==0 ? mContext.getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? mContext.getString(R.string.text_comment) : mContext.getString(R.string.text_comments)));
@@ -416,12 +416,12 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             int height = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
             ProfileImageView pivInterviewer = new ProfileImageView(mContext);
-            pivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
+            pivInterviewer.loadImageFromSource(interviewerPictureLocalURI);
             holderFooter.mLayoutScrollViewVisibility.addView(pivInterviewer);
             pivInterviewer.setLayoutParams(params);
             if (!interviewerID.equals(narratorID)) {
                 ProfileImageView pivNarrator = new ProfileImageView(mContext);
-                pivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+                pivNarrator.loadImageFromSource(narratorPictureLocalURI);
                 holderFooter.mLayoutScrollViewVisibility.addView(pivNarrator);
                 pivNarrator.setLayoutParams(params);
             }
