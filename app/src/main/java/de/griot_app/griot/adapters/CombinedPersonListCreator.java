@@ -211,7 +211,7 @@ public class CombinedPersonListCreator {
                 }
 
                 combineList();      // TODO: may be the wrong place, but ListView works as expected
-
+/*
                 for ( int i=0 ; i<list.size() ; i++ ) {
                     final int index = i;
                     File file = null;
@@ -239,6 +239,7 @@ public class CombinedPersonListCreator {
                         });
                     } catch (Exception e) {}
                 }
+                */
 
             }
 
