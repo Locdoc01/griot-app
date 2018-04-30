@@ -48,7 +48,7 @@
         app:layout_constraintGuide_percent="0.9978" />
 
     <ImageView
-        android:id="@+id/profile_image_plus"
+        android:id="@+id/imageView_plus"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="H, 1:1"
@@ -60,7 +60,7 @@
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/profile_image_circle"
+        android:id="@+id/imageView_circle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -71,7 +71,7 @@
         app:srcCompat="@drawable/piv_circle_906_plus1" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/circleImageView_profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"

@@ -4,7 +4,6 @@ package de.griot_app.griot.views;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,7 +27,8 @@ public class ProfileImageView extends ConstraintLayout {
     private Context mContext;
 
     //Views
-    private ImageView mProfileImagePlus;
+    private ImageView mPlus;
+    private ImageView mCircle;
     private CircleImageView mProfileImage;
 
     /**
@@ -58,8 +58,9 @@ public class ProfileImageView extends ConstraintLayout {
     private void init() {
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_profile_image, this);
         //Get references to layout objects
-        mProfileImage = v.findViewById(R.id.profile_image);
-        mProfileImagePlus = v.findViewById(R.id.profile_image_plus);
+        mProfileImage = v.findViewById(R.id.circleImageView_profile_image);
+        mCircle = v.findViewById(R.id.imageView_circle);
+        mPlus = v.findViewById(R.id.imageView_plus);
     }
 
     /**
@@ -68,6 +69,15 @@ public class ProfileImageView extends ConstraintLayout {
      */
     @Deprecated
     public CircleImageView getProfileImage() { return mProfileImage; }
+
+    @Deprecated
+    public ImageView getProfileImagePlus() { return mPlus; }
+
+    @Deprecated
+    public ImageView getProfileImageCircle() { return mCircle; }
+
+    @Deprecated
+    public void setBlue() {}
 
     /**
      * Loads an image from the passed image source and shows it. The source can be of the following types:
@@ -95,11 +105,19 @@ public class ProfileImageView extends ConstraintLayout {
 
 
     /**
-     * Sets the visibility of the plus sign acccording to the passed boolean value. Though, it would only be visible,
+     * Sets the visibility of the plus sign acccording to the value of showPlus. Though, it would only be visible,
      * if the image is cleared.
-     * @param plusVisible   If true, visibility is set to View.VISIBILE, otherwise to View.GONE
+     * @param showPlus   If true, visibility is set to View.VISIBILE, otherwise to View.INVISIBLE
      */
-    public void setPlusVisible(boolean plusVisible) {
-        mProfileImagePlus.setVisibility(plusVisible ? View.VISIBLE : View.GONE);
+    public void showPlus(boolean showPlus) {
+        mPlus.setVisibility(showPlus ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    /**
+     * Sets the visibility of the circular boarder acccording to the value of showCircle.
+     * @param showCircle   If true, visibility is set to View.VISIBILE, otherwise to View.INVISIBLE
+     */
+    public void showCircle(boolean showCircle) {
+        mCircle.setVisibility(showCircle ? View.VISIBLE : View.INVISIBLE);
     }
 }
