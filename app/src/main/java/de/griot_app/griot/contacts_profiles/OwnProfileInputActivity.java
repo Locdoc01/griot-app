@@ -187,7 +187,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
         Log.d(TAG, "doOnStartAfterLoadingUserInformation: ");
         //Set own user information to input views
         if (!mImageChanged) {
-            mProfileImage.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
+            mProfileImage.loadImageFromSource(mOwnUserData.getPictureURL());
         }
 
         mEditFirstname.setText(mOwnUserData.getFirstname());
@@ -222,8 +222,7 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mUriLocalProfileImage = result.getUri();
-                mProfileImage.getProfileImage().setImageURI(Uri.parse(mUriLocalProfileImage.getPath()));
-                mProfileImage.getProfileImage().setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mProfileImage.loadImageFromSource(mUriLocalProfileImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
