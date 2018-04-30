@@ -268,7 +268,7 @@ public class CombinedPersonListCreator {
                 LocalGuestData localGuestData = new LocalGuestData();
                 localGuestData.setFirstname(mContext.getString(R.string.text_add_guest));
                 localGuestData.setLastname("");
-                localGuestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
+//                localGuestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
                 if (mSingleLists.get(i).get(0).getFirstname() == null ) {
                     //Remove possible placeholder item, if list was empty
                     mSingleLists.get(i).remove(0);

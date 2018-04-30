@@ -100,7 +100,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         }
 
         //show profile pictures, if available, otherwise show placeholder
-        if (data.getPictureURL() != null && data.getPictureURL().equals(getContext().getString(R.string.text_add_guest))) {
+        if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
             holder.mPivPerson.setVisibility(View.GONE);
             holder.mImageViewAddPerson.setVisibility(View.VISIBLE);
         } else {
