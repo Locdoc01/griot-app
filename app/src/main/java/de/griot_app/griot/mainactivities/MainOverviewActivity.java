@@ -80,17 +80,17 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
-                    File fileInterviewer = null;
-                    File fileNarrator = null;
+          //          File fileInterviewer = null;
+          //          File fileNarrator = null;
                     try {
                         fileMediaCover = File.createTempFile("mediaCover" + i + "_", ".jpg");
-                        fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
-                        fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
+          //              fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
+          //              fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
                     } catch (Exception e) {
                     }
                     final String pathMediaCover = fileMediaCover.getPath();
-                    final String pathInterviewer = fileInterviewer.getPath();
-                    final String pathNarrator = fileNarrator.getPath();
+          //          final String pathInterviewer = fileInterviewer.getPath();
+          //          final String pathNarrator = fileNarrator.getPath();
 
                     //Obtain pictures for interview media covers from Firebase Storage
                     try {
@@ -110,7 +110,7 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                             }
                         });
                     } catch (Exception e) {}
-
+/*
                     //Obtain interviewer profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
@@ -148,6 +148,7 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                             }
                         });
                     } catch (Exception e) {}
+                    */
                 }
             }
             @Override
@@ -171,12 +172,15 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
         intent.putExtra("medium", dataItem.getMedium());
         intent.putExtra("length", dataItem.getLength());
         intent.putExtra("pictureLocalURI", dataItem.getPictureLocalURI());
+        intent.putExtra("pictureURL", dataItem.getPictureURL());
         intent.putExtra("interviewerID", dataItem.getInterviewerID());
         intent.putExtra("interviewerName", dataItem.getInterviewerName());
         intent.putExtra("interviewerPictureLocalURI", dataItem.getInterviewerPictureLocalURI());
+        intent.putExtra("interviewerPictureURL", dataItem.getInterviewerPictureURL());
         intent.putExtra("narratorID", dataItem.getNarratorID());
         intent.putExtra("narratorName", dataItem.getNarratorName());
         intent.putExtra("narratorPictureLocalURI", dataItem.getNarratorPictureLocalURI());
+        intent.putExtra("narratorPictureURL", dataItem.getNarratorPictureURL());
         intent.putExtra("narratorIsUser", dataItem.getNarratorIsUser());
 
         String[] associatedUsers = new String[dataItem.getAssociatedUsers().size()];
