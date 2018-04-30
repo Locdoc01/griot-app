@@ -117,6 +117,7 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                     mLocalUserData = ds.getValue(LocalUserData.class);
                 }
 
+/*
                 File file = null;
                 try {
                     file = File.createTempFile("profile_image" + "_", ".jpg");
@@ -141,7 +142,8 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                     });
                 } catch (Exception e) {
                 }
-
+*/
+                mProfileImage.loadImageFromSource(mLocalUserData.getPictureURL());
                 //initialize the views with the obtained data
                 mEditFirstname.setText(mLocalUserData.getFirstname());
                 mEditLastname.setText((mLocalUserData.getLastname()));

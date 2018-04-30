@@ -144,17 +144,17 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
-                    File fileInterviewer = null;
-                    File fileNarrator = null;
+            //        File fileInterviewer = null;
+            //        File fileNarrator = null;
                     try {
                         fileMediaCover = File.createTempFile("mediaCover" + i + "_", ".jpg");
-                        fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
-                        fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
+            //            fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
+            //            fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
                     } catch (Exception e) {
                     }
                     final String pathMediaCover = fileMediaCover.getPath();
-                    final String pathInterviewer = fileInterviewer.getPath();
-                    final String pathNarrator = fileNarrator.getPath();
+            //        final String pathInterviewer = fileInterviewer.getPath();
+            //        final String pathNarrator = fileNarrator.getPath();
 
                     //Obtain pictures for interview media covers from Firebase Storage
                     try {
@@ -174,7 +174,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                             }
                         });
                     } catch (Exception e) {}
-
+/*
                     //Obtain interviewer profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
@@ -212,6 +212,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                             }
                         });
                     } catch (Exception e) {}
+                    */
                 }
             }
             @Override
@@ -234,7 +235,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
         mTextViewUser.setText(mOwnUserData.getFirstname() + " " + mOwnUserData.getLastname());
-        mPivUser.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
+        mPivUser.loadImageFromSource(mOwnUserData.getPictureURL());
     }
 
 
