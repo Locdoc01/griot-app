@@ -3,7 +3,6 @@ package de.griot_app.griot.details_content;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
-import de.griot_app.griot.GlideApp;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
@@ -152,7 +149,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         }
 */
 
-        imageLoader.load(mMediaPlayer, pictureURL);
+        mImageLoader.load(mMediaPlayer, pictureURL);
         if (medium.equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);

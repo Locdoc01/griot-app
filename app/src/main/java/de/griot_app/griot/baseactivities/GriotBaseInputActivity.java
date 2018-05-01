@@ -24,7 +24,7 @@ import de.griot_app.griot.R;
  */
 public abstract class GriotBaseInputActivity extends FirebaseActivity implements View.OnTouchListener {
 
-    protected ImageLoader imageLoader;
+    protected ImageLoader mImageLoader;
 
     protected Toolbar mAppbar;
     protected TextView mTitle;
@@ -61,7 +61,7 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
 
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
 
-        imageLoader = new ImageLoader(this);
+        mImageLoader = new ImageLoader(this);
 
         //set up the Toolbar as app bar
         mAppbar = (Toolbar) findViewById(R.id.base_app_bar);
