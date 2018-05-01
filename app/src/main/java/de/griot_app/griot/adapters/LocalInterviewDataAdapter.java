@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.Helper;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
@@ -35,11 +35,14 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
 
     private static final String TAG = LocalInterviewDataAdapter.class.getSimpleName();
 
-    private static Context mContext;
+    private Context mContext;
+
+    private ImageLoader mImageLoader;
+
     private ArrayList<LocalInterviewData> mListData;
     private static OnItemClickListener<LocalInterviewData> mListener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {  //TODO: ok if not static??
         //Views, which are shown in every RecyclerView item
         private TextView mTextViewTitle;
         private TextView mTextViewDate;
@@ -73,6 +76,7 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
             mButtonNarrator = (FrameLayout) itemView.findViewById(R.id.button_narrator);
             mButtonComments = (TextView) itemView.findViewById(R.id.button_comments);
         }
+
 
         public void bindClickListener(final LocalInterviewData dataItem) {
             View.OnClickListener clickListener = new View.OnClickListener() {
@@ -137,6 +141,7 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
     //constructor
     public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> listData) {
         mContext = context;
+        mImageLoader = new ImageLoader(mContext);
         mListData = listData;
         mListener = new OnItemClickListener<LocalInterviewData>() {
             @Override
@@ -172,7 +177,7 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
         holder.mTextViewTitle.setText(dataItem.getTitle());
         holder.mTextViewDate.setText(dataItem.getDateDay() + "." + dataItem.getDateMonth() + "." + dataItem.getDateYear());
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
-
+/*
         if (dataItem.getPictureLocalURI() != null) {
             if (Uri.parse(dataItem.getPictureLocalURI()) != null) {
                 ImageView test = new ImageView(mContext);
@@ -192,6 +197,16 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
                 }
             }
         }
+*/
+        mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL());
+        if (dataItem.getMedium().equals("audio")) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            holder.mImageViewMediaCover.setColorFilter(filter);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+        }
+
 
         holder.mPivInterviewer.loadImageFromSource(dataItem.getInterviewerPictureURL());
         holder.mPivNarrator.loadImageFromSource(dataItem.getNarratorPictureURL());

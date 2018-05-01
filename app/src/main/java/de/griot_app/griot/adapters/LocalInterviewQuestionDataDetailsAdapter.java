@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.griot_app.griot.Helper;
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
@@ -50,6 +50,9 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
     private static final int VIEWTYPE_FOOTER = 2;
 
     private Context mContext;
+
+    private ImageLoader mImageLoader;
+
     private ArrayList<LocalInterviewQuestionData> mListData;
     private OnItemClickListener<LocalInterviewQuestionData> mListener;
 
@@ -222,6 +225,7 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
     //constructor. If used, header, footer and tags for each item will be shown
     public LocalInterviewQuestionDataDetailsAdapter(Context context, ArrayList<LocalInterviewQuestionData> listData, Intent intent) {
         mContext = context;
+        mImageLoader = new ImageLoader(mContext);
         mListData = listData;
         mListener = new OnItemClickListener<LocalInterviewQuestionData>() {
             @Override
@@ -330,6 +334,7 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             ViewHolderHeader holderHeader = (ViewHolderHeader) holder;
             //initialize header views with intent data:
             //initialize mediaPlayer
+/*
             if (pictureLocalURI != null) {
                 if (Uri.parse(pictureLocalURI) != null) {
                     ImageView test = new ImageView(mContext);
@@ -348,6 +353,15 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
                         }
                     }
                 }
+            }
+*/
+            mImageLoader.load(holderHeader.mMediaPlayer, pictureURL);
+            if (medium.equals("audio")) {
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                holderHeader.mMediaPlayer.setColorFilter(filter);
+                holderHeader.mMediaPlayerForeground.setVisibility(View.VISIBLE);
             }
 
             //initialize other header views
@@ -446,6 +460,7 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
             holderItem.mTextViewDate.setText(dataItem.getDateDay() + "." + dataItem.getDateMonth() + "." + dataItem.getDateYear());
             holderItem.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
 
+            /*
             if (dataItem.getPictureLocalURI() != null) {
                 if (Uri.parse(dataItem.getPictureLocalURI()) != null) {
                     holderItem.mImageViewMediaCover.setImageURI(Uri.parse(dataItem.getPictureLocalURI()));
@@ -460,6 +475,16 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
                     }
                 }
             }
+*/
+            mImageLoader.load(holderItem.mImageViewMediaCover, dataItem.getPictureURL());
+            if (dataItem.getMedium().equals("audio")) {
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.setSaturation(0);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                holderItem.mImageViewMediaCover.setColorFilter(filter);
+                holderItem.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+            }
+
 
             //initialize TagView
             int n = dataItem.getTags().size();

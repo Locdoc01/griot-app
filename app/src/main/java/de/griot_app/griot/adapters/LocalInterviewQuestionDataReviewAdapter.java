@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.griot_app.griot.Helper;
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
@@ -45,6 +46,9 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
     private static final String TAG = LocalInterviewQuestionDataReviewAdapter.class.getSimpleName();
 
     private Context mContext;
+
+    private ImageLoader mImageLoader;
+
     private ArrayList<LocalInterviewQuestionData> mListData;
     // private OnItemClickListener<LocalInterviewQuestionData> mListener;  //TODO löschen ??
 
@@ -136,6 +140,7 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
     //constructor. If used, header, footer and tags for each item will be shown
     public LocalInterviewQuestionDataReviewAdapter(Context context, ArrayList<LocalInterviewQuestionData> listData) {
         mContext = context;
+        mImageLoader = new ImageLoader(mContext);
         mListData = listData;
         /* // TODO löschen ??
         mListener = new OnItemClickListener<LocalInterviewQuestionData>() {
@@ -179,7 +184,7 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
         holder.mTextViewQuestion.setText("" + (position + 1) + ". " + dataItem.getQuestion());
         holder.mTextViewDate.setText(dataItem.getDateDay() + "." + dataItem.getDateMonth() + "." + dataItem.getDateYear());
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
-
+/*
         if (dataItem.getPictureLocalURI() != null) {
             if (Uri.parse(dataItem.getPictureLocalURI()) != null) {
                 holder.mImageViewMediaCover.setImageURI(Uri.parse(dataItem.getPictureLocalURI()));
@@ -193,6 +198,15 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
                     holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
                 }
             }
+        }
+*/
+        mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL());
+        if (dataItem.getMedium().equals("audio")) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            holder.mImageViewMediaCover.setColorFilter(filter);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
         }
 
         holder.mTextViewTags.setVisibility(View.GONE);
