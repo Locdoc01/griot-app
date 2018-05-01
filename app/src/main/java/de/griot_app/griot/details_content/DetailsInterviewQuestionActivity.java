@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
+import de.griot_app.griot.GlideApp;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
@@ -125,7 +127,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mLayoutScrollViewTags = (LinearLayout) findViewById(R.id.layout_scrollView_tags);
         mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
-
+/*
         //Initialize mediaPlayer
         if (pictureLocalURI != null) {
             if (Uri.parse(pictureLocalURI) != null) {
@@ -134,8 +136,10 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                 if (test.getDrawable() != null) {
                     mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
                     //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
+                     // mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
                     if (medium.equals("audio")) {
-                        mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        //  mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                         ColorMatrix matrix = new ColorMatrix();
                         matrix.setSaturation(0);
@@ -145,6 +149,16 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
                     }
                 }
             }
+        }
+*/
+
+        imageLoader.load(mMediaPlayer, pictureURL);
+        if (medium.equals("audio")) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            mMediaPlayer.setColorFilter(filter);
+            mMediaPlayerForeground.setVisibility(View.VISIBLE);
         }
 
         //Initialize other views
