@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.R;
 
 /**
@@ -23,8 +24,9 @@ import de.griot_app.griot.R;
  */
 public abstract class GriotBaseInputActivity extends FirebaseActivity implements View.OnTouchListener {
 
-    protected Toolbar mAppbar;
+    protected ImageLoader imageLoader;
 
+    protected Toolbar mAppbar;
     protected TextView mTitle;
 
     protected Button mButtonLeft;
@@ -58,6 +60,8 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         setContentView(getSubClassLayoutId());
 
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
+
+        imageLoader = new ImageLoader(this);
 
         //set up the Toolbar as app bar
         mAppbar = (Toolbar) findViewById(R.id.base_app_bar);

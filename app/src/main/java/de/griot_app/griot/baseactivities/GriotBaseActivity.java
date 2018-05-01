@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
@@ -26,10 +27,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.questionmail.ComposeQuestionRequestInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
@@ -49,6 +53,8 @@ import de.griot_app.griot.recordfunctions.QuestionCarousel;
  */
  //TODO main menu & options menues
 public abstract class GriotBaseActivity extends FirebaseActivity implements View.OnClickListener {
+
+    protected ImageLoader imageLoader;
 
     protected Toolbar mAppBar;
     protected TextView mTitle;
@@ -90,6 +96,8 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         setContentView(getSubClassLayoutId());
 
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
+
+        imageLoader = new ImageLoader(this);
 
         //set up the Toolbar as app bar
         mAppBar = (Toolbar) findViewById(R.id.base_app_bar);
