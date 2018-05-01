@@ -128,9 +128,8 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
                 mRecyclerViewInterviewQuestions.setLayoutManager(new LinearLayoutManager(DetailsInterviewActivity.this));
                 mRecyclerViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataDetailsAdapter);
                 mLocalInterviewQuestionDataDetailsAdapter.setOnItemClickListener(DetailsInterviewActivity.this);
-
+/*
                 //create temporary files to store the pictures from Firebase Storage
-
                 for ( int i=0 ; i<mListLocalInterviewQuestionData.size() ; i++ ) {
                     final int index = i;
                     File fileMediaCover = null;
@@ -158,8 +157,8 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
                             }
                         });
                     } catch (Exception e) {}
-
                 }
+                */
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
