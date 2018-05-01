@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -24,7 +26,11 @@ public class ProfileImageView extends ConstraintLayout {
 
     private static final String TAG = ProfileImageView.class.getSimpleName();
 
+    private static final int PLACERHOLDER_RESOURCE = R.drawable.avatar_single;
+
     private Context mContext;
+
+    private ImageLoader imageLoader;
 
     //Views
     private ImageView mPlus;
@@ -56,6 +62,7 @@ public class ProfileImageView extends ConstraintLayout {
      * Initializes the ProfilImageView. After initialization it shows only the circular border and the image is cleared.
      */
     private void init() {
+        imageLoader = new ImageLoader(mContext);
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_profile_image, this);
         //Get references to layout objects
         mProfileImage = v.findViewById(R.id.circleImageView_profile_image);
@@ -88,11 +95,7 @@ public class ProfileImageView extends ConstraintLayout {
      * @param imageSource   image source, which can be of any type including null.
      */
     public <T> void loadImageFromSource(T imageSource) {
-        Glide.with(mContext)
-                .load(imageSource)
-                .error(Glide.with(mContext)
-                        .load(R.drawable.avatar_single))
-                .into(mProfileImage);
+        imageLoader.load(mProfileImage, imageSource, PLACERHOLDER_RESOURCE);
     }
 
     /**
