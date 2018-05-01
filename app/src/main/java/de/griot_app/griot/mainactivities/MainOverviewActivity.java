@@ -75,7 +75,7 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                 mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainOverviewActivity.this));
                 mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
                 mLocalInterviewDataAdapter.setOnItemClickListener(MainOverviewActivity.this);
-
+/*
                 //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
@@ -110,7 +110,8 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                             }
                         });
                     } catch (Exception e) {}
-/*
+
+
                     //Obtain interviewer profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
@@ -148,8 +149,9 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
                             }
                         });
                     } catch (Exception e) {}
-                    */
+
                 }
+                */
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
