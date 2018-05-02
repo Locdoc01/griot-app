@@ -205,6 +205,9 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             holder.mImageViewMediaCover.setColorFilter(filter);
             holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+        } else {
+            holder.mImageViewMediaCover.setColorFilter(null);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.GONE);
         }
 
 

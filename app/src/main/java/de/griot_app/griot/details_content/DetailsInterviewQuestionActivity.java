@@ -156,6 +156,9 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             mMediaPlayer.setColorFilter(filter);
             mMediaPlayerForeground.setVisibility(View.VISIBLE);
+        } else {
+            mMediaPlayer.setColorFilter(null);
+            mMediaPlayerForeground.setVisibility(View.GONE);
         }
 
         //Initialize other views

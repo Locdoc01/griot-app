@@ -207,6 +207,9 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             holder.mImageViewMediaCover.setColorFilter(filter);
             holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+        } else {
+            holder.mImageViewMediaCover.setColorFilter(null);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.GONE);
         }
 
         holder.mTextViewTags.setVisibility(View.GONE);

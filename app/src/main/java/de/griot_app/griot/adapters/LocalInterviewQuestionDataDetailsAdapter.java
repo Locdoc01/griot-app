@@ -362,6 +362,9 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 holderHeader.mMediaPlayer.setColorFilter(filter);
                 holderHeader.mMediaPlayerForeground.setVisibility(View.VISIBLE);
+            } else {
+                holderHeader.mMediaPlayer.setColorFilter(null);
+                holderHeader.mMediaPlayerForeground.setVisibility(View.GONE);
             }
 
             //initialize other header views
@@ -483,6 +486,9 @@ public class LocalInterviewQuestionDataDetailsAdapter extends RecyclerView.Adapt
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
                 holderItem.mImageViewMediaCover.setColorFilter(filter);
                 holderItem.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+            } else {
+                holderItem.mImageViewMediaCover.setColorFilter(null);
+                holderItem.mImageViewMediaCoverForeground.setVisibility(View.GONE);
             }
 
 
