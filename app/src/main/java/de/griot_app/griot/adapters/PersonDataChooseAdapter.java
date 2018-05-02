@@ -2,7 +2,6 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,20 +24,20 @@ import java.util.ArrayList;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 
 /**
- * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of PersonData-objects into ListView items.
  *
  * This adapter is specialized for ListViews, which allows the user to choose a contact.
  * Use CombinedPersonListCreator to obtain a combined ListView of all contacts and set CombinedPersonListCreator.mMode either to
  * CombinedPersonListCreator.PERSONS_CHOOSE_MODE or CombinedPersonListCreator.GROUPS_CHOOSE_MODE, using setMode().
  */
-public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> {
+public class PersonDataChooseAdapter extends ArrayAdapter<PersonData> {
 
-    private static final String TAG = LocalPersonDataChooseAdapter.class.getSimpleName();
+    private static final String TAG = PersonDataChooseAdapter.class.getSimpleName();
 
     private static class ViewHolder {
         //Views, which are shown in every ListView item
@@ -54,7 +53,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     private ConstraintLayout mTouchedParent = null;
 
     //constructor
-    public LocalPersonDataChooseAdapter(Context context, ArrayList<LocalPersonData> data) {
+    public PersonDataChooseAdapter(Context context, ArrayList<PersonData> data) {
         super(context, 0, data);
     }
 
@@ -63,7 +62,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // get the data item for the position
-        final LocalPersonData data = getItem(position);
+        final PersonData data = getItem(position);
 
         ViewHolder holder;
         if (convertView==null) {

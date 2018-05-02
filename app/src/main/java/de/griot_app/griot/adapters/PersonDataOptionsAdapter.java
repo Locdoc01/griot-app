@@ -2,7 +2,6 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -23,20 +22,20 @@ import java.util.ArrayList;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 
 /**
- * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of PersonData-objects into ListView items.
  *
  * This adapter is specialized for ListViews, which shows an options button.
  * Use CombinedPersonListCreator to obtain a combined ListView of all contacts and set CombinedPersonListCreator.mMode either to
  * CombinedPersonListCreator.PERSONS_OPTIONS_MODE or CombinedPersonListCreator.GROUPS_OPTIONS_MODE, using setMode().
  */
-public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData> {
+public class PersonDataOptionsAdapter extends ArrayAdapter<PersonData> {
 
-    private static final String TAG = LocalPersonDataOptionsAdapter.class.getSimpleName();
+    private static final String TAG = PersonDataOptionsAdapter.class.getSimpleName();
     
     //Views, which are shown in every ListView item
     private FrameLayout mItemBackground;
@@ -48,7 +47,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     private ImageView mButtonOptions;
 
     //constructor
-    public LocalPersonDataOptionsAdapter(Context context, ArrayList<LocalPersonData> data) {
+    public PersonDataOptionsAdapter(Context context, ArrayList<PersonData> data) {
         super(context, 0, data);
     }
 
@@ -56,7 +55,7 @@ public class LocalPersonDataOptionsAdapter extends ArrayAdapter<LocalPersonData>
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final LocalPersonData data = getItem(position);
+        final PersonData data = getItem(position);
         LayoutInflater inflater = LayoutInflater.from(getContext());
         if (convertView==null) {
             convertView = inflater.inflate(R.layout.listitem_contact, parent, false);

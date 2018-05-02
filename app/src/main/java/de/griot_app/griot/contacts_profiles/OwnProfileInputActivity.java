@@ -68,9 +68,6 @@ public class OwnProfileInputActivity extends GriotBaseInputActivity implements D
     private Calendar mCalendar;
     private Uri mUriLocalProfileImage;
 
-    //Data class object
-    private UserData mUserData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

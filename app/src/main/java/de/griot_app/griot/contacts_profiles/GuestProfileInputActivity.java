@@ -1,4 +1,4 @@
-    package de.griot_app.griot.contacts_profiles;
+package de.griot_app.griot.contacts_profiles;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -34,7 +34,6 @@ import java.util.Calendar;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.GuestData;
-import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.views.ProfileImageView;
 
 /**
@@ -82,7 +81,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
     //Data class object
     private GuestData mGuestData;
-    private LocalGuestData mLocalGuestData;
+    private GuestData mLocalGuestData;  //TODO: change implementation, so that just one GuestData is used
 
 
     @Override
@@ -342,7 +341,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //On failure mLocalUserData.pictureURL will remain empty.
+                        //On failure mUserData.pictureURL will remain empty.
                         Toast.makeText(GuestProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mGuestData);
@@ -355,14 +354,14 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 @Override
                 public void onSuccess(Uri uri) {
                     mGuestData.setPictureURL(uri.toString());
-                    // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
+                    // if no profile image was chosen, mUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
                     mDatabaseRef.setValue(mGuestData);
                     doAfterUpload();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // on failure mLocalUserData.pictureURL will remain empty.
+                    // on failure mUserData.pictureURL will remain empty.
                     Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                     mDatabaseRef.setValue(mGuestData);
                     doAfterUpload();
@@ -430,7 +429,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        mLocalGuestData = ds.getValue(LocalGuestData.class);
+                        mLocalGuestData = ds.getValue(GuestData.class);
                     }
 /*
                         File file = null;
@@ -465,7 +464,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
                     if (mLocalGuestData.getBday() != null) {
-                        //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: delete
+                        //   mCalendar.setTime(mUserData.getBirthday());  //TODO: delete
                         int day = mLocalGuestData.getBday();
                         int month = mLocalGuestData.getBmonth();
                         int year = mLocalGuestData.getByear();

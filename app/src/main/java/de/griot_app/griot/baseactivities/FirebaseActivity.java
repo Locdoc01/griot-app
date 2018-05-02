@@ -24,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.startactivities.LoginActivity;
 
 /**
@@ -45,8 +45,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected FirebaseUser mUser;
     protected String mUserID;
-    protected LocalUserData mLocalUserData;
-    protected LocalUserData mOwnUserData;
+    protected UserData mUserData;
+    protected UserData mOwnUserData;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
@@ -143,7 +143,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mOwnUserData = ds.getValue(LocalUserData.class);
+                    mOwnUserData = ds.getValue(UserData.class);
                     mOwnUserData.setContactID(ds.getKey());
                     mOwnUserData.setCategory(getString(R.string.text_yourself));
                 }
@@ -187,7 +187,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         });
     }
 
-    public LocalUserData getOwnUserData() { return mOwnUserData; }
+    public UserData getOwnUserData() { return mOwnUserData; }
 
 }
 

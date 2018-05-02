@@ -1,8 +1,6 @@
 package de.griot_app.griot.contacts_profiles;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,18 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-
-import java.io.File;
 
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.views.ProfileImageView;
 
 /**
@@ -114,7 +107,7 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mLocalUserData = ds.getValue(LocalUserData.class);
+                    mUserData = ds.getValue(UserData.class);
                 }
 
 /*
@@ -126,33 +119,33 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                 final String path = file.getPath();
 
                 try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mLocalUserData.getPictureURL());
+                    mStorageRef = mStorage.getReferenceFromUrl(mUserData.getPictureURL());
                     mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mLocalUserData.setPictureLocalURI(path);
-                            mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalUserData.getPictureLocalURI()));
+                            mUserData.setPictureLocalURI(path);
+                            mProfileImage.getProfileImage().setImageURI(Uri.parse(mUserData.getPictureLocalURI()));
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mLocalUserData.setPictureLocalURI("");
+                            mUserData.setPictureLocalURI("");
                         }
                     });
                 } catch (Exception e) {
                 }
 */
-                mProfileImage.loadImageFromSource(mLocalUserData.getPictureURL());
+                mProfileImage.loadImageFromSource(mUserData.getPictureURL());
                 //initialize the views with the obtained data
-                mEditFirstname.setText(mLocalUserData.getFirstname());
-                mEditLastname.setText((mLocalUserData.getLastname()));
-                int day = mLocalUserData.getBday();
-                int month = mLocalUserData.getBmonth();
-                int year = mLocalUserData.getByear();
+                mEditFirstname.setText(mUserData.getFirstname());
+                mEditLastname.setText((mUserData.getLastname()));
+                int day = mUserData.getBday();
+                int month = mUserData.getBmonth();
+                int year = mUserData.getByear();
                 mTextViewDate.setText("" + day + "." + (month + 1) + "." + year);
-                mEditEmail.setText((mLocalUserData.getEmail()));
-//                    mTextViewRelationship.setText(((mLocalUserData).getRelationship()));  //TODO
+                mEditEmail.setText((mUserData.getEmail()));
+//                    mTextViewRelationship.setText(((mUserData).getRelationship()));  //TODO
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

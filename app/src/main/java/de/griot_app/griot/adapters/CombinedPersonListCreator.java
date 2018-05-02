@@ -1,29 +1,24 @@
 package de.griot_app.griot.adapters;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.FirebaseActivity;
-import de.griot_app.griot.dataclasses.LocalGuestData;
-import de.griot_app.griot.dataclasses.LocalPersonData;
-import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.GuestData;
+import de.griot_app.griot.dataclasses.PersonData;
+import de.griot_app.griot.dataclasses.UserData;
 
 /**
  * Loads data lists from Firebase Database from several locations in several single querys,
@@ -60,16 +55,17 @@ public class CombinedPersonListCreator {
     private Activity mContext;
 
     //Own user information
-    private LocalUserData mOwnUserData;
+//    private UserData mOwnUserData;
+    private UserData mOwnUserData;
 
     //The combined ListView, that is shown on the screen
     private ListView mCombinedListView;
 
     //The combined data list
-    private ArrayList<LocalPersonData> mCombinedList;
+    private ArrayList<PersonData> mCombinedList;
 
     //A list of single data lists, that are going to be combined
-    private ArrayList<ArrayList<LocalPersonData>> mSingleLists;
+    private ArrayList<ArrayList<PersonData>> mSingleLists;
 
     //Firebase classes
     private FirebaseStorage mStorage;
@@ -79,7 +75,7 @@ public class CombinedPersonListCreator {
     private ArrayList<Query> mDatabaseQuerys;
 
     //Data-View-Adapter for the ListView
-    private ArrayAdapter<LocalPersonData> mAdapter;
+    private ArrayAdapter<PersonData> mAdapter;
 
     //Necessary to prevent multiple additions of "add guest"-item
     private boolean mAddGuestAdded = false;
@@ -132,7 +128,7 @@ public class CombinedPersonListCreator {
         Log.d(TAG, "add:");
 
         mDatabaseQuerys.add(query);
-        mSingleLists.add(new ArrayList<LocalPersonData>());
+        mSingleLists.add(new ArrayList<PersonData>());
 
         return this;
     }
@@ -142,7 +138,7 @@ public class CombinedPersonListCreator {
      * Returns the Data-View-Adapter for the ListView
      * @return mAdapter
      */
-    public ArrayAdapter<LocalPersonData> getAdapter() { return mAdapter; }
+    public ArrayAdapter<PersonData> getAdapter() { return mAdapter; }
 
     /**
      * Set the mode for the ListView. Posibile values are PERSONS_OPTIONS_MODE (0), PERSONS_CHOOSE_MODE (1), GROUPS_OPTIONS_MODE (2) and GROUPS_CHOOSE_MODE (3)
@@ -178,7 +174,7 @@ public class CombinedPersonListCreator {
      * @param query The database query, from which the data will be obtained.
      * @return The created ValueEventListener
      */
-    private ValueEventListener getDatabaseValueEventListener(final ArrayList<LocalPersonData> list, final Query query) {
+    private ValueEventListener getDatabaseValueEventListener(final ArrayList<PersonData> list, final Query query) {
         Log.d(TAG, "getDatabaseValueEventListener:");
 
         return new ValueEventListener() {
@@ -189,15 +185,15 @@ public class CombinedPersonListCreator {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //Ignore the item, if it represents the user itself
                     if ((mOwnUserData != null && !ds.getKey().equals(mOwnUserData.getContactID())) || mOwnUserData == null) {
-                        LocalPersonData localPersonData = ds.getValue(LocalPersonData.class);
-                        localPersonData.setContactID(ds.getKey());
-                        list.add(localPersonData);
+                        PersonData personData = ds.getValue(PersonData.class);
+                        personData.setContactID(ds.getKey());
+                        list.add(personData);
                     }
                 }
 
                 //If list is empty, a placeholder item for the category is added
                 if (list.isEmpty()) {
-                    list.add(new LocalPersonData());
+                    list.add(new PersonData());
                 }
 
                 switch (query.getRef().getKey()) {
@@ -265,10 +261,10 @@ public class CombinedPersonListCreator {
         }
         for (int i = 0; i< mDatabaseQuerys.size() ; i++ ) {
             if (!mAddGuestAdded && mSingleLists.get(i).get(0).getCategory().equals(mContext.getString(R.string.text_your_guests))) {
-                LocalGuestData localGuestData = new LocalGuestData();
-                localGuestData.setFirstname(mContext.getString(R.string.text_add_guest));
-                localGuestData.setLastname("");
-//                localGuestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
+                GuestData guestData = new GuestData();
+                guestData.setFirstname(mContext.getString(R.string.text_add_guest));
+                guestData.setLastname("");
+//                guestData.setPictureLocalURI(mContext.getString(R.string.text_add_guest));
                 if (mSingleLists.get(i).get(0).getFirstname() == null ) {
                     //Remove possible placeholder item, if list was empty
                     mSingleLists.get(i).remove(0);
@@ -276,7 +272,7 @@ public class CombinedPersonListCreator {
                     //Remove category from first proper guest item, if list was not empty
                     mSingleLists.get(i).get(0).setCategory(null);
                 }
-                mSingleLists.get(i).add(0, localGuestData);
+                mSingleLists.get(i).add(0, guestData);
                 mSingleLists.get(i).get(0).setCategory(mContext.getString(R.string.text_your_guests));
                 mAddGuestAdded = true;
             }
@@ -287,10 +283,10 @@ public class CombinedPersonListCreator {
         }
         switch (mMode) {
             case PERSONS_CHOOSE_MODE:
-                mAdapter = new LocalPersonDataChooseAdapter(mContext, mCombinedList);
+                mAdapter = new PersonDataChooseAdapter(mContext, mCombinedList);
                 break;
             case PERSONS_OPTIONS_MODE:
-                mAdapter = new LocalPersonDataOptionsAdapter(mContext, mCombinedList);
+                mAdapter = new PersonDataOptionsAdapter(mContext, mCombinedList);
                 break;
             case GROUPS_CHOOSE_MODE:
                 // TODO

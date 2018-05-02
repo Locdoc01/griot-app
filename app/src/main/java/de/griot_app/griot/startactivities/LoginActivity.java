@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.FirebaseActivity;
@@ -94,9 +93,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     private EditText mEditSignInPassword;
     private TextView mButtonForgotten;
     private Button mButtonSignIn;
-
-    //Data class object for user information
-    private UserData mUserData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -634,7 +630,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                         mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                //On success the remote downloadURL will be stored to mLocalUserData.pictureURL
+                                                //On success the remote downloadURL will be stored to mUserData.pictureURL
                                                 //TODO: find alternative
                                                 mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                                                 //Send data to database (must be here, after profile picture was send to Firebase Storage, otherwise pictureURL will be empty in database)
@@ -643,7 +639,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                //On failure mLocalUserData.pictureURL will remain empty
+                                                //On failure mUserData.pictureURL will remain empty
                                                 Toast.makeText(LoginActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                                                 Log.e(getSubClassTAG(), "Error uploading profile image");
                                                 mDatabaseRef.setValue(mUserData);
@@ -656,14 +652,14 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 mUserData.setPictureURL(uri.toString());
-                                                //If no profile image was chosen, mLocalUserData.pictureURL will be set to a downloadUrl of a standard avatar picture
+                                                //If no profile image was chosen, mUserData.pictureURL will be set to a downloadUrl of a standard avatar picture
                                                 // located in Storage folder "users"
                                                 mDatabaseRef.setValue(mUserData);
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception exception) {
-                                                //On failure mLocalUserData.pictureURL will remain empty.
+                                                //On failure mUserData.pictureURL will remain empty.
                                                 Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                                                 mDatabaseRef.setValue(mUserData);
                                             }

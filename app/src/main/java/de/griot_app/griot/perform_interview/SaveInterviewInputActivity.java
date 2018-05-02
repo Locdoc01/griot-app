@@ -40,7 +40,7 @@ import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.dataclasses.InterviewQuestionData;
-import de.griot_app.griot.dataclasses.LocalPersonData;
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.recordfunctions.RecordActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
@@ -286,7 +286,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
+        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate PersonData-object
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -461,7 +461,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         if (mButtonRight.getText().toString().equals(getString(R.string.button_next))) {
             mTextViewPersonTop.setText(getString(R.string.text_recorded_person));
 
-            LocalPersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
+            PersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
             narratorID = item.getContactID();
             narratorName = item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname());
             narratorPictureURL = item.getPictureURL();
