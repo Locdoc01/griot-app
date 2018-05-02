@@ -142,7 +142,8 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             data.setDateDay(dateDay);
             data.setMedium(medium==RecordActivity.MEDIUM_VIDEO ? "video" : "audio");
 
-            data.setPictureLocalURI(recordedCoverFilePaths[i]);
+            //data.setPictureLocalURI(recordedCoverFilePaths[i]);
+            data.setPictureURL(recordedCoverFilePaths[i]);
             if (tags[i] != null) {
                 for (int j = 0; j < tags[i].length; j++) {
                     data.getTags().put(tags[i][j], true);
