@@ -139,7 +139,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                         + (mVideoCount==1 ? getString(R.string.text_video) : getString(R.string.text_videos)) + " / "
                         + (mAudioCount==0 ? getString(R.string.text_none) : mAudioCount) + " "
                         + (mAudioCount==1 ? getString(R.string.text_audio) : getString(R.string.text_audios)));
-
+/*
                 //Create temporary files to store the pictures from Firebase Storage
                 for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
                     final int index = i;
@@ -174,7 +174,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                             }
                         });
                     } catch (Exception e) {}
-/*
+
                     //Obtain interviewer profile pictures from Firebase Storage
                     try {
                         mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
@@ -212,8 +212,9 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
                             }
                         });
                     } catch (Exception e) {}
-                    */
+
                 }
+                */
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
