@@ -1,7 +1,7 @@
 package de.griot_app.griot.dataclasses;
 
 /**
- * Bases data class for person data classes
+ * Base data class for person data classes
  */
 public class PersonData extends ContactData {
 
@@ -19,28 +19,6 @@ public class PersonData extends ContactData {
         super();
     }
 
-/*
-    //constructor
-    public PersonData(
-            String firstname,
-            String lastname,
-            String birthday,
-            Integer year,
-            Integer month,
-            Integer day,
-            String email,
-            String pictureURL,
-            String pictureLocalURI
-    ) {
-        super(firstname, pictureURL, pictureLocalURI);
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.byear = year;
-        this.bmonth = month;
-        this.bday = day;
-        this.email = email;
-    }
-*/
 
     //get-methods
     public String getLastname() { return lastname; }

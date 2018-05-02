@@ -34,41 +34,6 @@ public class UserData extends PersonData {
         extraQuestions = new HashMap<>();
     }
 
-    /*
-    //constructor
-    public UserData(
-            String firstname,
-            String lastname,
-            String birthday,
-            Integer bYear,
-            Integer bMonth,
-            Integer bDay,
-            String email,
-            String pictureURL,
-            String pictureLocalURI,
-            HashMap<String, Boolean> interviewsOwn,
-            HashMap<String, Boolean> interviewsAll,
-            HashMap<String, String> guests,
-            HashMap<String, String> friends,
-            HashMap<String, String> groups,
-            ArrayList<Boolean> standardTopics,
-            HashMap<String, Boolean> extraTopics,
-            HashMap<String, Integer> standardQuestions,
-            HashMap<String, String> extraQuestions
-    ) {
-        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
-        isUser = true;
-        this.interviewsOwn = interviewsOwn;
-        this.interviewsAll = interviewsAll;
-        this.guests = guests;
-        this.friends = friends;
-        this.groups = groups;
-        this.standardTopics = standardTopics;
-        this.extraTopics = extraTopics;
-        this.standardQuestions = standardQuestions;
-        this.extraQuestions = extraQuestions;
-    }
-*/
 
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }
