@@ -17,7 +17,7 @@ public class GuestData extends PersonData {
         super();
     }
 
-
+/*
     //constructor
     public GuestData(
             String firstname,
@@ -36,7 +36,7 @@ public class GuestData extends PersonData {
         this.hostID = hostID;
         this.relationship = relationship;
     }
-
+*/
 
     //get-methods
     public String getHostID() { return hostID; }

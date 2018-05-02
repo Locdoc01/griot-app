@@ -19,7 +19,7 @@ public class PersonData extends ContactData {
         super();
     }
 
-
+/*
     //constructor
     public PersonData(
             String firstname,
@@ -40,7 +40,7 @@ public class PersonData extends ContactData {
         this.bday = day;
         this.email = email;
     }
-
+*/
 
     //get-methods
     public String getLastname() { return lastname; }

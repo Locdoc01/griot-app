@@ -17,7 +17,7 @@ public class GroupData extends ContactData {
         members = new HashMap<>();
     }
 
-
+/*
     //constructor
     public GroupData(
             String firstname,
@@ -30,7 +30,7 @@ public class GroupData extends ContactData {
         this.visibility = visibility;
         this.members = members;
     }
-
+*/
 
     //get-methods
     public String getVisibility() { return visibility; }

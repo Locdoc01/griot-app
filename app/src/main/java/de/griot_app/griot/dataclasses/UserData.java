@@ -34,6 +34,7 @@ public class UserData extends PersonData {
         extraQuestions = new HashMap<>();
     }
 
+    /*
     //constructor
     public UserData(
             String firstname,
@@ -67,7 +68,7 @@ public class UserData extends PersonData {
         this.standardQuestions = standardQuestions;
         this.extraQuestions = extraQuestions;
     }
-
+*/
 
     //get-methods
     public HashMap<String, Boolean> getInterviewsOwn() { return interviewsOwn; }
