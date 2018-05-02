@@ -37,6 +37,7 @@ public class ProfileImageView extends ConstraintLayout {
     private ImageView mCircle;
     private CircleImageView mProfileImage;
 
+
     /**
      * Constructors
      */
@@ -58,6 +59,7 @@ public class ProfileImageView extends ConstraintLayout {
         init();
     }
 
+
     /**
      * Initializes the ProfilImageView. After initialization it shows only the circular border and the image is cleared.
      */
@@ -70,21 +72,6 @@ public class ProfileImageView extends ConstraintLayout {
         mPlus = v.findViewById(R.id.imageView_plus);
     }
 
-    /**
-     * Returns the ImageView, that is supposed to hold the profile image. It can be set and changed by its own methods.
-     * @return CircleImageView, that is supposed to hold the profile image.
-     */
-    @Deprecated
-    public CircleImageView getProfileImage() { return mProfileImage; }
-
-    @Deprecated
-    public ImageView getProfileImagePlus() { return mPlus; }
-
-    @Deprecated
-    public ImageView getProfileImageCircle() { return mCircle; }
-
-    @Deprecated
-    public void setBlue() {}
 
     /**
      * Loads an image from the passed image source and shows it. The source can be of the following types:
@@ -97,6 +84,7 @@ public class ProfileImageView extends ConstraintLayout {
     public <T> void loadImageFromSource(T imageSource) {
         imageLoader.load(mProfileImage, imageSource, PLACERHOLDER_RESOURCE);
     }
+
 
     /**
      * Clears the image or, if shown, the placeholder, so that only the circular boarder and
@@ -115,6 +103,7 @@ public class ProfileImageView extends ConstraintLayout {
     public void showPlus(boolean showPlus) {
         mPlus.setVisibility(showPlus ? View.VISIBLE : View.INVISIBLE);
     }
+
 
     /**
      * Sets the visibility of the circular boarder acccording to the value of showCircle.
