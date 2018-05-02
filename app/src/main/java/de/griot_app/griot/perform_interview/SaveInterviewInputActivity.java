@@ -466,7 +466,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             narratorName = item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname());
             narratorPictureURL = item.getPictureURL();
             narratorIsUser = item.getIsUser();
-            mPivPerson.getProfileImage().setImageURI(Uri.parse(item.getPictureLocalURI()));
+            mPivPerson.loadImageFromSource(item.getPictureURL());
             mTextViewPerson.setText(narratorName);
 
             mListViewPersons.setVisibility(View.GONE);
