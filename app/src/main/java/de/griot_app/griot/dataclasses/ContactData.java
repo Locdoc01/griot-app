@@ -1,34 +1,29 @@
 package de.griot_app.griot.dataclasses;
 
 
+import com.google.firebase.database.Exclude;
+
 /**
- * Bases data class for all contact data classes
+ * Base data class for all contact data classes
  */
 public class ContactData {
 
-    protected String contactID;
     protected String firstname;
     protected String pictureURL;
     protected String pictureLocalURI;
     protected String category;
+
+    //following attributes are excluded from uploading to Firebase Database
+    @Exclude
+    protected String contactID;
+    @Exclude
     protected Boolean selected = false;
 
     //default-constructor
     public ContactData() {
     }
 
-/*
-    //constructor
-    public ContactData(
-            String firstname,
-            String pictureURL,
-            String pictureLocalURI
-    ) {
-        this.firstname = firstname;
-        this.pictureURL = pictureURL;
-        this.pictureLocalURI = pictureLocalURI;
-    }
-*/
+
 
     //get-methods
     public String getContactID() { return contactID; }
