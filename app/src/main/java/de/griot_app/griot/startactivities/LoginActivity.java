@@ -119,6 +119,8 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
         mButtonCreateAccount = (Button) findViewById(R.id.button_create_account);
 
+        mProfileImage.showPlus(true);
+
         //Some initializations
         mUriLocalProfileImage = null;
 
@@ -648,6 +650,8 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                             }
                                         });
                                     } else {
+                                        mDatabaseRef.setValue(mUserData);
+                                        /*
                                         mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                             @Override
                                             public void onSuccess(Uri uri) {
@@ -664,6 +668,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                                 mDatabaseRef.setValue(mUserData);
                                             }
                                         });
+                                        */
                                     }
 
                                 }
