@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 /**
- * Bases data class for content data classes
+ * Base data class for content data classes
  */
 public class ContentData {
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 /**
- * Bases local data class for local content data classes
+ * Base local data class for local content data classes
  */
 public class LocalContentData {
 
