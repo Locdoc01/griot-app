@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+import de.griot_app.griot.FirebaseUtils;
 import de.griot_app.griot.R;
 import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.startactivities.LoginActivity;
@@ -78,7 +79,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseUtils.getAuth();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -101,11 +102,20 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             }
         };
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRootReference = mDatabase.getReference();
+        mDatabase = FirebaseUtils.getDatabase();
+        mDatabaseRootReference = FirebaseUtils.getDatabaseRootReference();
 
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRootReference = mStorage.getReference();
+        mStorage = FirebaseUtils.getStorage();
+        mStorageRootReference = FirebaseUtils.getStorageRootReference();
+
+/*
+        Log.d(getSubClassTAG(), "" + (this instanceof MainOverviewActivity)); //true
+        Log.d(getSubClassTAG(), "" + (this instanceof FirebaseActivity));    //true
+
+        Log.d(getSubClassTAG(), "" + (this.getClass().equals(MainOverviewActivity.class))); // true
+        Log.d(getSubClassTAG(), "" + (this.getClass().equals(FirebaseActivity.class))); // false
+*/
+
     }
 
     //Set the AuthStateListener
