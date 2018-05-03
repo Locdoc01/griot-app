@@ -74,7 +74,6 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected abstract void doOnStartAfterLoadingUserInformation();
 
 
-    //Get Firebase references and creates an AuthStateListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +82,21 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + user.getUid());
+                mUser = mAuth.getCurrentUser();
+                if (mUser != null) {
+                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + mUser.getUid());
+                    mUserID = mUser.getUid();
+                    // if the user is signed in, obtain user information
+                    loadUserInformation();
                 } else {
                     Log.d(getSubClassTAG(), "onAuthStateChanged: signed out: ");
+                    // if this is not LoginActiviy and if no user is signed in, start LoginActivity and finish this one
+                    mUserID = null;
+                    if (!(FirebaseActivity.this instanceof LoginActivity)) {
+                        Intent intent = new Intent(FirebaseActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };
@@ -104,24 +113,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        // if this is not LoginActiviy and if no user is signed in, start LoginActivity and finish this one
-        //TODO: checken, ob es bessere Lösungen gibt
-        if (!(this instanceof LoginActivity)) {
-            if (mAuth.getCurrentUser() == null) {
-                if (mAuth.getCurrentUser() == null) {
-                    Intent intent = new Intent(FirebaseActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        }
-
-        // if the user is signed in, obtain user information
-        if (mAuth.getCurrentUser() != null) {
-            loadUserInformation();
-        }
     }
+
 
     //Remove the AuthStateListener
     @Override
@@ -130,12 +123,10 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
+
     //Obtain own user information
     protected void loadUserInformation() {
         Log.d(getSubClassTAG(), "loadUserInformation: ");
-
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
 
         Query query = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
