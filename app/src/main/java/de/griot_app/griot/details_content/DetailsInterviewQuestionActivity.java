@@ -38,15 +38,12 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private String topic;
     private String medium;
     private String length;
-    private String pictureLocalURI;
     private String pictureURL;
     private String interviewerID;
     private String interviewerName;
-    private String interviewerPictureLocalURI;
     private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
-    private String narratorPictureLocalURI;
     private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
@@ -86,15 +83,12 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         topic = getIntent().getStringExtra("topic");
         medium = getIntent().getStringExtra("medium");
         length = getIntent().getStringExtra("lengthQuestion");
-        pictureLocalURI = getIntent().getStringExtra("pictureLocalURIQuestion");
         pictureURL = getIntent().getStringExtra("pictureURLQuestion");
         interviewerID = getIntent().getStringExtra("interviewerID");
         interviewerName = getIntent().getStringExtra("interviewerName");
-        interviewerPictureLocalURI = getIntent().getStringExtra("interviewerPictureLocalURI");
         interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
-        narratorPictureLocalURI = getIntent().getStringExtra("narratorPictureLocalURI");
         narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", false);
         associatedUsers = getIntent().getStringArrayExtra("associatedUsersQuestion");
@@ -124,32 +118,10 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mLayoutScrollViewTags = (LinearLayout) findViewById(R.id.layout_scrollView_tags);
         mTextViewTopic = (TextView) findViewById(R.id.textView_topic);
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
-/*
+
         //Initialize mediaPlayer
-        if (pictureLocalURI != null) {
-            if (Uri.parse(pictureLocalURI) != null) {
-                ImageView test = new ImageView(this);
-                test.setImageURI(Uri.parse(pictureLocalURI));
-                if (test.getDrawable() != null) {
-                    mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
-                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                     // mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                    if (medium.equals("audio")) {
-                        //  mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                        ColorMatrix matrix = new ColorMatrix();
-                        matrix.setSaturation(0);
-                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                        mMediaPlayer.setColorFilter(filter);
-                        mMediaPlayerForeground.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
-*/
-
         mImageLoader.load(mMediaPlayer, pictureURL);
+        //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
         if (medium.equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);

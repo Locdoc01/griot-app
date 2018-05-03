@@ -110,32 +110,6 @@ public class UserProfileInputActivity extends GriotBaseInputActivity {
                     mUserData = ds.getValue(UserData.class);
                 }
 
-/*
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
-                }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mUserData.setPictureLocalURI(path);
-                            mProfileImage.getProfileImage().setImageURI(Uri.parse(mUserData.getPictureLocalURI()));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mUserData.setPictureLocalURI("");
-                        }
-                    });
-                } catch (Exception e) {
-                }
-*/
                 mProfileImage.loadImageFromSource(mUserData.getPictureURL());
                 //initialize the views with the obtained data
                 mEditFirstname.setText(mUserData.getFirstname());

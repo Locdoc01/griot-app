@@ -387,30 +387,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         //Change title and navigation button of activity
         mTitle.setText(R.string.title_guest_profile);
         mButtonCenter.setText(R.string.button_back);
-
-        /*
-        File file = null;
-        try {
-            file = File.createTempFile("profile_image" + "_", ".jpg");
-        } catch (Exception e) {
-        }
-        final Uri path = Uri.fromFile(file);
-*/
-        //Load the updated profile image (necessary, of no image was chosen and the standard profile image was set to pictureURL
-//        mProfileImage.loadImageFromSource(mGuestData.getPictureURL());
- /*
-        try {
-            mStorageRef = mStorage.getReferenceFromUrl(mGuestData.getPictureURL());
-            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    mProfileImage.getProfileImage().setImageURI(path);
-                }
-            });
-        } catch (Exception e) {}
-        */
-
-     }
+    }
 
 
     @Override
@@ -431,32 +408,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         mLocalGuestData = ds.getValue(GuestData.class);
                     }
-/*
-                        File file = null;
-                        try {
-                            file = File.createTempFile("profile_image" + "_", ".jpg");
-                        } catch (Exception e) {
-                        }
-                        final String path = file.getPath();
 
-                        try {
-                            mStorageRef = mStorage.getReferenceFromUrl(mLocalGuestData.getPictureURL());
-                            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    mLocalGuestData.setPictureLocalURI(path);
-                                    mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalGuestData.getPictureLocalURI()));
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(getSubClassTAG(), "Error downloading guest profile image file");
-                                    mLocalGuestData.setPictureLocalURI("");
-                                }
-                            });
-                        } catch (Exception e) {
-                        }
-*/
                     if (!mImageChanged) {
                         mProfileImage.loadImageFromSource(mLocalGuestData.getPictureURL());
                     }

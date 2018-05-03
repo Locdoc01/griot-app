@@ -185,27 +185,6 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mListViewPersons = (ListView) findViewById(R.id.listView_persons);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        //Get the profile image for the narrator
-        /*
-        File file = null;
-        try { file = File.createTempFile("narrator" + "_", ".jpg"); } catch (Exception e) {}
-        final String path = file.getPath();
-        try {
-            mStorageRef = mStorage.getReferenceFromUrl(narratorPictureURL);
-            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    mPivPerson.getProfileImage().setImageURI(Uri.parse(path));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "Error downloading narrator profile image file");
-                }
-            });
-        } catch (Exception e) {}
-        */
-
         mPivPerson.loadImageFromSource(narratorPictureURL);
         mTextViewPerson.setText(narratorName);
 

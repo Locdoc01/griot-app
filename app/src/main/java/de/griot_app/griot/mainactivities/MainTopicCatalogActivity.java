@@ -1,6 +1,5 @@
 package de.griot_app.griot.mainactivities;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -18,8 +17,8 @@ import java.util.HashMap;
 
 import de.griot_app.griot.adapters.TopicCatalogAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
-import de.griot_app.griot.dataclasses.LocalQuestionData;
-import de.griot_app.griot.dataclasses.LocalTopicData;
+import de.griot_app.griot.dataclasses.QuestionData;
+import de.griot_app.griot.dataclasses.TopicData;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 import de.griot_app.griot.R;
 
@@ -77,10 +76,10 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (parent.isGroupExpanded(groupPosition)) {
                     parent.collapseGroup(groupPosition);
-                    ((LocalTopicData)mAdapter.getGroup(groupPosition)).setExpanded(false);
+                    ((TopicData)mAdapter.getGroup(groupPosition)).setExpanded(false);
                 } else {
                     parent.expandGroup(groupPosition);
-                    ((LocalTopicData)mAdapter.getGroup(groupPosition)).setExpanded(true);
+                    ((TopicData)mAdapter.getGroup(groupPosition)).setExpanded(true);
                 }
                 mAdapter.notifyDataSetChanged();
                 return true;
@@ -92,13 +91,13 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 if (childPosition != 0) {
-                    LocalQuestionData data = (LocalQuestionData) mAdapter.getChild(groupPosition, childPosition);
-                    if (data.getQuestionState() == LocalQuestionData.QuestionState.OFF) {
+                    QuestionData data = (QuestionData) mAdapter.getChild(groupPosition, childPosition);
+                    if (data.getQuestionState() == QuestionData.QuestionState.OFF) {
                         ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_on, null));
-                        data.setQuestionState(LocalQuestionData.QuestionState.ON);
-                    } else if (data.getQuestionState() == LocalQuestionData.QuestionState.ON) {
+                        data.setQuestionState(QuestionData.QuestionState.ON);
+                    } else if (data.getQuestionState() == QuestionData.QuestionState.ON) {
                         ((ImageView) v.findViewById(R.id.button_toggle)).setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.toggle_off, null));
-                        data.setQuestionState(LocalQuestionData.QuestionState.OFF);
+                        data.setQuestionState(QuestionData.QuestionState.OFF);
                     }
                     return true;
                 }
@@ -129,17 +128,17 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                                 mTopicCatalog = new TopicCatalog();
 
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    LocalTopicData localTopicData = ds.getValue(LocalTopicData.class);
-                                    //Adds a new LocalTopicData for the current topic to the TopicCatalog
-                                    localTopicData.setTopicState(mUserTopicStates.get(localTopicData.getTopicKey()));
-                                    mTopicCatalog.getTopics().put(localTopicData.getTopicKey(), localTopicData);
+                                    TopicData topicData = ds.getValue(TopicData.class);
+                                    //Adds a new TopicData for the current topic to the TopicCatalog
+                                    topicData.setTopicState(mUserTopicStates.get(topicData.getTopicKey()));
+                                    mTopicCatalog.getTopics().put(topicData.getTopicKey(), topicData);
 
                                     //Adds a head list item to the question list for the current topic in the TopicCatalog
-                                    LocalQuestionData headItem = new LocalQuestionData();
+                                    QuestionData headItem = new QuestionData();
                                     headItem.setQuestion(getString(R.string.title_questions));
-                                    headItem.setQuestionState(LocalQuestionData.QuestionState.OFF);
-                                    headItem.setTopicKey(localTopicData.getTopicKey());
-                                    mTopicCatalog.getTopics().get(localTopicData.getTopicKey()).getQuestions().add(headItem);
+                                    headItem.setQuestionState(QuestionData.QuestionState.OFF);
+                                    headItem.setTopicKey(topicData.getTopicKey());
+                                    mTopicCatalog.getTopics().get(topicData.getTopicKey()).getQuestions().add(headItem);
                                 }
 
                                 //Obtain the standard questions for topic catalog
@@ -148,10 +147,10 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            LocalQuestionData localQuestionData = ds.getValue(LocalQuestionData.class);
-                                            localQuestionData.setQuestionKey(ds.getKey());
-                                            localQuestionData.setQuestionState(mUserQuestionStates.get(ds.getKey()));
-                                            mTopicCatalog.getTopics().get(localQuestionData.getTopicKey()).getQuestions().add(localQuestionData);
+                                            QuestionData questionData = ds.getValue(QuestionData.class);
+                                            questionData.setQuestionKey(ds.getKey());
+                                            questionData.setQuestionState(mUserQuestionStates.get(ds.getKey()));
+                                            mTopicCatalog.getTopics().get(questionData.getTopicKey()).getQuestions().add(questionData);
                                         }
 
                                         //TODO: obtain ExtraTopics and ExtraQuestions
@@ -197,12 +196,12 @@ public class MainTopicCatalogActivity extends GriotBaseActivity {
     //Save the current state of topics and questions to Firebase database, when leaving the topic catalog activity
     @Override
     protected void onStop() {
-        LocalQuestionData question;
+        QuestionData question;
         String questionKey;
         long questionState;
         mUserQuestionStates.clear();
         for (int i = 0; i<mTopicCatalog.getTopics().size() ; i++) {
-            //Must start at index 1, because the first LocalQuestionData-Object holds the header list item in each topic
+            //Must start at index 1, because the first QuestionData-Object holds the header list item in each topic
             for (int j = 1; j<mTopicCatalog.getTopics().get(i).getQuestions().size() ; j++) {
                 question = mTopicCatalog.getTopics().get(i).getQuestions().get(j);
                 questionKey = question.getQuestionKey();

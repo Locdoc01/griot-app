@@ -222,8 +222,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                 switch (v.getId()) {
                     case R.id.piv_profile_image:
                         Log.d(TAG, "profile image clicked: ");
-                        //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotBlue));
-
                         //choosing an image without cropping
                         /*
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -266,17 +264,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //after choosing an image without cropping
-        /*
-        if (requestCode == REQUEST_GALLERY) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    mLocalUriProfilePhoto = data.getData();
-                    mImageProfile.setImageURI(mLocalUriProfilePhoto);
-                }
-            }
-        }
-        */
         //after choosing an image from CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -647,24 +634,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                         });
                                     } else {
                                         mDatabaseRef.setValue(mUserData);
-                                        /*
-                                        mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                mUserData.setPictureURL(uri.toString());
-                                                //If no profile image was chosen, mUserData.pictureURL will be set to a downloadUrl of a standard avatar picture
-                                                // located in Storage folder "users"
-                                                mDatabaseRef.setValue(mUserData);
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                //On failure mUserData.pictureURL will remain empty.
-                                                Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
-                                                mDatabaseRef.setValue(mUserData);
-                                            }
-                                        });
-                                        */
                                     }
 
                                 }

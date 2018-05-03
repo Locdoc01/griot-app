@@ -2,33 +2,27 @@ package de.griot_app.griot.details_content;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.LocalInterviewQuestionDataDetailsAdapter;
+import de.griot_app.griot.adapters.InterviewQuestionDataDetailsAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
-import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
+import de.griot_app.griot.dataclasses.InterviewQuestionData;
 import de.griot_app.griot.interfaces.OnItemClickListener;
 
 /**
  * Activity that shows the details of a selected interview, including al of its belonging interview questions
  */
-public class DetailsInterviewActivity extends GriotBaseActivity implements OnItemClickListener<LocalInterviewQuestionData>{
+public class DetailsInterviewActivity extends GriotBaseActivity implements OnItemClickListener<InterviewQuestionData>{
 
     private static final String TAG = DetailsInterviewActivity.class.getSimpleName();
 
@@ -43,15 +37,12 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
     private String topic;
     private String medium;
     private String length;
-    private String pictureLocalURI;
     private String pictureURL;
     private String interviewerID;
     private String interviewerName;
-    private String interviewerPictureLocalURI;
     private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
-    private String narratorPictureLocalURI;
     private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
@@ -63,10 +54,10 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
     private RecyclerView mRecyclerViewInterviewQuestions;
 
     //ArrayList containing the data of interview questions
-    private ArrayList<LocalInterviewQuestionData> mListLocalInterviewQuestionData;
+    private ArrayList<InterviewQuestionData> mListInterviewQuestionData;
 
     //Data-View-Adapter for the RecyclerView
-    private LocalInterviewQuestionDataDetailsAdapter mLocalInterviewQuestionDataDetailsAdapter;
+    private InterviewQuestionDataDetailsAdapter mInterviewQuestionDataDetailsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +75,12 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         topic = mIntentReceived.getStringExtra("topic");
         medium = mIntentReceived.getStringExtra("medium");
         length = mIntentReceived.getStringExtra("length");
-        pictureLocalURI = mIntentReceived.getStringExtra("pictureLocalURI");
         pictureURL = mIntentReceived.getStringExtra("pictureURL");
         interviewerID = mIntentReceived.getStringExtra("interviewerID");
         interviewerName = mIntentReceived.getStringExtra("interviewerName");
-        interviewerPictureLocalURI = mIntentReceived.getStringExtra("interviewerPictureLocalURI");
         interviewerPictureURL = mIntentReceived.getStringExtra("interviewerPictureURL");
         narratorID = mIntentReceived.getStringExtra("narratorID");
         narratorName = mIntentReceived.getStringExtra("narratorName");
-        narratorPictureLocalURI = mIntentReceived.getStringExtra("narratorPictureLocalURI");
         narratorPictureURL = mIntentReceived.getStringExtra("narratorPictureURL");
         narratorIsUser = mIntentReceived.getBooleanExtra("narratorIsUser", false);
         associatedUsers = mIntentReceived.getStringArrayExtra("associatedUsers");
@@ -107,7 +95,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         //mTitle.setText(interviewTitle);
 //        mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
-        mListLocalInterviewQuestionData = new ArrayList<>();
+        mListInterviewQuestionData = new ArrayList<>();
 
         //get reference to ListView and add header & footer
         mRecyclerViewInterviewQuestions = (RecyclerView) findViewById(R.id.recyclerView_interviewQuestions);
@@ -116,49 +104,18 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mListLocalInterviewQuestionData.clear();
+                mListInterviewQuestionData.clear();
                 //obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final LocalInterviewQuestionData localInterviewQuestionData = ds.getValue(LocalInterviewQuestionData.class);
-                    localInterviewQuestionData.setContentID(ds.getKey());
-                    mListLocalInterviewQuestionData.add(localInterviewQuestionData);
+                    final InterviewQuestionData interviewQuestionData = ds.getValue(InterviewQuestionData.class);
+                    interviewQuestionData.setContentID(ds.getKey());
+                    mListInterviewQuestionData.add(interviewQuestionData);
                 }
                 //set adapter
-                mLocalInterviewQuestionDataDetailsAdapter = new LocalInterviewQuestionDataDetailsAdapter(DetailsInterviewActivity.this, mListLocalInterviewQuestionData, mIntentReceived);
+                mInterviewQuestionDataDetailsAdapter = new InterviewQuestionDataDetailsAdapter(DetailsInterviewActivity.this, mListInterviewQuestionData, mIntentReceived);
                 mRecyclerViewInterviewQuestions.setLayoutManager(new LinearLayoutManager(DetailsInterviewActivity.this));
-                mRecyclerViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataDetailsAdapter);
-                mLocalInterviewQuestionDataDetailsAdapter.setOnItemClickListener(DetailsInterviewActivity.this);
-/*
-                //create temporary files to store the pictures from Firebase Storage
-                for ( int i=0 ; i<mListLocalInterviewQuestionData.size() ; i++ ) {
-                    final int index = i;
-                    File fileMediaCover = null;
-                    try {
-                        fileMediaCover = File.createTempFile("mediaCover" + i + "_", ".jpg");
-                    } catch (Exception e) {
-                    }
-                    final String pathMediaCover = fileMediaCover.getPath();
-
-                    //Obtain pictures for interview media covers from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewQuestionData.get(index).getPictureURL());
-                        mStorageRef.getFile(fileMediaCover).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewQuestionData.get(index).setPictureLocalURI(pathMediaCover);
-                                mLocalInterviewQuestionDataDetailsAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading MediaCover image file");
-                                mListLocalInterviewQuestionData.get(index).setPictureLocalURI("");
-                                mLocalInterviewQuestionDataDetailsAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-                }
-                */
+                mRecyclerViewInterviewQuestions.setAdapter(mInterviewQuestionDataDetailsAdapter);
+                mInterviewQuestionDataDetailsAdapter.setOnItemClickListener(DetailsInterviewActivity.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -168,10 +125,7 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
     }
 
     @Override
-    public void onItemClick(LocalInterviewQuestionData dataItem) {
-        //adding a ListViewHeader causes an increasing of position by 1, so it has to be decreased to get the right position value
-        //position--;       //TODO check, if still necessary
-
+    public void onItemClick(InterviewQuestionData dataItem) {
         //create Intent and put extra data to it
         Intent intent = new Intent(DetailsInterviewActivity.this, DetailsInterviewQuestionActivity.class);
         intent.putExtra("selectedInterviewQuestionID", dataItem.getContentID());
@@ -183,15 +137,12 @@ public class DetailsInterviewActivity extends GriotBaseActivity implements OnIte
         intent.putExtra("topic", topic);
         intent.putExtra("medium", medium);
         intent.putExtra("lengthQuestion", dataItem.getLength());
-        intent.putExtra("pictureLocalURIQuestion", dataItem.getPictureLocalURI());
         intent.putExtra("pictureURLQuestion", dataItem.getPictureURL());
         intent.putExtra("interviewerID", interviewerID);
         intent.putExtra("interviewerName", interviewerName);
-        intent.putExtra("interviewerPictureLocalURI", interviewerPictureLocalURI);
         intent.putExtra("interviewerPictureURL", interviewerPictureURL);
         intent.putExtra("narratorID", narratorID);
         intent.putExtra("narratorName", narratorName);
-        intent.putExtra("narratorPictureLocalURI", narratorPictureLocalURI);
         intent.putExtra("narratorPictureURL", narratorPictureURL);
         intent.putExtra("narratorIsUser", narratorIsUser);
 

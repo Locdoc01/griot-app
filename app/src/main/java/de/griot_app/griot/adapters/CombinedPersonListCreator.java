@@ -206,7 +206,7 @@ public class CombinedPersonListCreator {
                         break;
                 }
 
-                combineList();      // TODO: may be the wrong place, but ListView works as expected
+                combineList();
 /*
                 for ( int i=0 ; i<list.size() ; i++ ) {
                     final int index = i;

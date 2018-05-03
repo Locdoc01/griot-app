@@ -2,7 +2,6 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.griot_app.griot.dataclasses.QuestionData;
+import de.griot_app.griot.dataclasses.TopicData;
 import de.griot_app.griot.perform_interview.ChooseTopicInputActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalQuestionData;
-import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.dataclasses.TopicCatalog;
 
 /**
- * ArrayList-ListView-Adapter, which converts an SparseArray of LocalTopicData-objects into ExpandableListView group items.
- * The LocalTopicData-objects holds ArrayLists of LocalQuestionData-objects, which are converted into ExpandableListView child items.
+ * ArrayList-ListView-Adapter, which converts an SparseArray of TopicData-objects into ExpandableListView group items.
+ * The TopicData-objects holds ArrayLists of QuestionData-objects, which are converted into ExpandableListView child items.
  * Thus the result is a two-dimensional ListView, which is used fot the topic catalog
  */
 //TODO: hide deleted standardTopics and standardQuestions (find out, how to delete ListView items depending on the data)
@@ -32,8 +31,8 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     private final Context mContext;
 
-    //The SparseArray containing the LocalTopicData-objects
-    private SparseArray<LocalTopicData> mTopics;
+    //The SparseArray containing the TopicData-objects
+    private SparseArray<TopicData> mTopics;
 
     //Views, which are shown in every ListView item
     private TextView mTextViewTopic;
@@ -84,7 +83,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
         mButtonCheck = (ImageView) v.findViewById(R.id.button_check);
         mButtonExpand = (ImageView) v.findViewById(R.id.button_expand);
 
-        mTextViewTopic.setText(((LocalTopicData)getGroup(groupPosition)).getTopic());
+        mTextViewTopic.setText(((TopicData)getGroup(groupPosition)).getTopic());
         if (mTopics.get(groupPosition).getExpanded()) {
             mButtonExpand.setImageResource(R.drawable.up);
         }
@@ -173,12 +172,12 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
             mTextViewQuestion = (TextView) v.findViewById(R.id.textView_question);
             mButtonToggle = (ImageView) v.findViewById(R.id.button_toggle);
 
-            LocalQuestionData child = (LocalQuestionData) getChild(groupPosition, childPosition);
+            QuestionData child = (QuestionData) getChild(groupPosition, childPosition);
 
             mTextViewQuestion.setText(child.getQuestion());
-            if (child.getQuestionState()==LocalQuestionData.QuestionState.OFF) {
+            if (child.getQuestionState()== QuestionData.QuestionState.OFF) {
                 mButtonToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_off, null));
-            } else if (child.getQuestionState()==LocalQuestionData.QuestionState.ON) {
+            } else if (child.getQuestionState()== QuestionData.QuestionState.ON) {
                 mButtonToggle.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.toggle_on, null));
             } else {
                  //TODO: ability to delete questions
@@ -199,7 +198,7 @@ public class TopicCatalogAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return ((LocalTopicData)getGroup(groupPosition)).getQuestions().size();
+        return ((TopicData)getGroup(groupPosition)).getQuestions().size();
     }
 
     @Override
