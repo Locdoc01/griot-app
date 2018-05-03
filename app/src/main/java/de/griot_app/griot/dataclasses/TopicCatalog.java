@@ -8,7 +8,7 @@ import android.util.SparseArray;
 
 public class TopicCatalog {
 
-    private SparseArray<LocalTopicData> topics;
+    private SparseArray<TopicData> topics;
 
     //default-constructor
     public TopicCatalog() {
@@ -16,8 +16,8 @@ public class TopicCatalog {
     }
 
     //get-methods:
-    public SparseArray<LocalTopicData> getTopics() { return topics; }
+    public SparseArray<TopicData> getTopics() { return topics; }
 
     //set-methods:
-    public void setTopics(SparseArray<LocalTopicData> topics) { this.topics = topics; }
+    public void setTopics(SparseArray<TopicData> topics) { this.topics = topics; }
 }

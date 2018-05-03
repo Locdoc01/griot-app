@@ -2,51 +2,42 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import de.griot_app.griot.Helper;
-import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
-import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
-import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
-import de.griot_app.griot.interfaces.OnItemClickListener;
-import de.griot_app.griot.views.ProfileImageView;
-import de.griot_app.griot.views.TagView;
+import de.griot_app.griot.ImageLoader;
+import de.griot_app.griot.dataclasses.InterviewQuestionData;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
 
 /**
- * ArrayList-RecyclerView-Adapter, which converts an ArrayList of LocalInterviewQuestionData-objects into RecyclerView items.
+ * ArrayList-RecyclerView-Adapter, which converts an ArrayList of InterviewQuestionData-objects into RecyclerView items.
  * This Adapter is for use in ReviewInterviewInputActivity
  */
-public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapter<LocalInterviewQuestionDataReviewAdapter.ViewHolder> {
+public class InterviewQuestionDataReviewAdapter extends RecyclerView.Adapter<InterviewQuestionDataReviewAdapter.ViewHolder> {
 
-    private static final String TAG = LocalInterviewQuestionDataReviewAdapter.class.getSimpleName();
+    private static final String TAG = InterviewQuestionDataReviewAdapter.class.getSimpleName();
 
     private Context mContext;
-    private ArrayList<LocalInterviewQuestionData> mListData;
-    // private OnItemClickListener<LocalInterviewQuestionData> mListener;  //TODO löschen ??
+
+    private ImageLoader mImageLoader;
+
+    private ArrayList<InterviewQuestionData> mListData;
+    // private OnItemClickListener<InterviewQuestionData> mListener;  //TODO löschen ??
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +69,7 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
         }
 
         //initialize item views
-        public void bindClickListener(final LocalInterviewQuestionData dataItem) {
+        public void bindClickListener(final InterviewQuestionData dataItem) {
             View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -134,13 +125,14 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
 
 
     //constructor. If used, header, footer and tags for each item will be shown
-    public LocalInterviewQuestionDataReviewAdapter(Context context, ArrayList<LocalInterviewQuestionData> listData) {
+    public InterviewQuestionDataReviewAdapter(Context context, ArrayList<InterviewQuestionData> listData) {
         mContext = context;
+        mImageLoader = new ImageLoader(mContext);
         mListData = listData;
         /* // TODO löschen ??
-        mListener = new OnItemClickListener<LocalInterviewQuestionData>() {
+        mListener = new OnItemClickListener<InterviewQuestionData>() {
             @Override
-            public void onItemClick(LocalInterviewQuestionData dataItem) {
+            public void onItemClick(InterviewQuestionData dataItem) {
                 // unfunctional placeholder, for the case, that no actual listener is assigned in the activity
             }
         };
@@ -155,7 +147,7 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
     }
 
 
-    private LocalInterviewQuestionData getItem(int position) {
+    private InterviewQuestionData getItem(int position) {
         return mListData.get(position);
     }
 
@@ -173,26 +165,25 @@ public class LocalInterviewQuestionDataReviewAdapter extends RecyclerView.Adapte
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         // get the dataItem item for the position
-        final LocalInterviewQuestionData dataItem = getItem(position);
+        final InterviewQuestionData dataItem = getItem(position);
 
         //initialize the views with the data from the correspondent ArrayList
         holder.mTextViewQuestion.setText("" + (position + 1) + ". " + dataItem.getQuestion());
         holder.mTextViewDate.setText(dataItem.getDateDay() + "." + dataItem.getDateMonth() + "." + dataItem.getDateYear());
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
 
-        if (dataItem.getPictureLocalURI() != null) {
-            if (Uri.parse(dataItem.getPictureLocalURI()) != null) {
-                holder.mImageViewMediaCover.setImageURI(Uri.parse(dataItem.getPictureLocalURI()));
-                //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                if (dataItem.getMedium().equals("audio")) {
-                    holder.mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    ColorMatrix matrix = new ColorMatrix();
-                    matrix.setSaturation(0);
-                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    holder.mImageViewMediaCover.setColorFilter(filter);
-                    holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
-                }
-            }
+        //Initialize mediaCover
+        mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL());
+        //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
+        if (dataItem.getMedium().equals("audio")) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            holder.mImageViewMediaCover.setColorFilter(filter);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
+        } else {
+            holder.mImageViewMediaCover.setColorFilter(null);
+            holder.mImageViewMediaCoverForeground.setVisibility(View.GONE);
         }
 
         holder.mTextViewTags.setVisibility(View.GONE);

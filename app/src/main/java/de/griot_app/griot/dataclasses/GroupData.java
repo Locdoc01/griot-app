@@ -18,19 +18,6 @@ public class GroupData extends ContactData {
     }
 
 
-    //constructor
-    public GroupData(
-            String firstname,
-            String pictureURL,
-            String pictureLocalURI,
-            String visibility,
-            HashMap<String, String> members
-    ) {
-        super(firstname, pictureURL, pictureLocalURI);
-        this.visibility = visibility;
-        this.members = members;
-    }
-
 
     //get-methods
     public String getVisibility() { return visibility; }

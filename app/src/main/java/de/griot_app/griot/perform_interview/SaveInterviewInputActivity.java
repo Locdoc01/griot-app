@@ -40,7 +40,7 @@ import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.dataclasses.InterviewQuestionData;
-import de.griot_app.griot.dataclasses.LocalPersonData;
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.recordfunctions.RecordActivity;
 import de.griot_app.griot.views.ProfileImageView;
 
@@ -185,24 +185,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mListViewPersons = (ListView) findViewById(R.id.listView_persons);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        //Get the profile image for the narrator
-        File file = null;
-        try { file = File.createTempFile("narrator" + "_", ".jpg"); } catch (Exception e) {}
-        final String path = file.getPath();
-        try {
-            mStorageRef = mStorage.getReferenceFromUrl(narratorPictureURL);
-            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    mPivPerson.getProfileImage().setImageURI(Uri.parse(path));
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "Error downloading narrator profile image file");
-                }
-            });
-        } catch (Exception e) {}
+        mPivPerson.loadImageFromSource(narratorPictureURL);
         mTextViewPerson.setText(narratorName);
 
         //Set the OnClickListener for clickable views
@@ -282,7 +265,7 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
             }
         });
 
-        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
+        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate PersonData-object
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -457,12 +440,12 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         if (mButtonRight.getText().toString().equals(getString(R.string.button_next))) {
             mTextViewPersonTop.setText(getString(R.string.text_recorded_person));
 
-            LocalPersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
+            PersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
             narratorID = item.getContactID();
             narratorName = item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname());
             narratorPictureURL = item.getPictureURL();
             narratorIsUser = item.getIsUser();
-            mPivPerson.getProfileImage().setImageURI(Uri.parse(item.getPictureLocalURI()));
+            mPivPerson.loadImageFromSource(item.getPictureURL());
             mTextViewPerson.setText(narratorName);
 
             mListViewPersons.setVisibility(View.GONE);

@@ -1,4 +1,4 @@
-    package de.griot_app.griot.contacts_profiles;
+package de.griot_app.griot.contacts_profiles;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -34,7 +34,6 @@ import java.util.Calendar;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.GuestData;
-import de.griot_app.griot.dataclasses.LocalGuestData;
 import de.griot_app.griot.views.ProfileImageView;
 
 /**
@@ -82,7 +81,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
 
     //Data class object
     private GuestData mGuestData;
-    private LocalGuestData mLocalGuestData;
+    private GuestData mLocalGuestData;  //TODO: change implementation, so that just one GuestData is used
 
 
     @Override
@@ -160,7 +159,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                         switch (v.getId()) {
                             case R.id.piv_profile_image:
                                 Log.d(TAG, "profile image clicked: ");
-                                mImageChanged = true;
                                 CropImage.activity()
                                         .setGuidelines(CropImageView.Guidelines.ON)
                                         .setAspectRatio(1,1)
@@ -231,9 +229,9 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
+                mImageChanged = true;
                 mUriLocalProfileImage = result.getUri();
-                mProfileImage.getProfileImage().setImageURI(Uri.parse(mUriLocalProfileImage.getPath()));
-                mProfileImage.getProfileImage().setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mProfileImage.loadImageFromSource(mUriLocalProfileImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -343,7 +341,7 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //On failure mLocalUserData.pictureURL will remain empty.
+                        //On failure mUserData.pictureURL will remain empty.
                         Toast.makeText(GuestProfileInputActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                         Log.e(getSubClassTAG(), "Error uploading profile image");
                         mDatabaseRef.setValue(mGuestData);
@@ -356,14 +354,14 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
                 @Override
                 public void onSuccess(Uri uri) {
                     mGuestData.setPictureURL(uri.toString());
-                    // if no profile image was chosen, mLocalUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
+                    // if no profile image was chosen, mUserData.pictureURL will be set to downloadUrl of standard-avatar-picture located in Storage-folder "guests"
                     mDatabaseRef.setValue(mGuestData);
                     doAfterUpload();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // on failure mLocalUserData.pictureURL will remain empty.
+                    // on failure mUserData.pictureURL will remain empty.
                     Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
                     mDatabaseRef.setValue(mGuestData);
                     doAfterUpload();
@@ -389,23 +387,6 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         //Change title and navigation button of activity
         mTitle.setText(R.string.title_guest_profile);
         mButtonCenter.setText(R.string.button_back);
-        File file = null;
-        try {
-            file = File.createTempFile("profile_image" + "_", ".jpg");
-        } catch (Exception e) {
-        }
-        final Uri path = Uri.fromFile(file);
-
-        //Load the updated profile image (necessary, of no image was chosen and the standard profile image was set to pictureURL
-        try {
-            mStorageRef = mStorage.getReferenceFromUrl(mGuestData.getPictureURL());
-            mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    mProfileImage.getProfileImage().setImageURI(path);
-                }
-            });
-        } catch (Exception e) {}
     }
 
 
@@ -417,44 +398,25 @@ public class GuestProfileInputActivity extends GriotBaseInputActivity implements
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // Obtain guest data from Firebase, if the profile of an existing guest was selected
-        if (contactID!=null && !mImageChanged) {
-
+        if (contactID==null) {
+            mProfileImage.showPlus(true);
+        } else {
             mDatabaseRootReference.child("guests").orderByKey().equalTo(contactID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        mLocalGuestData = ds.getValue(LocalGuestData.class);
+                        mLocalGuestData = ds.getValue(GuestData.class);
                     }
 
-                    File file = null;
-                    try {
-                        file = File.createTempFile("profile_image" + "_", ".jpg");
-                    } catch (Exception e) {}
-                    final String path = file.getPath();
-
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mLocalGuestData.getPictureURL());
-                        mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mLocalGuestData.setPictureLocalURI(path);
-                                mProfileImage.getProfileImage().setImageURI(Uri.parse(mLocalGuestData.getPictureLocalURI()));
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading guest profile image file");
-                                mLocalGuestData.setPictureLocalURI("");
-                            }
-                        });
-                    } catch (Exception e) {}
-
+                    if (!mImageChanged) {
+                        mProfileImage.loadImageFromSource(mLocalGuestData.getPictureURL());
+                    }
                     //initialize the views with the obtained data
                     mEditFirstname.setText(mLocalGuestData.getFirstname());
                     mEditLastname.setText((mLocalGuestData.getLastname()));
-                    if (mLocalGuestData.getBday()!=null) {
-                        //   mCalendar.setTime(mLocalUserData.getBirthday());  //TODO: delete
+                    if (mLocalGuestData.getBday() != null) {
+                        //   mCalendar.setTime(mUserData.getBirthday());  //TODO: delete
                         int day = mLocalGuestData.getBday();
                         int month = mLocalGuestData.getBmonth();
                         int year = mLocalGuestData.getByear();

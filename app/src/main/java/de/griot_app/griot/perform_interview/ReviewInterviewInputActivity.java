@@ -17,10 +17,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.LocalInterviewQuestionDataDetailsAdapter;
-import de.griot_app.griot.adapters.LocalInterviewQuestionDataReviewAdapter;
+import de.griot_app.griot.adapters.InterviewQuestionDataReviewAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
-import de.griot_app.griot.dataclasses.LocalInterviewQuestionData;
+import de.griot_app.griot.dataclasses.InterviewQuestionData;
 import de.griot_app.griot.recordfunctions.RecordActivity;
 import de.griot_app.griot.recordfunctions.RecordAudioActivity;
 import de.griot_app.griot.recordfunctions.RecordVideoActivity;
@@ -73,10 +72,10 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
     private RecyclerView mRecyclerViewInterviewQuestions;
 
     // ArrayList, that holds the data of the interview questions
-    private ArrayList<LocalInterviewQuestionData> mListInterviewQuestionData;
+    private ArrayList<InterviewQuestionData> mListInterviewQuestionData;
 
     //Data-View-Adapter for the RecyclerView
-    private LocalInterviewQuestionDataReviewAdapter mLocalInterviewQuestionDataReviewAdapter;
+    private InterviewQuestionDataReviewAdapter mInterviewQuestionDataReviewAdapter;
 
 
     @Override
@@ -134,7 +133,7 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         //Fill the ArrayList with interview question data
         for ( int i=0 ; i<recordedQuestions.length ; i++ ) {
             //DataClass-object here serves only as a holder for the ListView data (NOT for Firebase)
-            LocalInterviewQuestionData data = new LocalInterviewQuestionData();
+            InterviewQuestionData data = new InterviewQuestionData();
             data.setQuestion(recordedQuestions[i]);
             data.setLength(recordedQuestionLengths[i]);
             data.setDateYear(dateYear);
@@ -142,7 +141,8 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
             data.setDateDay(dateDay);
             data.setMedium(medium==RecordActivity.MEDIUM_VIDEO ? "video" : "audio");
 
-            data.setPictureLocalURI(recordedCoverFilePaths[i]);
+            //data.setPictureLocalURI(recordedCoverFilePaths[i]);
+            data.setPictureURL(recordedCoverFilePaths[i]);
             if (tags[i] != null) {
                 for (int j = 0; j < tags[i].length; j++) {
                     data.getTags().put(tags[i][j], true);
@@ -153,9 +153,9 @@ public class ReviewInterviewInputActivity extends GriotBaseInputActivity {
         }
 
         //Set the adapter
-        mLocalInterviewQuestionDataReviewAdapter = new LocalInterviewQuestionDataReviewAdapter(ReviewInterviewInputActivity.this, mListInterviewQuestionData);
+        mInterviewQuestionDataReviewAdapter = new InterviewQuestionDataReviewAdapter(ReviewInterviewInputActivity.this, mListInterviewQuestionData);
         mRecyclerViewInterviewQuestions.setLayoutManager(new LinearLayoutManager(ReviewInterviewInputActivity.this));
-        mRecyclerViewInterviewQuestions.setAdapter(mLocalInterviewQuestionDataReviewAdapter);
+        mRecyclerViewInterviewQuestions.setAdapter(mInterviewQuestionDataReviewAdapter);
 
     }
 

@@ -1,35 +1,18 @@
 package de.griot_app.griot.baseactivities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Point;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
-import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.questionmail.ComposeQuestionRequestInputActivity;
 import de.griot_app.griot.R;
 import de.griot_app.griot.mainactivities.MainChooseFriendInputActivity;
@@ -38,7 +21,6 @@ import de.griot_app.griot.mainactivities.MainOverviewActivity;
 import de.griot_app.griot.mainactivities.MainPersonalPageActivity;
 import de.griot_app.griot.mainactivities.MainQuestionmailActivity;
 import de.griot_app.griot.mainactivities.MainTopicCatalogActivity;
-import de.griot_app.griot.recordfunctions.QuestionCarousel;
 
 /**
  * Abstract base activity for usual activities of griot-app.
@@ -49,6 +31,8 @@ import de.griot_app.griot.recordfunctions.QuestionCarousel;
  */
  //TODO main menu & options menues
 public abstract class GriotBaseActivity extends FirebaseActivity implements View.OnClickListener {
+
+    protected ImageLoader mImageLoader;
 
     protected Toolbar mAppBar;
     protected TextView mTitle;
@@ -90,6 +74,8 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         setContentView(getSubClassLayoutId());
 
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, R.color.colorGriotWhite));
+
+        mImageLoader = new ImageLoader(this);
 
         //set up the Toolbar as app bar
         mAppBar = (Toolbar) findViewById(R.id.base_app_bar);

@@ -3,7 +3,6 @@ package de.griot_app.griot.details_content;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,13 +38,13 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
     private String topic;
     private String medium;
     private String length;
-    private String pictureLocalURI;
+    private String pictureURL;
     private String interviewerID;
     private String interviewerName;
-    private String interviewerPictureLocalURI;
+    private String interviewerPictureURL;
     private String narratorID;
     private String narratorName;
-    private String narratorPictureLocalURI;
+    private String narratorPictureURL;
     private boolean narratorIsUser;
     private String[] associatedUsers;
     private String[] associatedGuests;
@@ -84,13 +83,13 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         topic = getIntent().getStringExtra("topic");
         medium = getIntent().getStringExtra("medium");
         length = getIntent().getStringExtra("lengthQuestion");
-        pictureLocalURI = getIntent().getStringExtra("pictureLocalURIQuestion");
+        pictureURL = getIntent().getStringExtra("pictureURLQuestion");
         interviewerID = getIntent().getStringExtra("interviewerID");
         interviewerName = getIntent().getStringExtra("interviewerName");
-        interviewerPictureLocalURI = getIntent().getStringExtra("interviewerPictureLocalURI");
+        interviewerPictureURL = getIntent().getStringExtra("interviewerPictureURL");
         narratorID = getIntent().getStringExtra("narratorID");
         narratorName = getIntent().getStringExtra("narratorName");
-        narratorPictureLocalURI = getIntent().getStringExtra("narratorPictureLocalURI");
+        narratorPictureURL = getIntent().getStringExtra("narratorPictureURL");
         narratorIsUser = getIntent().getBooleanExtra("narratorIsUser", false);
         associatedUsers = getIntent().getStringArrayExtra("associatedUsersQuestion");
         associatedGuests = getIntent().getStringArrayExtra("associatedGuestsQuestion");
@@ -121,29 +120,22 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
 
         //Initialize mediaPlayer
-        if (pictureLocalURI != null) {
-            if (Uri.parse(pictureLocalURI) != null) {
-                ImageView test = new ImageView(this);
-                test.setImageURI(Uri.parse(pictureLocalURI));
-                if (test.getDrawable() != null) {
-                    mMediaPlayer.setImageURI(Uri.parse(pictureLocalURI));
-                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                    if (medium.equals("audio")) {
-                        mMediaPlayer.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                        ColorMatrix matrix = new ColorMatrix();
-                        matrix.setSaturation(0);
-                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                        mMediaPlayer.setColorFilter(filter);
-                        mMediaPlayerForeground.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
+        mImageLoader.load(mMediaPlayer, pictureURL);
+        //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
+        if (medium.equals("audio")) {
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            mMediaPlayer.setColorFilter(filter);
+            mMediaPlayerForeground.setVisibility(View.VISIBLE);
+        } else {
+            mMediaPlayer.setColorFilter(null);
+            mMediaPlayerForeground.setVisibility(View.GONE);
         }
 
         //Initialize other views
-        mPivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
-        mPivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+        mPivInterviewer.loadImageFromSource(interviewerPictureURL);
+        mPivNarrator.loadImageFromSource(narratorPictureURL);
         mTextViewInterviewer.setText(interviewerName);
         mTextViewNarrator.setText(narratorName);
         mButtonComments.setText("" + (numberComments==0 ? getString(R.string.text_none) : numberComments) + " " + ( numberComments == 1 ? getString(R.string.text_comment) : getString(R.string.text_comments)));
@@ -164,12 +156,12 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
         ProfileImageView pivInterviewer = new ProfileImageView(this);
-        pivInterviewer.getProfileImage().setImageURI(Uri.parse(interviewerPictureLocalURI));
+        pivInterviewer.loadImageFromSource(interviewerPictureURL);
         mLayoutScrollViewVisibility.addView(pivInterviewer);
         pivInterviewer.setLayoutParams(params);
         if (!interviewerID.equals(narratorID)) {
             ProfileImageView pivNarrator = new ProfileImageView(this);
-            pivNarrator.getProfileImage().setImageURI(Uri.parse(narratorPictureLocalURI));
+            pivNarrator.loadImageFromSource(narratorPictureURL);
             mLayoutScrollViewVisibility.addView(pivNarrator);
             pivNarrator.setLayoutParams(params);
         }

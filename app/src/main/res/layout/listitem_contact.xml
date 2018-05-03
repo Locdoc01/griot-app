@@ -41,14 +41,36 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
         app:layout_constraintHorizontal_bias="0.05" />
-    
+
+    <ImageView
+        android:id="@+id/imageView_add_person"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_64"
+        android:layout_margin="@dimen/dimen_8"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_seperator"
+        app:srcCompat="@drawable/add_avatar" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="piv_person, imageView_add_person" />
+
     <TextView
         android:id="@+id/textView_person"
         style="@style/AppTheme.Text_Normal"
         android:layout_marginLeft="@dimen/dimen_8"
         android:text="Batman"
         app:layout_constraintTop_toBottomOf="@id/list_seperator"
-        app:layout_constraintLeft_toRightOf="@id/piv_person"
+        app:layout_constraintLeft_toRightOf="@id/barrier"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
         app:layout_constraintRight_toRightOf="parent"

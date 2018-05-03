@@ -2,7 +2,6 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,26 +24,27 @@ import java.util.ArrayList;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 
 /**
- * ArrayList-ListView-Adapter, which converts an ArrayList of LocalPersonData-objects into ListView items.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of PersonData-objects into ListView items.
  *
  * This adapter is specialized for ListViews, which allows the user to choose a contact.
  * Use CombinedPersonListCreator to obtain a combined ListView of all contacts and set CombinedPersonListCreator.mMode either to
  * CombinedPersonListCreator.PERSONS_CHOOSE_MODE or CombinedPersonListCreator.GROUPS_CHOOSE_MODE, using setMode().
  */
-public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> {
+public class PersonDataChooseAdapter extends ArrayAdapter<PersonData> {
 
-    private static final String TAG = LocalPersonDataChooseAdapter.class.getSimpleName();
+    private static final String TAG = PersonDataChooseAdapter.class.getSimpleName();
 
     private static class ViewHolder {
         //Views, which are shown in every ListView item
         private TextView mTextViewCategory;
         private FrameLayout mListItemSeperator;
         private ProfileImageView mPivPerson;
+        private ImageView mImageViewAddPerson;
         private TextView mTextViewPerson;
         private ImageView mButtonCheck;
     }
@@ -53,7 +53,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     private ConstraintLayout mTouchedParent = null;
 
     //constructor
-    public LocalPersonDataChooseAdapter(Context context, ArrayList<LocalPersonData> data) {
+    public PersonDataChooseAdapter(Context context, ArrayList<PersonData> data) {
         super(context, 0, data);
     }
 
@@ -62,7 +62,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // get the data item for the position
-        final LocalPersonData data = getItem(position);
+        final PersonData data = getItem(position);
 
         ViewHolder holder;
         if (convertView==null) {
@@ -71,11 +71,12 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
             convertView = inflater.inflate(R.layout.listitem_contact, parent, false);
 
             // get references to the objects, which are created during the intflation of the layout xml-file
-            holder.mTextViewCategory = (TextView) convertView.findViewById(R.id.category);
-            holder.mListItemSeperator = (FrameLayout) convertView.findViewById(R.id.list_seperator);
-            holder.mPivPerson = (ProfileImageView) convertView.findViewById(R.id.piv_person);
-            holder.mTextViewPerson = (TextView) convertView.findViewById(R.id.textView_person);
-            holder.mButtonCheck = (ImageView) convertView.findViewById(R.id.button_item);
+            holder.mTextViewCategory = convertView.findViewById(R.id.category);
+            holder.mListItemSeperator = convertView.findViewById(R.id.list_seperator);
+            holder.mPivPerson = convertView.findViewById(R.id.piv_person);
+            holder.mImageViewAddPerson = convertView.findViewById(R.id.imageView_add_person);
+            holder.mTextViewPerson = convertView.findViewById(R.id.textView_person);
+            holder.mButtonCheck = convertView.findViewById(R.id.button_item);
             holder.mButtonCheck.setImageResource(R.drawable.check);
             convertView.setTag(holder);
         } else {
@@ -98,17 +99,13 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
         }
 
         //show profile pictures, if available, otherwise show placeholder
-        if (data.getPictureLocalURI() != null && data.getPictureLocalURI().equals(getContext().getString(R.string.text_add_guest))) {
-            holder.mPivPerson.getProfileImage().setImageResource(R.drawable.add_avatar);
-            holder.mPivPerson.getProfileImagePlus().setVisibility(View.GONE);
-            holder.mPivPerson.getProfileImageCircle().setVisibility(View.GONE);
+        if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
+            holder.mPivPerson.setVisibility(View.GONE);
+            holder.mImageViewAddPerson.setVisibility(View.VISIBLE);
         } else {
-            try {
-                holder.mPivPerson.getProfileImage().setImageURI(Uri.parse(data.getPictureLocalURI()));
-                holder.mPivPerson.getProfileImagePlus().setVisibility(View.VISIBLE);
-                holder.mPivPerson.getProfileImageCircle().setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-            }
+            holder.mPivPerson.setVisibility(View.VISIBLE);
+            holder.mImageViewAddPerson.setVisibility(View.GONE);
+            holder.mPivPerson.loadImageFromSource(data.getPictureURL());
         }
 
         holder.mTextViewPerson.setText(data.getFirstname() + (data.getLastname()==null ? "" : " " + data.getLastname()));
@@ -147,6 +144,7 @@ public class LocalPersonDataChooseAdapter extends ArrayAdapter<LocalPersonData> 
                                 Log.d(TAG, "person clicked: ");
                                 Intent intent;
                                 //If first guest item was clicked, nothing happens. (First item is for adding a guest, which gets triggered through OnListItemClickListener)
+                                //TODO: propably unnecessary, since visibility of piv_person of the first item is set to View.GONE
                                 if (data.getFirstname().equals(getContext().getString(R.string.text_add_guest))) {
                                     return false;
                                 }

@@ -8,33 +8,22 @@ import java.util.HashMap;
  */
 public class CommentData {
 
+    private String commentID;
     private String comment;
     private String time;
     private String commentatorID;
     private String commentatorName;
     private String commentatorPictureURL;
 
+
     //default-constructor
     public CommentData() {
     }
 
-    //constructor
-    public CommentData(
-            String comment,
-            String time,
-            String commentatorID,
-            String commentatorName,
-            String commentatorPictureURL
-    ) {
-        this.comment = comment;
-        this.time = time;
-        this.commentatorID = commentatorID;
-        this.commentatorName = commentatorName;
-        this.commentatorPictureURL = commentatorPictureURL;
-    }
-
 
     //get-methods
+    public String getCommentID() { return commentID; }
+
     public String getComment() { return comment; }
 
     public String getTime() { return time; }
@@ -46,6 +35,8 @@ public class CommentData {
     public String getCommentatorPictureURL() { return commentatorPictureURL; }
 
     //set-methods
+    public void setCommentID(String commentID) { this.commentID = commentID; }
+
     public void setComment(String comment) { this.comment = comment; }
 
     public void setTime(String time) { this.time = time; }

@@ -14,6 +14,7 @@ public class ExtraQuestionData {
     public ExtraQuestionData() {
     }
 
+
     //constructor
     public ExtraQuestionData(String topic, String question) {
         this.topic = topic;

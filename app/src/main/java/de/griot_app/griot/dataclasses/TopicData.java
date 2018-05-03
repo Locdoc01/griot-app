@@ -1,23 +1,22 @@
 package de.griot_app.griot.dataclasses;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Data holding class for question group of local topic catalog
+ * Data holding class for question group of topic catalog
  */
 
-public class LocalTopicData {
+public class TopicData {
 
     private Integer topicKey;
     private String topic;
     private Boolean topicState;
-    private ArrayList<LocalQuestionData> questions;
+    private ArrayList<QuestionData> questions;
     private Boolean selected = false;
     private Boolean expanded = false;
 
     //default-constructor
-    public LocalTopicData() {
+    public TopicData() {
         questions = new ArrayList<>();
     }
 
@@ -29,7 +28,7 @@ public class LocalTopicData {
 
     public Boolean getTopicState() { return topicState; }
 
-    public ArrayList<LocalQuestionData> getQuestions() { return questions; }
+    public ArrayList<QuestionData> getQuestions() { return questions; }
 
     public Boolean getSelected() { return selected; }
 
@@ -42,7 +41,7 @@ public class LocalTopicData {
 
     public void setTopicState(Boolean topicState) {this.topicState = topicState;}
 
-    public void setQuestions(ArrayList<LocalQuestionData> questions) { this.questions = questions; }
+    public void setQuestions(ArrayList<QuestionData> questions) { this.questions = questions; }
 
     public void setSelected(Boolean selected) { this.selected = selected; }
 

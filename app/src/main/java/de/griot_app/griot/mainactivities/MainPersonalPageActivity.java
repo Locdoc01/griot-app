@@ -1,9 +1,7 @@
 package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,27 +11,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import de.griot_app.griot.adapters.InterviewDataAdapter;
 import de.griot_app.griot.contacts_profiles.ContactManagmentActivity;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
-import de.griot_app.griot.adapters.LocalInterviewDataAdapter;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalInterviewData;
+import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.views.ProfileImageView;
 
 /**
@@ -70,10 +63,10 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     private RecyclerView mRecyclerViewInterviews;
 
     //ArrayList containing the data of interviews
-    private ArrayList<LocalInterviewData> mListLocalInterviewData;
+    private ArrayList<InterviewData> mListInterviewData;
 
     //Data-View-Adapter for the ListView
-    private LocalInterviewDataAdapter mLocalInterviewDataAdapter;
+    private InterviewDataAdapter mInterviewDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +100,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
         mButtonFriendsGroups.setOnTouchListener(this);
         mButtonQuestionmail.setOnTouchListener(this);
 
-        mListLocalInterviewData = new ArrayList<>();
+        mListInterviewData = new ArrayList<>();
 
         mRecyclerViewInterviews = (RecyclerView) findViewById(R.id.recyclerView_main_profile_overview);
 
@@ -116,103 +109,29 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mListLocalInterviewData.clear();
+                mListInterviewData.clear();
                 //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
+                    final InterviewData interviewData = ds.getValue(InterviewData.class);
 
                     //Count the medias
-                    if (localInterviewData.getMedium().equals("video")) {
+                    if (interviewData.getMedium().equals("video")) {
                         mVideoCount++;
-                    } else if (localInterviewData.getMedium().equals("audio")) {
+                    } else if (interviewData.getMedium().equals("audio")) {
                         mAudioCount++;
                     }
-                    mListLocalInterviewData.add(localInterviewData);
+                    mListInterviewData.add(interviewData);
                 }
                 //Set the adapter
-                mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainPersonalPageActivity.this, mListLocalInterviewData);
+                mInterviewDataAdapter = new InterviewDataAdapter(MainPersonalPageActivity.this, mListInterviewData);
                 mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainPersonalPageActivity.this));
-                mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
+                mRecyclerViewInterviews.setAdapter(mInterviewDataAdapter);
 
                 //Update the textView_medias
                 mTextViewMedias.setText("" + (mVideoCount==0 ? getString(R.string.text_none) : mVideoCount) + " "
                         + (mVideoCount==1 ? getString(R.string.text_video) : getString(R.string.text_videos)) + " / "
                         + (mAudioCount==0 ? getString(R.string.text_none) : mAudioCount) + " "
                         + (mAudioCount==1 ? getString(R.string.text_audio) : getString(R.string.text_audios)));
-
-                //Create temporary files to store the pictures from Firebase Storage
-                for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
-                    final int index = i;
-                    File fileMediaCover = null;
-                    File fileInterviewer = null;
-                    File fileNarrator = null;
-                    try {
-                        fileMediaCover = File.createTempFile("mediaCover" + i + "_", ".jpg");
-                        fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
-                        fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
-                    } catch (Exception e) {
-                    }
-                    final String pathMediaCover = fileMediaCover.getPath();
-                    final String pathInterviewer = fileInterviewer.getPath();
-                    final String pathNarrator = fileNarrator.getPath();
-
-                    //Obtain pictures for interview media covers from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getPictureURL());
-                        mStorageRef.getFile(fileMediaCover).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setPictureLocalURI(pathMediaCover);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading MediaCover image file");
-                                mListLocalInterviewData.get(index).setPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-
-                    //Obtain interviewer profile pictures from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
-                        mStorageRef.getFile(fileInterviewer).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setInterviewerPictureLocalURI(pathInterviewer);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading Interviewer image file");
-                                mListLocalInterviewData.get(index).setInterviewerPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-
-                    //Obtain narrator profile pictures from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getNarratorPictureURL());
-                        mStorageRef.getFile(fileNarrator).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setNarratorPictureLocalURI(pathNarrator);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading Interviewer image file");
-                                mListLocalInterviewData.get(index).setNarratorPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -234,7 +153,7 @@ public class MainPersonalPageActivity extends GriotBaseActivity implements View.
     @Override
     protected void doOnStartAfterLoadingUserInformation() {
         mTextViewUser.setText(mOwnUserData.getFirstname() + " " + mOwnUserData.getLastname());
-        mPivUser.getProfileImage().setImageURI(Uri.parse(mOwnUserData.getPictureLocalURI()));
+        mPivUser.loadImageFromSource(mOwnUserData.getPictureURL());
     }
 
 

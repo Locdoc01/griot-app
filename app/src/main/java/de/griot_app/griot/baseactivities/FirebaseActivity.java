@@ -23,8 +23,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+import de.griot_app.griot.FirebaseUtils;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalUserData;
+import de.griot_app.griot.dataclasses.UserData;
 import de.griot_app.griot.startactivities.LoginActivity;
 
 /**
@@ -45,8 +46,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected FirebaseAuth.AuthStateListener mAuthListener;
     protected FirebaseUser mUser;
     protected String mUserID;
-    protected LocalUserData mLocalUserData;
-    protected LocalUserData mOwnUserData;
+    protected UserData mUserData;
+    protected UserData mOwnUserData;
     protected FirebaseDatabase mDatabase;
     protected DatabaseReference mDatabaseRootReference;
     protected DatabaseReference mDatabaseRef;
@@ -74,29 +75,47 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected abstract void doOnStartAfterLoadingUserInformation();
 
 
-    //Get Firebase references and creates an AuthStateListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseUtils.getAuth();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + user.getUid());
+                mUser = mAuth.getCurrentUser();
+                if (mUser != null) {
+                    Log.d(getSubClassTAG(), "onAuthStateChanged: singed in: " + mUser.getUid());
+                    mUserID = mUser.getUid();
+                    // if the user is signed in, obtain user information
+                    loadUserInformation();
                 } else {
                     Log.d(getSubClassTAG(), "onAuthStateChanged: signed out: ");
+                    // if this is not LoginActiviy and if no user is signed in, start LoginActivity and finish this one
+                    mUserID = null;
+                    if (!(FirebaseActivity.this instanceof LoginActivity)) {
+                        Intent intent = new Intent(FirebaseActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRootReference = mDatabase.getReference();
+        mDatabase = FirebaseUtils.getDatabase();
+        mDatabaseRootReference = FirebaseUtils.getDatabaseRootReference();
 
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRootReference = mStorage.getReference();
+        mStorage = FirebaseUtils.getStorage();
+        mStorageRootReference = FirebaseUtils.getStorageRootReference();
+
+/*
+        Log.d(getSubClassTAG(), "" + (this instanceof MainOverviewActivity)); //true
+        Log.d(getSubClassTAG(), "" + (this instanceof FirebaseActivity));    //true
+
+        Log.d(getSubClassTAG(), "" + (this.getClass().equals(MainOverviewActivity.class))); // true
+        Log.d(getSubClassTAG(), "" + (this.getClass().equals(FirebaseActivity.class))); // false
+*/
+
     }
 
     //Set the AuthStateListener
@@ -104,24 +123,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        // if this is not LoginActiviy and if no user is signed in, start LoginActivity and finish this one
-        //TODO: checken, ob es bessere Lösungen gibt
-        if (!(this instanceof LoginActivity)) {
-            if (mAuth.getCurrentUser() == null) {
-                if (mAuth.getCurrentUser() == null) {
-                    Intent intent = new Intent(FirebaseActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        }
-
-        // if the user is signed in, obtain user information
-        if (mAuth.getCurrentUser() != null) {
-            loadUserInformation();
-        }
     }
+
 
     //Remove the AuthStateListener
     @Override
@@ -130,12 +133,10 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
+
     //Obtain own user information
     protected void loadUserInformation() {
         Log.d(getSubClassTAG(), "loadUserInformation: ");
-
-        mUser = mAuth.getCurrentUser();
-        mUserID = mUser.getUid();
 
         Query query = mDatabaseRootReference.child("users").orderByKey().equalTo(mUserID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,41 +144,11 @@ public abstract class FirebaseActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(getSubClassTAG(), "getValueEventListener: onDataChange:");
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    mOwnUserData = ds.getValue(LocalUserData.class);
+                    mOwnUserData = ds.getValue(UserData.class);
                     mOwnUserData.setContactID(ds.getKey());
                     mOwnUserData.setCategory(getString(R.string.text_yourself));
                 }
-
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
-                }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mOwnUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mOwnUserData.setPictureLocalURI(path);
-
-                            //Gets specified in subclasses
-                            doOnStartAfterLoadingUserInformation();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mOwnUserData.setPictureLocalURI("");
-
-                            //Gets specified in subclasses
-                            doOnStartAfterLoadingUserInformation();
-
-                        }
-                    });
-                } catch (Exception e) {}
+                doOnStartAfterLoadingUserInformation();
 
             }
             @Override
@@ -185,7 +156,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
         });
     }
 
-    public LocalUserData getOwnUserData() { return mOwnUserData; }
+    public UserData getOwnUserData() { return mOwnUserData; }
 
 }
 

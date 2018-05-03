@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.google.firebase.database.Query;
 
+import de.griot_app.griot.dataclasses.PersonData;
 import de.griot_app.griot.perform_interview.ChooseMediumInputActivity;
 import de.griot_app.griot.perform_interview.ChooseTopicInputActivity;
 import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalPersonData;
 
 
 /**
@@ -111,7 +111,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         mListViewPersons = (ListView) findViewById(R.id.listView_main_input_choose_friend);
         mListViewPersons.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 
-        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate LocalPersonData-object
+        //Manages the narrator selection along with the next-button functionality. The selection gets stored in the appropriate PersonData-object
         mListViewPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -196,7 +196,7 @@ public class MainChooseFriendInputActivity extends GriotBaseInputActivity {
         //Navigation to the next page of the "prepare interview"-dialog
         //All relevant data for the interview or the dialog-pages is put to the intent as extra data for getting sent to the next page.
         Intent intent = new Intent();
-        LocalPersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
+        PersonData item = mCombinedListCreator.getAdapter().getItem(narratorSelectedItemID);
         intent.putExtra("narratorSelectedItemID", narratorSelectedItemID);
         intent.putExtra("narratorID", item.getContactID());
         intent.putExtra("narratorName", item.getFirstname() + (item.getLastname() == null ? "" : " " + item.getLastname()));

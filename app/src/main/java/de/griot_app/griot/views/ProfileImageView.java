@@ -2,39 +2,44 @@ package de.griot_app.griot.views;
 
 
 import android.content.Context;
-
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
+import de.griot_app.griot.ImageLoader;
 import de.griot_app.griot.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * ProfileImageView provides a round profile image with a thin lightgrey Border. If no image resource is set, it will show a plus-sign over background color.
- * The background color around the circle is Griot-white by default and can be changed to Griot-blue.
- * To set a profile image resource, use getProfileImage() to get a reference to the ImageView, that holds the image. With that reference the image recource
- * can be set by one of its own ImageView-class-methods.
- *
- * Example:
- * ProfileImageView piv = findViewById(R.contactID.profile_image);
- * piv.getProfileImage.setImageURI(uri);
+ * ProfileImageView provides a round profile image with a thin round lightgrey border.
+ * After creation it is cleared and shows only the boarder. If an image was successfully loaded,
+ * it will be shown together with the boarder.
+ * If an image couldn't be loaded successfully, the View shows a gender neutral avatar as placeholder
+ * together with the border instead.
+ * The image can be cleared again. A plus sign can be shown, but only, if the image is cleared.
  */
 public class ProfileImageView extends ConstraintLayout {
 
     private static final String TAG = ProfileImageView.class.getSimpleName();
 
+    private static final int PLACERHOLDER_RESOURCE = R.drawable.avatar_single;
+
     private Context mContext;
 
+    private ImageLoader imageLoader;
+
     //Views
-    private ImageView mProfileImage;
-    private ImageView mProfileImageCircle;
-    private ImageView mProfileImagePlus;
+    private ImageView mPlus;
+    private ImageView mCircle;
+    private CircleImageView mProfileImage;
+
 
     /**
      * Constructors
-     * All three of them are necessary in order to create an object of this class from a layout, so that it could be inflated
      */
     public ProfileImageView(Context context) {
         super(context);
@@ -54,44 +59,57 @@ public class ProfileImageView extends ConstraintLayout {
         init();
     }
 
+
     /**
-     * Initializations to be performed in constructurs.
+     * Initializes the ProfilImageView. After initialization it shows only the circular border and the image is cleared.
      */
     private void init() {
+        imageLoader = new ImageLoader(mContext);
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_profile_image, this);
-
         //Get references to layout objects
-        mProfileImage = (ImageView) v.findViewById(R.id.profile_image);
-        mProfileImageCircle = (ImageView) v.findViewById(R.id.profile_image_circle);
-        mProfileImagePlus = (ImageView) v.findViewById(R.id.profile_image_plus);
+        mProfileImage = v.findViewById(R.id.circleImageView_profile_image);
+        mCircle = v.findViewById(R.id.imageView_circle);
+        mPlus = v.findViewById(R.id.imageView_plus);
     }
 
-    /**
-     * Returns the ImageView, that is supposed to hold the profile image. It can be set and changed by its own methods.
-     * @return ImageView, that is supposed to hold the profile image.
-     */
-    public ImageView getProfileImage() { return mProfileImage; }
 
     /**
-     * Returns the ImageView, that holds the plus-sign. Thus it could be changed by ImageView-methods.
-     * @return ImageView, that holds the plus-sign.
+     * Loads an image from the passed image source and shows it. The source can be of the following types:
+     * Uri, File, byte[], Object, Bitmap, String (url), Drawable, Integer (resourceID)
+     * If there is no image available at the passed source, there will be shown a gender neutral avatar image
+     * as placeholder.
+     * If null or any other type which is not a valid image source is passed, the placeholder will also be shown.
+     * @param imageSource   image source, which can be of any type including null.
      */
-    public ImageView getProfileImagePlus() { return mProfileImagePlus; }
+    public <T> void loadImageFromSource(T imageSource) {
+        imageLoader.load(mProfileImage, imageSource, PLACERHOLDER_RESOURCE);
+    }
+
 
     /**
-     * Returns the ImageView, that holds the circular border. Thus it could be changed by ImageView-methods.
-     * @return ImageView, that holds the circular border.
+     * Clears the image or, if shown, the placeholder, so that only the circular boarder and
+     * (depending on its visibility) the plus sign will be shown
      */
-    public ImageView getProfileImageCircle() { return mProfileImageCircle; }
+    public void clearImage() {
+        mProfileImage.setImageBitmap(null);
+    }
+
 
     /**
-     * Sets the background color around the circle to Griot-white. (default)
+     * Sets the visibility of the plus sign acccording to the value of showPlus. Though, it would only be visible,
+     * if the image is cleared.
+     * @param showPlus   If true, visibility is set to View.VISIBILE, otherwise to View.INVISIBLE
      */
-    public void setWhite() { mProfileImageCircle.setImageResource(R.drawable.piv_circle_white); }
+    public void showPlus(boolean showPlus) {
+        mPlus.setVisibility(showPlus ? View.VISIBLE : View.INVISIBLE);
+    }
+
 
     /**
-     * Sets the background color around the circle to Griot-blue
+     * Sets the visibility of the circular boarder acccording to the value of showCircle.
+     * @param showCircle   If true, visibility is set to View.VISIBILE, otherwise to View.INVISIBLE
      */
-    public void setBlue() { mProfileImageCircle.setImageResource(R.drawable.piv_circle_blue); }
-
+    public void showCircle(boolean showCircle) {
+        mCircle.setVisibility(showCircle ? View.VISIBLE : View.INVISIBLE);
+    }
 }

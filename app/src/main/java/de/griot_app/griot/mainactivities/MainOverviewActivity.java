@@ -2,40 +2,31 @@ package de.griot_app.griot.mainactivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.details_content.DetailsInterviewActivity;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.LocalInterviewDataAdapter;
-import de.griot_app.griot.dataclasses.LocalInterviewData;
+import de.griot_app.griot.adapters.InterviewDataAdapter;
 import de.griot_app.griot.interfaces.OnItemClickListener;
 
 
 /**
  * Main activity that provides an overview over all interviews, where the user is either interviewer, narrator or shareholder.
  */
-public class MainOverviewActivity extends GriotBaseActivity implements OnItemClickListener<LocalInterviewData>{
+public class MainOverviewActivity extends GriotBaseActivity implements OnItemClickListener<InterviewData>{
 
     private static final String TAG = MainOverviewActivity.class.getSimpleName();
 
@@ -43,10 +34,10 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
     private RecyclerView mRecyclerViewInterviews;
 
     //ArrayList containing the data of interviews
-    private ArrayList<LocalInterviewData> mListLocalInterviewData;
+    private ArrayList<InterviewData> mListInterviewData;
 
     //Data-View-Adapter for the RecyclerView
-    private LocalInterviewDataAdapter mLocalInterviewDataAdapter;
+    private InterviewDataAdapter mInterviewDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +46,7 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
         mTitle.setText(R.string.title_overview);
         mButtonHome.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotBlue, null));
 
-        mListLocalInterviewData = new ArrayList<>();
+        mListInterviewData = new ArrayList<>();
 
         mRecyclerViewInterviews = (RecyclerView) findViewById(R.id.recyclerView_main_overview);
 
@@ -63,92 +54,18 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
         mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mListLocalInterviewData.clear();
+                mListInterviewData.clear();
                 //Obtain interview data
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final LocalInterviewData localInterviewData = ds.getValue(LocalInterviewData.class);
-                    localInterviewData.setContentID(ds.getKey());
-                    mListLocalInterviewData.add(localInterviewData);
+                    final InterviewData interviewData = ds.getValue(InterviewData.class);
+                    interviewData.setContentID(ds.getKey());
+                    mListInterviewData.add(interviewData);
                 }
                 //Set the adapter
-                mLocalInterviewDataAdapter = new LocalInterviewDataAdapter(MainOverviewActivity.this, mListLocalInterviewData);
+                mInterviewDataAdapter = new InterviewDataAdapter(MainOverviewActivity.this, mListInterviewData);
                 mRecyclerViewInterviews.setLayoutManager(new LinearLayoutManager(MainOverviewActivity.this));
-                mRecyclerViewInterviews.setAdapter(mLocalInterviewDataAdapter);
-                mLocalInterviewDataAdapter.setOnItemClickListener(MainOverviewActivity.this);
-
-                //Create temporary files to store the pictures from Firebase Storage
-                for ( int i=0 ; i<mListLocalInterviewData.size() ; i++ ) {
-                    final int index = i;
-                    File fileMediaCover = null;
-                    File fileInterviewer = null;
-                    File fileNarrator = null;
-                    try {
-                        fileMediaCover = File.createTempFile("mediaCover" + i + "_", ".jpg");
-                        fileInterviewer = File.createTempFile("interviewer" + i + "_", ".jpg");
-                        fileNarrator = File.createTempFile("narrator" + i + "_", ".jpg");
-                    } catch (Exception e) {
-                    }
-                    final String pathMediaCover = fileMediaCover.getPath();
-                    final String pathInterviewer = fileInterviewer.getPath();
-                    final String pathNarrator = fileNarrator.getPath();
-
-                    //Obtain pictures for interview media covers from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getPictureURL());
-                        mStorageRef.getFile(fileMediaCover).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setPictureLocalURI(pathMediaCover);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading MediaCover image file");
-                                mListLocalInterviewData.get(index).setPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-
-                    //Obtain interviewer profile pictures from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getInterviewerPictureURL());
-                        mStorageRef.getFile(fileInterviewer).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setInterviewerPictureLocalURI(pathInterviewer);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading Interviewer image file");
-                                mListLocalInterviewData.get(index).setInterviewerPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-
-                    //Obtain narrator profile pictures from Firebase Storage
-                    try {
-                        mStorageRef = mStorage.getReferenceFromUrl(mListLocalInterviewData.get(index).getNarratorPictureURL());
-                        mStorageRef.getFile(fileNarrator).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                mListLocalInterviewData.get(index).setNarratorPictureLocalURI(pathNarrator);
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(getSubClassTAG(), "Error downloading Interviewer image file");
-                                mListLocalInterviewData.get(index).setNarratorPictureLocalURI("");
-                                mLocalInterviewDataAdapter.notifyDataSetChanged();
-                            }
-                        });
-                    } catch (Exception e) {}
-                }
+                mRecyclerViewInterviews.setAdapter(mInterviewDataAdapter);
+                mInterviewDataAdapter.setOnItemClickListener(MainOverviewActivity.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -160,7 +77,7 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
     }
 
     @Override
-    public void onItemClick(LocalInterviewData dataItem) {
+    public void onItemClick(InterviewData dataItem) {
         Intent intent = new Intent(MainOverviewActivity.this, DetailsInterviewActivity.class);
         intent.putExtra("selectedInterviewID", dataItem.getContentID());
         intent.putExtra("interviewTitle", dataItem.getTitle());
@@ -170,13 +87,13 @@ public class MainOverviewActivity extends GriotBaseActivity implements OnItemCli
         intent.putExtra("topic", dataItem.getTopic());
         intent.putExtra("medium", dataItem.getMedium());
         intent.putExtra("length", dataItem.getLength());
-        intent.putExtra("pictureLocalURI", dataItem.getPictureLocalURI());
+        intent.putExtra("pictureURL", dataItem.getPictureURL());
         intent.putExtra("interviewerID", dataItem.getInterviewerID());
         intent.putExtra("interviewerName", dataItem.getInterviewerName());
-        intent.putExtra("interviewerPictureLocalURI", dataItem.getInterviewerPictureLocalURI());
+        intent.putExtra("interviewerPictureURL", dataItem.getInterviewerPictureURL());
         intent.putExtra("narratorID", dataItem.getNarratorID());
         intent.putExtra("narratorName", dataItem.getNarratorName());
-        intent.putExtra("narratorPictureLocalURI", dataItem.getNarratorPictureLocalURI());
+        intent.putExtra("narratorPictureURL", dataItem.getNarratorPictureURL());
         intent.putExtra("narratorIsUser", dataItem.getNarratorIsUser());
 
         String[] associatedUsers = new String[dataItem.getAssociatedUsers().size()];

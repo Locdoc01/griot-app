@@ -18,25 +18,6 @@ public class GuestData extends PersonData {
     }
 
 
-    //constructor
-    public GuestData(
-            String firstname,
-            String lastname,
-            String birthday,
-            Integer bYear,
-            Integer bMonth,
-            Integer bDay,
-            String email,
-            String pictureURL,
-            String pictureLocalURI,
-            String hostID,
-            String relationship
-    ) {
-        super(firstname, lastname, birthday, bYear, bMonth, bDay, email, pictureURL, pictureLocalURI);
-        this.hostID = hostID;
-        this.relationship = relationship;
-    }
-
 
     //get-methods
     public String getHostID() { return hostID; }

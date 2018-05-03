@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import de.griot_app.griot.dataclasses.LocalTopicData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
 import de.griot_app.griot.baseactivities.FirebaseActivity;
@@ -95,9 +94,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     private TextView mButtonForgotten;
     private Button mButtonSignIn;
 
-    //Data class object for user information
-    private UserData mUserData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,8 +115,9 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
         mButtonDatePicker = (ImageView) findViewById(R.id.button_datepicker);
         mButtonCreateAccount = (Button) findViewById(R.id.button_create_account);
 
+        mProfileImage.showPlus(true);
+
         //Some initializations
-        mProfileImage.setBlue();
         mUriLocalProfileImage = null;
 
         mCalendar = Calendar.getInstance();
@@ -225,8 +222,6 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                 switch (v.getId()) {
                     case R.id.piv_profile_image:
                         Log.d(TAG, "profile image clicked: ");
-                        //v.setBackgroundColor(ContextCompat.getColor(LoginActivity.this, R.color.colorGriotBlue));
-
                         //choosing an image without cropping
                         /*
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -269,24 +264,12 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //after choosing an image without cropping
-        /*
-        if (requestCode == REQUEST_GALLERY) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    mLocalUriProfilePhoto = data.getData();
-                    mImageProfile.setImageURI(mLocalUriProfilePhoto);
-                }
-            }
-        }
-        */
         //after choosing an image from CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mUriLocalProfileImage = result.getUri();
-                mProfileImage.getProfileImage().setImageURI(Uri.parse(mUriLocalProfileImage.getPath()));
-                mProfileImage.getProfileImage().setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mProfileImage.loadImageFromSource(mUriLocalProfileImage.getPath());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -634,7 +617,7 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                         mStorageRef.putFile(mUriLocalProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                //On success the remote downloadURL will be stored to mLocalUserData.pictureURL
+                                                //On success the remote downloadURL will be stored to mUserData.pictureURL
                                                 //TODO: find alternative
                                                 mUserData.setPictureURL(taskSnapshot.getDownloadUrl().toString());
                                                 //Send data to database (must be here, after profile picture was send to Firebase Storage, otherwise pictureURL will be empty in database)
@@ -643,29 +626,14 @@ public class LoginActivity extends FirebaseActivity implements DatePickerDialog.
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                //On failure mLocalUserData.pictureURL will remain empty
+                                                //On failure mUserData.pictureURL will remain empty
                                                 Toast.makeText(LoginActivity.this, "Profile Image Error", Toast.LENGTH_SHORT).show();
                                                 Log.e(getSubClassTAG(), "Error uploading profile image");
                                                 mDatabaseRef.setValue(mUserData);
                                             }
                                         });
                                     } else {
-                                        mStorageRootReference.child("users").child("profilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                mUserData.setPictureURL(uri.toString());
-                                                //If no profile image was chosen, mLocalUserData.pictureURL will be set to a downloadUrl of a standard avatar picture
-                                                // located in Storage folder "users"
-                                                mDatabaseRef.setValue(mUserData);
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception exception) {
-                                                //On failure mLocalUserData.pictureURL will remain empty.
-                                                Log.e(getSubClassTAG(), "Error obtaining avatar image uri");
-                                                mDatabaseRef.setValue(mUserData);
-                                            }
-                                        });
+                                        mDatabaseRef.setValue(mUserData);
                                     }
 
                                 }
