@@ -148,38 +148,6 @@ public abstract class FirebaseActivity extends AppCompatActivity {
                     mOwnUserData.setContactID(ds.getKey());
                     mOwnUserData.setCategory(getString(R.string.text_yourself));
                 }
-/*
-                File file = null;
-                try {
-                    file = File.createTempFile("profile_image" + "_", ".jpg");
-                } catch (Exception e) {
-                }
-                final String path = file.getPath();
-
-                try {
-                    mStorageRef = mStorage.getReferenceFromUrl(mOwnUserData.getPictureURL());
-                    mStorageRef.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            mOwnUserData.setPictureLocalURI(path);
-
-                            //Gets specified in subclasses
-                            doOnStartAfterLoadingUserInformation();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(getSubClassTAG(), "Error downloading user profile image file");
-                            mOwnUserData.setPictureLocalURI("");
-
-                            //Gets specified in subclasses
-                            doOnStartAfterLoadingUserInformation();
-
-                        }
-                    });
-                } catch (Exception e) {}
-*/
                 doOnStartAfterLoadingUserInformation();
 
             }
