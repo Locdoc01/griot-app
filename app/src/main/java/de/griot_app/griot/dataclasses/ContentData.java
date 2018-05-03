@@ -15,7 +15,6 @@ public class ContentData {
     protected String dateDay;
     protected String medium;
     protected String pictureURL;
-    protected String pictureLocalURI;
     protected HashMap<String, Boolean> associatedUsers;
     protected HashMap<String, Boolean> associatedGuests;
     protected HashMap<String, Boolean> tags;
