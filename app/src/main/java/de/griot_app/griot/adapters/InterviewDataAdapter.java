@@ -23,24 +23,24 @@ import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.Helper;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
+import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.interfaces.OnItemClickListener;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalInterviewData;
 
 /**
- * ArrayList-RecyclerView-Adapter, which converts an ArrayList of LocalInterviewData-objects into RecyclerView items.
+ * ArrayList-RecyclerView-Adapter, which converts an ArrayList of InterviewData-objects into RecyclerView items.
  */
-public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalInterviewDataAdapter.ViewHolder> {
+public class InterviewDataAdapter extends RecyclerView.Adapter<InterviewDataAdapter.ViewHolder> {
 
-    private static final String TAG = LocalInterviewDataAdapter.class.getSimpleName();
+    private static final String TAG = InterviewDataAdapter.class.getSimpleName();
 
     private Context mContext;
 
     private ImageLoader mImageLoader;
 
-    private ArrayList<LocalInterviewData> mListData;
-    private static OnItemClickListener<LocalInterviewData> mListener;
+    private ArrayList<InterviewData> mListData;
+    private static OnItemClickListener<InterviewData> mListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder {  //TODO: ok if not static??
         //Views, which are shown in every RecyclerView item
@@ -78,7 +78,7 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
         }
 
 
-        public void bindClickListener(final LocalInterviewData dataItem) {
+        public void bindClickListener(final InterviewData dataItem) {
             View.OnClickListener clickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -139,20 +139,20 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
     private View.OnClickListener clickListener;
 
     //constructor
-    public LocalInterviewDataAdapter(Context context, ArrayList<LocalInterviewData> listData) {
+    public InterviewDataAdapter(Context context, ArrayList<InterviewData> listData) {
         mContext = context;
         mImageLoader = new ImageLoader(mContext);
         mListData = listData;
-        mListener = new OnItemClickListener<LocalInterviewData>() {
+        mListener = new OnItemClickListener<InterviewData>() {
             @Override
-            public void onItemClick(LocalInterviewData dataItem) {
+            public void onItemClick(InterviewData dataItem) {
                 // unfunctional placeholder, for the case, that no actual listener is assigned in the activity
             }
         };
 
     }
 
-    public void setOnItemClickListener(OnItemClickListener<LocalInterviewData> listener) {
+    public void setOnItemClickListener(OnItemClickListener<InterviewData> listener) {
         mListener = listener;
     }
 
@@ -171,34 +171,16 @@ public class LocalInterviewDataAdapter extends RecyclerView.Adapter<LocalIntervi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get the dataItem item for the position
-        final LocalInterviewData dataItem = mListData.get(position);
+        final InterviewData dataItem = mListData.get(position);
 
         //initialize the views with the dataItem from the correspondent ArrayList
         holder.mTextViewTitle.setText(dataItem.getTitle());
         holder.mTextViewDate.setText(dataItem.getDateDay() + "." + dataItem.getDateMonth() + "." + dataItem.getDateYear());
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
-/*
-        if (dataItem.getPictureLocalURI() != null) {
-            if (Uri.parse(dataItem.getPictureLocalURI()) != null) {
-                ImageView test = new ImageView(mContext);
-                test.setImageURI(Uri.parse(dataItem.getPictureLocalURI()));
-                if (test.getDrawable() != null) {
-                    holder.mImageViewMediaCover.setImageURI(Uri.parse(dataItem.getPictureLocalURI()));
-                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                    if (dataItem.getMedium().equals("audio")) {
-                        holder.mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                        ColorMatrix matrix = new ColorMatrix();
-                        matrix.setSaturation(0);
-                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                        holder.mImageViewMediaCover.setColorFilter(filter);
-                        holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
-*/
+        //Initialize mediaCover
         mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL());
+        //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
         if (dataItem.getMedium().equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);

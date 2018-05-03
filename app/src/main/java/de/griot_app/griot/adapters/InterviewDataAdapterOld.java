@@ -21,21 +21,20 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import de.griot_app.griot.baseactivities.GriotBaseActivity;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.Helper;
 import de.griot_app.griot.contacts_profiles.OwnProfileInputActivity;
 import de.griot_app.griot.contacts_profiles.UserProfileInputActivity;
+import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.views.ProfileImageView;
 import de.griot_app.griot.R;
-import de.griot_app.griot.dataclasses.LocalInterviewData;
 
 /**
- * ArrayList-ListView-Adapter, which converts an ArrayList of LocalInterviewData-objects into ListView items.
+ * ArrayList-ListView-Adapter, which converts an ArrayList of InterviewData-objects into ListView items.
  */
-public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewData> {
+public class InterviewDataAdapterOld extends ArrayAdapter<InterviewData> {
 
-    private static final String TAG = LocalInterviewDataAdapterOld.class.getSimpleName();
+    private static final String TAG = InterviewDataAdapterOld.class.getSimpleName();
 
     private static class ViewHolder {
         //Views, which are shown in every ListView item
@@ -58,7 +57,7 @@ public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewDat
     private View.OnClickListener clickListener;
 
     //constructor
-    public LocalInterviewDataAdapterOld(Context context, ArrayList<LocalInterviewData> data) {
+    public InterviewDataAdapterOld(Context context, ArrayList<InterviewData> data) {
         super(context, 0, data);
     }
 
@@ -67,7 +66,7 @@ public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewDat
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // get the data item for the position
-        final LocalInterviewData data = getItem(position);
+        final InterviewData data = getItem(position);
         ViewHolder holder;
         if (convertView==null) {
             holder = new ViewHolder();
@@ -97,25 +96,7 @@ public class LocalInterviewDataAdapterOld extends ArrayAdapter<LocalInterviewDat
         holder.mTextViewDate.setText(data.getDateDay() + "." + data.getDateMonth() + "." + data.getDateYear());
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(data.getLength())));
 
-        if (data.getPictureLocalURI() != null) {
-            if (Uri.parse(data.getPictureLocalURI()) != null) {
-                ImageView test = new ImageView(getContext());
-                test.setImageURI(Uri.parse(data.getPictureLocalURI()));
-                if (test.getDrawable() != null) {
-                    holder.mImageViewMediaCover.setImageURI(Uri.parse(data.getPictureLocalURI()));
-                    //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
-                    if (data.getMedium().equals("audio")) {
-                        holder.mImageViewMediaCover.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                        ColorMatrix matrix = new ColorMatrix();
-                        matrix.setSaturation(0);
-                        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                        holder.mImageViewMediaCover.setColorFilter(filter);
-                        holder.mImageViewMediaCoverForeground.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
+        //ImageLoading
 
         holder.mPivInterviewer.loadImageFromSource(data.getInterviewerPictureURL());
         holder.mPivNarrator.loadImageFromSource(data.getNarratorPictureURL());
