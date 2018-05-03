@@ -10,7 +10,6 @@ public class InterviewData extends ContentData {
 
     private String title;
     private String topic;
-    private String medium;
     private String interviewerID;
     private String interviewerName;
     private String interviewerPictureURL;
@@ -29,46 +28,6 @@ public class InterviewData extends ContentData {
         numberComments = 0;
         comments = new HashMap<>();
         interviewQuestionIDs = new ArrayList<>();
-    }
-
-    //constructor
-    public InterviewData(
-            String title,
-            String dateYear,
-            String dateMonth,
-            String dateDay,
-            String topic,
-            String medium,
-            String length,
-            String pictureURL,
-            String pictureLocalURI,
-            String interviewerID,
-            String interviewerName,
-            String interviewerPictureURL,
-            String narratorID,
-            String narratorName,
-            String narratorPictureURL,
-            Boolean narratorIsUser,
-            HashMap<String, Boolean> associatedUsers,
-            HashMap<String, Boolean> associatedGuests,
-            HashMap<String, Boolean> tags,
-            Integer numberComments,
-            HashMap<String, CommentData> comments,
-            ArrayList<String> interviewQuestionIDs
-    ) {
-        super(length, dateYear, dateMonth, dateDay, medium, pictureURL, associatedUsers, associatedGuests, tags);
-        this.title = title;
-        this.topic = topic;
-        this.interviewerID = interviewerID;
-        this.interviewerName = interviewerName;
-        this.interviewerPictureURL = interviewerPictureURL;
-        this.narratorID = narratorID;
-        this.narratorName = narratorName;
-        this.narratorPictureURL = narratorPictureURL;
-        this.narratorIsUser = narratorIsUser;
-        this.numberComments = numberComments;
-        this.comments = comments;
-        this.interviewQuestionIDs = interviewQuestionIDs;
     }
 
 

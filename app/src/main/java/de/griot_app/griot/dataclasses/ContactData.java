@@ -10,7 +10,6 @@ public class ContactData {
 
     protected String firstname;
     protected String pictureURL;
-    protected String pictureLocalURI;
     protected String category;
 
     //following attributes are excluded from uploading to Firebase Database
@@ -18,6 +17,7 @@ public class ContactData {
     protected String contactID;
     @Exclude
     protected Boolean selected = false;
+
 
     //default-constructor
     public ContactData() {
@@ -32,8 +32,6 @@ public class ContactData {
 
     public String getPictureURL() { return pictureURL; }
 
-    public String getPictureLocalURI() { return pictureLocalURI; }
-
     public String getCategory() { return category; }
 
     public Boolean getSelected() { return selected; }
@@ -44,8 +42,6 @@ public class ContactData {
     public void setFirstname(String firstname) { this.firstname = firstname; }
 
     public void setPictureURL(String pictureURL) { this.pictureURL = pictureURL; }
-
-    public void setPictureLocalURI(String pictureLocalURI) { this.pictureLocalURI = pictureLocalURI; }
 
     public void setCategory(String category) { this.category = category; }
 
