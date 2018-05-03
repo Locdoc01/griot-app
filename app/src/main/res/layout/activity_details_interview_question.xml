@@ -73,14 +73,14 @@
                 android:id="@+id/guideline_interviewer_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.06"
+                app:layout_constraintGuide_percent="0.065"
                 android:orientation="vertical" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline_interviewer_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.16"
+                app:layout_constraintGuide_percent="0.155"
                 android:orientation="vertical" />
 
             <de.griot_app.griot.views.ProfileImageView
@@ -151,14 +151,14 @@
                 android:id="@+id/guideline_narrator_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.84"
+                app:layout_constraintGuide_percent="0.845"
                 android:orientation="vertical" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline_narrator_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.94"
+                app:layout_constraintGuide_percent="0.935"
                 android:orientation="vertical" />
 
             <de.griot_app.griot.views.ProfileImageView

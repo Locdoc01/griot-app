@@ -409,7 +409,7 @@ public class InterviewQuestionDataDetailsAdapter extends RecyclerView.Adapter<Re
             //initialize footer views with intent data
             holderFooter.mTextViewTopic.setText(topic);
 
-            int width = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+            int width = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);   //TODO: dimens sw600dp nicht abgedeckt ?
             int height = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
             ProfileImageView pivInterviewer = new ProfileImageView(mContext);

@@ -21,14 +21,14 @@
         android:id="@+id/guideline_piv_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.144"
+        app:layout_constraintGuide_percent="0.154"
         android:orientation="vertical" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_piv_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.335"
+        app:layout_constraintGuide_percent="0.325"
         android:orientation="vertical" />
 
     <android.support.constraint.Guideline
