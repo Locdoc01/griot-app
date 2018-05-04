@@ -16,11 +16,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * ProfileImageView provides a round profile image with a thin round lightgrey border.
- * After creation it is cleared and shows only the boarder. If an image was successfully loaded,
- * it will be shown together with the boarder.
- * If an image couldn't be loaded successfully, the View shows a gender neutral avatar as placeholder
- * together with the border instead.
- * The image can be cleared again. A plus sign can be shown, but only, if the image is cleared.
+ * After creation it shows the boarder along with a gender neutral avatar as placeholder.
+ * If an image was successfully loaded, it will be shown along with the boarder.
+ * The image can be cleared again, in which case the placeholder will be shown again.
+ * A plus sign can be shown instead of an image.
  */
 public class ProfileImageView extends ConstraintLayout {
 
@@ -61,7 +60,8 @@ public class ProfileImageView extends ConstraintLayout {
 
 
     /**
-     * Initializes the ProfilImageView. After initialization it shows only the circular border and the image is cleared.
+     * Initializes the ProfilImageView. After initialization it shows only the circular border along with
+     * a gender neutral avatar as placeholder.
      */
     private void init() {
         imageLoader = new ImageLoader(mContext);
@@ -91,17 +91,23 @@ public class ProfileImageView extends ConstraintLayout {
      * (depending on its visibility) the plus sign will be shown
      */
     public void clearImage() {
+        showPlus(false);
         mProfileImage.setImageBitmap(null);
     }
 
 
     /**
-     * Sets the visibility of the plus sign acccording to the value of showPlus. Though, it would only be visible,
-     * if the image is cleared.
-     * @param showPlus   If true, visibility is set to View.VISIBILE, otherwise to View.INVISIBLE
+     * Shows the plus sign and hides the profile image acccording to the value of showPlus.
+     * @param showPlus   If true, plus sign will be shown instead of profile image
      */
     public void showPlus(boolean showPlus) {
-        mPlus.setVisibility(showPlus ? View.VISIBLE : View.INVISIBLE);
+        if (showPlus) {
+            mProfileImage.setVisibility(View.INVISIBLE);
+            mPlus.setVisibility(View.VISIBLE);
+        } else {
+            mProfileImage.setVisibility(View.VISIBLE);
+            mPlus.setVisibility(View.INVISIBLE);
+        }
     }
 
 
