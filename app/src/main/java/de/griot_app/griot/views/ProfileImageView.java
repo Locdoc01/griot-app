@@ -25,7 +25,7 @@ public class ProfileImageView extends ConstraintLayout {
 
     private static final String TAG = ProfileImageView.class.getSimpleName();
 
-    private static final int PLACERHOLDER_RESOURCE = R.drawable.avatar_single;
+    private static final int PLACERHOLDER_RESOURCE = R.drawable.avatar_single_plus30;
 
     private Context mContext;
 
