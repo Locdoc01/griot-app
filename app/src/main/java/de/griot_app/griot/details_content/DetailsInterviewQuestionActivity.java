@@ -120,7 +120,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
 
         //Initialize mediaPlayer
-        mImageLoader.load(mMediaPlayer, pictureURL);
+        mImageLoader.load(mMediaPlayer, pictureURL, R.drawable.empty_16_9);
         //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
         if (medium.equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();

@@ -328,7 +328,7 @@ public class InterviewQuestionDataDetailsAdapter extends RecyclerView.Adapter<Re
             ViewHolderHeader holderHeader = (ViewHolderHeader) holder;
             //initialize header views with intent data:
             //initialize mediaPlayer
-            mImageLoader.load(holderHeader.mMediaPlayer, pictureURL);
+            mImageLoader.load(holderHeader.mMediaPlayer, pictureURL, R.drawable.empty_16_9);
             //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
             if (medium.equals("audio")) {
                 ColorMatrix matrix = new ColorMatrix();
@@ -438,7 +438,7 @@ public class InterviewQuestionDataDetailsAdapter extends RecyclerView.Adapter<Re
             holderItem.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
 
             //Initialize mediaCover
-            mImageLoader.load(holderItem.mImageViewMediaCover, dataItem.getPictureURL());
+            mImageLoader.load(holderItem.mImageViewMediaCover, dataItem.getPictureURL(), R.drawable.empty_16_9);
             //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
             if (dataItem.getMedium().equals("audio")) {
                 ColorMatrix matrix = new ColorMatrix();
