@@ -152,13 +152,17 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
         mTextViewTopic.setText(topic);
 
-        int width = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
-        int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        int pivWidth = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+        int pivHeight = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+        int pivMarginEnd = getResources().getDimensionPixelSize(R.dimen.dimen_piv_marginEnd);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pivWidth, pivHeight);
+        params.setMargins(0, 0, pivMarginEnd, 0);
+
         ProfileImageView pivInterviewer = new ProfileImageView(this);
         pivInterviewer.loadImageFromSource(interviewerPictureURL);
         mLayoutScrollViewVisibility.addView(pivInterviewer);
         pivInterviewer.setLayoutParams(params);
+
         if (!interviewerID.equals(narratorID)) {
             ProfileImageView pivNarrator = new ProfileImageView(this);
             pivNarrator.loadImageFromSource(narratorPictureURL);

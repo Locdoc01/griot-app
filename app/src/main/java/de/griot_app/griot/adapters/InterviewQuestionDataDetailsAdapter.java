@@ -409,13 +409,17 @@ public class InterviewQuestionDataDetailsAdapter extends RecyclerView.Adapter<Re
             //initialize footer views with intent data
             holderFooter.mTextViewTopic.setText(topic);
 
-            int width = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);   //TODO: dimens sw600dp nicht abgedeckt ?
-            int height = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            int pivWidth = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);   //TODO: dimens sw600dp abgedeckt ?
+            int pivHeight = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+            int pivMarginEnd = mContext.getResources().getDimensionPixelSize(R.dimen.dimen_piv_marginEnd);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pivWidth, pivHeight);
+            params.setMargins(0, 0, pivMarginEnd, 0);
+
             ProfileImageView pivInterviewer = new ProfileImageView(mContext);
             pivInterviewer.loadImageFromSource(interviewerPictureURL);
             holderFooter.mLayoutScrollViewVisibility.addView(pivInterviewer);
             pivInterviewer.setLayoutParams(params);
+
             if (!interviewerID.equals(narratorID)) {
                 ProfileImageView pivNarrator = new ProfileImageView(mContext);
                 pivNarrator.loadImageFromSource(narratorPictureURL);
