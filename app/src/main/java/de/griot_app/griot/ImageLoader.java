@@ -1,6 +1,7 @@
 package de.griot_app.griot;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -48,10 +49,14 @@ public class ImageLoader {
      *            Uri, File, byte[], Object, Bitmap, String (url), Drawable, Integer (resourceID)
      */
     public <T1, T2> void load(ImageView imageView, T1 imageSource, T2 placeholderSource) {
-        Glide.with(mContext)
-                .load(imageSource)
-                .error(Glide.with(mContext)
-                        .load(placeholderSource))
-                .into(imageView);
+        try {
+            Glide.with(mContext)
+                    .load(imageSource)
+                    .error(Glide.with(mContext)
+                            .load(placeholderSource))
+                    .into(imageView);
+        } catch (IllegalArgumentException iae) {
+            iae.printStackTrace();
+        }
     }
 }
