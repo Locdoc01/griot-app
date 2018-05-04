@@ -10,9 +10,11 @@
     <ImageView
         android:id="@+id/mediaPlayer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+        android:layout_height="0dp"
         app:srcCompat="@drawable/empty_16_9"
+        android:padding="@dimen/dimen_height_lines"
+        android:cropToPadding="true"
+        app:layout_constraintDimensionRatio="H, 16:9"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
