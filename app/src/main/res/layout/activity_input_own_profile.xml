@@ -12,7 +12,7 @@
         android:id="@+id/guideline_profile_image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.105"
+        app:layout_constraintGuide_percent="0.113"
         android:orientation="horizontal" />
 
     <de.griot_app.griot.views.ProfileImageView
@@ -29,7 +29,7 @@
         android:id="@+id/guideline_profile_image_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.279"
+        app:layout_constraintGuide_percent="0.271"
         android:orientation="horizontal" />
 
     <android.support.constraint.Guideline

@@ -173,7 +173,7 @@ public class InterviewQuestionDataReviewAdapter extends RecyclerView.Adapter<Int
         holder.mTextViewLength.setText(Helper.getLengthStringFromMiliseconds(Long.parseLong(dataItem.getLength())));
 
         //Initialize mediaCover
-        mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL());
+        mImageLoader.load(holder.mImageViewMediaCover, dataItem.getPictureURL(), R.drawable.empty_16_9);
         //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
         if (dataItem.getMedium().equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();

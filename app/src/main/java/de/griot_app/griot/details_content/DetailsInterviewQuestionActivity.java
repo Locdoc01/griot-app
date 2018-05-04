@@ -120,7 +120,7 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
         mLayoutScrollViewVisibility = (LinearLayout) findViewById(R.id.layout_scrollView_visibility);
 
         //Initialize mediaPlayer
-        mImageLoader.load(mMediaPlayer, pictureURL);
+        mImageLoader.load(mMediaPlayer, pictureURL, R.drawable.empty_16_9);
         //if the interview got recorded as audio, the mediaCover will show the narrator profile picture in black/white and darkened
         if (medium.equals("audio")) {
             ColorMatrix matrix = new ColorMatrix();
@@ -152,13 +152,17 @@ public class DetailsInterviewQuestionActivity extends GriotBaseActivity {
 
         mTextViewTopic.setText(topic);
 
-        int width = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
-        int height = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        int pivWidth = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+        int pivHeight = getResources().getDimensionPixelSize(R.dimen.dimen_piv);
+        int pivMarginEnd = getResources().getDimensionPixelSize(R.dimen.dimen_piv_marginEnd);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(pivWidth, pivHeight);
+        params.setMargins(0, 0, pivMarginEnd, 0);
+
         ProfileImageView pivInterviewer = new ProfileImageView(this);
         pivInterviewer.loadImageFromSource(interviewerPictureURL);
         mLayoutScrollViewVisibility.addView(pivInterviewer);
         pivInterviewer.setLayoutParams(params);
+
         if (!interviewerID.equals(narratorID)) {
             ProfileImageView pivNarrator = new ProfileImageView(this);
             pivNarrator.loadImageFromSource(narratorPictureURL);

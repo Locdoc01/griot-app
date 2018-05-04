@@ -15,7 +15,8 @@
     <dimen name="dimen_padding_edittext">4.8dp</dimen>
     <dimen name="dimen_corner_radius_edittext">3dp</dimen>
 
-    <dimen name="dimen_piv">45dp</dimen>
+    <dimen name="dimen_piv">40.5dp</dimen>
+    <dimen name="dimen_piv_marginEnd">6.55dp</dimen>
     <dimen name="dimen_height_tagView">23dp</dimen>
 
     <dimen name="dimen_4">2.4dp</dimen>
