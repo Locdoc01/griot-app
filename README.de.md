@@ -5,7 +5,7 @@
 *Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)*
 
 ## Inhalt
-- [Über Griot](#-ber-griot)
+- [Über Griot](#%C3%9Cber-griot)
 - [Installation](#installation)
 - [Screenshots](#screenshots)
 - [Bedienungsanleitung](#bedienungsanleitung)
