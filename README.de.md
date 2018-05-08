@@ -2,7 +2,7 @@
 </br></br>
 ![Griot Logo](https://i.imgur.com/kPgZaTV.png)
 </br></br></br>
-<!--- *Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)* --->
+*Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)*
 
 ## Inhalt
 - [Über Griot](#%C3%9Cber-griot)
@@ -98,9 +98,9 @@ Wenn Sie eines der Interviews auswählen, gelangen Sie in eine **Detailansicht**
 Zunächst wählen Sie eine Person als Erzähler aus. Sie haben hier mehrere Möglichkeiten:  
 - Sie können sich selbst für ein Selbstinterview auswählen.
 - Sie können einen befreundeten Nutzer auswählen.
-- Sie können einen Gast auswählen.
+- Sie können einen bestehenden Gast auswählen.
 - Sie können über das Feld *Gast hinzufügen* ein neues Gastprofil erstellen und diesen Gast anschließend auswählen.
-- Sie können nach anderen Personen suchen und diese hinzufügen\*. (Diese Person erhält dann eine Freundschaftsanfrage, die erst beantwortet werden muss, bevor Sie diese Person für das Interview auswählen können!)  
+- Sie können nach anderen Nutzern suchen und diese als Freund hinzufügen\*. (Diese erhalten dann eine Freundschaftsanfrage, die erst akzeptiert werden muss, bevor Sie sie für das Interview auswählen können!)  
 
 Haben Sie eine Wahl getroffen, drücken Sie auf *Weiter*.
 
@@ -126,13 +126,13 @@ Möchten Sie das Interview beenden, drücken Sie auf den *Fertig*-Button.
 
 #### Nachbearbeitung des Interviews
 In der Nachbearbeitung sehen Sie eine Übersicht über die aufgezeichneten Fragen. Für jede Frage können Sie *Schlagwörter* definieren. Drücken Sie dazu auf das jeweilige *Plus*-Symbol links unter den Titelbildern.  
-Über das *Plus*-Symbol am oberen Bildrand können Sie Ihrem Interview außerdem weitere Fragen hinzufügen\*.
+Über das *Plus*-Symbol am oberen Bildrand können Sie Ihrem Interview außerdem weitere Fragen hinzufügen\*.  
 Über den *Zurück*-Button gelangen Sie wieder zur Aufnahmefunktion, wo Sie sowohl neu hinzugefügte Fragen als auch die bisherigen Fragen erneut aufnehmen können.  
 Sind Sie mit der Nachbearbeitung des Interviews fertig, drücken Sie auf *Weiter*.
 
 #### Speichern des Interviews
 Im letzten Schritt müssen Sie einen Titel für Ihr Interview vergeben. Sie haben außerdem noch einmal die Möglichkeit, den ausgewählten Erzähler zu ändern.  
-Stehen Titel und Erzähler fest, drücken Sie auf *Speichern*, um das Interview abzuschließen. Daraufhin wird das Interview hochgeladen und online archiviert. Über die App steht es Ihnen nun dauerhaft zur Verfügung, auch wenn Sie die Originalaufnahmen vom Gerät löschen. (Bedenken Sie jedoch, dass die Qualität der hochgeladenen Aufnahmen von der Originalqualität abweichen kann!) 
+Stehen Titel und Erzähler fest, drücken Sie auf *Speichern*, um das Interview abzuschließen. Daraufhin wird das Interview hochgeladen und online archiviert. Über die App steht es Ihnen nun dauerhaft zur Verfügung, auch wenn Sie die Originalaufnahmen vom Gerät löschen. (Bedenken Sie jedoch, dass die Qualität der hochgeladenen Aufnahmen von der Originalqualität abweichen kann!)  
 Nach dem Speichern werden Sie automatisch zur **Übersicht** zurückgeleitet.
 
 ### Persönliche Seite
@@ -154,7 +154,7 @@ Freunde sind andere registrierte Nutzer, mit denen Sie eine Freundschaft eingega
 Gäste sind Personen, für die Sie ein Gastprofil angelegt haben, die aber selbst nicht Nutzer der App sind. Gäste können als Erzähler für ein Interview ausgewählt werden. Sie erhalten in dem Fall nach dem Speichern Zugriff auf das Interview über einen Link, der Ihnen automatisch per E-Mail geschickt wird. Soll ein Interview geteilt werden, in dem ein Gast Erzähler war, muss dieser dem Teilen zustimmen. Er erhält in dem Fall ebenfalls eine Email mit Links zum Zustimmen oder Ablehnen.
 
 ### Themenkatalog
-Im **Themenkatalog** können Sie, wie unter [Auswahl des Themas](#auswahl-des-themas) beschrieben, Ihre Themen und Fragen einsehen und Fragen für Interviews ein- oder ausschalten. Außerdem können neue Themen und Fragen hinzugefügt\* und Fragen ein- oder ausgeschaltet werden.
+Im **Themenkatalog** können Sie, wie unter [Auswahl des Themas](#auswahl-des-themas) beschrieben, Ihre Themen und Fragen einsehen und Fragen für Interviews ein- oder ausschalten. Außerdem können neue Themen und Fragen hinzugefügt werden\*.
 
 \* *Diese Funktionen stehen im Produktkern noch nicht zur Verfügung*
 
@@ -177,12 +177,12 @@ Folgende App-Funktionen sind noch nicht enthalten:
 
 Die App verwendet eine Architektur aus Clients und cloud-basiertem Backend.
 
-Für das Backend werden u.a. folgende Dienste des kommerziellen Cloud-Anbieters Google Firebase verwendet:
+Für das Backend werden u.a. folgende Dienste des Cloud-Service-Anbieters Google Firebase verwendet:
 - Authentication
 - Realtime Database
 - Storage
 
-Als Clients dienen Android-Smartphones und Android-Tablets mit Android 4.1 (API-Level 16) oder höher.
+Als Clients dienen Smartphones und Tablets mit Android 4.1 (API-Level 16) oder höher.
 Folgende Gerätefunktionen werden benötigt:
 - Kamera
 - Mikrofon
