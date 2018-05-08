@@ -2,7 +2,7 @@
 </br></br>
 ![Griot Logo](https://i.imgur.com/kPgZaTV.png)
 </br></br></br>
-*Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)*
+<!--- *Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)* --->
 
 ## Inhalt
 - [Über Griot](#%C3%9Cber-griot)
@@ -179,10 +179,10 @@ Für die Aufzeichnung eines Interviews wird die Verwendung folgender Peripherie 
 
 ## Beitragende
 
-### Modellierung, Entwurf und Implementierung
+### Modellierung, Entwurf & Implementierung
 
 Marcel Schoob
 
-### Idee und Konzeption
+### Idee, Konzeption & Oberflächendesign
 
 Muriel Balzer
