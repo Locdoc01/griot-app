@@ -179,10 +179,10 @@ Für die Aufzeichnung eines Interviews wird die Verwendung folgender Peripherie 
 
 ## Beitragende
 
-### Modellierung, Entwurf und Implementierung
+### Modellierung, Entwurf & Implementierung
 
 Marcel Schoob
 
-### Idee und Konzeption
+### Idee, Konzeption & Oberflächendesign
 
 Muriel Balzer
