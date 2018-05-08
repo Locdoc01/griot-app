@@ -2,7 +2,7 @@
 </br></br>
 ![Griot Logo](https://i.imgur.com/kPgZaTV.png)
 </br></br></br>
-*Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)*
+<!--- *Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)* --->
 
 ## Inhalt
 - [Über Griot](#%C3%9Cber-griot)
@@ -58,86 +58,103 @@ Für die Installation wird ein Smartphone oder Tablet mit Android 4.1 oder höhe
 ## Bedienungsanleitung
 
 ### Start der App
-Wenn Sie die App zum ersten Mal starten bzw. wenn beim Start der App kein Nutzer eingeloggt ist, gelangen Sie zunächst auf die **Login**-Seite. Hier haben Sie Zugriff auf die Bereiche **Account erstellen** und **Anmelden**
+Wenn Sie die App zum ersten Mal starten bzw. wenn beim Start der App kein Nutzer eingeloggt ist, gelangen Sie zunächst auf die **Login**-Seite mit den beiden Bereichen **Account erstellen** und **Anmelden**
 
 #### Account erstellen
-Wenn Sie noch keine registrierter Nutzer sind, können Sie sich hier registrieren. Füllen Sie dazu die Felder *Vorname*, *Nachname*, *Geburtsdatum* und *E-Mail-Adresse* aus und wählen Sie ein Passwort. Dieses muss aus Zahlen und Buchstaben bestehen und mindestens 6 Zeichen lang sein.  
+Wenn Sie noch keinen Account haben, können Sie sich hier registrieren. Füllen Sie dazu die Felder *Vorname*, *Nachname*, *Geburtsdatum* und *E-Mail-Adresse* aus und wählen Sie ein Passwort. Dieses muss aus Zahlen und Buchstaben bestehen und mindestens 6 Zeichen lang sein.  
 Über das *Plus*-Symol können Sie ein Profilbild auswählen. Sollten Sie dies nicht möchten, wird Ihnen ein anonymisierter Avatar zugewiesen.  
-Über den Button *Account erstellen* führen Sie die Registrierung durch.
+Drücken Sie auf *Account erstellen*, um die Registrierung durchzuführen.
 
 #### Anmelden
-Sollten Sie bereits ein registrierter Nutzer sein, können Sie hier Ihre E-Mail-Adresse und Ihr Passwort eingeben und sich über den *Anmelde*-Button einloggen.
+Sollten Sie bereits ein registrierter Nutzer sein, können Sie hier Ihre E-Mail-Adresse und Ihr Passwort eingeben und auf *Anmelden* drücken, um sich einzuloggen.
 
-Sollten Sie sich seit der letzten Nutzung der App nicht ausgeloggt haben, werden Sie automatisch wieder eingeloggt.
+Sollten Sie sich seit der letzten Nutzung der App nicht ausgeloggt haben, werden Sie beim Start der App automatisch wieder eingeloggt.
 
 ### Hauptfunktionen
 Wenn Sie eingeloggt sind, können Sie alle Funktionen der App nutzen.  
-Am unteren Bildrand sehen Sie die Haupt-Buttonleiste, über die Sie die Hauptfunktionen der App erreichen können. Von links nach rechts sind das die Funktionen:
+Am unteren Bildrand sehen Sie die Hauptnavigationsleiste, über die Sie die wichtigsten Funktionen der App erreichen können. Von links nach rechts sind das:
 1. **Übersicht**
 2. **Persönliche Seite**
 3. **Aufzeichnen eines Interviews**
 4. **Benachrichtigungen**\*
 5. **Themenkatalog**
 
-Rechts unten auf der Seite befindet sich ein weiterer *Schwebe*-Button, über den Sie die **Fragenpost**\* erreichen.
+Über den *Schwebe*-Button rechts über der Hauptnavigation gelangen Sie zur **Fragenpost**\*.
 
 ### Übersicht
-In der **Übersicht** werden Ihnen alle Interviews angezeigt auf die Sie Zugriff haben. Das sind entweder solche, an denen Sie selbst beteiligt waren, oder solche, die mit Ihnen geteilt wurden.  
-Wenn Sie eines der Interviews auswählen, gelangen Sie in eine **Detailansicht**, in der Ihnen alle relevanten Informationen zu dem Interview angezeigt werden. Im oberen Bereich können das Interview außerdem abspielen\*. Weiter unten wird Ihnen eine Liste der zugehörigen Interviewfragen angezeigt. Wählen Sie hiervon eine aus, gelangen Sie wiederum in die Detailansicht für die ausgewählte Frage, in der Ihnen alle Informationen zu dieser Frage angezeigt werden. Auch hier gibt es eine Abspielfunktion für die ausgewählte Frage\*.
+In der **Übersicht** werden Ihnen alle Interviews angezeigt auf die Sie Zugriff haben. Dazu gehören ihre eigenen Interviews, an denen Sie selbst mitgewirkt haben, und solche, die mit Ihnen geteilt wurden.  
+Wenn Sie eines der Interviews auswählen, gelangen Sie in eine **Detailansicht**, in der Ihnen alle relevanten Informationen zu dem Interview angezeigt werden. Im oberen Bereich können das Interview abspielen\*. Weiter unten wird Ihnen eine Liste der zugehörigen Interviewfragen angezeigt. Wählen Sie hiervon eine aus, gelangen Sie wiederum in die Detailansicht für die ausgewählte Frage. Auch hier gibt es eine Abspielfunktion für die einzelne Frage\*.
 
 ### Interview aufzeichnen
-Über den mittleren Button der Haupt-Buttonleiste können Sie die Aufnahme eines neuen Interviews einleiten. Über einen Auswahldialog durchlaufen Sie folgende Schritte:
+Über den mittleren Button der Hauptnavigation können Sie ein neues Interviews einleiten. Dabei durchlaufen Sie folgende Schritte:
+- Auswahl des Erzählers
+- Auswahl des Themas
+- Auswahl des Mediums
+- Aufnahme des Interviews
+- Nachbearbeitung des Interviews
+- Speichern des Interviews
 
 #### Auswahl des Erzählers
-Zunächst müssen Sie eine Person als Erzähler auswählen. Sie haben hier mehrere Möglichkeiten:  
+Zunächst wählen Sie eine Person als Erzähler aus. Sie haben hier mehrere Möglichkeiten:  
 - Sie können sich selbst für ein Selbstinterview auswählen.
-- Sie können einen befreundeten Nutzer (sofern verfügbar) auswählen.
-- Sie können einen Gast (sofern verfügbar) auswählen.
+- Sie können einen befreundeten Nutzer auswählen.
+- Sie können einen Gast auswählen.
 - Sie können über das Feld *Gast hinzufügen* ein neues Gastprofil erstellen und diesen Gast anschließend auswählen.
 - Sie können nach anderen Personen suchen und diese hinzufügen\*. (Diese Person erhält dann eine Freundschaftsanfrage, die erst beantwortet werden muss, bevor Sie diese Person für das Interview auswählen können!)  
 
 Haben Sie eine Wahl getroffen, drücken Sie auf *Weiter*.
 
 #### Auswahl des Themas
-Als nächstes müssen Sie ein Thema auswählen. Sie können die angezeigten Themen aufklappen, um die zugehörigen Fragen einzusehen. Diese können Sie nach Belieben ein- oder ausschalten. Im Interview werden Ihnen nur eingeschaltete Fragen des ausgewählten Themas angezeigt. Über die entsprechenden Plus-Symbole können Sie zudem Themen oder Fragen hinzufügen\*.  
-Außerdem können Sie die getroffene Auswahl des Erzählers wieder zurücknehmen, wodurch Sie automatisch zum vorherigen Auswahlschritt gelangen.  
+Als nächstes wählen Sie ein Thema aus. Sie können die angezeigten Themen aufklappen, um die zugehörigen Fragen einzusehen. Diese können Sie nach Belieben ein- oder ausschalten. Im Interview werden Ihnen nur eingeschaltete Fragen des ausgewählten Themas angezeigt. Über die entsprechenden Plus-Symbole können Sie zudem Themen und Fragen hinzufügen\*.  
+(Darüberhinaus können Sie die im vorherigen Schritt getroffene Auswahl des Erzählers wieder zurücknehmen, wodurch Sie automatisch zur vorherigen Auswahlschritt gelangen.)  
 Haben Sie ein Thema ausgewählt, drücken Sie auf *Weiter*.
 
 #### Auswahl des Mediums
-Zuletzt müssen Sie ein Aufnahmemedium auswählen. Sie haben die Wahl zwischen **Videoaufnahme** und **Audioaufnahme**.  
-Auch hier haben Sie darüberhinaus wieder die Möglichkeit, ihre bisher getroffene Auswahl von Erzähler und Thema zu revidieren.  
+Zuletzt wählen Sie ein Aufnahmemedium. Sie haben die Wahl zwischen **Videoaufnahme** und **Audioaufnahme**.  
+(Auch hier können Sie ihre bisher getroffene Auswahl von Erzähler und Thema revidieren, um zum entsprechenden Auswahlschritt zurückzukehren.)  
 Haben Sie ein Medium gewählt, drücken Sie auf *Weiter*.
 
 #### Aufnahme des Interviews
-Um die **Aufnahmefunktion** nutzen zu können, sind Berechtigungen für die Kamera (nur für Videoaufnahme), das Mikrofon und den internen Speicher erforderlich!
-In der Videoaufnahme haben Sie die Möglichkeit, zwischen Front- und Rückkamera zu wechseln (sofern vorhanden). Außerdem können Sie den Taschenlampenmodus (falls verfügbar) ein- oder ausschalten, um die Lichtverhältnisse anzupassen.  
-Für beide Aufnahmemedien steht Ihnen ein **Fragenkarussell** im unteren Bildbereich zur Verfügung, in dem Sie durch *Wischen* die Fragen durchblättern können. Wenn Sie die Aufnahme über den roten *Aufnahme*-Button starten, wird für die Frage, die sich in der Mitte des Fragenkarussells befindet, die Aufnahme gestartet. Die Frage wird dabei mit einem Aufnahmesymbol gekennzeichnet. Sie können nun während der Aufnahme weiterhin das Fragenkarussell durchblättern, was jedoch keine Auswirkung auf die Aufnahme hat. Wenn Sie die Aufnahme stoppen, wird die aufgezeichnete Frage blau gekennzeichnet. Bereits aufgenommene Fragen können jederzeit erneut aufgenommen werden. Falls eine Frage mehrfach aufgenommen wird, werden die zugehörigen Einzelaufzeichnungen anschließend zu einer Gesamtaufzeichnung verbunden\*.  
+Um die **Aufnahmefunktion** nutzen zu können, müssen Sie Berechtigungen für den internen Speicher, das Mikrofon und im Falle der Videoaufnahme auch für die Kamera erteilen.
+
+In der Aufnahmefunktion wird im unteren Bildbereich ein **Fragenkarussell** angezeigt, in dem Sie durch vertikale *Wisch*-Gesten die Fragen durchblättern können.  
+Wenn Sie den roten *Aufnahme*-Button drücken, wird für die mittlere Frage des Fragenkarussells die Aufnahme gestartet. Die Frage wird dabei mit einem Aufnahmesymbol gekennzeichnet. Sie können nun während der Aufnahme weiterhin das Fragenkarussell durchblättern, was jedoch keine Auswirkung auf die Aufnahme hat.  
+Wenn Sie den *Stop*-Button drücken, wird die Aufnahme gestoppt und die aufgezeichnete Frage blau gekennzeichnet.  
+Bereits aufgenommene Fragen können jederzeit erneut aufgenommen werden. Falls eine Frage mehrfach aufgenommen wird, werden die zugehörigen Einzelaufzeichnungen anschließend zu einer Gesamtaufzeichnung verbunden\*.  
+In der Videoaufnahme können Sie (sofern vorhanden) zwischen Front- und Rückkamera wechseln. Außerdem können Sie (falls verfügbar) die Beleuchtung ein- oder ausschalten.  
 Möchten Sie das Interview beenden, drücken Sie auf den *Fertig*-Button. 
 
 #### Nachbearbeitung des Interviews
-Im folgenden Schritt haben Sie nun die Möglichkeit, Ihr Interview nachzubearbeiten. Sie sehen eine Übersicht über die aufgezeichneten Fragen. Für jede Frage können Sie *Schlagwörter* definieren. Drücken Sie dafür links unter dem jeweiligen Titelbild auf das *Plus*-Symbol.  
+In der Nachbearbeitung sehen Sie eine Übersicht über die aufgezeichneten Fragen. Für jede Frage können Sie *Schlagwörter* definieren. Drücken Sie dazu auf das jeweilige *Plus*-Symbol links unter den Titelbildern.  
 Über das *Plus*-Symbol am oberen Bildrand können Sie Ihrem Interview außerdem weitere Fragen hinzufügen\*.
-Über den *Zurück*-Button gelangen Sie wieder zurück zur Aufnahmefunktion, wo Sie sowohl neu hinzugefügte Fragen als auch die bisherigen Fragen erneut aufnehmen können.  
-Sind Sie mit der Bearbeitung des Interviews fertig, drücken Sie auf *Weiter*.
+Über den *Zurück*-Button gelangen Sie wieder zur Aufnahmefunktion, wo Sie sowohl neu hinzugefügte Fragen als auch die bisherigen Fragen erneut aufnehmen können.  
+Sind Sie mit der Nachbearbeitung des Interviews fertig, drücken Sie auf *Weiter*.
 
 #### Speichern des Interviews
-Im letzten Schritt müssen Sie noch einen Titel für Ihr Interview vergeben. Sie haben außerdem noch einmal die Möglichkeit, den ausgewählten Erzähler zu ändern.  
-Stehen Titel und Erzähler fest, drücken Sie auf *Speichern*, um das Interview abzuschließen und zu archivieren. Haben Sie bitte einen Moment Geduld, bis das Interview auf den Server geladen wurde. Sie werden anschließend automatisch zur **Übersicht** zurückgeleitet.
+Im letzten Schritt müssen Sie einen Titel für Ihr Interview vergeben. Sie haben außerdem noch einmal die Möglichkeit, den ausgewählten Erzähler zu ändern.  
+Stehen Titel und Erzähler fest, drücken Sie auf *Speichern*, um das Interview abzuschließen. Daraufhin wird das Interview hochgeladen und online archiviert. Über die App steht es Ihnen nun dauerhaft zur Verfügung, auch wenn Sie die Originalaufnahmen vom Gerät löschen. (Bedenken Sie jedoch, dass die Qualität der hochgeladenen Aufnahmen von der Originalqualität abweichen kann!) 
+Nach dem Speichern werden Sie automatisch zur **Übersicht** zurückgeleitet.
 
 ### Persönliche Seite
-Auf Ihrer **Persönlichen Seite** werden Ihnen alle Interview angezeigt, an denen Sie selbst beteiligt waren. Außerdem haben Sie hier folgende Möglichkeiten:  
-- Durch einen Klick auf Ihr Profilbild oder Ihren Namen gelangen Sie zu Ihrem **Profil**, wo Sie Ihre persönlichen Daten ändern oder Ihren Account löschen\* können.
-- Über das Symbol oben rechts können Sie einen neuen Gast hinzufügen.
+Auf Ihrer **Persönlichen Seite** werden Ihnen alle Ihre eigenen Interview angezeigt. Außerdem haben Sie hier folgende Möglichkeiten:  
+- Drücken Sie auf Ihr Profilbild oder Ihren Namen, um zu Ihrem **Profil** zu gelangen. Hier können Sie Ihre persönlichen Daten ändern oder Ihren Account löschen\*.
+- Drücken Sie auf das Symbol in der oberen rechten Ecke, um einen neuen Gast hinzuzufügen.
 - Über *Freunde und Gruppen* gelangen Sie zur **Kontaktverwaltung**.
-- Über *Fragenpost* gelangen Sie zur **Fragenpost**.
+- Über *Fragenpost* gelangen Sie zm Postkorb ihrer **Fragenpost**.
 
 ### Kontaktverwaltung
-Die **Kontaktverwaltung** beinhaltet die Liste der Personenkontakte sowie die Gruppenliste\* in zwei getrennten Tabs.  
-In der Liste der Personenkontakte werden Ihnen ihre Gäste sowie befreundete Nutzer angezeigt. Wenn Sie eine Person auswählen, wird Ihnen das jeweilige Profil angezeigt. Gastprofile können dabei auch bearbeitet werden.  
-Außerdem können Sie hier ebenfalls einen Gast hinzufügen und nach Personen suchen\*, um Sie als Freunde hinzuzufügen\*.
+Die **Kontaktverwaltung** beinhaltet die Liste der Personenkontakte sowie die Listen der Gruppen\*, in denen Sie Mitglied sind in zwei getrennten Tabs.  
+In der Liste der Personenkontakte werden Ihnen ihre Gäste und befreundete Nutzer angezeigt. Tippen Sie auf eine Person, um ihr Profil anzuzeigen. Profile ihrer Gäste können Sie dabei auch bearbeiten.  
+Drücken Sie auf *Gast hinzufügen*, um ein neues Gastprofil anzulegen. Über das Suchfeld können andere Nutzer gesucht und als Freunde hinzugefügt werden\*.
+
+##### Unterschied zwischen Freunden und Gästen
+
+Freunde sind andere registrierte Nutzer, mit denen Sie eine Freundschaft eingegangen sind. Freunde können alle Funktionen der App uneingeschränkt nutzen.
+
+Gäste sind Personen, für die Sie ein Gastprofil angelegt haben, die aber selbst nicht Nutzer der App sind. Gäste können als Erzähler für ein Interview ausgewählt werden. Sie erhalten in dem Fall nach dem Speichern Zugriff auf das Interview über einen Link, der Ihnen automatisch per E-Mail geschickt wird. Soll ein Interview geteilt werden, in dem ein Gast Erzähler war, muss dieser dem Teilen zustimmen. Er erhält in dem Fall ebenfalls eine Email mit Links zum Zustimmen oder Ablehnen.
 
 ### Themenkatalog
-Im **Themenkatalog** können Sie, wie bereits beschrieben, Ihre Themen und Fragen einsehen und Fragen für Interviews ein- oder ausschalten. Außerdem können neue Themen und Fragen hinzugefügt\* und Fragen ein- oder ausgeschaltet werden.
+Im **Themenkatalog** können Sie, wie unter [Auswahl des Themas](#auswahl-des-themas) beschrieben, Ihre Themen und Fragen einsehen und Fragen für Interviews ein- oder ausschalten. Außerdem können neue Themen und Fragen hinzugefügt\* und Fragen ein- oder ausgeschaltet werden.
 
 \* *Diese Funktionen stehen im Produktkern noch nicht zur Verfügung*
 
@@ -153,6 +170,7 @@ Folgende App-Funktionen sind noch nicht enthalten:
 - Benachrichtigungsfunktion
 - Erweiterbarkeit des Themenkatalogs
 - Gruppenfunktionen
+- Suchfunktionen
 
 
 ##  Technische Umgebung
