@@ -11,7 +11,7 @@
 - [User Guide](#user-guide)
 - [Stage Of Development](#stage-of-development)
 - [Technical Environment](#technical-environment)
-- [Contributors](#contributers)
+- [Contributors](#contributors)
 
 
 ## About Griot
@@ -84,16 +84,16 @@ The **overview** shows all interviews, which you have access to. This includes y
 If you choose an interview, you get to a **detail view**, which shows you all relevant information about the interview. At the top you can play the interview\*. Further down you can see a list of the belonging interviewquestions. If you choose one, you get to a further detail view for that question, where you also can play that single question\*.
 
 
-### Record an Interview
+### Record An Interview
 By the middle button in the main navigation you can initiate a new interview. In that process you pass through the following steps:
-- Selection of the narrator
-- Selection of a topic
-- Selection of the medium
-- Record of the interview
-- Review of the interview
+- Narrator selection
+- Topic selection
+- Medium selection
+- Record the interview
+- Review the interview
 - Save the interview
 
-#### Selection of the narrator
+#### Narrator Selection
 At first you choose a person as narrator. You have the following options:  
 - You can choose yourself for a self-interview.
 - You can choose a friend.
@@ -103,17 +103,17 @@ At first you choose a person as narrator. You have the following options:
 
 Press *Next*, after you made your choice.
 
-#### Selection of a topic
+#### Topic Selection
 Next you choose a topic. You can expand the topics to see the associated questions. They can be switched on or off at will. Only switched on questions will be shown during the interview. By the appropriate *plus* signs you also can add new topics and questions\*.  
 (Furthermore you can cancel you previously made choice of narrator, which automatically brings you back to the previous selection step.)  
 Press *Next*, after you have chosen a topic. 
 
-#### Selection ot the medium
+#### Medium Selection
 Finally you choose a recording medium. You have the choice between **video recording** and **audio recording**.  
 (As in the last step you also can cancel your previously made choices of narrator and topic here, which brings you back to the appropriate selection step.)  
 Press *Next*, after you have chosen the medium.
 
-#### Recording the interview
+#### Recording The Interview
 For using the **recording function**, you have to grant permissions for using the internal memory, the microphone and in case of video recording the camera es well.
 
 In the bottom area of the recording function you can see the **question carousel**, in which you can browse through the questions by vertical wipe gestures.  
@@ -125,13 +125,13 @@ Already recorded questions can be recorded again at any time. If a question gets
 If you record a video, you can switch between front and back camera (if applicable). Furthermore you can turn on or off the lightning (also if applicable).  
 Press the *Finish* button, if you want to end the interview.
 
-#### Review of the interview
+#### Review The Interview
 In the review you see an overview of the recorded questions. For every question you can define *tags* by pressing the particular *plus* sign left under the covers.  
 Through the *plus* sign at the top you also can add further questionsto your interview\*.  
 Pressing the *back* button brings you back to the recording function, where you can record newly added questions as well as the previous questions again.  
 Press *Next*, if you want to finish reviewing your interview.
 
-#### Save the interview
+#### Save The Interview
 In the last step you have to give a title to your interview. You also have the opportunity once more to change the chosen narrator.  
 Press *Save*, if title and narrator are definite, to complete the interview. Then the interview will be uploaded and archived online. It will now be permanently available to you through the app, even if you remove the original recording from your device. (But bear in mind, that the quality of the uploaded records can differ from the original quality!)  
 After saving the interview you will be redirected to the Overview automatically.
@@ -148,7 +148,7 @@ The **Contact Managment** contains a list of your personal contacts as well as a
 The list of personal contacts shows your guests and friends. Press on a person to show the belonging profile. Profiles of your guests can also be edited.  
 Press on *Add guest* to create a new guest profile. By the search field you can search for other users and add them as friends\*.
 
-##### Difference between friends and guests
+#### Difference Between Friends And Guests
 
 Friends are other registered users, which made friends with. Friends have unlimited access to all functions of the app.
 
@@ -156,7 +156,7 @@ Guests are persons for whom you created a guest profile, but who aren't users of
 If you want to share an interview, where a guest was narrator, the guest has to agree to that. In that case he also receives an email with links to approve or decline.
 
 ### Topic Catalogue
-In the **Topic Catalogue** you can, as described in [Selection of a topic](#selection-of-a-topic), see your topics and questions as well as switch on or off the questions for your interviews. Furthermore you can add new topics and questions\*.
+In the **Topic Catalogue** you can, as described in [Topic Selection](#topic-selection), see your topics and questions as well as switch on or off the questions for your interviews. Furthermore you can add new topics and questions\*.
 
 \* *These features are not available yet in the product core*
 
