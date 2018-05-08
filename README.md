@@ -1,188 +1,208 @@
-# Griot - Digitales Archiv einer Familie
+# Griot - Digital Archive Of A Families
 </br></br>
 ![Griot Logo](https://i.imgur.com/kPgZaTV.png)
 </br></br></br>
-<!--- *Lesen Sie dies auf [Englisch](README.md) / Read this in [English](README.md)* --->
+*Read this in [German](README.de.md) / Lesen Sie dies auf [Deutsch](README.de.md)*
 
-## Inhalt
-- [Über Griot](#%C3%9Cber-griot)
+## Table Of Contents
+- [About Griot](#about-griot)
 - [Installation](#installation)
 - [Screenshots](#screenshots)
-- [Bedienungsanleitung](#bedienungsanleitung)
-- [Entwicklungsstand](#entwicklungsstand)
-- [Technische Umgebung](#technische-umgebung)
-- [Beitragende](#beitragende)
+- [User Guide](#user-guide)
+- [Stage Of Development](#stage-of-development)
+- [Technical Environment](#technical-environment)
+- [Contributors](#contributers)
 
 
-## Über Griot
+## About Griot
 
-Die App *Griot - Digitales Archiv einer Familie* dient in erster Linie dazu, einen technischen Rahmen zu schaffen, der es erlaubt, eine Person biografisch zu interviewen und das Interview als Video oder Audio aufzuzeichnen und zu archivieren. 
+The App *Griot - Digital Archive Of A Family* primarily serves to provide a facility to interview a Person biographically and to record and archive the interview as Video or Audio.
 
-Der Kerngedanke bezieht sich dabei auf die Methode der Interviewführung. Der Interviewer soll dem Erzähler nach Möglichkeit gezielte Fragen stellen, die den Erzähler dazu bringen, *in seinen Erinnerungen zu schwelgen* und dadurch in einen möglichst länger anhhaltenden Redefluss zu verfallen.  
-Zur Erreichung dieses Ziels bietet die App dem Interviewer einen Leitfaden in Form eines *Themenkatalogs*, aus dem er die Fragen für sein Interview vorher zusammenstellen kann. Die ausgewählten Fragen werden dann während des Interviews in einem scrollbaren *Fragenkarussell* eingeblendet und anschließend mit den Aufnahmen verknüpft.  
-Die App soll dem Interviewer so dabei helfen, strukturierte und biografisch gehaltvolle Interviews zu führen.
+The central idea is about the way of conducting the interview. The interviewer should ask well-directed questions to the narrator, which bring him to *indulge in reminiscences* and thus lapse into a lengthy flow of speech.  
+For the achievement of this goal the app provides a guideline to the interviewer in form of a *topic catalogue*, from which he can put together the questions for his interview beforehand. Then during the interview the selected questions are shown in a scrollable *question carousel* and will be associated with the records afterwards.  
+Like that the app helps the interviewer to conduct structured and biographic substantial interviews.
 
-Dabei sind verschiedene Nutzungsszenarien vorgesehen. Der Nutzer kann sich entweder selbst aufzeichnen, um zum Beispiel ein gesprochenes Tagebuch zu führen, oder er kann jemand anderen über dessen Lebensereignisse und Geschichte interviewen und aufzeichnen.
+In the course of this there are different usage scenarious provided. The user can either record himself, for example to keep a spoken diary, or he can interview and record another person about his life events and stories.
 
-Die App bietet zudem einige Social-Media-Funktionen, die es dem Nutzer erlauben, Freundschaften und Gruppen mit anderen Nutzern zu bilden, Gäste anzulegen, Inhalte zu teilen und geteilte Inhalte zu kommentieren. Außerdem können im Bereich *Fragenpost* Interviewfragen an Freunde geschickt werden, die von diesen beantwortet werden können.
+Furthermore the app provides some social media features, which allows the user to make friends and groups with other users, invite guests, share contents und comment on shared contents. Moreover there is a section called *questionmail*, where interview questions can be sent to friends, which can be answered by them.
 
-Weitere Funktionen sind u.a.:
-- Übersicht über alle eigenen und geteilten Interviews des Nutzers
-- Detailansichten der Interviews mit Abspielfunktion
-- Persönliche Seite des Nutzers
-- Profilansichten
-- Benachrichtigungsfunktion für wichtige Ereignisse
-- Nutzerregistrierung und Anmeldung
-
+Other features are i.a.:
+- Overview of all own and shared interviews of the user
+- Interview detail views with playback function
+- Personal page of the user
+- Profile views
+- Notification function for important events
+- Userregistration and login
 
 ## Installation
 
-Die App kann nur über Android Studio installiert werden. Dazu muss das Repository als neues Projekt in Android Studio importiert werden.  
-Für die Installation wird ein Smartphone oder Tablet mit Android 4.1 oder höher, freigeschalteten Entwickleroptionen und aktiviertem USB-Debugging benötigt. 
+The app can only be installed by Android Studio for now. Therefor the repository has to be imported as new project in Android Studio. To install the app a smartphone or tablet with Android 4.1 or above, unlocked developer options and enabled USB-debugging is required.
 
 
 ## Screenshots
 
-<img src="https://i.imgur.com/rz8jcc1.png" width="250" height="" title="Registrierung">&emsp;<img src="https://i.imgur.com/1lI4oWw.jpg" width="250" height="" title="Übersicht">&emsp;<img src="https://i.imgur.com/jLCKG6a.jpg" width="250" height="" title="Interviewdetails">
+<img src="https://i.imgur.com/rz8jcc1.png" width="250" height="" title="Registration">&emsp;<img src="https://i.imgur.com/1lI4oWw.jpg" width="250" height="" title="Overview">&emsp;<img src="https://i.imgur.com/jLCKG6a.jpg" width="250" height="" title="Interview details">
 </br></br>
-<img src="https://i.imgur.com/nLsHpLS.jpg" width="800" height="" title="Videoaufzeichnung">
+<img src="https://i.imgur.com/nLsHpLS.jpg" width="800" height="" title="Video recording">
 </br></br>
-<img src="https://i.imgur.com/dBAxLvZ.jpg" width="250" height="" title="Audioaufzeichnung">&emsp;<img src="https://i.imgur.com/RSKzSip.png" width="250" height="" title="Kontaktverwaltung">&emsp;<img src="https://i.imgur.com/ufcyVQJ.png" width="250" height="" title="Themenkatalog">
+<img src="https://i.imgur.com/dBAxLvZ.jpg" width="250" height="" title="Audio recording">&emsp;<img src="https://i.imgur.com/RSKzSip.png" width="250" height="" title="Contact managment">&emsp;<img src="https://i.imgur.com/ufcyVQJ.png" width="250" height="" title="Topic catalogue">
 </br></br>
-<img src="https://i.imgur.com/b2U9ewv.jpg" width="250" height="" title="Aufzeichnungsüberprüfung">&emsp;<img src="https://i.imgur.com/pUYJpAW.jpg" width="250" height="" title="Persönliche Seite">&emsp;<img src="https://i.imgur.com/mmcei7Y.png" width="250" height="" title="Profil">
+<img src="https://i.imgur.com/b2U9ewv.jpg" width="250" height="" title="Record review">&emsp;<img src="https://i.imgur.com/pUYJpAW.jpg" width="250" height="" title="Personal page">&emsp;<img src="https://i.imgur.com/mmcei7Y.png" width="250" height="" title="Profil">
 
-<!--- <img src="https://i.imgur.com/iOUv4NB.png" width="250" height="" title="Erzählerauswahl"> --->
-<!--- <img src="https://i.imgur.com/g6GZWxs.png" width="250" height="" title="Themenauswahl"> --->
-<!--- <img src="https://i.imgur.com/KO0It6n.png" width="250" height="" title="Medienauswahl"> --->
+<!--- <img src="https://i.imgur.com/iOUv4NB.png" width="250" height="" title="Narrator selection"> --->
+<!--- <img src="https://i.imgur.com/g6GZWxs.png" width="250" height="" title="Topic selection"> --->
+<!--- <img src="https://i.imgur.com/KO0It6n.png" width="250" height="" title="Medium selection"> --->
 
-## Bedienungsanleitung
+## User Guide
 
-### Start der App
-Wenn Sie die App zum ersten Mal starten bzw. wenn beim Start der App kein Nutzer eingeloggt ist, gelangen Sie zunächst auf die **Login**-Seite. Hier haben Sie Zugriff auf die Bereiche **Account erstellen** und **Anmelden**
+### Start The App
+When the app gets started for the first time or if there is no user logged in, you get to the **Login** page first with the sections **Create Account** and **Sign In**.
 
-#### Account erstellen
-Wenn Sie noch keine registrierter Nutzer sind, können Sie sich hier registrieren. Füllen Sie dazu die Felder *Vorname*, *Nachname*, *Geburtsdatum* und *E-Mail-Adresse* aus und wählen Sie ein Passwort. Dieses muss aus Zahlen und Buchstaben bestehen und mindestens 6 Zeichen lang sein.  
-Über das *Plus*-Symol können Sie ein Profilbild auswählen. Sollten Sie dies nicht möchten, wird Ihnen ein anonymisierter Avatar zugewiesen.  
-Über den Button *Account erstellen* führen Sie die Registrierung durch.
+#### Create Account
+If you don't have an account yet, you can register yourself here. To do that, you have to fill out die fields *first name*, *last name*, *date of birth* and *email adress* and choose a password. This must contain numbers and letters and be at least 6 characters long.  
+By the *plus* sign you can choose a profile image. If you don't want that, you will be assigned an anonymised avatar.  
+Press on *Create Account* to perform the registration.
 
-#### Anmelden
-Sollten Sie bereits ein registrierter Nutzer sein, können Sie hier Ihre E-Mail-Adresse und Ihr Passwort eingeben und sich über den *Anmelde*-Button einloggen.
+#### Sign In
+If you are already a registered user, you can enter your email adress and password here. Press *Sign In* to get access to your account.
 
-Sollten Sie sich seit der letzten Nutzung der App nicht ausgeloggt haben, werden Sie automatisch wieder eingeloggt.
+If you haven't signed out since the last time, you used the app, you will automatically be signed in, when you start the app again.
 
-### Hauptfunktionen
-Wenn Sie eingeloggt sind, können Sie alle Funktionen der App nutzen.  
-Am unteren Bildrand sehen Sie die Haupt-Buttonleiste, über die Sie die Hauptfunktionen der App erreichen können. Von links nach rechts sind das die Funktionen:
-1. **Übersicht**
-2. **Persönliche Seite**
-3. **Aufzeichnen eines Interviews**
-4. **Benachrichtigungen**\*
-5. **Themenkatalog**
+### Main functions
+If you are signed in, you have full access to all app functions.  
+At the bottom edge of the screen you see the main navigation bar, which gives you access to the most important functions of the app. From left to right, these are:
+1. **Overview**
+2. **Personal Page**
+3. **Record an Interview**
+4. **Notifications**\*
+5. **Topic Catalogue**
 
-Rechts unten auf der Seite befindet sich ein weiterer *Schwebe*-Button, über den Sie die **Fragenpost**\* erreichen.
+By the *floatig* button to the left over the main navigation you get to the **Questionmail**\*.
 
-### Übersicht
-In der **Übersicht** werden Ihnen alle Interviews angezeigt auf die Sie Zugriff haben. Das sind entweder solche, an denen Sie selbst beteiligt waren, oder solche, die mit Ihnen geteilt wurden.  
-Wenn Sie eines der Interviews auswählen, gelangen Sie in eine **Detailansicht**, in der Ihnen alle relevanten Informationen zu dem Interview angezeigt werden. Im oberen Bereich können das Interview außerdem abspielen\*. Weiter unten wird Ihnen eine Liste der zugehörigen Interviewfragen angezeigt. Wählen Sie hiervon eine aus, gelangen Sie wiederum in die Detailansicht für die ausgewählte Frage, in der Ihnen alle Informationen zu dieser Frage angezeigt werden. Auch hier gibt es eine Abspielfunktion für die ausgewählte Frage\*.
-
-### Interview aufzeichnen
-Über den mittleren Button der Haupt-Buttonleiste können Sie die Aufnahme eines neuen Interviews einleiten. Über einen Auswahldialog durchlaufen Sie folgende Schritte:
-
-#### Auswahl des Erzählers
-Zunächst müssen Sie eine Person als Erzähler auswählen. Sie haben hier mehrere Möglichkeiten:  
-- Sie können sich selbst für ein Selbstinterview auswählen.
-- Sie können einen befreundeten Nutzer (sofern verfügbar) auswählen.
-- Sie können einen Gast (sofern verfügbar) auswählen.
-- Sie können über das Feld *Gast hinzufügen* ein neues Gastprofil erstellen und diesen Gast anschließend auswählen.
-- Sie können nach anderen Personen suchen und diese hinzufügen\*. (Diese Person erhält dann eine Freundschaftsanfrage, die erst beantwortet werden muss, bevor Sie diese Person für das Interview auswählen können!)  
-
-Haben Sie eine Wahl getroffen, drücken Sie auf *Weiter*.
-
-#### Auswahl des Themas
-Als nächstes müssen Sie ein Thema auswählen. Sie können die angezeigten Themen aufklappen, um die zugehörigen Fragen einzusehen. Diese können Sie nach Belieben ein- oder ausschalten. Im Interview werden Ihnen nur eingeschaltete Fragen des ausgewählten Themas angezeigt. Über die entsprechenden Plus-Symbole können Sie zudem Themen oder Fragen hinzufügen\*.  
-Außerdem können Sie die getroffene Auswahl des Erzählers wieder zurücknehmen, wodurch Sie automatisch zum vorherigen Auswahlschritt gelangen.  
-Haben Sie ein Thema ausgewählt, drücken Sie auf *Weiter*.
-
-#### Auswahl des Mediums
-Zuletzt müssen Sie ein Aufnahmemedium auswählen. Sie haben die Wahl zwischen **Videoaufnahme** und **Audioaufnahme**.  
-Auch hier haben Sie darüberhinaus wieder die Möglichkeit, ihre bisher getroffene Auswahl von Erzähler und Thema zu revidieren.  
-Haben Sie ein Medium gewählt, drücken Sie auf *Weiter*.
-
-#### Aufnahme des Interviews
-Um die **Aufnahmefunktion** nutzen zu können, sind Berechtigungen für die Kamera (nur für Videoaufnahme), das Mikrofon und den internen Speicher erforderlich!
-In der Videoaufnahme haben Sie die Möglichkeit, zwischen Front- und Rückkamera zu wechseln (sofern vorhanden). Außerdem können Sie den Taschenlampenmodus (falls verfügbar) ein- oder ausschalten, um die Lichtverhältnisse anzupassen.  
-Für beide Aufnahmemedien steht Ihnen ein **Fragenkarussell** im unteren Bildbereich zur Verfügung, in dem Sie durch *Wischen* die Fragen durchblättern können. Wenn Sie die Aufnahme über den roten *Aufnahme*-Button starten, wird für die Frage, die sich in der Mitte des Fragenkarussells befindet, die Aufnahme gestartet. Die Frage wird dabei mit einem Aufnahmesymbol gekennzeichnet. Sie können nun während der Aufnahme weiterhin das Fragenkarussell durchblättern, was jedoch keine Auswirkung auf die Aufnahme hat. Wenn Sie die Aufnahme stoppen, wird die aufgezeichnete Frage blau gekennzeichnet. Bereits aufgenommene Fragen können jederzeit erneut aufgenommen werden. Falls eine Frage mehrfach aufgenommen wird, werden die zugehörigen Einzelaufzeichnungen anschließend zu einer Gesamtaufzeichnung verbunden\*.  
-Möchten Sie das Interview beenden, drücken Sie auf den *Fertig*-Button. 
-
-#### Nachbearbeitung des Interviews
-Im folgenden Schritt haben Sie nun die Möglichkeit, Ihr Interview nachzubearbeiten. Sie sehen eine Übersicht über die aufgezeichneten Fragen. Für jede Frage können Sie *Schlagwörter* definieren. Drücken Sie dafür links unter dem jeweiligen Titelbild auf das *Plus*-Symbol.  
-Über das *Plus*-Symbol am oberen Bildrand können Sie Ihrem Interview außerdem weitere Fragen hinzufügen\*.
-Über den *Zurück*-Button gelangen Sie wieder zurück zur Aufnahmefunktion, wo Sie sowohl neu hinzugefügte Fragen als auch die bisherigen Fragen erneut aufnehmen können.  
-Sind Sie mit der Bearbeitung des Interviews fertig, drücken Sie auf *Weiter*.
-
-#### Speichern des Interviews
-Im letzten Schritt müssen Sie noch einen Titel für Ihr Interview vergeben. Sie haben außerdem noch einmal die Möglichkeit, den ausgewählten Erzähler zu ändern.  
-Stehen Titel und Erzähler fest, drücken Sie auf *Speichern*, um das Interview abzuschließen und zu archivieren. Haben Sie bitte einen Moment Geduld, bis das Interview auf den Server geladen wurde. Sie werden anschließend automatisch zur **Übersicht** zurückgeleitet.
-
-### Persönliche Seite
-Auf Ihrer **Persönlichen Seite** werden Ihnen alle Interview angezeigt, an denen Sie selbst beteiligt waren. Außerdem haben Sie hier folgende Möglichkeiten:  
-- Durch einen Klick auf Ihr Profilbild oder Ihren Namen gelangen Sie zu Ihrem **Profil**, wo Sie Ihre persönlichen Daten ändern oder Ihren Account löschen\* können.
-- Über das Symbol oben rechts können Sie einen neuen Gast hinzufügen.
-- Über *Freunde und Gruppen* gelangen Sie zur **Kontaktverwaltung**.
-- Über *Fragenpost* gelangen Sie zur **Fragenpost**.
-
-### Kontaktverwaltung
-Die **Kontaktverwaltung** beinhaltet die Liste der Personenkontakte sowie die Gruppenliste\* in zwei getrennten Tabs.  
-In der Liste der Personenkontakte werden Ihnen ihre Gäste sowie befreundete Nutzer angezeigt. Wenn Sie eine Person auswählen, wird Ihnen das jeweilige Profil angezeigt. Gastprofile können dabei auch bearbeitet werden.  
-Außerdem können Sie hier ebenfalls einen Gast hinzufügen und nach Personen suchen\*, um Sie als Freunde hinzuzufügen\*.
-
-### Themenkatalog
-Im **Themenkatalog** können Sie, wie bereits beschrieben, Ihre Themen und Fragen einsehen und Fragen für Interviews ein- oder ausschalten. Außerdem können neue Themen und Fragen hinzugefügt\* und Fragen ein- oder ausgeschaltet werden.
-
-\* *Diese Funktionen stehen im Produktkern noch nicht zur Verfügung*
+### Overview
+The **overview** shows all interviews, which you have access to. This includes your own interviews, in which you played a part, as well as those, which were shared to you.
+If you choose an interview, you get to a **detail view**, which shows you all relevant information about the interview. At the top you can play the interview\*. Further down you can see a list of the belonging interviewquestions. If you choose one, you get to a further detail view for that question, where you also can play that single question\*.
 
 
-## Entwicklungsstand
+### Record an Interview
+By the middle button in the main navigation you can initiate a new interview. In that process you pass through the following steps:
+- Selection of the narrator
+- Selection of a topic
+- Selection of the medium
+- Record of the interview
+- Review of the interview
+- Save the interview
 
-Bei diesem Repository handelt es sich um einen lauffähigen Produktkern, der die wichtigsten Funktionen der App bereitstellt.  
-Der Code ist nicht fehlerfrei, nicht umfassend getestet und befindet sich noch in der Entwicklung.  
-Folgende App-Funktionen sind noch nicht enthalten:
-- Abspielfunktion für Medien
-- Unterstützung verschiedener Aufnahmequalitäten
-- Fragenpost
-- Benachrichtigungsfunktion
-- Erweiterbarkeit des Themenkatalogs
-- Gruppenfunktionen
+#### Selection of the narrator
+At first you choose a person as narrator. You have the following options:  
+- You can choose yourself for a self-interview.
+- You can choose a friend.
+- You can choose an existing guest.
+- You can create a new guest profil by *add guest* and choose this guest afterwards.
+- You can search for other users and add them as a friend. (They will receive a friendship request, which has to be accepted first, befor they can be chosen for the interview!)
+
+Press *Next*, after you made your choice.
+
+#### Selection of a topic
+Next you choose a topic. You can expand the topics to see the associated questions. They can be switched on or off at will. Only switched on questions will be shown during the interview. By the appropriate *plus* signs you also can add new topics and questions\*.  
+(Furthermore you can cancel you previously made choice of narrator, which automatically brings you back to the previous selection step.)  
+Press *Next*, after you have chosen a topic. 
+
+#### Selection ot the medium
+Finally you choose a recording medium. You have the choice between **video recording** and **audio recording**.  
+(As in the last step you also can cancel your previously made choices of narrator and topic here, which brings you back to the appropriate selection step.)  
+Press *Next*, after you have chosen the medium.
+
+#### Recording the interview
+For using the **recording function**, you have to grant permissions for using the internal memory, the microphone and in case of video recording the camera es well.
+
+In the bottom area of the recording function you can see the **question carousel**, in which you can browse through the questions by vertical wipe gestures.  
+If you press the red *record* button, the recording starts for the middle question in the question carousel. Thus the question gets marked with a record sign.
+During the recording you still can browse through the question carousel, which has no effect on the recording though.  
+If you press the *stop* button, the recording stops and the recorded question gets marked blue.  
+Already recorded questions can be recorded again at any time. If a question gets recorded more than once, the belonging single records will be concatenated to a complete record afterwards\*.  
+
+If you record a video, you can switch between front and back camera (if applicable). Furthermore you can turn on or off the lightning (also if applicable).  
+Press the *Finish* button, if you want to end the interview.
+
+#### Review of the interview
+In the review you see an overview of the recorded questions. For every question you can define *tags* by pressing the particular *plus* sign left under the covers.  
+Through the *plus* sign at the top you also can add further questionsto your interview\*.  
+Pressing the *back* button brings you back to the recording function, where you can record newly added questions as well as the previous questions again.  
+Press *Next*, if you want to finish reviewing your interview.
+
+#### Save the interview
+In the last step you have to give a title to your interview. You also have the opportunity once more to change the chosen narrator.  
+Press *Save*, if title and narrator are definite, to complete the interview. Then the interview will be uploaded and archived online. It will now be permanently available to you through the app, even if you remove the original recording from your device. (But bear in mind, that the quality of the uploaded records can differ from the original quality!)  
+After saving the interview you will be redirected to the Overview automatically.
+
+### Personal Page
+On your **Personal Page** all your own interviews are shown. Furthermore you have the following options:  
+- Press on your profile image or your name to get to your **Profile**. Here you can edit your personal information or delete your account\*.
+- Press on the symbol in the top right corner to add a new guest.
+- Press on *Friends and Groups* to get to the **Contact Managment**.
+- Press on *Questionmail* to get to your **Questionmail**.
+
+### Contact Managment
+The **Contact Managment** contains a list of your personal contacts as well as a list of the groups\*, which you are a member of in two seperate tabs.  
+The list of personal contacts shows your guests and friends. Press on a person to show the belonging profile. Profiles of your guests can also be edited.  
+Press on *Add guest* to create a new guest profile. By the search field you can search for other users and add them as friends\*.
+
+##### Difference between friends and guests
+
+Friends are other registered users, which made friends with. Friends have unlimited access to all functions of the app.
+
+Guests are persons for whom you created a guest profile, but who aren't users of the app by themselves. Guests can be chosen as narrator for an interview. In that case after saving the interview they receive an automated email with a link, that gives them access to the interview. 
+If you want to share an interview, where a guest was narrator, the guest has to agree to that. In that case he also receives an email with links to approve or decline.
+
+### Topic Catalogue
+In the **Topic Catalogue** you can, as described in [Selection of a topic](#selection-of-a-topic), see your topics and questions as well as switch on or off the questions for your interviews. Furthermore you can add new topics and questions\*.
+
+\* *These features are not available yet in the product core*
 
 
-##  Technische Umgebung
+## Stage Of Development
 
-Die App verwendet eine Architektur aus Clients und cloud-basiertem Backend.
+This repository is a runnable product core, which provides the most important features of the app.  
+The code is not free of errors, not fully tested and is still under development.  
+Following app features are still missing:
+- Playback function for medias
+- support for different recording qualities
+- Questionmail
+- Notification function
+- Expandability of the Topic Catalogue
+- Group features
+- search functions
 
-Für das Backend werden u.a. folgende Dienste des kommerziellen Cloud-Anbieters Google Firebase verwendet:
+
+##  Technical Environment
+
+The App uses an architecture consistent of clients and a cloud-based backend.
+
+For the backend the app uses i.a. the following services of the cloud service provider Google Firebase:
 - Authentication
 - Realtime Database
 - Storage
 
-Als Clients dienen Android-Smartphones und Android-Tablets mit Android 4.1 (API-Level 16) oder höher.
-Folgende Gerätefunktionen werden benötigt:
-- Kamera
-- Mikrofon
-- Interner oder externer Speicher
-- WLAN- oder Mobildaten-Verbindung
+As clients serve smartphones and tablets with Android 4.1 (API level 16) or above.
+Following device features are necessary:
+- Camera
+- Mikrophone
+- Internal or external storage
+- WLAN or mobile data connection
 
-Für die Aufzeichnung eines Interviews wird die Verwendung folgender Peripherie empfohlen:
-- Stativ mit Handy-/Tablet-Halterung
-- externes Mikrofon
-- Fernauslöser für die Kamera
+For the recording of an interview following periphery is recommended:
+- Tripod with mounting for smartphone/tablet
+- external Mikrophone
+- remote control for the camera
 
 
-## Beitragende
+## Contributors
 
-### Modellierung, Entwurf & Implementierung
+### Modelling, Software Design & Implementation
 
 Marcel Schoob
 
-### Idee, Konzeption & Oberflächendesign
+### Idea, Conception & Interface Design
 
 Muriel Balzer
