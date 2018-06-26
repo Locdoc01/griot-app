@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.google.firebase.database.Query;
 
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.CombinedPersonListCreator;
+import de.griot_app.griot.adapters.PersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseActivity;
 
 
@@ -48,7 +48,7 @@ public class ContactManagmentActivity extends GriotBaseActivity {
     //TODO: add queries for groups
 
     //Creates the PersonlistView as a combination of guest list data, friend list data and approriate category headings
-    private CombinedPersonListCreator mCombinedListCreator;
+    private PersonListCreator mCombinedListCreator;
     //TODO: check, if CombinePersonListCreator works for groups as well
 
     @Override
@@ -74,8 +74,8 @@ public class ContactManagmentActivity extends GriotBaseActivity {
         mQueryFriends = mDatabaseRootReference.child("users");  //TODO specify to get only friends of the current user
 
         //create the combined ListView
-        mCombinedListCreator = new CombinedPersonListCreator(ContactManagmentActivity.this, mListViewPersons);
-        mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_OPTIONS_MODE);
+        mCombinedListCreator = new PersonListCreator(ContactManagmentActivity.this, mListViewPersons);
+        mCombinedListCreator.setMode(PersonListCreator.PERSONS_OPTIONS_MODE);
         mCombinedListCreator.add(mQueryGuests);
         mCombinedListCreator.add(mQueryFriends);
         //TODO same for groups

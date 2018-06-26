@@ -30,8 +30,8 @@ import de.griot_app.griot.R;
  * ArrayList-ListView-Adapter, which converts an ArrayList of PersonData-objects into ListView items.
  *
  * This adapter is specialized for ListViews, which shows an options button.
- * Use CombinedPersonListCreator to obtain a combined ListView of all contacts and set CombinedPersonListCreator.mMode either to
- * CombinedPersonListCreator.PERSONS_OPTIONS_MODE or CombinedPersonListCreator.GROUPS_OPTIONS_MODE, using setMode().
+ * Use PersonListCreator to obtain a combined ListView of all contacts and set PersonListCreator.mMode either to
+ * PersonListCreator.PERSONS_OPTIONS_MODE or PersonListCreator.GROUPS_OPTIONS_MODE, using setMode().
  */
 public class PersonDataOptionsAdapter extends ArrayAdapter<PersonData> {
 
