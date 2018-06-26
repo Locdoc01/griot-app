@@ -31,12 +31,12 @@ import de.griot_app.griot.startactivities.LoginActivity;
 /**
  *  Abstract base activity for all activities in griot-app.
  *
- *  Provides Firebase-Authentification, Firebase-DatabaseReferences, Firebase-StorageReferences
+ *  Provides Firebase-Authentication, Firebase-DatabaseReferences, Firebase-StorageReferences
  *  and loads own user information.
  *
- *  If some actions in subclasses have to be done AFTER own user information was obtained from Firebase, they can be put into
+ *  If some actions in subclasses have to be done AFTER own user information has been obtained from Firebase, they can be put into
  *  doOnStartAfterLoadingUserInformation(), which has to be overwritten in subclasses. This method gets called
- *  in FirebaseActivity.onStart(), after own user information was obtained.
+ *  in FirebaseActivity.onStart(), after own user information has been obtained.
  *
  *  mValueEventListener and mChildEventListener have to be instantiated in subclasses, if needed.
  */
@@ -61,7 +61,7 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
     /**
      * Abstract method, which returns the TAG of the extending subclass.
-     * This method can be used, when the TAG of the concrete subclass is needed.
+     * This method can be used, if the TAG of the concrete subclass is needed.
      * Note, that GriotBaseActivity itself doesn't provide a TAG field.
      * @return  TAG of the extending subclass
      */
@@ -69,8 +69,8 @@ public abstract class FirebaseActivity extends AppCompatActivity {
 
 
     /**
-     * Abstract method, which is called in onStart(), AFTER own user information was obtained from Firebase.
-     * This method has to be overwritten in subclasses an can be used to run code after own user information was obtained.
+     * Abstract method, which is called in onStart(), AFTER own user information has been obtained from Firebase.
+     * This method has to be overwritten in subclasses an can be used to run code after own user information has been obtained.
      */
     protected abstract void doOnStartAfterLoadingUserInformation();
 

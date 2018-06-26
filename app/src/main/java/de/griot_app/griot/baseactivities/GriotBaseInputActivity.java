@@ -71,13 +71,13 @@ public abstract class GriotBaseInputActivity extends FirebaseActivity implements
         getSupportActionBar().setTitle("");
 
         // get references to the layout objects
-        mTitle = (TextView) findViewById(R.id.base_title);
-        mButtonLeft = (Button) findViewById(R.id.button_left);
-        mButtonCenter = (Button) findViewById(R.id.button_center);
-        mButtonRight = (Button) findViewById(R.id.button_right);
-        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
-        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
-        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
+        mTitle = findViewById(R.id.base_title);
+        mButtonLeft = findViewById(R.id.button_left);
+        mButtonCenter = findViewById(R.id.button_center);
+        mButtonRight = findViewById(R.id.button_right);
+        mBackgroundProgress = findViewById(R.id.base_background_progress);
+        mProgressBar = findViewById(R.id.base_progressBar);
+        mTextViewProgress = findViewById(R.id.base_textView_progress);
 
         mButtonLeft.setOnTouchListener(this);
         mButtonCenter.setOnTouchListener(this);
