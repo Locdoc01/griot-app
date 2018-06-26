@@ -118,11 +118,11 @@ public class QuestionCarousel extends FrameLayout implements View.OnTouchListene
         View v = LayoutInflater.from(mContext).inflate(R.layout.class_question_carousel, this);
 
         //Get references to layout objects
-        mShadowTop = (ImageView) v.findViewById(R.id.question_shadow_top);
-        mShadowTopLine = (ImageView) v.findViewById(R.id.question_shadow_top_line);
-        mShadowMiddle = (ImageView) v.findViewById(R.id.question_shadow_middle);
-        mShadowBottom = (ImageView) v.findViewById(R.id.question_shadow_bottom);
-        mShadowBottomLine = (ImageView) v.findViewById(R.id.question_shadow_bottom_line);
+        mShadowTop = v.findViewById(R.id.question_shadow_top);
+        mShadowTopLine = v.findViewById(R.id.question_shadow_top_line);
+        mShadowMiddle = v.findViewById(R.id.question_shadow_middle);
+        mShadowBottom = v.findViewById(R.id.question_shadow_bottom);
+        mShadowBottomLine = v.findViewById(R.id.question_shadow_bottom_line);
 
         //TODO: catch case, that no list was added
         mCurrentQuestion = -1;
