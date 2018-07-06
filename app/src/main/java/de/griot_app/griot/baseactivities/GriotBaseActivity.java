@@ -85,20 +85,20 @@ public abstract class GriotBaseActivity extends FirebaseActivity implements View
         getSupportActionBar().setTitle("");
 
         // get references to the layout objects
-        mTitle = (TextView) findViewById(R.id.base_title);
-        mLineAppBar = (ImageView) findViewById(R.id.base_line_top);
-        mButtonHome = (ImageView) findViewById(R.id.button_home);
-        mButtonProfile = (ImageView) findViewById(R.id.button_profile);
-        mButtonRecord = (ImageView) findViewById(R.id.button_record);
-        mButtonNotifications = (ImageView) findViewById(R.id.button_notifications);
-        mButtonTopicCatalog = (ImageView) findViewById(R.id.button_topic_catalog);
-        mButtonQuestionmail = (FloatingActionButton) findViewById(R.id.fab_questionmail);
+        mTitle = findViewById(R.id.base_title);
+        mLineAppBar = findViewById(R.id.base_line_top);
+        mButtonHome = findViewById(R.id.button_home);
+        mButtonProfile = findViewById(R.id.button_profile);
+        mButtonRecord = findViewById(R.id.button_record);
+        mButtonNotifications = findViewById(R.id.button_notifications);
+        mButtonTopicCatalog = findViewById(R.id.button_topic_catalog);
+        mButtonQuestionmail = findViewById(R.id.fab_questionmail);
         mButtonQuestionmail.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGriotWhite, null));
-//        mBackgroundOptionsMenu = (ImageView) findViewById(R.id.background_options_menu);
-//        mListViewOptionsMenu = (ListView) findViewById(R.id.listView_options_menu);
-        mBackgroundProgress = (ImageView) findViewById(R.id.base_background_progress);
-        mProgressBar = (ProgressBar) findViewById(R.id.base_progressBar);
-        mTextViewProgress = (TextView) findViewById(R.id.base_textView_progress);
+//        mBackgroundOptionsMenu = findViewById(R.id.background_options_menu);
+//        mListViewOptionsMenu = findViewById(R.id.listView_options_menu);
+        mBackgroundProgress = findViewById(R.id.base_background_progress);
+        mProgressBar = findViewById(R.id.base_progressBar);
+        mTextViewProgress = findViewById(R.id.base_textView_progress);
 
 //        mOptionsMenuVisible = false;
 

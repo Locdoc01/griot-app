@@ -416,8 +416,8 @@ public abstract class RecordActivity extends AppCompatActivity {
     }
 
     /**
-     * Will be called, when the user responds to permission requests. The functionality of the app will be dependant on
-     * the given permissions. If permissions for CAMERA are denied but for RECORD_AUDIO and WRITE_EXTERNAL_STORAGE are allowed then
+     * Will be called, when the user responds to permission requests. The functionality of the app will depend on
+     * the given permissions. If permissions are denied for CAMERA but allowed for RECORD_AUDIO and WRITE_EXTERNAL_STORAGE then
      * at least audio recording can be used. In that case the app redirects automatically from RecordVideoActivity to RecordAudioActivity.
      * If one of RECORD_AUDIO or WRITE_EXTERNAL_STORAGE are denied, recording functionality can not be used at all.
      * In that case the app will return to MainOverviewActivity. All other Functions of the app will be usable.

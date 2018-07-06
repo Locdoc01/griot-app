@@ -42,7 +42,7 @@ public class InterviewDataAdapter extends RecyclerView.Adapter<InterviewDataAdap
     private ArrayList<InterviewData> mListData;
     private static OnItemClickListener<InterviewData> mListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {  //TODO: ok if not static??
+    public class ViewHolder extends RecyclerView.ViewHolder {
         //Views, which are shown in every RecyclerView item
         private TextView mTextViewTitle;
         private TextView mTextViewDate;
@@ -121,7 +121,7 @@ public class InterviewDataAdapter extends RecyclerView.Adapter<InterviewDataAdap
                         case R.id.button_options:
                             Log.d(TAG, "options clicked: ");
                             Toast.makeText(mContext, "Show Options", Toast.LENGTH_SHORT).show();
-                            //Folgende Zeile ist nötig für Custom Options Menü. Wird wahrscheinlich später durch andere Lösung ersetzt
+                            //Following line is necessary for custom options menu. Will likely be replaced by some other solution later
 //                        ((GriotBaseActivity)mContext).showOptionsMenu(new InterviewOptions().getOptions());
                             break;
                     }

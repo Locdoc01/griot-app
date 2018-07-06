@@ -2,9 +2,6 @@ package de.griot_app.griot.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -32,9 +29,9 @@ import de.griot_app.griot.R;
 /**
  * ArrayList-ListView-Adapter, which converts an ArrayList of InterviewData-objects into ListView items.
  */
-public class InterviewDataAdapterOld extends ArrayAdapter<InterviewData> {
+public class InterviewDataAdapterForListView extends ArrayAdapter<InterviewData> {
 
-    private static final String TAG = InterviewDataAdapterOld.class.getSimpleName();
+    private static final String TAG = InterviewDataAdapterForListView.class.getSimpleName();
 
     private static class ViewHolder {
         //Views, which are shown in every ListView item
@@ -57,7 +54,7 @@ public class InterviewDataAdapterOld extends ArrayAdapter<InterviewData> {
     private View.OnClickListener clickListener;
 
     //constructor
-    public InterviewDataAdapterOld(Context context, ArrayList<InterviewData> data) {
+    public InterviewDataAdapterForListView(Context context, ArrayList<InterviewData> data) {
         super(context, 0, data);
     }
 
