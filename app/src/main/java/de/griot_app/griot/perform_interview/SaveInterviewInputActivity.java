@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.griot_app.griot.adapters.CombinedPersonListCreator;
 import de.griot_app.griot.contacts_profiles.GuestProfileInputActivity;
 import de.griot_app.griot.R;
-import de.griot_app.griot.adapters.PersonListCreator;
 import de.griot_app.griot.baseactivities.GriotBaseInputActivity;
 import de.griot_app.griot.dataclasses.InterviewData;
 import de.griot_app.griot.dataclasses.InterviewQuestionData;
@@ -111,9 +111,9 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
     private ListView mListViewPersons;
 
     //Creates a ListView of person contacts as a combination of own user data, guest list data, friend list data and approriate category headings
-    private PersonListCreator mCombinedListCreator;
+    private CombinedPersonListCreator mCombinedListCreator;
 
-    //Firebase queries for the PersonListCreator
+    //Firebase queries for the CombinedPersonListCreator
     private Query mQueryGuests;
     private Query mQueryFriends;
 
@@ -336,8 +336,8 @@ public class SaveInterviewInputActivity extends GriotBaseInputActivity {
         mQueryFriends = mDatabaseRootReference.child("users");  //TODO: specify to get only users who are in a friendship with the current user
 
         //Create the combined ListView of person contacts
-        mCombinedListCreator = new PersonListCreator(SaveInterviewInputActivity.this, -1, mListViewPersons);
-        mCombinedListCreator.setMode(PersonListCreator.PERSONS_CHOOSE_MODE);
+        mCombinedListCreator = new CombinedPersonListCreator(SaveInterviewInputActivity.this, -1, mListViewPersons);
+        mCombinedListCreator.setMode(CombinedPersonListCreator.PERSONS_CHOOSE_MODE);
         mCombinedListCreator.add(mQueryGuests);
         mCombinedListCreator.add(mQueryFriends);
         mCombinedListCreator.loadData();
