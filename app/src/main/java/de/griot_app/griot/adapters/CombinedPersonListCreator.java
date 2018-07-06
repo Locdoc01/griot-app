@@ -29,9 +29,9 @@ import de.griot_app.griot.dataclasses.UserData;
  * The own user data gets stored as own category at the top of the list.
  * First Element of the guests category is a special item, that allows to add a new guest profile
  */
-public class PersonListCreator {
+public class CombinedPersonListCreator {
 
-    private static final String TAG = PersonListCreator.class.getSimpleName();
+    private static final String TAG = CombinedPersonListCreator.class.getSimpleName();
 
     //TODO: change "person" to "contact"
 
@@ -90,7 +90,7 @@ public class PersonListCreator {
      * @param context calling Activity
      * @param combinedlistView combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
      */
-    public PersonListCreator(Activity context, ListView combinedlistView) {
+    public CombinedPersonListCreator(Activity context, ListView combinedlistView) {
         this(context, -1, combinedlistView);
     }
 
@@ -100,7 +100,7 @@ public class PersonListCreator {
      * @param combinedlistView Combined ListView, which holdes all data elements from the single ArrayLists from the single Database Queries
      * @param selectedItemID The selected ListView item. If none item is selected, the value is -1
      */
-    public PersonListCreator(Activity context, int selectedItemID, ListView combinedlistView) {
+    public CombinedPersonListCreator(Activity context, int selectedItemID, ListView combinedlistView) {
 
         mContext = context;
 
@@ -124,7 +124,7 @@ public class PersonListCreator {
      * @return A this-reference
      */
 
-    public PersonListCreator add(Query query) {
+    public CombinedPersonListCreator add(Query query) {
         Log.d(TAG, "add:");
 
         mDatabaseQuerys.add(query);
