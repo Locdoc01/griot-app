@@ -16,27 +16,27 @@
 
 ## About Griot
 
-The App *Griot - Digital Archive Of A Family* primarily serves to provide a facility to interview a Person biographically and to record and archive the interview as Video or Audio.
+The App *Griot - Digital Archive Of A Family* primarily serves to provide a facility for interviewing a person biographically and to record and archive the interview as video or audio.
 
 The central idea is about the way of conducting the interview. The interviewer should ask well-directed questions to the narrator, which bring him to *indulge in reminiscences* and thus lapse into a lengthy flow of speech.  
-For the achievement of this goal the app provides a guideline to the interviewer in form of a *topic catalogue*, from which he can put together the questions for his interview beforehand. Then during the interview the selected questions are shown in a scrollable *question carousel* and will be associated with the records afterwards.  
+To achieve this goal the app provides a guideline to the interviewer in form of a *topic catalogue*, from which he can put together the questions for his interview beforehand. Then during the interview the selected questions are shown in a scrollable *question carousel* and will be associated with the records afterwards.  
 Like that the app helps the interviewer to conduct structured and biographic substantial interviews.
 
-In the course of this there are different usage scenarious provided. The user can either record himself, for example to keep a spoken diary, or he can interview and record another person about his life events and stories.
+In this course there are different usage scenarious provided. The user can either record himself, for example to keep a spoken diary, or he can interview and record another person about his life events and stories.
 
 Furthermore the app provides some social media features, which allows the user to make friends and groups with other users, invite guests, share contents und comment on shared contents. Moreover there is a section called *questionmail*, where interview questions can be sent to friends, which can be answered by them.
 
 Other features are i.a.:
-- Overview of all own and shared interviews of the user
+- Overview of all own and shared interviews
 - Interview detail views with playback function
 - Personal page of the user
 - Profile views
 - Notification function for important events
-- Userregistration and login
+- User registration and login
 
 ## Installation
 
-The app can only be installed by Android Studio for now. Therefor the repository has to be imported as new project in Android Studio. To install the app a smartphone or tablet with Android 4.1 or above, unlocked developer options and enabled USB-debugging is required.
+The app can only be installed by Android Studio for now. Therefor this repository has to be imported as new project in Android Studio. To install the app you need a smartphone or tablet with Android 4.1 or above, unlocked developer options and enabled USB-debugging.
 
 
 ## Screenshots
